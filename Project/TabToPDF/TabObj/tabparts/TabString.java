@@ -2,7 +2,12 @@ package tabparts;
 import java.util.regex.Pattern;
 
 /*
- * (UPDATED) Added addDash and scanLine methods.
+ * (UPDATED) Added a pattern attribute for finding a blanks string.
+ * Added a isBlank() method which checks to see if there are only dashes/spaces
+ * between the vertical lines of a string.
+ * Added a trimString() method which deletes dashes and blanks at the end of the
+ * string.
+ * 
  * -Ron
  */
 
@@ -33,6 +38,7 @@ public class TabString {
 	public final Pattern VALID_START = Pattern.compile("\\s*[|]\\s*\\S+");	// A string missing the end '|'
 	public final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*");	// A string missing the start '|'
 	public final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
+	public final Pattern BLANK_STRING = Pattern.compile("\\s*[|][\\s-]*[|]\\s*");	// A string of dashes only
 	
 	public final String FULL_MSG = "[cannot add char to full string]";
 	public final String VALID_MSG = "[valid string]";
@@ -172,6 +178,42 @@ public class TabString {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Deletes dashes and blanks from the end of a valid string.
+	 * Example this:
+	 * 
+	 * |--------- ----|
+	 * 
+	 * becomes this with num = 6:
+	 * 
+	 * |--------|
+	 * 
+	 * @param num The number of dashes to delete
+	 * @return	true if something was deleted
+	 * @return	false if nothing was deleted
+	 */
+	public boolean trimString(int num) {
+		TabString s;
+		if (this.isEmpty()) return false;
+		if (!this.isBlank()) return false;
+		if (this.getChar(0) != '|' && this.getChar(this.size()- 1) != '|') return false;
+		if (this.size() < 3) return false;
+		if ((this.size()-2) <= num) {
+			s = new TabString();
+			s.addChar('|');
+			s.addChar('|');
+			this.copyString(s);
+		} else {
+			System.out.println(num);
+			s = new TabString();
+			for (int i = 0; i < this.size() - num - 1; i++)
+				s.addChar(this.getChar(i));
+			s.addChar('|');
+			this.copyString(s);
+		}
+		return true;
 	}
 	
 	/**
@@ -367,6 +409,26 @@ public class TabString {
 	 */
 	public boolean isEmpty() {
 		return this.size() == 0;
+	}
+	
+	/**
+	 * Checks whether a string only contains dashes or spaces between its vertical lines.
+	 * For example, the following would return true:
+	 * 
+	 * |--------|
+	 * |---   ---  --|
+	 * 
+	 * The following return false:
+	 * 
+	 * |------
+	 * |---2---3--2|
+	 * 
+	 * @return	true if there are only dashes or spaces in a valid string
+	 * @return	false if there are characters other than dashes and spaces in the string
+	 */
+	public boolean isBlank() {
+		if (BLANK_STRING.matcher(this.toString()).find()) return true;
+		else return false;
 	}
 	
 	/**

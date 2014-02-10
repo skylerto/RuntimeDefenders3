@@ -15,9 +15,9 @@ public class TabObjMain {
 		
 		File input = new File("inputfiles/try4.txt");
 		BufferedReader stream;
-		measure = new TabMeasure[30];
+		measure = new TabMeasure[200];
 		String line;
-		for (k = 0; k < 30; k++)
+		for (k = 0; k < 200; k++)
 			measure[k] = new TabMeasure();
 		try {
 			stream = new BufferedReader(new FileReader(input));
