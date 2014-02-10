@@ -206,7 +206,6 @@ public class TabString {
 			s.addChar('|');
 			this.copyString(s);
 		} else {
-			System.out.println(num);
 			s = new TabString();
 			for (int i = 0; i < this.size() - num - 1; i++)
 				s.addChar(this.getChar(i));
