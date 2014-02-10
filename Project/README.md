@@ -10,7 +10,7 @@ Importing the Project into Eclipse
 ==
 
 - Go to "Window" in Eclipse > Open perspective > Other > Git Repository Exploring
-- Copy and paste: https://github.com/rhduke/RuntimeDefenders2.git in to the repository window
+- Copy and paste: https://github.com/rhduke/RuntimeDefenders3.git in to the repository window
 - A window pops up, enter in your git username and password > Next
 - Select the "master" branch > Next
 - Select a local directory > Finish
