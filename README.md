@@ -2,7 +2,7 @@ NEWS
 =================
 
 - (Feb. 10 Mon) The new repo is up. We are no longer using version numbers in the java file names because it can lead to errors.
-So now we need to be extra careful to log our updates and let everyone know what we've done.
+So now we need to be extra careful to let others know what file we're working on and to log what we've changed in the file.
 
 ACTIVITY
 ==
