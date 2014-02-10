@@ -4,7 +4,7 @@ Keeping the Repository Consistent
 - Pull before pushing, making sure you have the most recent repository
 - Let everyone know on Watsapp that you've uploaded something to the repo so everyone can pull it
 - Let people know in the repo README what file you're working on so someone else doesn't accidentally work on it at the same time
-- Use Eclipse to push files and be sure to log changes
+- Use Eclipse to push files (not through the github site) and be sure to log changes
 
 Importing the Project into Eclipse
 ==
