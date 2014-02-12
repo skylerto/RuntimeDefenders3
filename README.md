@@ -1,6 +1,7 @@
 NEWS
 =================
 
+- (Feb. 12 Wed) Online meeting this Sat at 9pm. Let me know of Whatsapp if that time is ok
 - (Feb. 10 Mon) The new repo is up. We are no longer using version numbers in the java file names because it can lead to errors.
 So now we need to be extra careful to let others know what file we're working on and to log what we've changed in the file.
 
