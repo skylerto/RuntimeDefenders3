@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -16,47 +17,42 @@ public class GUIModel {
 	
 	protected static ArrayList<String> selectionImages = new ArrayList<String>();
 	private static File imageFile;
-	private static String logString = "";
+	static String logString = "";
+	static BufferedImage image ;
 	
+
 	
-	public static void updateTopBox() {
-		topBox.setText("");
+	public static void updateTopBoxLogic() {
+		GUIView.topBox.setText("");
+
+		if (imageFile == null) {
+			imageFile = new File("res/nopreview.gif");
+		} else if (GUIView.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
+			selectionImages.remove(0);
+			GUIView.selectionFiles.remove(0);
+		}
+
 
 		try {
-
-			if (imageFile == null) {
-				imageFile = new File("res/nopreview.gif");
-			} else if (selectionFiles.get(0) == NO_PREVIEW) {
-				selectionImages.remove(0);
-				selectionFiles.remove(0);
-			}
-			int neededWidth = imgScrollPane.getVerticalScrollBar()
-					.getPreferredSize().width;
-			int neededHeight = imgScrollPane.getHorizontalScrollBar()
-					.getPreferredSize().height;
-			BufferedImage image = ImageIO.read(imageFile);
-			ImageIcon preview = new ImageIcon(image);
-			image.getScaledInstance(neededWidth, neededWidth, 0);
-			topBox.insertIcon(preview);
-			SimpleAttributeSet attribs = new SimpleAttributeSet();
-			StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-			populateJList(selectionList);
-
-			selectionList.repaint();
-			topBox.repaint();
-			listPanel.repaint();
-			topPanel.revalidate();
-			topPanel.repaint();
-			frame.repaint();
-
-			logString += "Document preview has been updated.\n";
-			updateLog();
-
+			image = ImageIO.read(imageFile);
+			setImage();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		logString += "Document preview has been updated.\n";
+		updateLog();
 	}
+
+	/**
+	 * 
+	 */
+	public static void setImage(){
+		GUIController.image = image;
+	}
+
 	
 	/**
 	 * 
@@ -70,8 +66,8 @@ public class GUIModel {
 	/**
 	 * Updates the log box with current activity.
 	 */
-	private static void updateLog() {
-		log.append(logString);
+	static void updateLog() {
+		GUIView.log.append(logString);
 		logString = "";
 	}
 

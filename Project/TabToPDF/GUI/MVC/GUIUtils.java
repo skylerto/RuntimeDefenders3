@@ -18,7 +18,7 @@ public class GUIUtils {
 	 * @param filenameWithExtention - File name with extension you wish to remove.
 	 * @return
 	 */
-	private static String removeFileExtension(String filenameWithExtention) {
+	static String removeFileExtension(String filenameWithExtention) {
 
 		String fileSeparator = System.getProperty("file.separator");
 		String filename;

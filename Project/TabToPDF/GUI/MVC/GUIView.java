@@ -83,27 +83,27 @@ public class GUIView {
 	private final static String SELECTION_LABEL = "Select preview: ";
 	private final static String EDITING_LABEL = "Edit PDF: ";
 	protected final static String NO_PREVIEW = "No files to view";
-	private static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF",
+	 static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF",
 			"SERIF" };
-	private static String[] fontSizesArray = { "8", "10", "12" };
-	private static String[] spacingArray = { "1", "2", "3", "4", "5" };
-	protected static ArrayList<String> selectionFiles = new ArrayList<String>();
-	protected static ArrayList<String> selectionImages = new ArrayList<String>();
+	 static String[] fontSizesArray = { "8", "10", "12" };
+	 static String[] spacingArray = { "1", "2", "3", "4", "5" };
+	 static ArrayList<String> selectionFiles = new ArrayList<String>();
+	 static ArrayList<String> selectionImages = new ArrayList<String>();
 
 
 
-	private static JScrollPane imgScrollPane;
-	private static JList selectionList;
-	private static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
-	private static JTextArea log;
-	private static JTextPane topBox;
-	private static JButton selectButton;
-	private static JPanel finalPanel;
-	private static JPanel topPanel;
-	private static JButton convertButton;
-	private static Font buttonFont = new Font("SANS_SERIF", Font.BOLD, 25);
-	private static JPanel listPanel;
-	private static JFrame frame;
+	static JScrollPane imgScrollPane;
+	static JList selectionList;
+	static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
+	static JTextArea log;
+	static JTextPane topBox;
+	static JButton selectButton;
+	static JPanel finalPanel;
+	static JPanel topPanel;
+	static JButton convertButton;
+	static Font buttonFont = new Font("SANS_SERIF", Font.BOLD, 25);
+	static JPanel listPanel;
+	static JFrame frame;
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
 	public static JMenuBar createMenuBar() {
@@ -140,17 +140,17 @@ public class GUIView {
 			public void actionPerformed(ActionEvent e) {
 
 				// OPEN USER MANUAL AND UPDATE LOG
-				logString += "Opening User Manual...\n";
-				updateLog();
+				GUIModel.logString += "Opening User Manual...\n";
+				GUIModel.updateLog();
 
 				ReadAndDisplayUserManual.read();
 
 				if (ReadAndDisplayUserManual.worked()) {
-					logString += "User manual was opened.\n";
-					updateLog();
+					GUIModel.logString += "User manual was opened.\n";
+					GUIModel.updateLog();
 				} else {
-					logString += "Eek! User manual failed to open.\n";
-					updateLog();
+					GUIModel.logString += "Eek! User manual failed to open.\n";
+					GUIModel.updateLog();
 				}
 
 			}
@@ -182,8 +182,8 @@ public class GUIView {
 			public void actionPerformed(ActionEvent arg0) {
 				// OPEN JFILESELECTOR
 
-				logString += "Selecting a file...\n";
-				updateLog();
+				GUIModel.logString += "Selecting a file...\n";
+				GUIModel.updateLog();
 				JFileChooser chooser = new JFileChooser();
 				chooser.setCurrentDirectory(new java.io.File("."));
 				chooser.setDialogTitle("Select PDF to convert");
@@ -192,19 +192,19 @@ public class GUIView {
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
 					fileToRead = chooser.getSelectedFile();
-					String filename = removeFileExtension(chooser
+					String filename = GUIUtils.removeFileExtension(chooser
 							.getSelectedFile().toString());
-					logString += "File " + "\"" + filename + "\""
+					GUIModel.logString += "File " + "\"" + filename + "\""
 							+ " selected.\n";
-					updateLog();
+					GUIModel.updateLog();
 					IMGCreator.createPreview();
-					selectionFiles.add(removeFileExtension(selectionImages.get(selectionImages.size() - 1)));
-					updateTopBox();
+					selectionFiles.add(GUIUtils.removeFileExtension(selectionImages.get(selectionImages.size() - 1)));
+					GUIController.updateTopBox();
 
 				} else {
 					//
-					logString += "Oops! Something went wrong when selecting file...\n";
-					updateLog();
+					GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
+					GUIModel.updateLog();
 				}
 			}
 		});
@@ -221,7 +221,7 @@ public class GUIView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// DO CONVERT
-				logString += "Attempting to convert file...\n";
+				GUIModel.logString += "Attempting to convert file...\n";
 
 				TextToPDF test = new TextToPDF();
 
@@ -236,7 +236,7 @@ public class GUIView {
 						+ TextToPDF.INPUT_FILENAME + " to "
 						+ TextToPDF.PDF_FILENAME + "!");
 
-				updateLog();
+				GUIModel.updateLog();
 
 			}
 		});
@@ -295,12 +295,7 @@ public class GUIView {
 		editPanel.add(LabelsAndComboBoxes);
 	}
 
-	/**
-	 * Adds/updates the JList.
-	 */
-	public static void populateJList(JList list) {
-		list.setListData(selectionFiles.toArray());
-	}
+
 
 	/**
 	 * Method that creates the top panel.
@@ -316,7 +311,7 @@ public class GUIView {
 		GridBagConstraints c = new GridBagConstraints();
 
 		selectionList = new JList();
-		populateJList(selectionList);
+		GUIController.populateJList(selectionList);
 		// Display, and set listener for selection pane.
 		if (selectionFiles.isEmpty()) {
 			selectionFiles.add(NO_PREVIEW);
@@ -332,9 +327,9 @@ public class GUIView {
 			@Override
 			public void valueChanged(ListSelectionEvent selectedPreview) {
 				// Creates and displays image
-				GUIView.setPreviewImage(new File(selectionImages.get(
+				GUIModel.setPreviewImage(new File(selectionImages.get(
 						selectionList.getSelectedIndex()).toString()));
-				GUIView.updateTopBox();
+				GUIController.updateTopBox();
 
 			}
 		});
@@ -372,7 +367,7 @@ public class GUIView {
 		c.gridy = 0;
 		panel.add(previewPanel);
 
-		updateTopBox();
+		GUIController.updateTopBox();
 	}
 
 	/**
