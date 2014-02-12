@@ -27,30 +27,33 @@ public class TabString {
 	
 	/* CONSTANTS */
 	
-	public final Character NULL_CHAR = '\0';
-	public final int MAX_SIZE = 75;		// Max chars it can hold
-	public final int ERROR_START = 1;	// Error return when the start '|' is missing
-	public final int ERROR_END = 2;		// Error return when the end '|' is missing
-	public final int ERROR_EMPTY = 3;	// Error return when the line is empty
-	public final int ERROR_COMMENT = 4;	// Error return when the line is a comment
+	public static final Character NULL_CHAR = '\0';
+	public static final int MAX_SIZE = 75;		// Max chars it can hold
+	public static final int ERROR_START = 1;	// Error return when the start '|' is missing
+	public static final int ERROR_END = 2;		// Error return when the end '|' is missing
+	public static final int ERROR_EMPTY = 3;	// Error return when the line is empty
+	public static final int ERROR_COMMENT = 4;	// Error return when the line is a comment
 	
-	public final Pattern VALID_STRING = Pattern.compile("\\s*[|].*[|]\\s*");// A string enclosed in '|'
-	public final Pattern VALID_START = Pattern.compile("\\s*[|]\\s*\\S+");	// A string missing the end '|'
-	public final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*");	// A string missing the start '|'
-	public final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
-	public final Pattern BLANK_STRING = Pattern.compile("\\s*[|][\\s-]*[|]\\s*");	// A string of dashes only
+	public static final Pattern VALID_STRING = Pattern.compile("\\s*[|].*[|]\\s*");// A string enclosed in '|'
+	public static final Pattern VALID_DB_STRING = Pattern.compile("\\s*[|]{2}.*[|]{2}\\s*"); // A string enclosed in '||'
+	public static final Pattern VALID_START = Pattern.compile("\\s*[|]\\s*\\S+");	// A string missing the end '|'
+	public static final Pattern VALID_DB_START = Pattern.compile("\\s*[|]{2}\\s*\\S+");	// A string missing the end '||'
+	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*");	// A string missing the start '|'
+	public static final Pattern VALID_DB_END = Pattern.compile("\\S+\\s*[|]{2}\\s*");	// A string missing the start '||'
+	public static final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
+	public static final Pattern BLANK_STRING = Pattern.compile("\\s*[|][\\s-]*[|]\\s*");	// A string of dashes only
 	
-	public final String FULL_MSG = "[cannot add char to full string]";
-	public final String VALID_MSG = "[valid string]";
-	public final String VALID_SPACEFIX_MSG = "[valid string, deleted excess spaces]";
-	public final String STARTFIX_MSG = "[fixed start of string]";
-	public final String STARTFIX_SPACEFIX_MSG = "[fixed start of string, deleted excess spaces]";
-	public final String ENDFIX_MSG = "[fixed end of string]";
-	public final String ENDFIX_SPACEFIX_MSG = "[fixed end of string, deleted excess spaces]";
-	public final String EMPTY_MSG = "[empty string]";
-	public final String COMMENT_MSG = "[invalid string, assumed to be a comment]";
-	public final String BOTHFIX_MSG = "[fixed both ends of string]";
-	public final String BOTHFIX_SPACEFIX_MSG = "[fixed both ends of string, deleted excess spaces]";
+	public static final String FULL_MSG = "[cannot add char to full string]";
+	public static final String VALID_MSG = "[valid string]";
+	public static final String VALID_SPACEFIX_MSG = "[valid string, deleted excess spaces]";
+	public static final String STARTFIX_MSG = "[fixed start of string]";
+	public static final String STARTFIX_SPACEFIX_MSG = "[fixed start of string, deleted excess spaces]";
+	public static final String ENDFIX_MSG = "[fixed end of string]";
+	public static final String ENDFIX_SPACEFIX_MSG = "[fixed end of string, deleted excess spaces]";
+	public static final String EMPTY_MSG = "[empty string]";
+	public static final String COMMENT_MSG = "[invalid string, assumed to be a comment]";
+	public static final String BOTHFIX_MSG = "[fixed both ends of string]";
+	public static final String BOTHFIX_SPACEFIX_MSG = "[fixed both ends of string, deleted excess spaces]";
 	
 	/* ATTRIBUTES */
 	

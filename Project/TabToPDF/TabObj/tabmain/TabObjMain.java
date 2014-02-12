@@ -13,7 +13,21 @@ public class TabObjMain {
 		Random gen = new Random();
 		
 		
-		File input = new File("inputfiles/try4.txt");
+		String in = "|||";
+		
+		if (TabString.VALID_DB_STRING.matcher(in).find()) {
+			System.out.println("true");
+		} else System.out.println("false");
+		
+		if (TabString.VALID_DB_START.matcher(in).find()) {
+			System.out.println("true");
+		} else System.out.println("false");
+		
+		if (TabString.VALID_DB_END.matcher(in).find()) {
+			System.out.println("true");
+		} else System.out.println("false");
+		
+		/*File input = new File("inputfiles/try4.txt");
 		BufferedReader stream;
 		measure = new TabMeasure[200];
 		String line;
@@ -73,7 +87,7 @@ public class TabObjMain {
 			measure[i].equalizeStrings();
 			System.out.println(measure[i].toString());
 			System.out.println("......................................");
-		}
+		}*/
 		
 		
 		
