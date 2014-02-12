@@ -11,17 +11,38 @@ import javax.swing.JList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+
+/**
+ * 
+ * 
+ * @author cse23170
+ *
+ *	TO IMPLEMENT:
+ *					- Update logbox ONLY WHEN NEEDED
+ *					- 
+ *
+ */
 public class GUIModel {
-	
-	//	Static variables.
-	
+
+	// Static variables.
+
 	protected static ArrayList<String> selectionImages = new ArrayList<String>();
 	private static File imageFile;
 	static String logString = "";
-	static BufferedImage image ;
-	
+	static BufferedImage image;
 
-	
+	/**
+	 * GUI Model constructor, constructs a model of the GUI.
+	 * 
+	 * @param - First initialization should give bare minimum i.e. picture
+	 *        should be no preview image. Image lists should be empty (Except
+	 *        for preview image). Should offset other array by s1 to account for
+	 *        this.
+	 */
+	public GUIModel() {
+
+	}
+
 	public static void updateTopBoxLogic() {
 		GUIView.topBox.setText("");
 
@@ -32,11 +53,10 @@ public class GUIModel {
 			GUIView.selectionFiles.remove(0);
 		}
 
-
 		try {
 			image = ImageIO.read(imageFile);
 			setImage();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,11 +69,10 @@ public class GUIModel {
 	/**
 	 * 
 	 */
-	public static void setImage(){
+	public static void setImage() {
 		GUIController.image = image;
 	}
 
-	
 	/**
 	 * 
 	 * @param f
@@ -62,7 +81,7 @@ public class GUIModel {
 	public static void setPreviewImage(File f) {
 		imageFile = f;
 	}
-	
+
 	/**
 	 * Updates the log box with current activity.
 	 */
@@ -71,7 +90,6 @@ public class GUIModel {
 		logString = "";
 	}
 
-	
 	public static void addToSelectionImages(String image) {
 		selectionImages.add(image);
 	}

@@ -10,6 +10,12 @@ import javax.swing.text.StyleConstants;
 
 public class GUIController {
 	
+	public GUIController(){
+		
+		// Insert Model compenents in constructor and make changes when needed.
+		GUIModel model = new GUIModel();
+	}
+	
 	static BufferedImage image;
 
 	public static void updateTopBox() {

@@ -26,6 +26,10 @@ import javax.swing.JOptionPane;
  */
 
 public class ReadAndDisplayUserManual {
+	
+	// Detecting formatting and display to the user what's happened.
+	// Flag dialog when something went terrible! Else just log and show.
+	// Pull double digits together and center.
 
 	protected String message = "";
 	protected static boolean worked;
