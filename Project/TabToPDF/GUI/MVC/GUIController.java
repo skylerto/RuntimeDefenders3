@@ -151,7 +151,7 @@ class selectionListListener implements ActionListener {
 		boolean userManWorked = ReadAndDisplayUserManual.read();
 
 		if (userManWorked) {
-			GUIModel.logString += "User manual was opened.\n";
+//			GUIModel.logString += "User manual was opened.\n";
 			GUIModel.updateLog();
 		} else {
 			GUIModel.logString += "Eek! User manual failed to open.\n";
