@@ -17,21 +17,21 @@ import javax.swing.text.StyleConstants;
  * @author cse23170
  * 
  *         TO IMPLEMENT: - Update logbox ONLY WHEN NEEDED -
- *         
- *	CHANGE LOG:
  * 
- * v0.1: 
- * 			- Broke up some components from the view into the model.
- * 			-
+ *         CHANGE LOG:
+ * 
+ *         v0.1: - Broke up some components from the view into the model. -
  */
 public class GUIModel {
 
 	// Static variables.
 
-	protected static ArrayList<String> selectionImages = new ArrayList<String>();
 	private static File imageFile;
 	static String logString = "";
 	static BufferedImage image;
+
+	static ArrayList<String> selectionFiles = new ArrayList<String>();
+	static ArrayList<String> selectionImages = new ArrayList<String>();
 
 	/**
 	 * GUI Model constructor, constructs a model of the GUI.
@@ -41,22 +41,29 @@ public class GUIModel {
 	 *        for preview image). Should offset other array by s1 to account for
 	 *        this.
 	 */
-	public GUIModel() { //BufferedImage image
-		//this.image = image;
+	public GUIModel() { // BufferedImage image
+		try {
+			this.image = ImageIO.read(new File("res/nopreview.gif"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	public static void updateTopBoxLogic() {
 		GUIView.topBox.setText("");
 		File imageFile = new File("res/nopreview.gif");
-/*
+
 		if (imageFile == null) {
 			imageFile = new File("res/nopreview.gif");
-		} else if (GUIView.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
-			selectionImages.remove(0);
-			GUIView.selectionFiles.remove(0);
 		}
-*/
+		
+		/*else if (GUIModel.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
+			selectionImages.remove(0);
+			GUIModel.selectionFiles.remove(0);
+		}*/
+
 		try {
 			image = ImageIO.read(imageFile);
 			setImage(image);
@@ -95,8 +102,55 @@ public class GUIModel {
 		image = image2;
 	}
 
+	/**
+	 * Gets the image as a BufferedImage.
+	 * 
+	 * @return image
+	 */
 	public static BufferedImage getImage() {
 		return GUIModel.image;
+	}
+
+	/**
+	 * Get's the String version of the file in the desired array.
+	 * 
+	 * @param index
+	 *            - position of the element in the file array.
+	 * @return String representation of the file.
+	 */
+	public static String getSelectionFile(int index) {
+		return selectionFiles.get(index);
+	}
+
+	/**
+	 * Get's the String version of the image array.
+	 * 
+	 * @param index
+	 *            - postion of desired element.
+	 * @return String name of the image.
+	 */
+	public static String getSelectionImage(int index) {
+		return selectionImages.get(index);
+	}
+
+	/**
+	 * Add's the selection File name to the selectionFiles array
+	 * 
+	 * @param toAdd
+	 *            - element to be added to selectionFiles array.
+	 */
+	public static void addToSelectionFile(String toAdd) {
+		selectionFiles.add(toAdd);
+	}
+
+	/**
+	 * Add's a String version of the image to the selectionImage array.
+	 * 
+	 * @param toAdd
+	 *            - Element to be added into the selectionImage array.
+	 */
+	public static void addToSelectionImage(String toAdd) {
+		selectionImages.add(toAdd);
 	}
 
 	/**

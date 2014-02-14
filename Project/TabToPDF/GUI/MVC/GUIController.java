@@ -58,7 +58,7 @@ public class GUIController {
 	 * Adds/updates the JList.
 	 */
 	public static void populateJList(JList list) {
-		list.setListData(GUIView.selectionFiles.toArray());
+		list.setListData(GUIModel.selectionFiles.toArray());
 	}
 
 }
@@ -84,10 +84,15 @@ class selectButtonListener implements ActionListener {
 					+ " selected.\n";
 			GUIModel.updateLog();
 			IMGCreator.createPreview();
-			GUIView.selectionFiles.add(GUIUtils
-					.removeFileExtension(GUIView.selectionImages
-							.get(GUIView.selectionImages.size()-1)));
-			GUIController.updateTopBox();
+			
+			if (GUIModel.selectionImages.size() > 0) {
+				
+				GUIModel.selectionFiles.add(GUIUtils
+						.removeFileExtension(GUIModel.selectionImages
+								.get(GUIModel.selectionImages.size() - 1)));
+				GUIController.updateTopBox();
+
+			}
 
 		} else {
 			GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
@@ -151,7 +156,7 @@ class selectionListListener implements ActionListener {
 		boolean userManWorked = ReadAndDisplayUserManual.read();
 
 		if (userManWorked) {
-//			GUIModel.logString += "User manual was opened.\n";
+			// GUIModel.logString += "User manual was opened.\n";
 			GUIModel.updateLog();
 		} else {
 			GUIModel.logString += "Eek! User manual failed to open.\n";

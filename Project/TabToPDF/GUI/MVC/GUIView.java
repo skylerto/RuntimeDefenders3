@@ -77,8 +77,9 @@ public class GUIView {
 	static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF", "SERIF" };
 	static String[] fontSizesArray = { "8", "10", "12" };
 	static String[] spacingArray = { "1", "2", "3", "4", "5" };
-	static ArrayList<String> selectionFiles = new ArrayList<String>();
-	static ArrayList<String> selectionImages = new ArrayList<String>();
+	
+	//static ArrayList<String> selectionFiles = new ArrayList<String>();
+	//static ArrayList<String> selectionImages = new ArrayList<String>();
 
 	static JScrollPane imgScrollPane;
 	static JList selectionList;
@@ -224,9 +225,6 @@ public class GUIView {
 		selectionList = new JList();
 		GUIController.populateJList(selectionList);
 		// Display, and set listener for selection pane.
-		if (selectionFiles.isEmpty()) {
-			selectionFiles.add(NO_PREVIEW);
-		}
 
 		selectionList.setPreferredSize(new Dimension(100, 250));
 		selectionList.setLayout(new FlowLayout());
@@ -238,7 +236,7 @@ public class GUIView {
 			@Override
 			public void valueChanged(ListSelectionEvent selectedPreview) {
 				// Creates and displays image
-				GUIModel.setPreviewImage(new File(selectionImages.get(
+				GUIModel.setPreviewImage(new File(GUIModel.selectionImages.get(
 						selectionList.getSelectedIndex()).toString()));
 				GUIController.updateTopBox();
 
