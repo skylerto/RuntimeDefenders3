@@ -38,7 +38,8 @@ public class ReadAndDisplayUserManual {
 		boolean worked = false;
 
 		/*
-		 * Read in the user manual text and display in a dialog option pane.
+		 * Read in the user manual text and display in a dialog option pane. So
+		 * long as the userman contains text.
 		 */
 
 		String message = GUIUtils.openAndReadFile("res/userman");

@@ -1,4 +1,7 @@
 /* 
+ * 
+ * FULL STOP ON SWING PACKAGE FOR GUI PLEASE SEE MVC PACKAGE!
+ * 
  * (READ UPDATE) Changed the path for the image file on line 238.
  * 
  * Executes "TextToPDF_v1_08_00.java" when the execute button
@@ -23,6 +26,10 @@
  * 		-	Changed display size from x to y.
  * 		-	
  * 		-	
+ * 
+ * 
+ * 
+ * 
  */
 
 package swing;
@@ -72,6 +79,13 @@ import com.itextpdf.text.DocumentException;
 
 import creator.IMGCreator;
 
+/**
+ * 
+ * @author Skyler
+ *
+ *	@deprecated use runGUI in package MVC instead.
+ */
+@Deprecated
 public class SwingGUI {
 
 	final static boolean shouldFill = true;
