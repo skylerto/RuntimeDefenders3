@@ -16,9 +16,8 @@ import javax.swing.JOptionPane;
  * 
  * Just like every other piece, this is subject to change.
  * 
- * Some possible ideas:
- * 		- Change from a dialog to actually opening another Java Swing applet.
- * 		- Hard coding the user manual.
+ * Some possible ideas: - Change from a dialog to actually opening another Java
+ * Swing applet. - Hard coding the user manual.
  * 
  * @author SKYLER LAYNE
  * @version 1.0
@@ -26,7 +25,7 @@ import javax.swing.JOptionPane;
  */
 
 public class ReadAndDisplayUserManual {
-	
+
 	// Detecting formatting and display to the user what's happened.
 	// Flag dialog when something went terrible! Else just log and show.
 	// Pull double digits together and center.

@@ -39,28 +39,31 @@ public class GUIModel {
 	 *        for preview image). Should offset other array by s1 to account for
 	 *        this.
 	 */
-	public GUIModel() {
-
+	public GUIModel(BufferedImage image) {
+		this.image = image;
+		
 	}
 
-	public static void updateTopBoxLogic() {
+	public void updateTopBoxLogic() {
 		GUIView.topBox.setText("");
-
+		File imageFile = new File("nopreview.gif");
+		/*
 		if (imageFile == null) {
 			imageFile = new File("res/nopreview.gif");
 		} else if (GUIView.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
 			selectionImages.remove(0);
 			GUIView.selectionFiles.remove(0);
 		}
-
+*/
 		try {
 			image = ImageIO.read(imageFile);
-			setImage();
+			setImage(image);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
 		logString += "Document preview has been updated.\n";
 		updateLog();
@@ -69,8 +72,12 @@ public class GUIModel {
 	/**
 	 * 
 	 */
-	public static void setImage() {
-		GUIController.image = image;
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+	
+	public BufferedImage getImage(){
+		return this.image;
 	}
 
 	/**

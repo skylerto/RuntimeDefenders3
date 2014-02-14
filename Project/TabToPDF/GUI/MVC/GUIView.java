@@ -83,14 +83,11 @@ public class GUIView {
 	private final static String SELECTION_LABEL = "Select preview: ";
 	private final static String EDITING_LABEL = "Edit PDF: ";
 	protected final static String NO_PREVIEW = "No files to view";
-	 static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF",
-			"SERIF" };
-	 static String[] fontSizesArray = { "8", "10", "12" };
-	 static String[] spacingArray = { "1", "2", "3", "4", "5" };
-	 static ArrayList<String> selectionFiles = new ArrayList<String>();
-	 static ArrayList<String> selectionImages = new ArrayList<String>();
-
-
+	static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF", "SERIF" };
+	static String[] fontSizesArray = { "8", "10", "12" };
+	static String[] spacingArray = { "1", "2", "3", "4", "5" };
+	static ArrayList<String> selectionFiles = new ArrayList<String>();
+	static ArrayList<String> selectionImages = new ArrayList<String>();
 
 	static JScrollPane imgScrollPane;
 	static JList selectionList;
@@ -198,7 +195,9 @@ public class GUIView {
 							+ " selected.\n";
 					GUIModel.updateLog();
 					IMGCreator.createPreview();
-					selectionFiles.add(GUIUtils.removeFileExtension(selectionImages.get(selectionImages.size() - 1)));
+					selectionFiles.add(GUIUtils
+							.removeFileExtension(selectionImages
+									.get(selectionImages.size() - 1)));
 					GUIController.updateTopBox();
 
 				} else {
@@ -294,8 +293,6 @@ public class GUIView {
 
 		editPanel.add(LabelsAndComboBoxes);
 	}
-
-
 
 	/**
 	 * Method that creates the top panel.
@@ -426,11 +423,11 @@ public class GUIView {
 		// Create and set up the window.
 		frame = new JFrame("Pretty ASCII PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// frame.setSize(700, 500);
 		frame.setResizable(false);
 
 		// Set up the content pane.
 		finalPanel = new JPanel(new BorderLayout());
+
 		// Setup sub panels
 		JPanel editingPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
