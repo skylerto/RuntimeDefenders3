@@ -3,19 +3,26 @@ package MVC;
 /**
  * Utilities used for GUIModel.
  * 
- * v0.1	-	Created and added removeFileExtension method.
- * 
  * @author cse23170
- *
+ * 
+ * 
+ *         TO IMPLEMENT: 
+ *         			- Make and concatenate to a text file as a log.
+ * 
+ *         CHANGE LOG:
+ * 
+ *         v0.1:	- Created and added removeFileExtension method.
+ * 
  */
 
 public class GUIUtils {
-	
+
 	/**
 	 * 
 	 * Parses filename and trims the file extension.
 	 * 
-	 * @param filenameWithExtention - File name with extension you wish to remove.
+	 * @param filenameWithExtention
+	 *            - File name with extension you wish to remove.
 	 * @return
 	 */
 	static String removeFileExtension(String filenameWithExtention) {

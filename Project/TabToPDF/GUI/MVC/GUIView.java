@@ -15,16 +15,7 @@ package MVC;
  * CHANGE LOG:
  * 
  * v0.1: 
- * v0.2: 
- * 		-	added preview image update method. 
- * v0.3: 
- * 		-	Created a method to update the image.
- * 		-	Changed some variables to be static.
- * 
- * v0.4:
- * 		-	Changed display size from x to y.
- * 		-	
- * 		-	
+ * 			-	Broke up the GUI view, placed some in the model.
  */
 
 import java.awt.BorderLayout;
@@ -78,38 +69,35 @@ public class GUIView {
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
 
-	private static File fileToRead;
+	static File fileToRead;
 	private final static String PREVIEW_LABEL = "Preview Image: ";
 	private final static String SELECTION_LABEL = "Select preview: ";
 	private final static String EDITING_LABEL = "Edit PDF: ";
 	protected final static String NO_PREVIEW = "No files to view";
-	 static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF",
-			"SERIF" };
-	 static String[] fontSizesArray = { "8", "10", "12" };
-	 static String[] spacingArray = { "1", "2", "3", "4", "5" };
-	 static ArrayList<String> selectionFiles = new ArrayList<String>();
-	 static ArrayList<String> selectionImages = new ArrayList<String>();
-
-
+	static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF", "SERIF" };
+	static String[] fontSizesArray = { "8", "10", "12" };
+	static String[] spacingArray = { "1", "2", "3", "4", "5" };
+	static ArrayList<String> selectionFiles = new ArrayList<String>();
+	static ArrayList<String> selectionImages = new ArrayList<String>();
 
 	static JScrollPane imgScrollPane;
 	static JList selectionList;
 	static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
 	static JTextArea log;
 	static JTextPane topBox;
-	static JButton selectButton;
+	static JButton selectButton = new JButton("Select Files to Convert");
 	static JPanel finalPanel;
 	static JPanel topPanel;
-	static JButton convertButton;
+	static JButton convertButton = new JButton("Convert Selected Files");
 	static Font buttonFont = new Font("SANS_SERIF", Font.BOLD, 25);
 	static JPanel listPanel;
 	static JFrame frame;
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
+	static JMenuItem menuItem = new JMenuItem("User Manual");;
 
 	public static JMenuBar createMenuBar() {
 		JMenuBar menuBar;
 		JMenu menu;
-		JMenuItem menuItem;
 		// Create the menu bar.
 		menuBar = new JMenuBar();
 
@@ -133,29 +121,6 @@ public class GUIView {
 				"Contain elements to help the user");
 		menuBar.add(menu);
 
-		menuItem = new JMenuItem("User Manual");
-		menuItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				// OPEN USER MANUAL AND UPDATE LOG
-				GUIModel.logString += "Opening User Manual...\n";
-				GUIModel.updateLog();
-
-				ReadAndDisplayUserManual.read();
-
-				if (ReadAndDisplayUserManual.worked()) {
-					GUIModel.logString += "User manual was opened.\n";
-					GUIModel.updateLog();
-				} else {
-					GUIModel.logString += "Eek! User manual failed to open.\n";
-					GUIModel.updateLog();
-				}
-
-			}
-
-		});
 		menu.add(menuItem);
 
 		return menuBar;
@@ -176,38 +141,8 @@ public class GUIView {
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		selectButton = new JButton("Select Files to Convert");
-		selectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// OPEN JFILESELECTOR
-
-				GUIModel.logString += "Selecting a file...\n";
-				GUIModel.updateLog();
-				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new java.io.File("."));
-				chooser.setDialogTitle("Select PDF to convert");
-				chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				chooser.setAcceptAllFileFilterUsed(false);
-				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-
-					fileToRead = chooser.getSelectedFile();
-					String filename = GUIUtils.removeFileExtension(chooser
-							.getSelectedFile().toString());
-					GUIModel.logString += "File " + "\"" + filename + "\""
-							+ " selected.\n";
-					GUIModel.updateLog();
-					IMGCreator.createPreview();
-					selectionFiles.add(GUIUtils.removeFileExtension(selectionImages.get(selectionImages.size() - 1)));
-					GUIController.updateTopBox();
-
-				} else {
-					//
-					GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
-					GUIModel.updateLog();
-				}
-			}
-		});
+		// selectButton = new JButton("Select Files to Convert");
+		// selectButton.addActionListener(addSelectButtonListener());
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -216,30 +151,8 @@ public class GUIView {
 
 		selectButton.setFont(buttonFont);
 
-		convertButton = new JButton("Convert Selected Files");
-		convertButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// DO CONVERT
-				GUIModel.logString += "Attempting to convert file...\n";
+		// convertButton = new JButton("Convert Selected Files");
 
-				TextToPDF test = new TextToPDF();
-
-				try {
-					test.createPDF(TextToPDF.PDF_FILENAME);
-				} catch (DocumentException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.out.println("Successfully converted "
-						+ TextToPDF.INPUT_FILENAME + " to "
-						+ TextToPDF.PDF_FILENAME + "!");
-
-				GUIModel.updateLog();
-
-			}
-		});
 		c.gridx = 0;
 		c.gridy = 2;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -294,8 +207,6 @@ public class GUIView {
 
 		editPanel.add(LabelsAndComboBoxes);
 	}
-
-
 
 	/**
 	 * Method that creates the top panel.
@@ -426,11 +337,11 @@ public class GUIView {
 		// Create and set up the window.
 		frame = new JFrame("Pretty ASCII PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// frame.setSize(700, 500);
 		frame.setResizable(false);
 
 		// Set up the content pane.
 		finalPanel = new JPanel(new BorderLayout());
+
 		// Setup sub panels
 		JPanel editingPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
@@ -466,6 +377,24 @@ public class GUIView {
 				createAndShowGUI();
 			}
 		});
+
+	}
+
+	void addSelectButtonListener(ActionListener listenForSelectButton) {
+
+		selectButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void addConvertButtonListener(ActionListener listenForSelectButton) {
+
+		convertButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void addMenuItemListener(ActionListener listenForSelectButton) {
+
+		menuItem.addActionListener(listenForSelectButton);
 
 	}
 
