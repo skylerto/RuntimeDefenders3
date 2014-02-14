@@ -138,7 +138,9 @@ public class GUIModel {
 	 * 
 	 * @param toAdd
 	 *            - element to be added to selectionFiles array.
+	 * @Deprecated - use addToSelectionImage(String toAdd) removedselectionFile array.
 	 */
+	@Deprecated
 	public static void addToSelectionFile(String toAdd) {
 		selectionFiles.add(toAdd);
 	}
@@ -152,7 +154,7 @@ public class GUIModel {
 	public static void addToSelectionImage(String toAdd) {
 		selectionImages.add(toAdd);
 	}
-
+	
 	/**
 	 * 
 	 * @param f
@@ -170,8 +172,5 @@ public class GUIModel {
 		logString = "";
 	}
 
-	public static void addToSelectionImages(String image) {
-		selectionImages.add(image);
-	}
 
 }
