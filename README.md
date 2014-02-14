@@ -18,6 +18,7 @@ Let others know what files you're working on so no one else will work on it at t
 -
 
 Skyler
+  Anything in the GUI subfolder.
 
 Saad
 
