@@ -15,16 +15,7 @@ package MVC;
  * CHANGE LOG:
  * 
  * v0.1: 
- * v0.2: 
- * 		-	added preview image update method. 
- * v0.3: 
- * 		-	Created a method to update the image.
- * 		-	Changed some variables to be static.
- * 
- * v0.4:
- * 		-	Changed display size from x to y.
- * 		-	
- * 		-	
+ * 			-	Broke up the GUI view, placed some in the model.
  */
 
 import java.awt.BorderLayout;
@@ -78,7 +69,7 @@ public class GUIView {
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
 
-	private static File fileToRead;
+	static File fileToRead;
 	private final static String PREVIEW_LABEL = "Preview Image: ";
 	private final static String SELECTION_LABEL = "Select preview: ";
 	private final static String EDITING_LABEL = "Edit PDF: ";
@@ -94,7 +85,7 @@ public class GUIView {
 	static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
 	static JTextArea log;
 	static JTextPane topBox;
-	static JButton selectButton;
+	static JButton selectButton = new JButton("Select Files to Convert");
 	static JPanel finalPanel;
 	static JPanel topPanel;
 	static JButton convertButton;
@@ -173,40 +164,8 @@ public class GUIView {
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		selectButton = new JButton("Select Files to Convert");
-		selectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// OPEN JFILESELECTOR
-
-				GUIModel.logString += "Selecting a file...\n";
-				GUIModel.updateLog();
-				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new java.io.File("."));
-				chooser.setDialogTitle("Select PDF to convert");
-				chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				chooser.setAcceptAllFileFilterUsed(false);
-				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-
-					fileToRead = chooser.getSelectedFile();
-					String filename = GUIUtils.removeFileExtension(chooser
-							.getSelectedFile().toString());
-					GUIModel.logString += "File " + "\"" + filename + "\""
-							+ " selected.\n";
-					GUIModel.updateLog();
-					IMGCreator.createPreview();
-					selectionFiles.add(GUIUtils
-							.removeFileExtension(selectionImages
-									.get(selectionImages.size() - 1)));
-					GUIController.updateTopBox();
-
-				} else {
-					//
-					GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
-					GUIModel.updateLog();
-				}
-			}
-		});
+		// selectButton = new JButton("Select Files to Convert");
+		//selectButton.addActionListener(addSelectButtonListener());
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -466,4 +425,9 @@ public class GUIView {
 
 	}
 
+	void addSelectButtonListener(ActionListener listenForSelectButton) {
+
+		selectButton.addActionListener(listenForSelectButton);
+
+	}
 }

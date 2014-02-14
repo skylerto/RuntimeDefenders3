@@ -3,9 +3,12 @@ package MVC;
 /**
  * Utilities used for GUIModel.
  * 
- * v0.1	-	Created and added removeFileExtension method.
- * 
  * @author cse23170
+ * 
+ * CHANGE LOG:
+ * 
+ * v0.1:
+ * 			-	Created and added removeFileExtension method.
  *
  */
 

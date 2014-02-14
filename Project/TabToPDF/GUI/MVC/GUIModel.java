@@ -17,7 +17,12 @@ import javax.swing.text.StyleConstants;
  * @author cse23170
  * 
  *         TO IMPLEMENT: - Update logbox ONLY WHEN NEEDED -
+ *         
+ *	CHANGE LOG:
  * 
+ * v0.1: 
+ * 			- Broke up some components from the view into the model.
+ * 			-
  */
 public class GUIModel {
 
@@ -36,8 +41,8 @@ public class GUIModel {
 	 *        for preview image). Should offset other array by s1 to account for
 	 *        this.
 	 */
-	public GUIModel(BufferedImage image) {
-		this.image = image;
+	public GUIModel() { //BufferedImage image
+		//this.image = image;
 
 	}
 
