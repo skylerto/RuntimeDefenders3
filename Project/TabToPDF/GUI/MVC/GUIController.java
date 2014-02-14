@@ -31,26 +31,9 @@ public class GUIController {
 
 	public static void updateTopBox() {
 		
-		GUIController controller = new GUIController();
+		GUIModel.updateTopBoxLogic();
 		
-		int neededWidth = GUIView.imgScrollPane.getVerticalScrollBar()
-				.getPreferredSize().width;
-		int neededHeight = GUIView.imgScrollPane.getHorizontalScrollBar()
-				.getPreferredSize().height;
-		
-		ImageIcon preview = new ImageIcon(model.getImage());
-		model.getImage().getScaledInstance(neededWidth, neededWidth, 0);
-		GUIView.topBox.insertIcon(preview);
-		SimpleAttributeSet attribs = new SimpleAttributeSet();
-		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-		populateJList(GUIView.selectionList);
 
-		GUIView.selectionList.repaint();
-		GUIView.topBox.repaint();
-		GUIView.listPanel.repaint();
-		GUIView.topPanel.revalidate();
-		GUIView.topPanel.repaint();
-		GUIView.frame.repaint();
 		
 	}
 	

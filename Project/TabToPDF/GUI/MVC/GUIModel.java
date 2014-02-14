@@ -11,16 +11,13 @@ import javax.swing.JList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-
 /**
  * 
  * 
  * @author cse23170
- *
- *	TO IMPLEMENT:
- *					- Update logbox ONLY WHEN NEEDED
- *					- 
- *
+ * 
+ *         TO IMPLEMENT: - Update logbox ONLY WHEN NEEDED -
+ * 
  */
 public class GUIModel {
 
@@ -41,13 +38,13 @@ public class GUIModel {
 	 */
 	public GUIModel(BufferedImage image) {
 		this.image = image;
-		
+
 	}
 
-	public void updateTopBoxLogic() {
+	public static void updateTopBoxLogic() {
 		GUIView.topBox.setText("");
-		File imageFile = new File("nopreview.gif");
-		/*
+		File imageFile = new File("res/nopreview.gif");
+/*
 		if (imageFile == null) {
 			imageFile = new File("res/nopreview.gif");
 		} else if (GUIView.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
@@ -63,7 +60,24 @@ public class GUIModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		int neededWidth = GUIView.imgScrollPane.getVerticalScrollBar()
+				.getPreferredSize().width;
+		int neededHeight = GUIView.imgScrollPane.getHorizontalScrollBar()
+				.getPreferredSize().height;
+
+		ImageIcon preview = new ImageIcon(GUIModel.getImage());
+		GUIModel.getImage().getScaledInstance(neededWidth, neededWidth, 0);
+		GUIView.topBox.insertIcon(preview);
+		SimpleAttributeSet attribs = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
+		GUIController.populateJList(GUIView.selectionList);
+
+		GUIView.selectionList.repaint();
+		GUIView.topBox.repaint();
+		GUIView.listPanel.repaint();
+		GUIView.topPanel.revalidate();
+		GUIView.topPanel.repaint();
+		GUIView.frame.repaint();
 
 		logString += "Document preview has been updated.\n";
 		updateLog();
@@ -72,12 +86,12 @@ public class GUIModel {
 	/**
 	 * 
 	 */
-	public void setImage(BufferedImage image) {
-		this.image = image;
+	public static void setImage(BufferedImage image2) {
+		image = image2;
 	}
-	
-	public BufferedImage getImage(){
-		return this.image;
+
+	public static BufferedImage getImage() {
+		return GUIModel.image;
 	}
 
 	/**
