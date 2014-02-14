@@ -127,9 +127,9 @@ class menuItemListener implements ActionListener {
 		GUIModel.logString += "Opening User Manual...\n";
 		GUIModel.updateLog();
 
-		ReadAndDisplayUserManual.read();
+		boolean userManWorked = ReadAndDisplayUserManual.read();
 
-		if (ReadAndDisplayUserManual.worked()) {
+		if (userManWorked) {
 			GUIModel.logString += "User manual was opened.\n";
 			GUIModel.updateLog();
 		} else {
@@ -138,7 +138,6 @@ class menuItemListener implements ActionListener {
 		}
 
 	}
-
 }
 
 class selectionListListener implements ActionListener {
@@ -149,9 +148,9 @@ class selectionListListener implements ActionListener {
 		GUIModel.logString += "Opening User Manual...\n";
 		GUIModel.updateLog();
 
-		ReadAndDisplayUserManual.read();
+		boolean userManWorked = ReadAndDisplayUserManual.read();
 
-		if (ReadAndDisplayUserManual.worked()) {
+		if (userManWorked) {
 			GUIModel.logString += "User manual was opened.\n";
 			GUIModel.updateLog();
 		} else {

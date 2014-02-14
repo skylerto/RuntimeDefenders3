@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
  * Some possible ideas: - Change from a dialog to actually opening another Java
  * Swing applet. - Hard coding the user manual.
  * 
+ * Implemented as static due to having to fetch the filename from another class!
+ * 
  * @author SKYLER LAYNE
  * @version 1.0
  * 
@@ -31,42 +33,25 @@ public class ReadAndDisplayUserManual {
 	// Pull double digits together and center.
 
 	protected String message = "";
-	protected static boolean worked;
 
-	public static void read() {
-
-		worked = false;
+	public static boolean read() {
+		boolean worked = false;
 
 		/*
 		 * Read in the user manual text and display in a dialog option pane.
 		 */
 
-		String message = "";
-		File userman = new File("res/userman");
-		try {
-			Scanner sc = new Scanner(userman);
-			while (sc.hasNext()) {
-				message += sc.nextLine() + "\n";
-			}
-
-			worked = true;
-
-			sc.close();
-
+		String message = GUIUtils.openAndReadFile("res/userman");
+		if (message != null) {
 			JOptionPane.showMessageDialog(new JFrame(), message);
-
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 
-	}
-
-	protected static boolean worked() {
 		return worked;
 	}
 
 	/**
+	 * Created for testing.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
