@@ -394,13 +394,13 @@ public class SwingGUI {
 	 * Changes what's inside the "Top Box"
 	 */
 	public static void updateTopBox() {
-		topBox.setText("");
+		//topBox.setText("");
 
 		try {
 
 			if (imageFile == null) {
 				imageFile = new File("res/nopreview.gif");
-			} else if (selectionFiles.get(0) == NO_PREVIEW) {
+			}			 else if (selectionFiles.get(0) == NO_PREVIEW) {
 				selectionImages.remove(0);
 				selectionFiles.remove(0);
 			}
@@ -578,5 +578,6 @@ public class SwingGUI {
 		});
 
 	}
+	
 
 }

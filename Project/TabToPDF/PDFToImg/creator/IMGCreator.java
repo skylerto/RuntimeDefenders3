@@ -7,6 +7,7 @@
 package creator;
 
 import swing.SwingGUI;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -15,6 +16,8 @@ import javax.imageio.ImageIO;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.fonts.FontMappings;
+
+import MVC.GUIModel;
 
 
 /**
@@ -58,8 +61,8 @@ public class IMGCreator
 			try
 			{
 				ImageIO.write(img, "png", outputfile);					// Saving the image to png
-				SwingGUI.setPreviewImage(outputfile);
-				SwingGUI.updateTopBox();	
+				GUIModel.setPreviewImage(outputfile);
+				GUIModel.updateTopBoxLogic();	
 			} catch (IOException exception) {}
 			
 			/** close the PDF file */

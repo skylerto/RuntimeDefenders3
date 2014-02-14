@@ -86,7 +86,7 @@ class selectButtonListener implements ActionListener {
 			IMGCreator.createPreview();
 			GUIView.selectionFiles.add(GUIUtils
 					.removeFileExtension(GUIView.selectionImages
-							.get(GUIView.selectionImages.size() - 1)));
+							.get(GUIView.selectionImages.size()-1)));
 			GUIController.updateTopBox();
 
 		} else {
