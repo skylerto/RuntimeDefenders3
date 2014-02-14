@@ -140,3 +140,25 @@ class menuItemListener implements ActionListener {
 	}
 
 }
+
+class selectionListListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		// OPEN USER MANUAL AND UPDATE LOG
+		GUIModel.logString += "Opening User Manual...\n";
+		GUIModel.updateLog();
+
+		ReadAndDisplayUserManual.read();
+
+		if (ReadAndDisplayUserManual.worked()) {
+			GUIModel.logString += "User manual was opened.\n";
+			GUIModel.updateLog();
+		} else {
+			GUIModel.logString += "Eek! User manual failed to open.\n";
+			GUIModel.updateLog();
+		}
+
+	}
+
+}
