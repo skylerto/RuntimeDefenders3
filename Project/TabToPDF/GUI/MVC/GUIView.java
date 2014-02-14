@@ -88,16 +88,16 @@ public class GUIView {
 	static JButton selectButton = new JButton("Select Files to Convert");
 	static JPanel finalPanel;
 	static JPanel topPanel;
-	static JButton convertButton= new JButton("Convert Selected Files");
+	static JButton convertButton = new JButton("Convert Selected Files");
 	static Font buttonFont = new Font("SANS_SERIF", Font.BOLD, 25);
 	static JPanel listPanel;
 	static JFrame frame;
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
+	static JMenuItem menuItem = new JMenuItem("User Manual");;
 
 	public static JMenuBar createMenuBar() {
 		JMenuBar menuBar;
 		JMenu menu;
-		JMenuItem menuItem;
 		// Create the menu bar.
 		menuBar = new JMenuBar();
 
@@ -121,29 +121,6 @@ public class GUIView {
 				"Contain elements to help the user");
 		menuBar.add(menu);
 
-		menuItem = new JMenuItem("User Manual");
-		menuItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				// OPEN USER MANUAL AND UPDATE LOG
-				GUIModel.logString += "Opening User Manual...\n";
-				GUIModel.updateLog();
-
-				ReadAndDisplayUserManual.read();
-
-				if (ReadAndDisplayUserManual.worked()) {
-					GUIModel.logString += "User manual was opened.\n";
-					GUIModel.updateLog();
-				} else {
-					GUIModel.logString += "Eek! User manual failed to open.\n";
-					GUIModel.updateLog();
-				}
-
-			}
-
-		});
 		menu.add(menuItem);
 
 		return menuBar;
@@ -165,7 +142,7 @@ public class GUIView {
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 		// selectButton = new JButton("Select Files to Convert");
-		//selectButton.addActionListener(addSelectButtonListener());
+		// selectButton.addActionListener(addSelectButtonListener());
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -174,8 +151,8 @@ public class GUIView {
 
 		selectButton.setFont(buttonFont);
 
-		//convertButton = new JButton("Convert Selected Files");
-		
+		// convertButton = new JButton("Convert Selected Files");
+
 		c.gridx = 0;
 		c.gridy = 2;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -408,10 +385,16 @@ public class GUIView {
 		selectButton.addActionListener(listenForSelectButton);
 
 	}
-	
+
 	void addConvertButtonListener(ActionListener listenForSelectButton) {
 
 		convertButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void addMenuItemListener(ActionListener listenForSelectButton) {
+
+		menuItem.addActionListener(listenForSelectButton);
 
 	}
 }

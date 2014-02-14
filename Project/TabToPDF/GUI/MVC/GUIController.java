@@ -42,6 +42,7 @@ public class GUIController {
 
 		this.view.addSelectButtonListener(new selectButtonListener());
 		this.view.addConvertButtonListener(new convertButtonListener());
+		this.view.addMenuItemListener(new menuItemListener());
 
 		// Insert Model compenents in constructor and make changes when needed.
 
@@ -116,4 +117,26 @@ class convertButtonListener implements ActionListener {
 		GUIModel.updateLog();
 
 	}
+}
+
+class menuItemListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		// OPEN USER MANUAL AND UPDATE LOG
+		GUIModel.logString += "Opening User Manual...\n";
+		GUIModel.updateLog();
+
+		ReadAndDisplayUserManual.read();
+
+		if (ReadAndDisplayUserManual.worked()) {
+			GUIModel.logString += "User manual was opened.\n";
+			GUIModel.updateLog();
+		} else {
+			GUIModel.logString += "Eek! User manual failed to open.\n";
+			GUIModel.updateLog();
+		}
+
+	}
+
 }
