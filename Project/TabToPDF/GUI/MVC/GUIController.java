@@ -13,6 +13,10 @@ import javax.swing.JList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import ttp.TextToPDF;
+
+import com.itextpdf.text.DocumentException;
+
 import creator.IMGCreator;
 
 /**
@@ -37,6 +41,7 @@ public class GUIController {
 		this.view = passedView;
 
 		this.view.addSelectButtonListener(new selectButtonListener());
+		this.view.addConvertButtonListener(new convertButtonListener());
 
 		// Insert Model compenents in constructor and make changes when needed.
 
@@ -87,5 +92,28 @@ class selectButtonListener implements ActionListener {
 			GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
 			GUIModel.updateLog();
 		}
+	}
+}
+
+class convertButtonListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// DO CONVERT
+		GUIModel.logString += "Attempting to convert file...\n";
+
+		TextToPDF test = new TextToPDF();
+
+		try {
+			test.createPDF(TextToPDF.PDF_FILENAME);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Successfully converted " + TextToPDF.INPUT_FILENAME
+				+ " to " + TextToPDF.PDF_FILENAME + "!");
+
+		GUIModel.updateLog();
+
 	}
 }

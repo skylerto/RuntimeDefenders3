@@ -88,7 +88,7 @@ public class GUIView {
 	static JButton selectButton = new JButton("Select Files to Convert");
 	static JPanel finalPanel;
 	static JPanel topPanel;
-	static JButton convertButton;
+	static JButton convertButton= new JButton("Convert Selected Files");
 	static Font buttonFont = new Font("SANS_SERIF", Font.BOLD, 25);
 	static JPanel listPanel;
 	static JFrame frame;
@@ -174,30 +174,8 @@ public class GUIView {
 
 		selectButton.setFont(buttonFont);
 
-		convertButton = new JButton("Convert Selected Files");
-		convertButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// DO CONVERT
-				GUIModel.logString += "Attempting to convert file...\n";
-
-				TextToPDF test = new TextToPDF();
-
-				try {
-					test.createPDF(TextToPDF.PDF_FILENAME);
-				} catch (DocumentException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.out.println("Successfully converted "
-						+ TextToPDF.INPUT_FILENAME + " to "
-						+ TextToPDF.PDF_FILENAME + "!");
-
-				GUIModel.updateLog();
-
-			}
-		});
+		//convertButton = new JButton("Convert Selected Files");
+		
 		c.gridx = 0;
 		c.gridy = 2;
 		c.insets = new Insets(5, 0, 0, 0);
@@ -428,6 +406,12 @@ public class GUIView {
 	void addSelectButtonListener(ActionListener listenForSelectButton) {
 
 		selectButton.addActionListener(listenForSelectButton);
+
+	}
+	
+	void addConvertButtonListener(ActionListener listenForSelectButton) {
+
+		convertButton.addActionListener(listenForSelectButton);
 
 	}
 }
