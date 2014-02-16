@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  * Class to display a dialog box when user should be prompted for incorrect or
@@ -42,7 +43,7 @@ public class IncorrectFormattingAlert {
 		case 1:
 			File fileToOpen = GUIView.fileToRead;
 			if (fileToOpen != null)
-				openTextEditor(fileToOpen);
+				openTextEditor(fileToOpen, "Incorrect Formatting Alert!");
 			else
 				throw new NullPointerException("Missing file!");
 			break;
@@ -58,8 +59,21 @@ public class IncorrectFormattingAlert {
 	 * @return - returns if the editor was able to open or not.
 	 * 
 	 */
-	public boolean openTextEditor(File file) {
+	public static boolean openTextEditor(File file, String logName) {
 
+		boolean worked = true;
+		
+		// Opens a new text area with the required file.
+		JFrame editorFrame = new JFrame(logName);
+		JTextArea editArea = new JTextArea();
+		editArea.setEditable(false);
+		editArea.setText(GUIUtils.openAndReadFile(file.toString()));
+		editorFrame.add(editArea);
+		editorFrame.pack();
+
+		// Code to open, but user has to select what he wants to open with.
+
+		/*
 		boolean worked = false;
 		Desktop dt = Desktop.getDesktop();
 		try {
@@ -69,6 +83,7 @@ public class IncorrectFormattingAlert {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 
 		return worked;
 	}

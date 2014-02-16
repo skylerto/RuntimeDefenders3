@@ -1,7 +1,12 @@
 package MVC;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Scanner;
 
 /**
@@ -42,7 +47,7 @@ public class GUIUtils {
 			filename = filenameWithExtention;
 		} else {
 
-			// Create substring from index of last file seperator to the end of
+			// Create substring from index of last file separator to the end of
 			// the String.
 			filename = filenameWithExtention.substring(lastSeparator + 1);
 		}
@@ -50,6 +55,40 @@ public class GUIUtils {
 		return filename;
 	}
 
+	/**
+	 * 
+	 * Writes to a file Should replace updateLog method.
+	 * 
+	 * @param filename
+	 * @param toWrite
+	 */
+	static void writeToFile(File filename, String toWrite) {
+
+		Writer writer = null;
+
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(filename), "utf-8"));
+			writer.write(toWrite);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Reads from a file, returning a string versions of the contents of the
+	 * file.
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	static String openAndReadFile(String fileName) {
 
 		String message = "";
