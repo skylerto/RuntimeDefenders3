@@ -57,7 +57,7 @@ public class GUIUtils {
 
 	/**
 	 * 
-	 * Writes to a file Should replace updateLog method.
+	 * Writes to a file. Should replace updateLog method.
 	 * 
 	 * @param filename
 	 * @param toWrite
@@ -73,7 +73,7 @@ public class GUIUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			writer.close();
 		} catch (Exception e) {
