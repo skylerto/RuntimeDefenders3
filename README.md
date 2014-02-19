@@ -4,7 +4,7 @@ NEWS
 - (Feb. 18 Tue) So this is the schedule for the rest of this week and next week:  
    > Feb. 20 Thur: We will have a meeting at 8PM to talk about any recent work people have done. We will start combining things and debugging.  
    > Feb. 22 Sat: Meeting at 6PM. Everyone should have their code finished and bug free. We will further debug the combined code until it's working 100%.  
-   > Feb. 23 Mon: In the lab, run more tests on the code and add comments and stuff to make it readable for the proff
+   > Feb. 23 Mon: In the lab, run more tests on the code and add comments and stuff to make it readable for the proff  
    > Feb. 24 Tue: Meeting at 9PM if we still have issues to discuss.
 
 - (Feb. 12 Wed) Online meeting this Sat at 9pm. Let me know of Whatsapp if that time is ok
