@@ -23,6 +23,8 @@ public class TabStringTest {
 	TabString tab9;
 	TabString tab10;
 	TabString tab11;
+	TabString tab12;
+	TabString tab13;
 
 	@Before
 	public void setUp() throws Exception {
@@ -71,8 +73,17 @@ public class TabStringTest {
 		tab11.addChar('c');
 		tab11.addChar(' ');
 		tab11.delTrailSpaces();
-		
-		
+		tab12 = new TabString();
+		tab12.addChar('|');
+		tab12.addChar('a');
+		tab12.addChar(' ');
+		tab12.addChar(' ');
+		tab12.addChar('h');
+		tab12.addChar('|');
+		tab12.fixBoth();
+		tab13 = new TabString();
+		tab13.addChar('|');
+		tab13.addChar('|');
 
 	}
 
@@ -236,6 +247,29 @@ public class TabStringTest {
 		
 		
 	}
+	
+	@Test
+	public void TestisBlank_blank() {
+		
+		assertTrue(tab13.isBlank());
+		
+	}
+	
+	
+	@Test
+	public void TestisBlank_space() {
+		
+		assertTrue(tab12.isBlank());
+		
+	}
+	
+	@Test
+	public void TestisBlank_false() {
+		
+		assertFalse(tab8.isBlank());
+		
+	}
+	
 }
 	
 	
