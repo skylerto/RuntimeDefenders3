@@ -1,393 +1,622 @@
-/*
- * (READ UPDATE): Changed the pathing for input and output files.
- * 
- * - Ron
- * 
- */
-
 package ttp;
+
 
 import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font.*;
 import com.itextpdf.text.pdf.*;
-
-
-
-/**
- * Reads in an input file of guitar tabs and converts the contents into a PDF document.
- * Guitar tabs are stored in a 2-dimensional list. The list is traversed and iteratively
- * added to the output file. 
- * 
- * CHANGE LOG:
- * 
- * 
- */
-
+import com.itextpdf.text.pdf.draw.*;
 public class TextToPDF {
+        
+		/* What is new :
+		 * the method of detecting was for title,subtitle,linespacing  but not 100 (see line 162) % .
+		 * Apperantly its adding an empty List<string> to the dynamic_array. I tried to make method
+		 * to remove emtpy array but did not work
+		 * I fixed the method of detecting subtitle ( not detected b string regex ). In fact it was being mached along with title method
+		 *  removal of  dependency of linecount ( to detect title, substring, linespace) making it only dependable on regex  . Plus
+		 * I made sure that it only detects TITLE=string,  subTITLE=string only no numbers, subTITLE=string, only no numbers , spacing=float number no string
+		 * I added extra if statement for currY to move to add new page when needed
+		 */
+		/* what needed to be fixed or add :
+		 * removal of empty list from dynamic array
+		 * when concatinating of list from dynamic array , if the size of dynamic array is even , it does 
+		 * all of them. If the size is odd it does not add the last one. added manually , check line 186
+		 * add feature to make variable line space 
+		 */
 	
-	/* CONSTANTS */
-	
-	public static final String INPUT_FILENAME = "inputfiles/try.txt";	// Name of input file to search for
-	public static final String PDF_FILENAME = "outputfiles/musicPDF.pdf";	// Filename of the output PDF file
-	
-	static final int MAX_DOC_INFO = 3;				// There are 3 doc infos: Title, Subtitle, Spacing
-	static final String INPUT_TITLE_PATTERN = "^(TITLE)(=)(.+)+";
-	static final String INPUT_SUBTITLE_PATTERN = "^(SUBTITLE)(=)(.+)+";
-	static final String INPUT_SPACING_PATTERN = "^(SPACING)(=)(\\d*(\\.)?\\d+)(?![0-9\\.])";
-	static final float PDF_PAGE_WIDTH = 612f;
-	static final float PDF_LEFTMARGIN_X = 36f;
-	static final float PDF_LEFTMARGIN_Y = 680f;
-	static final float PDF_RIGHT_MARGIN = 556f;
-	static final float PDF_LINE_SPACE = 7f;
-	static final float PDF_PARA_SPACE = 15f;
-	static final float PDF_TITLE_SIZE = 26f;
-	static final float PDF_SUBTITLE_SIZE = 12f;
-	static final float PDF_DASHLENGTH = 5.2f;
-	static final String CONTAINS_TITLE = "TITLE";
-	static final String CONTAINS_SUBTITLE = "SUBTITLE";
-	static final String CONTAINS_SPACING = "SPACING";
+        /* CONSTANTS */
+        
+        final float LEFT_MARGIN = 36.0f;
+        final float RIGHT_MARGIN = 556.0f;
+        final float LINE_SPACE = 7.0f;
+        final float PARA_SPACE = 15.0f;
+        final float TITLE_SIZE = 26.0f;
+        final float SUBTITLE_SIZE = 12.0f;
+        final String CONTAINS_TITLE = "TITLE";
+        final String CONTAINS_SUBTITLE = "SUBTITLE";
+        final String CONTAINS_SPACING = "SPACING";
+        
+        private String title;
+        private String subtitle;
+        private int spacing;
+        
+        private List<List<String>> dynamic_array = new ArrayList<List<String>>();
+        private List<String> inner;
+        private List<List<String>> outerconcat;
+        private static final List<Character> special_char  = new ArrayList<Character>();
+        PdfWriter document;
+        private int same_line_state = 0;
+        private int enable_add = 0;
+        private float currX, currY ;
+        
+        
+        
+        
+        
+        public void createPDF(String pdfname)throws DocumentException , IOException
+        {
+                PrintStream output = new PrintStream(System.out);
+               
+                Document group1 = new Document(PageSize.LETTER);
+                File RESULT = new File(pdfname);
+                PdfWriter document = PdfWriter.getInstance(group1, new FileOutputStream(RESULT));
+        
+                group1.open();
+                document.open();
+                PdfContentByte cb = document.getDirectContent();
+                BaseFont bf1 = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.EMBEDDED);
+                 BaseFont bf_title = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                Font title_font = new Font(bf_title,26);
+                 BaseFont bf_subtitle = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                Font subtitle_font = new Font(bf_subtitle,14);
+                FileReader file = new FileReader ("try2.txt");
+                BufferedReader inputStream = null;
+        
+        try
+        {
+        
+                inputStream = new BufferedReader(file);  
+                String line;
+                inner = new ArrayList<String>();
+             
+                Pattern p_title = Pattern.compile("^(TITLE)(=)(.+)+");
+                Pattern p_subtitle = Pattern.compile("^(SUBTITLE)(=)(.+)+");
+                Pattern p_spacing = Pattern.compile("^(SPACING)(=)(\\d*(\\.)?\\d+)(?![0-9\\.])");
+                Pattern p_music = Pattern.compile("^(\\|)(.+)+");
+                while ( (line = inputStream.readLine()) != null)
+                {
+              
+                        Matcher m_title = p_title.matcher(line);
+                        Matcher m_subtitle = p_subtitle.matcher(line);
+                        Matcher m_spacing = p_spacing.matcher(line);
+                        Matcher m_music = p_music.matcher(line);
 
-	static final float UNKNOWN1 = 16f;
-	
-	/* GLOBAL VARIABLES */
-	
-	private String title;
-	private String subtitle;
-	private int spacing;	
-	private Document group1 = new Document(PageSize.LETTER);	// PDF document
-	static private List<List<String>> dynamic_array = new ArrayList<List<String>>();	// Stores information from the input file
-	private List<String> inner;		// Temp variable used when storing list elements
-	static private List<List<String>> outerconcat;
-	private PdfWriter  document;	// Used for writing to the PDF document
-	private int count;
-	private float currX, currY ;
-	
-	/**
-	 * Runs the main method creatPDF() that reads the guitar tabs from the 
-	 * input file and converts it into a PDF file.
-	 * 
-	 * @param args
-	 */
-	
-	public static void main (String[] args)
-	{		
-		TextToPDF saad = new TextToPDF();
-		
-		try {
-			saad.createPDF(PDF_FILENAME);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		 catch (IOException e)
-		 {
-			 e.printStackTrace();
-		 }			
-		System.out.println("Successfully converted " + INPUT_FILENAME + " to " + PDF_FILENAME + "!");
-	
-		/*for (int n = 0; n < dynamic_array.size(); n++)
-			for (int m = 0; m < dynamic_array.get(n).size(); m++)
-				System.out.println(dynamic_array.get(n).get(m).toString());
-		System.out.println("=================================");
-		for (int n = 0; n < outerconcat.size(); n++)
-			for (int m = 0; m < outerconcat.get(n).size(); m++)
-				System.out.println(outerconcat.get(n).get(m).toString());*/
-	}	
-	
-	/**
-	 * Creates a PDF file to write to. Saves the data of the input file and then
-	 * writes it to the output file.
-	 * 
-	 * @param pdfname
-	 * @throws DocumentException
-	 * @throws IOException
-	 */
-	
-	public void createPDF(String pdfname) throws DocumentException, IOException {
-		
-		File RESULT = new File(pdfname);	// The output PDF file
-		document = PdfWriter.getInstance(group1, new FileOutputStream(RESULT));	// PDF writer
-		       
-		/* Open the PDF document for writing */
-		group1.open();
-		document.open();
-		
-		/* Reads and saves the Title, Subtitle and Spacing from the input file */
-		getDocInfo();
-		
-		/* Sets the Title and Subtitle for the PDF file */
-		group1.add(addDocTitle());
-		group1.add(addDocSubtitle());
-		
-		/* Saves the data from the input file to: List<List<String>> dynamic_array */
-		readInput();
-		
-		/* Sets List<List<String>> outerconcat that will be used when writing to the file */
-        setOuter();
+                     
+                            
+                         if (m_title.find() && !line.isEmpty()) {
+                         	
 
-        /* Writes the stored data to the PDF file */
-        writePDF();
-       
-        /* Writing is done, close the PDF file */
+                        	Paragraph title = new Paragraph(m_title.group(3),title_font);
+                            title.setAlignment(Element.TITLE);
+                            group1.add(title); 
+                        }
+                        
+                        else if (m_subtitle.find() && !line.isEmpty()) {
+
+                        	Paragraph subtitle = new Paragraph(m_subtitle.group(3), subtitle_font);
+                            subtitle.setAlignment(Element.ALIGN_CENTER);
+                            group1.add(subtitle);
+                            
+                        }
+                        else if (m_spacing.find() && !line.isEmpty()) {
+                        	//output.printf("%s\n", m_spacing.group(3));
+                        }    
+                        else if (m_music.find() && !line.isEmpty()) {
+                        
+                        	if (!line.isEmpty()) {
+                    		
+                        		line  = m_music.group(0);
+                    			//line = line.replaceAll("\\p{Z}", "");
+                    			inner.add(line);
+                    			enable_add = 1;	
+                    		}
+                        				        		
+                        }
+                        else if (line.isEmpty() && enable_add == 1 ) {
+                        	dynamic_array.add(new ArrayList<String>(inner));
+                			inner.clear();
+                			enable_add =0;
+                        }
+                        else;
+                        
+                        
+                        
+                }  // end of while loop  
+                 
+                dynamic_array.add(new ArrayList<String>(inner));
+                inner.clear();
+               for (List<String> s :  dynamic_array)
+                {
+                	for (String e : s)
+                		output.printf("%s\n", e);
+                	output.printf("%s\n", "------");
+                }
+                //output.printf("++%s\n",dynamic_array.get(0).get(0));
+
+                
+        } finally{
+                        
+                        if (inputStream != null)
+                        inputStream.close();
+        		  }
+        
+   
+        dynamic_array = StringAnchor(dynamic_array);
+        currX = 36.0f;
+        currY = 680.0f;
+   
+       for ( int i = 0; i < dynamic_array.size() ; i++) {
+        	
+        	if (getMusicNotelength(dynamic_array.get(i),5.0f,8) < ( document.getPageSize().getWidth() - currX )) {
+        		
+        		output.printf("i is   %d\n",i);
+        		//output.printf("currx if before adding  %f\n",currX);
+        		//output.printf("curry if before adding  %f\n",currY);
+
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,5.0f,8,same_line_state,cb);
+        		same_line_state=1;
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), 5.0f,8);
+        		//output.printf("currx if after adding  %f\n",currX);
+        		//output.printf("curry if after adding  %f\n",currY);
+        		output.printf("size  %f\n",getMusicNotelength(dynamic_array.get(i),5.0f,8));
+        		//output.printf("%s\n",dynamic_array.get(i).get(1));
+
+
+        		
+        		
+        		
+        		
+        	}
+        	else  {
+        		//output.printf("is   %d\n",i);
+        		
+        		//output.printf("currx else adding  %f\n",currX);
+        		//output.printf("curry else adding  %f\n",currY);
+        		currX = 36.0f;
+        		currY = currY - 80;
+        		same_line_state=0;
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,5.0f, 8,same_line_state,cb);
+        		
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), 5.0f,8);
+        		//output.printf("currx else after adding curxx  %f\n",currX);
+        		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),5.0f,8));
+        		//output.printf("%s\n",dynamic_array.get(i).get(1));
+
+        		
+        		
+        	}
+        	if ( currY <= 120.0f)
+        	{
+        		//DrawMusicNote(dynamic_array.get(i),currX,currY,8.0f,cb);
+        		//currX = currX + getMusicNotelength(dynamic_array.get(i), 8.0f);
+        		group1.newPage();
+        		same_line_state=0;
+                currX = 36.0f;
+                currY = 680.0f;
+        	}
+        	
+        }
+        	
+      
+	     /*for (List<String> s :  dynamic_array)
+       {
+       	for (String e : s)
+       		System.out.printf("new %s\n", e);
+       	System.out.printf("%s\n", "------");
+       }*/
+         //System.out.printf("%f\n",document.getVerticalPosition(true));
+
+        
+         //System.out.printf("%f\n",group1.leftMargin());
+
+     System.out.printf("the page width is %f and the page height is %f", group1.getPageSize().getWidth(),group1.getPageSize().getHeight());
+ 
+     //cb.moveTo(100, 100);
+     //cb.lineTo(100, 100);
+     
+     //cb.curveTo(102.5f, 101.3f, 103.8f, 101.3f, 106, 100); // for h
+     //cb.curveTo(102.5f, 102.5f, 112.2f, 102.5f, 116, 100);
+     //cb.stroke();
+     //DrawThickBar(100, 100, 100,100-7.5f, cb);
+      //this.InsertText("0",45 , 100, 12, cb);
+      //this.DrawLine(45+(8.0f/1.8f), 100,45+(8.0f/1.8f) ,109.23f ,0.5f, cb); // 49 -45 = 5 ,, 8/5 = 1.6 font / point or 1.8 font/point, for line 8= 2.0,2.2
+     // this.InsertText("9",45 , 90, 12, cb);
+     //for height its 1.3 font/point
+     // this.DrawLine(45, 80, 45+13.3f, 80, cb);
+      //this.DrawLine(45+13.3f, 90, 45+13.3f, 97, cb);// 12=7 
+     this.DrawDiamond(100, 100, 2.0f, 5, cb);
         group1.close();
         document.close();
-	}
-	
-	/**
-	 * The method reads the input file and for the first few lines, extracts
-	 * the document info and saves them to variables (title, subtitle, spacing).
-	 * Uses patterns and matchers to find key words in the input file.
-	 */
-	
-	private void getDocInfo() {
-		BufferedReader reader; 
-		String line;
-		int linecount = 0;
-			
-		try {
-			reader = new BufferedReader(new FileReader (INPUT_FILENAME));
-			while ((line = reader.readLine()) != null) {	// Read each line
-				
-				linecount++;
-				/* Stop reading after this many lines */
-				if (linecount > MAX_DOC_INFO) {
-					break;
-				/* Detect a pattern and extract the title, subtitle and spacing */
-				} else {
-					Matcher mtitle = (Pattern.compile(INPUT_TITLE_PATTERN)).matcher(line);	// Title pattern to look for
-					Matcher msub = (Pattern.compile(INPUT_SUBTITLE_PATTERN)).matcher(line);	// Subtitle pattern to look for
-					Matcher mspace = (Pattern.compile(INPUT_SPACING_PATTERN)).matcher(line);	// Spacing pattern to look for
-					if (mtitle.find())	// If the title pattern is found then set the title
-						this.title = mtitle.group(3);
-					else if (msub.find())	// If the subtitle is found then set the subtitle
-						this.subtitle = msub.group(3);
-					else if (mspace.find())	// If the spacing is found then set the spacing
-						this.spacing = Integer.parseInt(mspace.group(3));
-				}
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * The method reads the input file line by line and stores it in a
-	 * 2-dimensional list. 
-	 */
-	
-	private void readInput() {
-		BufferedReader inputStream = null;
-		FileReader file;
-		try {
-			file = new FileReader (INPUT_FILENAME);
-        	inputStream = new BufferedReader(file);
-        	String line;
-        	inner = new ArrayList<String>(); 
-        	count = 0;
-        	int linecount = 0;
-        	
-        	while ((line = inputStream.readLine()) != null) {	// Read each line	
-        		if (linecount <= MAX_DOC_INFO) {	// Skip the lines with document info
-        			linecount++;
-        		} else {
-        			/* If line is not empty, delete all spaces and add line to a temp list */
-             		if (!line.isEmpty()) {		     			
-            			line = line.replaceAll("\\p{Z}", "");	// Deletes spaces
-            			inner.add(line);
-            			count++;             
-            		}
-             		/* If line is empty, then add the temp list to the larger list */
-            		else if (line.isEmpty()) {		       		
-            			dynamic_array.add(new ArrayList<String>(inner));
-            			inner.clear();
-            			count = 0;		
-            		}   
-        		}   		   
-        	}
-        	inputStream.close();
-        	dynamic_array.add(new ArrayList<String>(inner));
-        	inner.clear();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+                
+                    
+                    
+            
+     
         }
-	}
-	
-	/**
-	 * Sets the outerconcat list which will be used when writing to the PDF file.
-	 */
-	
-	private void setOuter() {
-		outerconcat = new ArrayList<List<String>>();
-        for (int i =0 ; i < dynamic_array.size()-1; i+=2) {
-        	for (int j =0 ; j < dynamic_array.get(i).size();j++)    		 	 
-        		inner.add(dynamic_array.get(i).get(j) + dynamic_array.get(i+1).get(j));	
-        	outerconcat.add(new ArrayList<String>(inner));
-        	inner.clear();
+        
+        private String getTitle(String line) {
+                String out = "";
+                if (line.regionMatches(true, 0, CONTAINS_TITLE, 0, CONTAINS_TITLE.length())) {
+                        title = line.substring(CONTAINS_TITLE.length()+1, line.length() - 1);
+                        System.out.println(title);
+                        out = title;
+                }
+                return out;
         }
-        if (dynamic_array.size() % 2 !=0)
-        	outerconcat.add(new ArrayList<String>(dynamic_array.get(dynamic_array.size() - 1)));
-	}
-	
-	/**
-	 * Iterates through the outerconcat list and adds the guitar tabs to the
-	 * PDF file. 
-	 * 
-	 * @throws DocumentException
-	 * @throws IOException
-	 */
-	
-	private void writePDF() throws DocumentException, IOException {
-		PdfContentByte cb = document.getDirectContent();
-		
-		currX = PDF_LEFTMARGIN_X;
-        currY = PDF_LEFTMARGIN_Y;
+        
+        private String getSubtitle(String line) {
+                String out = "";
+                if (line.regionMatches(true, 0, CONTAINS_SUBTITLE, 0, CONTAINS_SUBTITLE.length())) {
+                        subtitle = line.substring(CONTAINS_SUBTITLE.length()+1, line.length() - 1);
+                        System.out.println(title);
+                        out = subtitle;
+                }
+                return out;
+        }
         
         
-        for (List<String> bag : outerconcat) { // get the lists
+
+        
+         private static void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
+        	 
+        	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+             cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(x, y);
+             cb.setFontAndSize(bf, Fontsize);
+             cb.showText(text);
+             cb.endText();
+             cb.restoreState();
+                
+                
+                
+                 }
+         private static void DrawLine(float x , float y , float toX, float toY,float thinkess,PdfContentByte cb ) {
         	
-        	//currX = currX+6.12f; // save position after drawing border
-        	for (int i = 0 ; i < bag.size() ; i ++) { // visit each string in the that  list 
-        		
-        		DrawLine(0,currY,PDF_LEFTMARGIN_X,currY,cb); // draw border horizontal line
-        		for (int j = 0 ; j < bag.get(i).length() ; j++) { // visit character in that  string for this list to draw a line with numbers
-        		
-        			if (bag.get(i).charAt(j) == '|' && i < bag.size()-1) { // i < bag.size()-1 because for each line except last line to draw vertically aline
-        			
-        				DrawLine(currX,currY,currX,currY-PDF_LINE_SPACE,cb); // draw vertically line
-	
-        			} else if (bag.get(i).charAt(j) == '|' && i == bag.size()-1) { // i == bag.size()-1 because we don't want for last line to draw vertically
-        			
-        				//DrawLine(currX,currY,currX,currY,cb); // don't draw
-	
-        			} else if (bag.get(i).charAt(j) == '-'&& currX < PDF_RIGHT_MARGIN) { // draw horizontal line for each - and check for if ends at 557
-        			
-        				DrawLine(currX,currY,currX+PDF_DASHLENGTH,currY,cb); // draw vertically with respect dashes to -
-        				currX = currX+PDF_DASHLENGTH; // update current position of x to draw the next dash or character
-        			} else {
-        			
-        				InsertText(bag.get(i).charAt(j)+"",currX,currY-2,cb);// write character taking account how many points it takes
-        				currX = currX+PDF_DASHLENGTH;// update current position of x to draw the next dash or character
-        			}
-    		
-        			if (currX >= PDF_RIGHT_MARGIN) { // draw the rest of completing lines
-        			
-        				DrawLine(currX,currY,PDF_PAGE_WIDTH,currY,cb);
-        			}
-    	
-        		}
-        		currX = PDF_LEFTMARGIN_X; // reset margin
-        		currY = currY - PDF_LINE_SPACE; // go to nextline
-        	}
-        	currX = PDF_LEFTMARGIN_X; // reset margin
-        	currY = currY - PDF_PARA_SPACE; // draw to list
+        	 cb.setLineWidth(thinkess); // Make a bit thicker than 1.0 default , 0.5f
+             cb.setGrayStroke(0.0f);// 1 = black, 0 = white
+             cb.moveTo(x,y);
+             cb.lineTo(toX,toY);
+             cb.stroke();
+         
+                 
+         }
+          
+         private void DrawCaesura(float x , float y, int font_size, float line_space, PdfContentByte cb) {
+         
+        	 cb.setLineWidth(0.5f); // Make a bit thicker than 1.0 default
+             cb.setGrayStroke(0.20f);// 1 = black, 0 = white
+             cb.moveTo(x,y);
+             cb.lineTo(x+((line_space/2.0f)-0.3f),y+(font_size/3.4f));
+             cb.stroke();
+             cb.setLineWidth(0.5f); // Make a bit thicker than 1.0 default
+             cb.setGrayStroke(0.20f);// 1 = black, 0 = white
+             cb.moveTo(x,y);
+             cb.lineTo(x-((line_space/2.0f)-0.3f),y-(font_size/3.4f));
+             cb.stroke(); 
+         }
+         private void OpenNote(float x , float y, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
+         
+        	 System.out.println("x is " + x);
+        	 float tempx = x- (line_space/2.0f);
+        	 float tempy = y +(font_size*0.5f);
+        	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        	 cb.saveState();
+        	 cb.moveTo(tempx, tempy);
+        	 cb.curveTo(tempx+2.2f, tempy+1.1f,  (tempx +(line_space*2.0f))-3.5f, tempy+1.1f,  (x +(line_space+line_space/2.0f)), tempy);
+             cb.stroke();
+             cb.restoreState();
+             cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(x+line_space/3.0f, tempy+font_size/4.0f);
+             cb.setFontAndSize(bf, font_size/2);
+             cb.showText("h");
+             cb.endText();
+             cb.restoreState();
         	
-        	if (currX >= PDF_RIGHT_MARGIN)
-        		DrawLine(currX, currY, PDF_PAGE_WIDTH, currY, cb);
-        	if (currY <= UNKNOWN1) {
-        		group1.newPage();
-        		currX = 36f;
-        		currY = 680f;
-        		continue;
-        	}
-        }	    
-	}
-	
-	/**
-	 * The method creates a title in PDF format.
-	 * 
-	 * @return		The title of the document. Returns null if no title is found.
-	 */
-	
-	private Paragraph addDocTitle() {
-		BaseFont bf_title;
-		Paragraph title = null;
-		try {
-			bf_title = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
-			Font title_font = new Font(bf_title,PDF_TITLE_SIZE);
-			title = new Paragraph(this.title,title_font);
-			title.setAlignment(Element.TITLE);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return title;
-	}
-	
-	/**
-	 * The method creates a subtitle in PDF format.
-	 * 
-	 * @return		The subtitle of the document. Returns null if no subtitle is found.
-	 */
-	
-	private Paragraph addDocSubtitle() {
-		BaseFont bf_subtitle;
-		Paragraph subtitle = null;
-		try {
-			bf_subtitle = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
-			Font subtitle_font = new Font(bf_subtitle,PDF_SUBTITLE_SIZE);
-			subtitle = new Paragraph(this.subtitle, subtitle_font);
-			subtitle.setAlignment(Element.ALIGN_CENTER);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return subtitle;
-	}
-	
-	/**
-	 * The method writes the given text to an (x,y) coordinate in the PDF file.
-	 * 
-	 * @param text
-	 * @param x
-	 * @param y
-	 * @param cb
-	 * @throws DocumentException
-	 * @throws IOException
-	 */
-	
-	 private static void InsertText(String text, float x, float y , PdfContentByte cb) throws DocumentException, IOException {
-		   
-		      BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-		      cb.saveState();
-		      cb.beginText();
-		      //cb.moveText(x, y);
-		      cb.setTextMatrix(x, y);
-		      cb.setFontAndSize(bf, 8);
-		      cb.showText(text);
-		      cb.endText();
-		      cb.restoreState();
-		   
-	 }
-	 
-	 /**
-	  * The method draws a line from an x to a y coordinate.
-	  * 
-	  * @param x
-	  * @param y
-	  * @param toX
-	  * @param toY
-	  * @param cb
-	  */
-	 
-	 private static void DrawLine(float x , float y , float toX, float toY,PdfContentByte cb )
-	 {
-		 cb.setLineWidth(0.5f); // Make a bit thicker than 1.0 default
-	     cb.setGrayStroke(0.20f);// 1 = black, 0 = white   
-	     cb.moveTo(x,y); 
-	     cb.lineTo(toX,toY);
-	     cb.stroke();	 
-	 }
-	
-	
-	
+         }
+         private void Pause(float x , float y,int num_pos,int curr_pos, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
+         
+        	 int  diff = (curr_pos-num_pos)-1; 
+        	 float tempx = x- diff* (line_space)-(font_size/3.0f);
+        	 float tempy = y +(font_size*0.5f);
+        	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        	 cb.saveState();
+        	 cb.moveTo(tempx, tempy);
+        	 cb.curveTo(tempx+2.5f, tempy+1.1f,   ((x +(line_space*2.0f))-(font_size/1.8f))-2.2f, tempy+1.1f,  (x +(line_space*2.0f))-(font_size/1.8f), tempy);
+             cb.stroke();
+             cb.restoreState();
+             cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(x-1.8f, tempy+font_size/4.0f);
+             cb.setFontAndSize(bf, font_size/2);
+             cb.showText("p");
+             cb.endText();
+             cb.restoreState();
+        	
+         }
+         
+         private void DrawCircle(float x, float y, float r ,  PdfContentByte cb) {
+        	 cb.saveState();
+        	 cb.setColorStroke(BaseColor.BLACK);
+        	 cb.setColorFill(BaseColor.BLACK);
+        	 cb.circle(x, y, r);
+        	 cb.fillStroke();
+        	 cb.restoreState();
+         }
+         
+         private void DrawDiamond(float x, float y,float height,float diagonal ,PdfContentByte cb)
+         {
+        	 cb.saveState();
+        	 cb.setColorStroke(BaseColor.BLACK);
+        	 cb.setColorFill(BaseColor.WHITE);
+        	 cb.moveTo(x, y);
+        	 cb.lineTo(x+(diagonal/2.0f), y+height);
+        	 cb.lineTo(x+diagonal, y);
+        	 cb.lineTo(x+(diagonal/2.0f), y-height);
+        	 cb.lineTo(x, y);
+        	 cb.closePathFillStroke();
+        	 cb.restoreState();
+        	 
+        	 
+         }
+         
+         
+         // this method remove any empty list inside the outer list
+        /* private static List<List<String>> RemoveEmtpyList (List<List<String>> list)
+         {
+        	 for (List<String> inside : list){
+        		 if (inside.isEmpty()){
+        			 list.remove(list.indexOf((List<String>)inside));
+        		 }	 
+        	 }
+        		return list; 
+         }*/
+         
+         private List<List<String>>  StringAnchor(List<List<String>> list) {
+        	 List<String> inside_temp = new ArrayList<String>();
+        	 List<List<String>> list_temp = new ArrayList<List<String>>();
+        	 for (List<String> inside: list) {
+        		 for (String s: inside)
+        		 {
+        			 inside_temp.add(s + "$$$");
+        		 }
+        		 list_temp.add(new ArrayList<String>(inside_temp));
+        		 inside_temp.clear();
+        	 }
+        	 return list_temp;
+         }
+         
+         
+         private float getMusicNotelength(List<String> inner , float line_space , int FontSize)
+         {
+        	 float total= 0.0f;
+        	
+        	 
+        		for (int i = 0 ; i < inner.get(0).length()-3 ; i ++) {
+        			if (inner.get(0).charAt(i) == '-')
+        				total+= line_space;
+        			else if (inner.get(0).charAt(i) != '|'&& inner.get(0).charAt(i) != ' ')
+        				total+= line_space;
+        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && (inner.get(0).charAt(i+2) != '|' ))
+        				total+= line_space;
+        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && inner.get(0).charAt(i+2) == '|')
+        				total+= line_space*2.0f;
+        			
+        			else;
+        		 
+        	 }
+        	 return total;
+         }
+         int num_pos =0;
+         private void DrawMusicNote (List<String> inner , float x , float y , float line_space , int FontSize ,int same_line,PdfContentByte cb  ) throws DocumentException, IOException
+         {
+        	 float tempx = x;
+        	
+        	 for (int s= 0  ; s < inner.size(); s++) {
+        		 for (int i = 0 ; i < inner.get(s).length()-3 ; i++) {
+        			 if (i <=2 && inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && same_line == 1 && s < inner.size() -1 )
+        			 {
+        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
+        				 
+        				 i = i+1;
+        				 x+=line_space;
+        				 
+        				 
+        			 }
+        			 else if( inner.get(s).charAt(i) == '|' && s < inner.size() -1  &&  inner.get(s).charAt(i+1) != '|') {
+        				 
+        				 DrawLine(x,y,x,y-7.5f,0.5f,cb);
+        				 
+        			 }
+        		
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && i < 2) {
+        				 DrawLine(x-0.5f, y, x-0.5f, y-7.5f,2.8f, cb); //shifted by 0.5f
+        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
+        				 i = i+1;
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && inner.get(s).charAt(i+2) != '|'  && i > 3) {
+        				 DrawLine(x+line_space, y, x+line_space, y-7.5f,2.0f, cb);
+        				DrawLine((x+line_space)-(line_space/2.0f),y,(x+line_space)-(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar before thick bar
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 i=i+1;
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s == inner.size() -1 && i < 3) {
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
+        				 i=i+1;
+        				 x+=line_space;
+        		
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s == inner.size() -1 && inner.get(s).charAt(i+2) != '|' && i > 3) {
+         				
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && inner.get(s).charAt(i+2) == '|'  && i > 3) {
+        				 DrawLine(x,y,x,y-7.5f,0.5f,cb);
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 DrawLine(x+line_space,y,x+line_space,y-7.5f,0.5f,cb);
+        				 DrawLine(x+line_space,y,x+(line_space*2.0f),y,0.5f,cb);
+        				 DrawLine(x+(line_space*2.0f),y,x+(line_space*2.0f),y-7.5f,0.5f,cb);
+        				 i=i+2;
+        				 x+=line_space*2.0f;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s == inner.size() -1 && inner.get(s).charAt(i+2) == '|'  && i > 3) {
+        				 
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			 
+        			 else if ( inner.get(s).charAt(i) == '-'&&  inner.get(s).charAt(i+1) != ' ') {
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				x+=line_space;
+        				
+        			 }
+        			 else if (inner.get(s).charAt(i) == '>' ) {
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 DrawDiamond(x+(line_space*0.1f), y, (FontSize/1.3f)-(FontSize*0.5f), line_space-(line_space*0.15f), cb);
+        				 x+=line_space;
+        			 }
+        			 else if (inner.get(s).charAt(i) == '<' ) {
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			
+        			 else if ( inner.get(s).charAt(i) == '-' &&  inner.get(s).charAt(i+1) == ' ') {
+        				DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				x+=line_space;
+        				i=i+1;
+        				
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '*' && inner.get(s).charAt(i+1) != '|') {
+        				 DrawCircle(x+(line_space*0.1f),y,(FontSize/1.3f)-(FontSize*0.6f),cb);// write character taking account how many points it takes
+        				DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == '*' && inner.get(s).charAt(i+1) == '|') {
+        				 DrawCircle(x+(line_space*0.9f),y,(FontSize/1.3f)-(FontSize*0.6f),cb);// write character taking account how many points it takes
+        				DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == 's' && ( inner.get(s).charAt(i+1)!= '|' ||  inner.get(s).charAt(i-1)!= '|')) {
+        			 
+        				
+          				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+          				 DrawCaesura(x+line_space/2.0f,y,FontSize,line_space,cb);
+         				x+=line_space;
+        				
+        			 }
+        			 else if ( inner.get(s).charAt(i) == 's' && ( inner.get(s).charAt(i-1)== '|' )) {
+        			 
+        				
+          				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+          				
+          				 DrawCaesura(x+((line_space/2.0f)+0.3f),y,(FontSize-2),(line_space-1),cb);
+          				 x+=line_space;
+        				
+        			 }
+        			 else if ( inner.get(s).charAt(i) == 's' && ( inner.get(s).charAt(i+1)== '|' )) {
+            			 
+        				 DrawCaesura(x+((line_space/2.0f)+0.3f),y,(FontSize-2),(line_space-1),cb);
+          				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+          				 x+=line_space;
+        				
+        			 }
+        			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1) >= '0' &&  inner.get(s).charAt(i+1) <= '9'){
+        				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 InsertText( inner.get(s).charAt(i+1)+"",x+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 DrawLine(x+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,cb);
+        				 x+=(line_space*2.0f);
+        				 num_pos = i+1;
+        				 i = i+1;
+        			 }
+        			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1)== '|'){
+        				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 DrawLine(x+(FontSize/2.3f),y,x+(line_space),y,0.5f,cb);
+        				 x+=line_space;
+        				 num_pos = i;
+        			 }
+        			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1)== ' '){
+        				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 DrawLine(x+(FontSize/1.8f),y,x+(line_space),y,0.5f,cb);
+        				 x+=line_space;
+        				 num_pos = i;
+        				 i = i+1;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == 'h') {
+        				 OpenNote(x,y, FontSize,line_space,cb);
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			 else if ( inner.get(s).charAt(i) == 'p') {
+        				 Pause(x,y,num_pos,i,FontSize,line_space,cb);
+        				 DrawLine(x,y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        			 }
+        			 
+        				 
+        			 else if ( inner.get(s).charAt(i) != ' ' && inner.get(s).charAt(i) != '|' ) {
+        				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);// write character taking account how many points it takes
+        				 DrawLine(x+(FontSize/1.8f),y,x+line_space,y,0.5f,cb);
+        				 x+=line_space;
+        				
+        			 }
+        				 
+        				 
+        				 
+        		 }
+        		x = tempx;
+        		y = y - 7.3f; //7.5 for 8 , 10 for 12 
+        		 
+        	 }
+        	
+        	 
+        	 
+         }
+         
+    
+        
+        public static void main (String[] args)
+        {
+                
+                
+                TextToPDF saad = new TextToPDF();
+                
+                try {
+                        saad.createPDF("heloo");
+                } catch (DocumentException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
+                 catch (IOException e)
+                 {
+                        
+                 }
+        
+        
+        
+                
+        }
+
 }
