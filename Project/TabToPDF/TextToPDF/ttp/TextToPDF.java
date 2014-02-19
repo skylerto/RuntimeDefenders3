@@ -40,8 +40,8 @@ public class TextToPDF {
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        final String INPUT_FILENAME = "inputfiles/try2.txt";
-        static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
+        public static String INPUT_FILENAME = "inputfiles/try2.txt";
+        public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
         private String title;
@@ -165,18 +165,18 @@ public class TextToPDF {
    
        for ( int i = 0; i < dynamic_array.size() ; i++) {
         	
-        	if (getMusicNotelength(dynamic_array.get(i),5.0f,8) < ( document.getPageSize().getWidth() - currX )) {
+        	if (getMusicNotelength(dynamic_array.get(i),12.0f,8) < ( document.getPageSize().getWidth() - currX )) {
         		
         		output.printf("i is   %d\n",i);
         		//output.printf("currx if before adding  %f\n",currX);
         		//output.printf("curry if before adding  %f\n",currY);
 
-        		DrawMusicNote(dynamic_array.get(i),currX,currY,5.0f,8,same_line_state,cb);
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,12.0f,8,same_line_state,cb);
         		same_line_state=1;
-        		currX = currX + getMusicNotelength(dynamic_array.get(i), 5.0f,8);
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12.0f,8);
         		//output.printf("currx if after adding  %f\n",currX);
         		//output.printf("curry if after adding  %f\n",currY);
-        		output.printf("size  %f\n",getMusicNotelength(dynamic_array.get(i),5.0f,8));
+        		output.printf("size  %f\n",getMusicNotelength(dynamic_array.get(i),12.0f,8));
         		//output.printf("%s\n",dynamic_array.get(i).get(1));
 
 
@@ -193,11 +193,11 @@ public class TextToPDF {
         		currX = 36.0f;
         		currY = currY - 80;
         		same_line_state=0;
-        		DrawMusicNote(dynamic_array.get(i),currX,currY,5.0f, 8,same_line_state,cb);
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,12.0f, 8,same_line_state,cb);
         		
-        		currX = currX + getMusicNotelength(dynamic_array.get(i), 5.0f,8);
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12.0f,8);
         		//output.printf("currx else after adding curxx  %f\n",currX);
-        		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),5.0f,8));
+        		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),12.0f,8));
         		//output.printf("%s\n",dynamic_array.get(i).get(1));
 
         		
