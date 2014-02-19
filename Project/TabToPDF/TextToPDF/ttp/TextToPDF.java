@@ -40,8 +40,8 @@ public class TextToPDF {
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        final String INPUT_FILE = "../inputfiles/try.txt";
-        private static String OUTPUT_FILE= "TextToPDF";
+        final String INPUT_FILENAME = "inputfiles/try2.txt";
+        private static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
         private String title;
@@ -77,7 +77,7 @@ public class TextToPDF {
                 Font title_font = new Font(bf_title,26);
                  BaseFont bf_subtitle = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
                 Font subtitle_font = new Font(bf_subtitle,14);
-                FileReader file = new FileReader (INPUT_FILE);
+                FileReader file = new FileReader (INPUT_FILENAME);
                 BufferedReader inputStream = null;
         
         try
@@ -607,7 +607,7 @@ public class TextToPDF {
                 TextToPDF saad = new TextToPDF();
                 
                 try {
-                        saad.createPDF(OUTPUT_FILE);
+                        saad.createPDF(PDF_FILENAME);
                 } catch (DocumentException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
