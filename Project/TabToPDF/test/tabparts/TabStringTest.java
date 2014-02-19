@@ -26,6 +26,8 @@ public class TabStringTest {
 	TabString tab12;
 	TabString tab13;
 	TabString tab14;
+	TabString tab15;
+	TabString tab16;
 
 	@Before
 	public void setUp() throws Exception {
@@ -81,7 +83,6 @@ public class TabStringTest {
 		tab12.addChar(' ');
 		tab12.addChar('h');
 		tab12.addChar('|');
-		tab12.fixBoth();
 		tab13 = new TabString();
 		tab13.addChar('|');
 		tab13.addChar('|');
@@ -91,6 +92,9 @@ public class TabStringTest {
 			tab14.addChar(' ');
 		}
 		tab14.addChar('|');
+		tab15 = new TabString();
+		tab15.addChar('c');
+		tab16 = new TabString(tab14);
 
 	}
 
@@ -259,10 +263,23 @@ public class TabStringTest {
 	public void TestisBlank() {
 		
 		assertFalse(tab8.isBlank());
-		assertTrue(tab12.isBlank());
+		assertFalse(tab12.isBlank());
 		assertTrue(tab13.isBlank());
 		assertTrue(tab14.isBlank());
 	}
+	
+	@Test
+	public void TesttrimString() {
+		
+		assertFalse(tab.trimString(3));
+		assertFalse(tab12.trimString(3));
+		assertFalse(tab3.trimString(3));
+		assertFalse(tab15.trimString(3));
+		assertTrue(tab14.trimString(13));
+		assertTrue(tab16.trimString(3));
+	}
+	
+	
 	
 }
 	
