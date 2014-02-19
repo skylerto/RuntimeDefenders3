@@ -193,9 +193,9 @@ public class TextToPDF {
         		currX = 36.0f;
         		currY = currY - 80;
         		same_line_state=0;
-        		DrawMusicNote(dynamic_array.get(i),currX,currY,12.0f, 8,same_line_state,cb);
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,12f, 8,same_line_state,cb);
         		
-        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12.0f,8);
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12f,8);
         		//output.printf("currx else after adding curxx  %f\n",currX);
         		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),12.0f,8));
         		//output.printf("%s\n",dynamic_array.get(i).get(1));
