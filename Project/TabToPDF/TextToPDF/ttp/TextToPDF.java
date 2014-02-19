@@ -41,7 +41,7 @@ public class TextToPDF {
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
         final String INPUT_FILENAME = "inputfiles/try2.txt";
-        private static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
+        static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
         private String title;
