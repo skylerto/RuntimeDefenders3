@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="TabObj"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="PrintPDF"/>
+	<classpathentry kind="src" path="Email"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="jars/itext-pdfa-5.4.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="jars/itext-pdfa-5.4.5-sources.jar"/>
@@ -22,5 +23,6 @@
 	<classpathentry kind="lib" path="jars/slick-util.jar"/>
 	<classpathentry kind="lib" path="jars/weblaf-1.25.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Alex/git/RuntimeDefenders3/Project/TabToPDF/jars/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
