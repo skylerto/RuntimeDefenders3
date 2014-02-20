@@ -23,6 +23,6 @@
 	<classpathentry kind="lib" path="jars/slick-util.jar"/>
 	<classpathentry kind="lib" path="jars/weblaf-1.25.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Alex/git/RuntimeDefenders3/Project/TabToPDF/jars/javax.mail.jar"/>
+	<classpathentry kind="lib" path="jars/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
