@@ -41,7 +41,7 @@ public class TextToPDF {
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        public static String INPUT_FILENAME = "inputfiles/try.txt";
+        public static String INPUT_FILENAME = "inputfiles/try2.txt";
         public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
@@ -561,7 +561,7 @@ public class TextToPDF {
         				
         			 }
         			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1) >= '0' &&  inner.get(s).charAt(i+1) <= '9'){
-        				DrawWhiteLine(x-(line_space*0.3f), y, x, y, 0.5f, cb);
+        				DrawWhiteLine(x-(line_space*0.2f), y, x, y, 0.5f, cb);
         				 InsertText( inner.get(s).charAt(i)+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
         				 InsertText( inner.get(s).charAt(i+1)+"",x-(line_space*0.3f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
         				 DrawLine(x-(line_space*0.3f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,cb);
