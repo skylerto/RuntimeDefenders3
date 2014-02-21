@@ -33,14 +33,15 @@ public class TextToPDF {
         
         final float LEFT_MARGIN = 36.0f;
         final float RIGHT_MARGIN = 556.0f;
-        final float LINE_SPACE = 7.0f;
+        final float LINE_SPACE = 5.0f;
         final float PARA_SPACE = 15.0f;
         final float TITLE_SIZE = 26.0f;
+        final int FONT_SIZE = 8;
         final float SUBTITLE_SIZE = 12.0f;
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        public static String INPUT_FILENAME = "inputfiles/try2.txt";
+        public static String INPUT_FILENAME = "inputfiles/try.txt";
         public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
@@ -51,6 +52,7 @@ public class TextToPDF {
         private List<List<String>> dynamic_array = new ArrayList<List<String>>();
         private List<String> inner;
         private List<List<String>> outerconcat;
+        
         private static final List<Character> special_char  = new ArrayList<Character>();
         PdfWriter document;
         private int same_line_state = 0;
@@ -165,67 +167,61 @@ public class TextToPDF {
    
        for ( int i = 0; i < dynamic_array.size() ; i++) {
         	
-        	if (getMusicNotelength(dynamic_array.get(i),12.0f,8) < ( document.getPageSize().getWidth() - currX )) {
+        	if (getMusicNotelength(dynamic_array.get(i),LINE_SPACE,FONT_SIZE) < ( document.getPageSize().getWidth() - currX )) {
+        		
+        		if ( currY <= 120.0f  ) {
+            	
+        			DrawMusicNote(dynamic_array.get(i),currX,currY,LINE_SPACE,FONT_SIZE,same_line_state,cb);
+        			
+        			DrawEndingLines(dynamic_array.get(i),currX + getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE),currY,document.getPageSize().getWidth(),FONT_SIZE,cb);
+        			//DrawEndingLines(dynamic_array.get(i),0,currY,36f,FONT_SIZE,cb);
+            		group1.newPage();
+            		same_line_state=0;
+                    currX = 36.0f;
+                    currY = 680.0f;
+            	}
+        		else {
         		
         		output.printf("i is   %d\n",i);
-        		//output.printf("currx if before adding  %f\n",currX);
-        		//output.printf("curry if before adding  %f\n",currY);
-
-        		DrawMusicNote(dynamic_array.get(i),currX,currY,12.0f,8,same_line_state,cb);
+    
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,LINE_SPACE,FONT_SIZE,same_line_state,cb);
         		same_line_state=1;
-        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12.0f,8);
-        		//output.printf("currx if after adding  %f\n",currX);
-        		//output.printf("curry if after adding  %f\n",currY);
-        		output.printf("size  %f\n",getMusicNotelength(dynamic_array.get(i),12.0f,8));
-        		//output.printf("%s\n",dynamic_array.get(i).get(1));
-
-
-        		
-        		
-        		
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE);
+        		//this.DrawLine(currX, currY, currX, currY+5f, 0.5f, cb);
+        		//this.DrawLine(currX, currY, currX, currY+3f, 0.5f, cb);
+        		//DrawEndingLines(dynamic_array.get(i),currX,currY,document.getPageSize().getWidth(),FONT_SIZE,cb);
+        		DrawEndingLines(dynamic_array.get(i),0,currY,36f,FONT_SIZE,cb);
+        		//output.printf("size  %f\n",getMusicNotelength(dynamic_array.get(i),LINE_SPACE,FONT_SIZE));
+        		}
         		
         	}
         	else  {
         		//output.printf("is   %d\n",i);
         		
         		//output.printf("currx else adding  %f\n",currX);
-        		//output.printf("curry else adding  %f\n",currY);
+        		output.printf("before curry else adding  %f\n",currY);
+        		DrawEndingLines(dynamic_array.get(i),currX,currY,document.getPageSize().getWidth(),FONT_SIZE,cb);
         		currX = 36.0f;
         		currY = currY - 80;
+        		//output.printf("after curry else adding  %f\n",currY);
         		same_line_state=0;
-        		DrawMusicNote(dynamic_array.get(i),currX,currY,12f, 8,same_line_state,cb);
+        		DrawMusicNote(dynamic_array.get(i),currX,currY,LINE_SPACE, FONT_SIZE,same_line_state,cb);
         		
-        		currX = currX + getMusicNotelength(dynamic_array.get(i), 12f,8);
+        		currX = currX + getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE);
+        		
+        		//DrawEndingLines(dynamic_array.get(i),currX,currY,document.getPageSize().getWidth(),FONT_SIZE,cb); // this shit
+        		DrawEndingLines(dynamic_array.get(i),0,currY,36f,FONT_SIZE,cb); // for begining
         		//output.printf("currx else after adding curxx  %f\n",currX);
-        		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),12.0f,8));
+        		output.printf("size else  %f\n",getMusicNotelength(dynamic_array.get(i),LINE_SPACE,FONT_SIZE));
         		//output.printf("%s\n",dynamic_array.get(i).get(1));
 
         		
         		
         	}
-        	if ( currY <= 120.0f)
-        	{
-        		//DrawMusicNote(dynamic_array.get(i),currX,currY,8.0f,cb);
-        		//currX = currX + getMusicNotelength(dynamic_array.get(i), 8.0f);
-        		group1.newPage();
-        		same_line_state=0;
-                currX = 36.0f;
-                currY = 680.0f;
-        	}
+        
         	
         }
-        	
-      
-	     /*for (List<String> s :  dynamic_array)
-       {
-       	for (String e : s)
-       		System.out.printf("new %s\n", e);
-       	System.out.printf("%s\n", "------");
-       }*/
-         //System.out.printf("%f\n",document.getVerticalPosition(true));
-
-        
-         //System.out.printf("%f\n",group1.leftMargin());
+       DrawEndingLines(dynamic_array.get(dynamic_array.size()-1),currX,currY,document.getPageSize().getWidth(),FONT_SIZE,cb);
 
      System.out.printf("the page width is %f and the page height is %f", group1.getPageSize().getWidth(),group1.getPageSize().getHeight());
  
@@ -235,6 +231,7 @@ public class TextToPDF {
      //cb.curveTo(102.5f, 101.3f, 103.8f, 101.3f, 106, 100); // for h
      //cb.curveTo(102.5f, 102.5f, 112.2f, 102.5f, 116, 100);
      //cb.stroke();
+     
      //DrawThickBar(100, 100, 100,100-7.5f, cb);
       //this.InsertText("0",45 , 100, 12, cb);
       //this.DrawLine(45+(8.0f/1.8f), 100,45+(8.0f/1.8f) ,109.23f ,0.5f, cb); // 49 -45 = 5 ,, 8/5 = 1.6 font / point or 1.8 font/point, for line 8= 2.0,2.2
@@ -242,7 +239,7 @@ public class TextToPDF {
      //for height its 1.3 font/point
      // this.DrawLine(45, 80, 45+13.3f, 80, cb);
       //this.DrawLine(45+13.3f, 90, 45+13.3f, 97, cb);// 12=7 
-     this.DrawDiamond(100, 100, 2.0f, 5, cb);
+     //this.DrawDiamond(100, 100, 2.0f, 5, cb);
         group1.close();
         document.close();
 
@@ -276,7 +273,7 @@ public class TextToPDF {
         
 
         
-         private static void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
+         private  void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
         	 
         	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
              cb.saveState();
@@ -290,10 +287,20 @@ public class TextToPDF {
                 
                 
                  }
-         private static void DrawLine(float x , float y , float toX, float toY,float thinkess,PdfContentByte cb ) {
+         private  void DrawLine(float x , float y , float toX, float toY,float thinkess,PdfContentByte cb ) {
         	
         	 cb.setLineWidth(thinkess); // Make a bit thicker than 1.0 default , 0.5f
              cb.setGrayStroke(0.0f);// 1 = black, 0 = white
+             cb.moveTo(x,y);
+             cb.lineTo(toX,toY);
+             cb.stroke();
+         
+                 
+         }
+         private  void DrawWhiteLine(float x , float y , float toX, float toY,float thinkess,PdfContentByte cb ) {
+         	
+        	 cb.setLineWidth(thinkess); // Make a bit thicker than 1.0 default , 0.5f
+             cb.setGrayStroke(1.0f);// 1 = black, 0 = white
              cb.moveTo(x,y);
              cb.lineTo(toX,toY);
              cb.stroke();
@@ -321,13 +328,13 @@ public class TextToPDF {
         	 float tempy = y +(font_size*0.5f);
         	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         	 cb.saveState();
-        	 cb.moveTo(tempx, tempy);
-        	 cb.curveTo(tempx+2.2f, tempy+1.1f,  (tempx +(line_space*2.0f))-3.5f, tempy+1.1f,  (x +(line_space+line_space/2.0f)), tempy);
+        	 cb.moveTo(x-line_space+(font_size/1.8f), tempy);
+        	 cb.curveTo((x-line_space)+(font_size/1.8f)+2.5f, tempy+(line_space*0.26f),  (x+line_space)-2.2f, tempy+(line_space*0.26f),  x +line_space, tempy);
              cb.stroke();
              cb.restoreState();
              cb.saveState();
              cb.beginText();
-             cb.setTextMatrix(x+line_space/3.0f, tempy+font_size/4.0f);
+             cb.setTextMatrix(x+(line_space*0.155f), tempy+(line_space*0.26f));
              cb.setFontAndSize(bf, font_size/2);
              cb.showText("h");
              cb.endText();
@@ -335,19 +342,20 @@ public class TextToPDF {
         	
          }
          private void Pause(float x , float y,int num_pos,int curr_pos, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-         
+        	 System.out.printf("num_pos is %d\n",num_pos);
+        	 System.out.printf("curr_pos is %d\n",curr_pos);
         	 int  diff = (curr_pos-num_pos)-1; 
-        	 float tempx = x- diff* (line_space)-(font_size/3.0f);
+        	 float tempx = (x- diff* (line_space))+((font_size/1.8f)/2.0f);
         	 float tempy = y +(font_size*0.5f);
         	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         	 cb.saveState();
         	 cb.moveTo(tempx, tempy);
-        	 cb.curveTo(tempx+2.5f, tempy+1.1f,   ((x +(line_space*2.0f))-(font_size/1.8f))-2.2f, tempy+1.1f,  (x +(line_space*2.0f))-(font_size/1.8f), tempy);
+        	 cb.curveTo(tempx*1.015f, tempy+(line_space*0.4f),  ((x +line_space)+((font_size/1.8f)/2.0f))*(0.975f), tempy+(line_space*0.4f),  (x +(line_space*1.0f))+((font_size/1.8f)/2.0f), tempy);
              cb.stroke();
              cb.restoreState();
              cb.saveState();
              cb.beginText();
-             cb.setTextMatrix(x-1.8f, tempy+font_size/4.0f);
+             cb.setTextMatrix(x-(line_space*0.3f), tempy+(line_space*0.4f));
              cb.setFontAndSize(bf, font_size/2);
              cb.showText("p");
              cb.endText();
@@ -379,18 +387,17 @@ public class TextToPDF {
         	 
         	 
          }
-         
-         
-         // this method remove any empty list inside the outer list
-        /* private static List<List<String>> RemoveEmtpyList (List<List<String>> list)
-         {
-        	 for (List<String> inside : list){
-        		 if (inside.isEmpty()){
-        			 list.remove(list.indexOf((List<String>)inside));
-        		 }	 
+         private void DrawEndingLines (List<String> list, float x, float y,float tox,int FontSize,  PdfContentByte cb) {
+        	 int size  = list.size();
+        	 while (size > 0) {
+        		 DrawLine(x,y,tox,y,0.5f,cb);
+        		 y-=FontSize*0.9f;
+        		 size--;
+        		 
         	 }
-        		return list; 
-         }*/
+        	 
+         }
+        
          
          private List<List<String>>  StringAnchor(List<List<String>> list) {
         	 List<String> inside_temp = new ArrayList<String>();
@@ -417,26 +424,33 @@ public class TextToPDF {
         				total+= line_space;
         			else if (inner.get(0).charAt(i) != '|'&& inner.get(0).charAt(i) != ' ')
         				total+= line_space;
-        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && (inner.get(0).charAt(i+2) != '|' ))
+        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  &&  ((inner.get(0).charAt(i+2) != '|' ) || inner.get(0).charAt(i+2) == '$' )) {
+        				System.out.printf("passed through 2 ||\n");
         				total+= line_space;
-        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && inner.get(0).charAt(i+2) == '|')
-        				total+= line_space*2.0f;
+        			}
+        			
+        				
+        			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && inner.get(0).charAt(i+2) == '|' &&   inner.get(0).charAt(i+3) == '$' ) {
+        				System.out.printf("passed through 3 ||\n");
+        				total+= line_space*1.0f;
+        			}
+        				
         			
         			else;
         		 
         	 }
         	 return total;
          }
-         int num_pos =0;
+         
          private void DrawMusicNote (List<String> inner , float x , float y , float line_space , int FontSize ,int same_line,PdfContentByte cb  ) throws DocumentException, IOException
          {
         	 float tempx = x;
-        	
+        	 int num_pos =0;
         	 for (int s= 0  ; s < inner.size(); s++) {
         		 for (int i = 0 ; i < inner.get(s).length()-3 ; i++) {
         			 if (i <=2 && inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && same_line == 1 && s < inner.size() -1 )
         			 {
-        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar
+        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-(FontSize*0.9f),0.5f,cb); // draw thin bar
         				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
         				 
         				 i = i+1;
@@ -446,20 +460,20 @@ public class TextToPDF {
         			 }
         			 else if( inner.get(s).charAt(i) == '|' && s < inner.size() -1  &&  inner.get(s).charAt(i+1) != '|') {
         				 
-        				 DrawLine(x,y,x,y-7.5f,0.5f,cb);
+        				 DrawLine(x,y,x,y-(FontSize*0.9f),0.5f,cb);
         				 
         			 }
         		
         			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && i < 2) {
-        				 DrawLine(x-0.5f, y, x-0.5f, y-7.5f,2.8f, cb); //shifted by 0.5f
-        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar
+        				 DrawLine(x-0.5f, y, x-0.5f, y-(FontSize*0.9f),2.8f, cb); //shifted by 0.5f
+        				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-(FontSize*0.9f),0.5f,cb); // draw thin bar
         				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
         				 i = i+1;
         				 x+=line_space;
         			 }
         			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && inner.get(s).charAt(i+2) != '|'  && i > 3) {
-        				 DrawLine(x+line_space, y, x+line_space, y-7.5f,2.0f, cb);
-        				DrawLine((x+line_space)-(line_space/2.0f),y,(x+line_space)-(line_space/2.0f),y-7.5f,0.5f,cb); // draw thin bar before thick bar
+        				 DrawLine(x+line_space, y, x+line_space, y-(FontSize*0.9f),2.0f, cb);
+        				DrawLine((x+line_space)-(line_space/2.0f),y,(x+line_space)-(line_space/2.0f),y-(FontSize*0.9f),0.5f,cb); // draw thin bar before thick bar
         				 DrawLine(x,y,x+line_space,y,0.5f,cb);
         				 i=i+1;
         				 x+=line_space;
@@ -477,11 +491,11 @@ public class TextToPDF {
         				 x+=line_space;
         			 }
         			 else if ( inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && s < inner.size() -1 && inner.get(s).charAt(i+2) == '|'  && i > 3) {
-        				 DrawLine(x,y,x,y-7.5f,0.5f,cb);
+        				 DrawLine(x,y,x,y-(FontSize*0.9f),0.5f,cb);
         				 DrawLine(x,y,x+line_space,y,0.5f,cb);
-        				 DrawLine(x+line_space,y,x+line_space,y-7.5f,0.5f,cb);
+        				 DrawLine(x+line_space,y,x+line_space,y-(FontSize*0.9f),0.5f,cb);
         				 DrawLine(x+line_space,y,x+(line_space*2.0f),y,0.5f,cb);
-        				 DrawLine(x+(line_space*2.0f),y,x+(line_space*2.0f),y-7.5f,0.5f,cb);
+        				 DrawLine(x+(line_space*2.0f),y,x+(line_space*2.0f),y-(FontSize*0.9f),0.5f,cb);
         				 i=i+2;
         				 x+=line_space*2.0f;
         			 }
@@ -547,9 +561,10 @@ public class TextToPDF {
         				
         			 }
         			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1) >= '0' &&  inner.get(s).charAt(i+1) <= '9'){
-        				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
-        				 InsertText( inner.get(s).charAt(i+1)+"",x+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
-        				 DrawLine(x+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,cb);
+        				DrawWhiteLine(x-(line_space*0.3f), y, x, y, 0.5f, cb);
+        				 InsertText( inner.get(s).charAt(i)+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 InsertText( inner.get(s).charAt(i+1)+"",x-(line_space*0.3f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+        				 DrawLine(x-(line_space*0.3f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,cb);
         				 x+=(line_space*2.0f);
         				 num_pos = i+1;
         				 i = i+1;
@@ -583,14 +598,14 @@ public class TextToPDF {
         				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);// write character taking account how many points it takes
         				 DrawLine(x+(FontSize/1.8f),y,x+line_space,y,0.5f,cb);
         				 x+=line_space;
-        				
+        				 num_pos = i;
         			 }
         				 
         				 
         				 
         		 }
         		x = tempx;
-        		y = y - 7.3f; //7.5 for 8 , 10 for 12 
+        		y = y - (FontSize*0.9f); //7.5 for 8 , 10 for 12 
         		 
         	 }
         	
