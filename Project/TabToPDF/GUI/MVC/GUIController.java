@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -35,6 +37,12 @@ public class GUIController {
 	private GUIModel model;
 	private GUIView view;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param passedModel
+	 * @param passedView
+	 */
 	public GUIController(GUIModel passedModel, GUIView passedView) {
 
 		this.model = passedModel;
@@ -43,11 +51,15 @@ public class GUIController {
 		this.view.addSelectButtonListener(new selectButtonListener());
 		this.view.addConvertButtonListener(new convertButtonListener());
 		this.view.addMenuItemListener(new menuItemListener());
+		// this.view.addListSelectionListener(new theListSelectionListener());
 
 		// Insert Model compenents in constructor and make changes when needed.
 
 	}
 
+	/**
+	 * Call the updateTopBoxLogic method from the model.
+	 */
 	public static void updateTopBox() {
 
 		GUIModel.updateTopBoxLogic();
@@ -55,21 +67,33 @@ public class GUIController {
 	}
 
 	/**
-	 * Adds/updates the JList.
+	 * Adds/updates the JList. Should be done on every button click.
+	 * 
 	 */
-	public static void populateJList(JList list) {
-		list.setListData(GUIModel.selectionFiles.toArray());
-	}
+	/*
+	 * public static void populateJList(JList list) {
+	 * 
+	 * list.setListData(GUIModel.selectionFiles.toArray());
+	 * 
+	 * }
+	 */
 
 }
 
+/**
+ * Action listener for select button.
+ * 
+ * @author Skyler
+ * 
+ */
 class selectButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// OPEN JFILESELECTOR
 
 		GUIModel.logString += "Selecting a file...\n";
 		GUIModel.updateLog();
+
+		// OPEN JFILESELECTOR
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
 		chooser.setDialogTitle("Select PDF to convert");
@@ -78,18 +102,17 @@ class selectButtonListener implements ActionListener {
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
 			GUIView.fileToRead = chooser.getSelectedFile();
-			String filename = GUIUtils.removeFileExtension(chooser
-					.getSelectedFile().toString());
+			String filenameWithExtension = chooser.getSelectedFile().toString();
+			String filename = GUIUtils
+					.removeFileExtension(filenameWithExtension);
 			GUIModel.logString += "File " + "\"" + filename + "\""
 					+ " selected.\n";
 			GUIModel.updateLog();
 			IMGCreator.createPreview();
-			
-			if (GUIModel.selectionImages.size() > 0) {
-				
-				GUIModel.selectionFiles.add(GUIUtils
-						.removeFileExtension(GUIModel.selectionImages
-								.get(GUIModel.selectionImages.size() - 1)));
+
+			if (GUIModel.selectionFiles.size() >= 0) {
+
+				GUIModel.selectionFiles.add(IMGCreator.OUTPUT_IMGFILE); // GUIUtils.removeFileExtension(
 				GUIController.updateTopBox();
 
 			}
@@ -98,6 +121,10 @@ class selectButtonListener implements ActionListener {
 			GUIModel.logString += "Oops! Something went wrong when selecting file...\n";
 			GUIModel.updateLog();
 		}
+		/*
+		 * // Populate the JList. JList list = GUIView.selectionList;
+		 * GUIController.populateJList(list);
+		 */
 	}
 }
 
@@ -133,7 +160,6 @@ class menuItemListener implements ActionListener {
 		GUIModel.updateLog();
 
 		boolean userManWorked = ReadAndDisplayUserManual.read();
-
 		if (userManWorked) {
 			GUIModel.logString += "User manual was opened.\n";
 			GUIModel.updateLog();
@@ -145,24 +171,46 @@ class menuItemListener implements ActionListener {
 	}
 }
 
-class selectionListListener implements ActionListener {
-	@Override
-	public void actionPerformed(ActionEvent e) {
+/**
+ * 
+ * @author Skyler
+ * 
+ */
+/*
+ * class selectionListListener implements ActionListener {
+ * 
+ * @Override public void actionPerformed(ActionEvent e) {
+ * 
+ * // OPEN USER MANUAL AND UPDATE LOG GUIModel.logString +=
+ * "Opening User Manual...\n"; GUIModel.updateLog();
+ * 
+ * boolean userManWorked = ReadAndDisplayUserManual.read();
+ * 
+ * if (userManWorked) { // GUIModel.logString += "User manual was opened.\n";
+ * GUIModel.updateLog(); } else { GUIModel.logString +=
+ * "Eek! User manual failed to open.\n"; GUIModel.updateLog(); }
+ * 
+ * } }
+ */
 
-		// OPEN USER MANUAL AND UPDATE LOG
-		GUIModel.logString += "Opening User Manual...\n";
-		GUIModel.updateLog();
+/**
+ * What specifically happens when a List item is selected.
+ * 
+ * @author Skyler
+ * 
+ */
 
-		boolean userManWorked = ReadAndDisplayUserManual.read();
-
-		if (userManWorked) {
-			// GUIModel.logString += "User manual was opened.\n";
-			GUIModel.updateLog();
-		} else {
-			GUIModel.logString += "Eek! User manual failed to open.\n";
-			GUIModel.updateLog();
-		}
-
-	}
-
-}
+/*
+ * class theListSelectionListener implements ListSelectionListener {
+ * 
+ * @Override public void valueChanged(ListSelectionEvent selectedPreview) { if
+ * (!selectedPreview.getValueIsAdjusting()) { JList list = (JList)
+ * selectedPreview.getSource(); int index = list.getSelectedIndex(); if (index
+ * == -1) { System.out.println("Nothing selected"); index = 0; } else { index++;
+ * } list.setSelectedIndex(index); GUIModel.setPreviewImage(new
+ * File(GUIModel.selectionFiles .get(index))); // GUIController.updateTopBox();
+ * 
+ * }
+ * 
+ * } }
+ */

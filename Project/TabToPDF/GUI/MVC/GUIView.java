@@ -19,7 +19,6 @@ package MVC;
  */
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -30,16 +29,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -50,20 +43,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import print.printPDF;
 import swing.PrinterInterface;
 import ttp.TextToPDF;
-
-import com.itextpdf.text.DocumentException;
-
-import creator.IMGCreator;
 
 public class GUIView {
 
@@ -71,7 +58,7 @@ public class GUIView {
 	final static boolean shouldWeightX = true;
 	final static boolean RIGHT_TO_LEFT = false;
 
-	static File fileToRead;
+	static File fileToRead = new File("TextToPDF.INPUT_FILENAME");
 	private final static String PREVIEW_LABEL = "Preview Image: ";
 	private final static String SELECTION_LABEL = "Select preview: ";
 	private final static String EDITING_LABEL = "Edit PDF: ";
@@ -79,12 +66,12 @@ public class GUIView {
 	static String[] fontsArray = { "ROMAN_BASELINE", "SANS_SERIF", "SERIF" };
 	static String[] fontSizesArray = { "8", "10", "12" };
 	static String[] spacingArray = { "1", "2", "3", "4", "5" };
-	
-	//static ArrayList<String> selectionFiles = new ArrayList<String>();
-	//static ArrayList<String> selectionImages = new ArrayList<String>();
+
+	// static ArrayList<String> selectionFiles = new ArrayList<String>();
+	// static ArrayList<String> selectionFiles = new ArrayList<String>();
 
 	static JScrollPane imgScrollPane;
-	static JList selectionList;
+	static JList selectionList = new JList(new DefaultListModel());
 	static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
 	static JTextArea log;
 	static JTextPane topBox;
@@ -96,7 +83,7 @@ public class GUIView {
 	static JPanel listPanel;
 	static JFrame frame;
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
-	static JMenuItem menuItem = new JMenuItem("User Manual");;
+	static JMenuItem menuItem2 = new JMenuItem("User Manual");
 
 	public static JMenuBar createMenuBar() {
 		JMenuBar menuBar;
@@ -109,16 +96,15 @@ public class GUIView {
 		menu.setMnemonic(KeyEvent.VK_A);
 		menu.getAccessibleContext().setAccessibleDescription("The first menu");
 		menuBar.add(menu);
-		
-		
-		//Print function for "File" tab section.
-		menuItem = new JMenuItem("Print");
+
+		// Print function for "File" tab section.
+		JMenuItem menuItem = new JMenuItem("Print");
 		menuItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//logString += "Opening Printer Interface...\n";
-				//updateLog();
+				// logString += "Opening Printer Interface...\n";
+				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
 				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
 				printWindow.Scroller2(test);
@@ -127,12 +113,12 @@ public class GUIView {
 		});
 		menu.add(menuItem);
 
-		// Build second menu in the menu bar.
-		menu = new JMenu("Edit");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"Contain Elements pertaining to Edit");
-		menuBar.add(menu);
+		/*
+		 * // Build second menu in the menu bar. menu = new JMenu("Edit");
+		 * menu.setMnemonic(KeyEvent.VK_N);
+		 * menu.getAccessibleContext().setAccessibleDescription(
+		 * "Contain Elements pertaining to Edit"); menuBar.add(menu);
+		 */
 
 		// Build third menu in the menu bar.
 		menu = new JMenu("Help");
@@ -141,7 +127,7 @@ public class GUIView {
 				"Contain elements to help the user");
 		menuBar.add(menu);
 
-		menu.add(menuItem);
+		menu.add(menuItem2);
 
 		return menuBar;
 	}
@@ -188,45 +174,33 @@ public class GUIView {
 	 * 
 	 * @return
 	 */
-	public static void addEditingPane(Container editPanel) {
-
-		editPanel.setPreferredSize(new Dimension(600, 50));
-		editPanel.setMinimumSize(new Dimension(600, 50));
-		editPanel.setBackground(TRANSPARENT);
-		editPanel.setLayout(new FlowLayout());
-
-		JPanel LabelsAndComboBoxes = new JPanel();
-		LabelsAndComboBoxes.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		JLabel fontLabel = new JLabel("Font:");
-		JLabel fontSizeLabel = new JLabel("Font size:");
-		JLabel spacingLabel = new JLabel("Spacing:");
-
-		JComboBox fontType = new JComboBox(fontsArray);
-		JComboBox fontSize = new JComboBox(fontSizesArray);
-		JComboBox spacing = new JComboBox(spacingArray);
-
-		c.gridx = 0;
-		c.gridy = 0;
-		LabelsAndComboBoxes.add(fontLabel);
-		c.gridx = 1;
-		c.gridy = 1;
-		LabelsAndComboBoxes.add(fontType);
-		c.gridx = 1;
-		c.gridy = 1;
-		LabelsAndComboBoxes.add(fontSizeLabel);
-		c.gridx = 1;
-		c.gridy = 1;
-		LabelsAndComboBoxes.add(fontSize);
-		c.gridx = 2;
-		c.gridy = 2;
-		LabelsAndComboBoxes.add(spacingLabel);
-		c.gridx = 2;
-		c.gridy = 2;
-		LabelsAndComboBoxes.add(spacing);
-
-		editPanel.add(LabelsAndComboBoxes);
-	}
+	/*
+	 * public static void addEditingPane(Container editPanel) {
+	 * 
+	 * editPanel.setPreferredSize(new Dimension(600, 50));
+	 * editPanel.setMinimumSize(new Dimension(600, 50));
+	 * editPanel.setBackground(TRANSPARENT); editPanel.setLayout(new
+	 * FlowLayout());
+	 * 
+	 * JPanel LabelsAndComboBoxes = new JPanel();
+	 * LabelsAndComboBoxes.setLayout(new GridBagLayout()); GridBagConstraints c
+	 * = new GridBagConstraints(); JLabel fontLabel = new JLabel("Font:");
+	 * JLabel fontSizeLabel = new JLabel("Font size:"); JLabel spacingLabel =
+	 * new JLabel("Spacing:");
+	 * 
+	 * JComboBox fontType = new JComboBox(fontsArray); JComboBox fontSize = new
+	 * JComboBox(fontSizesArray); JComboBox spacing = new
+	 * JComboBox(spacingArray);
+	 * 
+	 * c.gridx = 0; c.gridy = 0; LabelsAndComboBoxes.add(fontLabel); c.gridx =
+	 * 1; c.gridy = 1; LabelsAndComboBoxes.add(fontType); c.gridx = 1; c.gridy =
+	 * 1; LabelsAndComboBoxes.add(fontSizeLabel); c.gridx = 1; c.gridy = 1;
+	 * LabelsAndComboBoxes.add(fontSize); c.gridx = 2; c.gridy = 2;
+	 * LabelsAndComboBoxes.add(spacingLabel); c.gridx = 2; c.gridy = 2;
+	 * LabelsAndComboBoxes.add(spacing);
+	 * 
+	 * editPanel.add(LabelsAndComboBoxes); }
+	 */
 
 	/**
 	 * Method that creates the top panel.
@@ -240,27 +214,16 @@ public class GUIView {
 
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-
-		selectionList = new JList();
-		GUIController.populateJList(selectionList);
+		// GUIController.populateJList(selectionList);
 		// Display, and set listener for selection pane.
+		/*
+		 * JScrollPane pane = new JScrollPane(selectionList);
+		 * pane.setPreferredSize(new Dimension(100, 250));
+		 * selectionList.setLayout(new FlowLayout());
+		 * selectionList.setVisibleRowCount(10);
+		 * selectionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		 */
 
-		selectionList.setPreferredSize(new Dimension(100, 250));
-		selectionList.setLayout(new FlowLayout());
-		selectionList.setVisibleRowCount(10);
-
-		// selectionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		selectionList.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent selectedPreview) {
-				// Creates and displays image
-				GUIModel.setPreviewImage(new File(GUIModel.selectionImages.get(
-						selectionList.getSelectedIndex()).toString()));
-				GUIController.updateTopBox();
-
-			}
-		});
 		// Create JLabels for everything.
 		JLabel previewLabel = new JLabel(PREVIEW_LABEL);
 		previewLabel.setFont(labelFont);
@@ -279,8 +242,8 @@ public class GUIView {
 
 		listPanel = new JPanel();
 		listPanel.setLayout(new BorderLayout());
-		listPanel.add(selectionLabel, BorderLayout.NORTH);
-		listPanel.add(selectionList, BorderLayout.SOUTH);
+		// listPanel.add(selectionLabel, BorderLayout.NORTH);
+		// listPanel.add(pane, BorderLayout.SOUTH);
 
 		JPanel previewPanel = new JPanel();
 		previewPanel.setLayout(new BorderLayout());
@@ -303,32 +266,27 @@ public class GUIView {
 	 * 
 	 * @param panel
 	 */
-	public static void addLogBox(Container panel) {
-
-		panel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-
-		JLabel logLabel = new JLabel("Log:");
-		logLabel.setFont(labelFont);
-		c.gridx = 0;
-		c.gridy = 1;
-		panel.add(logLabel, c);
-
-		log = new JTextArea(10, 30);
-		log.setEditable(false);
-		log.setLineWrap(true);
-		log.setBackground(TRANSPARENT);
-
-		JScrollPane scrollPane = new JScrollPane(log);
-		scrollPane
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBackground(TRANSPARENT);
-		c.fill = GridBagConstraints.VERTICAL;
-		c.gridx = 1;
-		c.gridy = 2;
-		panel.add(scrollPane, c);
-
-	}
+	/*
+	 * public static void addLogBox(Container panel) {
+	 * 
+	 * panel.setLayout(new GridBagLayout()); GridBagConstraints c = new
+	 * GridBagConstraints();
+	 * 
+	 * JLabel logLabel = new JLabel("Log:"); logLabel.setFont(labelFont);
+	 * c.gridx = 0; c.gridy = 1; panel.add(logLabel, c);
+	 * 
+	 * log = new JTextArea(10, 30); log.setEditable(false);
+	 * log.setLineWrap(true); log.setBackground(TRANSPARENT);
+	 * 
+	 * JScrollPane scrollPane = new JScrollPane(log); scrollPane
+	 * .setVerticalScrollBarPolicy
+	 * (ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	 * scrollPane.setBackground(TRANSPARENT); c.fill =
+	 * GridBagConstraints.VERTICAL; c.gridx = 1; c.gridy = 2;
+	 * panel.add(scrollPane, c);
+	 * 
+	 * }
+	 */
 
 	private static void setLookAndFeel() {
 		try {
@@ -369,9 +327,9 @@ public class GUIView {
 		buttonPanel.setLocation(0, frame.getHeight());
 
 		addButtons(buttonPanel);
-		addLogBox(logPanel);
+		// addLogBox(logPanel);
 		addTopBox(topPanel);
-		addEditingPane(editingPanel);
+		// addEditingPane(editingPanel);
 
 		logAndButton.add(buttonPanel);
 		logAndButton.add(logPanel);
@@ -397,6 +355,11 @@ public class GUIView {
 
 	}
 
+	void addListSelectionListener(ListSelectionListener ListSelectionListener) {
+
+		selectionList.addListSelectionListener(ListSelectionListener);
+	}
+
 	void addSelectButtonListener(ActionListener listenForSelectButton) {
 
 		selectButton.addActionListener(listenForSelectButton);
@@ -411,7 +374,7 @@ public class GUIView {
 
 	void addMenuItemListener(ActionListener listenForSelectButton) {
 
-		menuItem.addActionListener(listenForSelectButton);
+		menuItem2.addActionListener(listenForSelectButton);
 
 	}
 

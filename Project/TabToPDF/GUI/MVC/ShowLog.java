@@ -27,7 +27,7 @@ public class ShowLog {
 	public boolean open() {
 		boolean worked = false;
 
-		String message = GUIUtils.openAndReadFile("res/logFile");
+		String message = GUIUtils.openAndReadFile("res/logFile.txt");
 		if (message != null) {
 			JOptionPane.showMessageDialog(new JFrame(), message);
 			worked = true;

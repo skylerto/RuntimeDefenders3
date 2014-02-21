@@ -3,11 +3,10 @@ package MVC;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -30,8 +29,9 @@ public class GUIModel {
 	static String logString = "";
 	static BufferedImage image;
 
-	static ArrayList<String> selectionFiles = new ArrayList<String>();
-	static ArrayList<String> selectionImages = new ArrayList<String>();
+	static Vector<String> selectionFiles = new Vector<String>();
+
+	// static ArrayList<String> selectionImages = new ArrayList<String>();
 
 	/**
 	 * GUI Model constructor, constructs a model of the GUI.
@@ -42,10 +42,11 @@ public class GUIModel {
 	 *        this.
 	 */
 	public GUIModel() { // BufferedImage image
+
 		try {
 			this.image = ImageIO.read(new File("res/nopreview.gif"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			imageFile = new File("res/nopreview.gif");
+		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -53,16 +54,18 @@ public class GUIModel {
 
 	public static void updateTopBoxLogic() {
 		GUIView.topBox.setText("");
-		File imageFile = new File("res/nopreview.gif");
 
-		if (imageFile == null) {
-			imageFile = new File("res/nopreview.gif");
-		}
-		
-		/*else if (GUIModel.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
-			selectionImages.remove(0);
-			GUIModel.selectionFiles.remove(0);
-		}*/
+		// File imageFile;
+
+		/*
+		 * imageFile = new File("res/nopreview.gif"); if (imageFile == null) {
+		 * imageFile = new File("res/nopreview.gif"); }
+		 */
+
+		/*
+		 * else if (GUIModel.selectionFiles.get(0) == GUIView.NO_PREVIEW) {
+		 * selectionFiles.remove(0); }
+		 */
 
 		try {
 			image = ImageIO.read(imageFile);
@@ -72,6 +75,7 @@ public class GUIModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		int neededWidth = GUIView.imgScrollPane.getVerticalScrollBar()
 				.getPreferredSize().width;
 		int neededHeight = GUIView.imgScrollPane.getHorizontalScrollBar()
@@ -82,7 +86,7 @@ public class GUIModel {
 		GUIView.topBox.insertIcon(preview);
 		SimpleAttributeSet attribs = new SimpleAttributeSet();
 		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-		GUIController.populateJList(GUIView.selectionList);
+		// GUIController.populateJList(GUIView.selectionList);
 
 		GUIView.selectionList.repaint();
 		GUIView.topBox.repaint();
@@ -129,18 +133,19 @@ public class GUIModel {
 	 *            - postion of desired element.
 	 * @return String name of the image.
 	 */
-	public static String getSelectionImage(int index) {
-		return selectionImages.get(index);
-	}
+	/*
+	 * public static String getSelectionImage(int index) { return
+	 * selectionFiles.get(index); }
+	 */
 
 	/**
 	 * Add's the selection File name to the selectionFiles array
 	 * 
 	 * @param toAdd
 	 *            - element to be added to selectionFiles array.
-	 * @Deprecated - use addToSelectionImage(String toAdd) removedselectionFile array.
+	 * @Deprecated - use addToSelectionImage(String toAdd) removedselectionFile
+	 *             array.
 	 */
-	@Deprecated
 	public static void addToSelectionFile(String toAdd) {
 		selectionFiles.add(toAdd);
 	}
@@ -151,10 +156,11 @@ public class GUIModel {
 	 * @param toAdd
 	 *            - Element to be added into the selectionImage array.
 	 */
+	@Deprecated
 	public static void addToSelectionImage(String toAdd) {
-		selectionImages.add(toAdd);
+		selectionFiles.add(toAdd);
 	}
-	
+
 	/**
 	 * 
 	 * @param f
@@ -168,9 +174,10 @@ public class GUIModel {
 	 * Updates the log box with current activity.
 	 */
 	static void updateLog() {
-		GUIView.log.append(logString);
-		logString = "";
-	}
+		// GUIView.log.append(logString);
+		// logString = "";
 
+		GUIUtils.writeToFile(new File("res/logFile.txt"), logString);
+	}
 
 }

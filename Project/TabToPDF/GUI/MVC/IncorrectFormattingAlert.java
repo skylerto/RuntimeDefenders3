@@ -21,6 +21,9 @@ public class IncorrectFormattingAlert {
 
 	private JFrame alertFrame = new JFrame();
 
+	// This should be the name of the file to be changed.
+	File fileToOpen = GUIView.fileToRead;
+
 	public IncorrectFormattingAlert(String whatWentWrong) {
 
 		Object[] options = { "Show log", "Fix it error" };
@@ -41,7 +44,6 @@ public class IncorrectFormattingAlert {
 			}
 			break;
 		case 1:
-			File fileToOpen = GUIView.fileToRead;
 			if (fileToOpen != null)
 				openTextEditor(fileToOpen, "Incorrect Formatting Alert!");
 			else
@@ -62,7 +64,7 @@ public class IncorrectFormattingAlert {
 	public static boolean openTextEditor(File file, String logName) {
 
 		boolean worked = true;
-		
+
 		// Opens a new text area with the required file.
 		JFrame editorFrame = new JFrame(logName);
 		JTextArea editArea = new JTextArea();
@@ -74,16 +76,10 @@ public class IncorrectFormattingAlert {
 		// Code to open, but user has to select what he wants to open with.
 
 		/*
-		boolean worked = false;
-		Desktop dt = Desktop.getDesktop();
-		try {
-			dt.open(file);
-			worked = true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+		 * boolean worked = false; Desktop dt = Desktop.getDesktop(); try {
+		 * dt.open(file); worked = true; } catch (IOException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
 
 		return worked;
 	}
