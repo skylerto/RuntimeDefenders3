@@ -12,22 +12,35 @@ public class TabObjMain {
 		TabString s;
 		Random gen = new Random();
 		
+		/*String st = "||-||";
 		
-		String in = "|||";
+		System.out.println(String.valueOf(TabString.TRUE_VALID_STRING.matcher(st).find()));
+		System.out.println(String.valueOf(TabString.TRUE_VALID_DB_STRING.matcher(st).find()));
 		
-		if (TabString.VALID_DB_STRING.matcher(in).find()) {
-			System.out.println("true");
-		} else System.out.println("false");
+		s = new TabString();
 		
-		if (TabString.VALID_DB_START.matcher(in).find()) {
-			System.out.println("true");
-		} else System.out.println("false");
+		//s.addChar('a');
 		
-		if (TabString.VALID_DB_END.matcher(in).find()) {
-			System.out.println("true");
-		} else System.out.println("false");
+		//s.addChar(' ');
+		s.addChar('|');
+		s.addChar('|');
+		//s.addChar(' ');
+		s.addChar('a');
+		s.addChar('|');
+		//s.addChar('|');
+		//s.addChar(' ');
 		
-		/*File input = new File("inputfiles/try4.txt");
+
+		
+		System.out.println(s.checkError());
+		System.out.println(s.toString());
+		System.out.println(s.fixErrors());
+		System.out.println(s.toString());
+		s.addDash(5);
+		System.out.println(s.toString());*/
+		
+		
+		File input = new File("inputfiles/try4.txt");
 		BufferedReader stream;
 		measure = new TabMeasure[200];
 		String line;
@@ -76,7 +89,7 @@ public class TabObjMain {
 			e.printStackTrace();
 		}
 		
-		for (i = 0; i < 6; i++) {
+		for (i = 0; i < 1; i++) {
 			System.out.println("......................................");
 			System.out.println("Measure " + i + ":");
 			System.out.println(measure[i].toString());
@@ -87,7 +100,7 @@ public class TabObjMain {
 			measure[i].equalizeStrings();
 			System.out.println(measure[i].toString());
 			System.out.println("......................................");
-		}*/
+		}
 		
 		
 		

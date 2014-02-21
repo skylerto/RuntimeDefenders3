@@ -94,6 +94,7 @@ public class TabMeasure {
 	 */
 	public void fixMeasure() {
 		this.fixStrings();
+		this.doubleBar();
 		this.equalizeStrings();
 	}
 	
@@ -103,6 +104,49 @@ public class TabMeasure {
 	public void fixStrings() {
 		for (int i = 0; i < this.size(); i++) {
 			this.strings[i].fixErrors();
+		}
+	}
+	
+	/** 
+	 * Makes all the strings in the measure have double bars if at least one
+	 * string has double bars.
+	 * 
+	 * For example, turns this:
+	 * |------|
+	 * ||------||
+	 * |------|
+	 * |------|
+	 * |------|
+	 * |------|
+	 * 
+	 * into:
+	 * 
+	 * ||------||
+	 * ||------||
+	 * ||------||
+	 * ||------||
+	 * ||------||
+	 * ||------||
+	 */
+	public void doubleBar() {
+		boolean db = false;
+		/* Detect if there's a string with double bars */
+		for (int i = 0; i < this.size(); i++) {
+			if (TabString.VALID_DB_STRING.matcher(this.getString(i).toString()).find()) {
+				System.out.println("db");
+				db = true;
+				break;
+			}
+		}
+		
+		/* If double bars are detected, then make the rest of the strings have double bars */
+		if (db) {
+			for (int i = 0; i < this.size(); i++) {
+				if (!TabString.VALID_DB_STRING.matcher(this.getString(i).toString()).find()) {
+					
+					this.getString(i).fixBoth();
+				}
+			}
 		}
 	}
 	
@@ -143,7 +187,7 @@ public class TabMeasure {
 				this.strings[i].trimString(this.strings[i].size() - max);
 			}
 			else
-				this.strings[i].addDash(this.length() - this.strings[i].size() - 1, 1);
+				this.strings[i].addDash(this.length() - this.strings[i].size());
 		}
 			
 	}

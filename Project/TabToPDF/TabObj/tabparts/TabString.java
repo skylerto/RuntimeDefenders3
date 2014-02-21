@@ -28,20 +28,28 @@ public class TabString {
 	/* CONSTANTS */
 	
 	public static final Character NULL_CHAR = '\0';
-	public static final int MAX_SIZE = 75;		// Max chars it can hold
-	public static final int ERROR_START = 1;	// Error return when the start '|' is missing
-	public static final int ERROR_END = 2;		// Error return when the end '|' is missing
-	public static final int ERROR_EMPTY = 3;	// Error return when the line is empty
-	public static final int ERROR_COMMENT = 4;	// Error return when the line is a comment
+	public static final int MAX_SIZE = 75;			// Max chars it can hold
+	public static final int NO_ERROR = 0;			// Return when no error is found
+	public static final int ERROR_START = 1;		// Error return when the start '|' is missing
+	public static final int ERROR_END = 2;			// Error return when the end '|' is missing
+	public static final int ERROR_EMPTY = 3;		// Error return when the line is empty
+	public static final int ERROR_COMMENT = 4;		// Error return when the line is a comment
+	public static final int ERROR_SDB_START = 5;	// Error return when the start '|' is missing from DB
+	public static final int ERROR_SDB_END = 6;		// Error return when the end '|' is missing from DB
+	public static final int ERROR_DB_START = 7;		// Error return when the start '||' is missing
+	public static final int ERROR_DB_END = 8;		// Error return when the end '||' is missing
 	
-	public static final Pattern VALID_STRING = Pattern.compile("\\s*[|].*[|]\\s*");// A string enclosed in '|'
-	public static final Pattern VALID_DB_STRING = Pattern.compile("\\s*[|]{2}.*[|]{2}\\s*"); // A string enclosed in '||'
-	public static final Pattern VALID_START = Pattern.compile("\\s*[|]\\s*\\S+");	// A string missing the end '|'
-	public static final Pattern VALID_DB_START = Pattern.compile("\\s*[|]{2}\\s*\\S+");	// A string missing the end '||'
-	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*");	// A string missing the start '|'
-	public static final Pattern VALID_DB_END = Pattern.compile("\\S+\\s*[|]{2}\\s*");	// A string missing the start '||'
+	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|].*[|]\\s*$");// A string enclosed in '|'
+	public static final Pattern VALID_START = Pattern.compile("^\\s*[|]\\s*\\S+");	// A string missing the end '|'
+	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*$");	// A string missing the start '|'
 	public static final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
-	public static final Pattern BLANK_STRING = Pattern.compile("\\s*[|][\\s-]*[|]\\s*");	// A string of dashes only
+	public static final Pattern BLANK_STRING = Pattern.compile("^\\s*[|][\\s-]*[|]\\s*$");	// A string of dashes only
+	public static final Pattern VALID_DB_STRING = Pattern.compile("^\\s*[|]{2}.*[|]{2}\\s*$"); // A string enclosed in '||'
+	public static final Pattern VALID_DB_START = Pattern.compile("^\\s*[|]{2}\\s*\\S+\\s*");	// A string missing the end '||'
+	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	// A string missing the start '||'
+	
+	public static final Pattern TRUE_VALID_STRING = Pattern.compile("^[|].*[|]$");	// A string enclosed in '|' with no lead/trailing spaces
+	public static final Pattern TRUE_VALID_DB_STRING = Pattern.compile("^[|]{2}.*[|]{2}$"); // A string enclosed in '||' with no lead/trailing spaces
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
 	public static final String VALID_MSG = "[valid string]";
@@ -93,24 +101,57 @@ public class TabString {
 	 * @return	-1 if the line is all spaces
 	 */
 	public int scanLine(String line, int start) {
-		boolean firstfound = false;
+		boolean singlefound = false;
+		boolean doublefound = false;
+		boolean doubleendfound = false;
 		boolean missingfirst = false;
 		int i = 0;
+		
+		/* Traverse the line and detect the last index of a valid string (i) */
 		for (i = start; i < line.length(); i++) {
-			if (line.charAt(i) == '|'&& !firstfound) {
+			/* Find first '|' */
+			if (line.charAt(i) == '|'&& !singlefound) {
 				if (missingfirst) {
-					break;
+					if (i < line.length()-1 && line.charAt(i+1) == '|') {
+						doubleendfound = true;
+						i++;
+						break;
+					} else
+						break;
 				}
-				firstfound = true;
-			} else if (line.charAt(i) == '|' && firstfound) {
-				break;
-			} else if (line.charAt(i) != '|' && line.charAt(i) != ' ' && !firstfound) {
+				singlefound = true;
+			/* Another '|' is found */
+			} else if (line.charAt(i) == '|' && singlefound) {
+				/* The start '||' is found */
+				if (i > start && line.charAt(i-1) == '|' && !doublefound)
+					doublefound = true;
+				
+				/* Find the end '|' */
+				else {
+					/* If the next element is a '|' then increment i and break */
+					if (i < line.length()-1 && line.charAt(i+1) == '|') {
+						doubleendfound = true;
+						i++;
+						break;
+					} else
+						break;
+				}
+					
+			/* First char found is not a '|' */
+			} else if (line.charAt(i) != '|' && line.charAt(i) != ' ' && !singlefound) {
 				missingfirst = true;
 			}
 		}
+		/* If the end is reached but no '|' is found then set i back to the last element */
 		if (i == line.length()) i--;
+		
+		/* Add the recognizable string from start to i */
 		for (int j = start; j <= i; j++)
 			this.addChar(line.charAt(j));
+		
+		/* Minus i if a double end bar was found */
+		if (doubleendfound) i--;
+		
 		return i;
 	}
 	
@@ -137,50 +178,51 @@ public class TabString {
 	}
 	
 	/**
-	 * Adds dashes to either end of the string assuming that the string
-	 * is valid. For example, a call of addDash(5, 0) will add 5 dashes
-	 * to the start: |----3--2--| will become |---------3--2--|
+	 * Adds dashes to the end of the string assuming that the string
+	 * is valid. For example, a call of addDash(5) will add 5 dashes
+	 * to the end: ||----3--2--|| will become ||----3--2-------||
 	 * 
 	 * @param num	The number of dashes to add.
-	 * @param type	0 will add dashes to the start and 1 will add to the end.
 	 * @return		true if dashes are added, false if not
 	 */
-	public boolean addDash(int num, int type) { // this adds an extra dash ie 5 given adds 6
+	public boolean addDash(int num) { // this adds an extra dash ie 5 given adds 6
 		TabString s;
 		if (this.isEmpty()) return false;
 		if ((num + this.size() - 1) > MAX_SIZE) return false;
-		if (type == 0 && this.getChar(0) != '|') return false;
-		if (type == 1 && this.getChar(this.size()- 1) != '|') return false;
-		/* Add dashes to the start */
-		if (type == 0) {
-			s = new TabString();
+		if (!TRUE_VALID_STRING.matcher(this.toString()).find() || this.checkError() != NO_ERROR) return false;
+		
+		s = new TabString();
+
+		/* Do if string is wrapped in '||' */
+		if(TRUE_VALID_DB_STRING.matcher(this.toString()).find()) {
 			s.addChar('|');
-			/* Add num dashes */
-			for (int i = 0; i <= num; i++)
-				s.addChar('-');
-			/* Add the original character from the string except the '|' */
-			for (int i = 1; i < this.size() - 1; i++)
+			s.addChar('|');
+			/* Add the original chars of the string except the '||' */
+			for (int i = 2; i < this.size() - 2; i++)
 				s.addChar(this.getChar(i));
+			/* Add num dashes */
+			for (int i = 0; i < num; i++)
+				s.addChar('-');
+			s.addChar('|');
 			s.addChar('|');
 			/* Copy the temp string to this string */
 			this.copyString(s);
 			return true;
-		/* Add dashes to the end */
-		} else if (type == 1) {
-			s = new TabString();
+
+		/* Do if string is wrapped in '|' */
+		} else {
 			s.addChar('|');
 			/* Add the original chars of the string except the '|' */
 			for (int i = 1; i < this.size() - 1; i++)
 				s.addChar(this.getChar(i));
 			/* Add num dashes */
-			for (int i = 0; i <= num; i++)
+			for (int i = 0; i < num; i++)
 				s.addChar('-');
 			s.addChar('|');
 			/* Copy the temp string to this string */
 			this.copyString(s);
 			return true;
 		}
-		return false;
 	}
 	
 	/**
@@ -233,21 +275,37 @@ public class TabString {
 		int error = this.checkError();
 		boolean b = false;
 		/* If the string is valid then delete outer spaces if needed */
-		if (error == 0) {
+		if (error == NO_ERROR) {
 			b = this.delTrailSpaces();
 			if (b) return VALID_SPACEFIX_MSG;
 			else return VALID_MSG;
 			
 		/* If the start '|' is missing, then add it */
-		} else if (error == ERROR_START) {
+		} else if (error == ERROR_START || error == ERROR_SDB_START) {
 			b = this.delTrailSpaces();
 			this.fixStart();
 			if (b) return STARTFIX_SPACEFIX_MSG;
 			else return STARTFIX_MSG;
 			
 		/* If the end '|' is missing, then add it */
-		} else if (error == ERROR_END) {
+		} else if (error == ERROR_END || error == ERROR_SDB_END) {
 			b = this.delTrailSpaces();
+			this.fixEnd();
+			if (b) return ENDFIX_SPACEFIX_MSG;
+			else return ENDFIX_MSG;
+			
+		/* If the start '||' is missing, then add it */
+		} else if (error == ERROR_DB_START) {
+			b = this.delTrailSpaces();
+			this.fixStart();
+			this.fixStart();
+			if (b) return STARTFIX_SPACEFIX_MSG;
+			else return STARTFIX_MSG;
+			
+		/* If the end '||' is missing, then add it */
+		} else if (error == ERROR_DB_END) {
+			b = this.delTrailSpaces();
+			this.fixEnd();
 			this.fixEnd();
 			if (b) return ENDFIX_SPACEFIX_MSG;
 			else return ENDFIX_MSG;
@@ -442,11 +500,20 @@ public class TabString {
 	 * @return	2 if the end '|' is missing
 	 * @return	3 if the string is empty or contains only spaces
 	 * @return	4 if the string is of length 1 or does not have any '|'
+	 * @return	5 if the start '||' is missing
+	 * @return	6 if the end '||' is missing
 	 */
 	public int checkError() {
-		if (VALID_STRING.matcher(this.toString()).find()) return 0;
+		if (VALID_DB_STRING.matcher(this.toString()).find()) return NO_ERROR;
+		if (VALID_STRING.matcher(this.toString()).find()) {
+			if (VALID_DB_START.matcher(this.toString()).find()) return ERROR_SDB_END;
+			if (VALID_DB_END.matcher(this.toString()).find()) return ERROR_SDB_START;
+			return NO_ERROR;
+		}
 		if (this.isEmpty() || EMPTY_STRING.matcher(this.toString()).find()) return ERROR_EMPTY;
 		if (this.size() == 1) return ERROR_COMMENT;
+		if (VALID_DB_START.matcher(this.toString()).find()) return ERROR_DB_END;
+		if (VALID_DB_END.matcher(this.toString()).find()) return ERROR_DB_START;
 		if (VALID_START.matcher(this.toString()).find()) return ERROR_END;
 		if (VALID_END.matcher(this.toString()).find()) return ERROR_START;
 		return ERROR_COMMENT;
