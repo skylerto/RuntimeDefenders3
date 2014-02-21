@@ -73,11 +73,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import print.printPDF;
+
 import ttp.TextToPDF;
 
 import com.itextpdf.text.DocumentException;
 
 import creator.IMGCreator;
+
 
 /**
  * 
@@ -133,6 +136,23 @@ public class SwingGUI {
 		menu.setMnemonic(KeyEvent.VK_A);
 		menu.getAccessibleContext().setAccessibleDescription("The first menu");
 		menuBar.add(menu);
+		
+		//Print function for "File" tab section.
+		menuItem = new JMenuItem("Print");
+		menuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				logString += "Opening Printer Interface...\n";
+				updateLog();
+				PrinterInterface printWindow = new PrinterInterface();
+				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
+				printWindow.Scroller2(test);
+			}
+
+		});
+		menu.add(menuItem);
+		
 
 		// Build second menu in the menu bar.
 		menu = new JMenu("Edit");
