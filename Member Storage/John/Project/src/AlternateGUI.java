@@ -255,7 +255,7 @@ public class AlternateGUI extends JFrame
 			{
 				try
 				{
-					URL url = GUI4.class.getClassLoader().getResource(
+					URL url = AlternateGUI.class.getClassLoader().getResource(
 							"sampletab.txt");
 					File textFile = new File(url.getPath());
 					Desktop.getDesktop().open(textFile);
@@ -276,7 +276,7 @@ public class AlternateGUI extends JFrame
 			{
 				try
 				{
-					URL url = GUI4.class.getClassLoader().getResource(
+					URL url = AlternateGUI.class.getClassLoader().getResource(
 							"samplePDF.pdf");
 					File pdfFile = new File(url.getPath());
 					Desktop.getDesktop().open(pdfFile);
