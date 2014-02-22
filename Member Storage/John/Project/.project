@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Project</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>src/res/nopreview.gif</name>
+			<type>1</type>
+			<location>E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/res/nopreview.gif</location>
+		</link>
+	</linkedResources>
+</projectDescription>

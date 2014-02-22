@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/slick-util.jar"/>
+	<classpathentry kind="lib" path="E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/jpedal_lgpl.jar"/>
+	<classpathentry kind="lib" path="E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/itext-5.4.5/itextpdf-5.4.5.jar"/>
+	<classpathentry kind="lib" path="E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/itext-5.4.5/itext-pdfa-5.4.5.jar"/>
+	<classpathentry kind="lib" path="E:/MyFiles/Renatius/University/YEAR 2/Winter/CSE 2311/Project/itext-5.4.5/itext-xtra-5.4.5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
