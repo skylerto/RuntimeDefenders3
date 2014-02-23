@@ -1,12 +1,10 @@
 package tabparts;
 import java.util.regex.Pattern;
 
+// trimString() needs to work with double bar.
 /*
- * (UPDATED) Added a pattern attribute for finding a blanks string.
- * Added a isBlank() method which checks to see if there are only dashes/spaces
- * between the vertical lines of a string.
- * Added a trimString() method which deletes dashes and blanks at the end of the
- * string.
+ * (UPDATED) Edited addDash to work with double bars.
+ * Added replaceChar() method
  * 
  * -Ron
  */
@@ -34,22 +32,21 @@ public class TabString {
 	public static final int ERROR_END = 2;			// Error return when the end '|' is missing
 	public static final int ERROR_EMPTY = 3;		// Error return when the line is empty
 	public static final int ERROR_COMMENT = 4;		// Error return when the line is a comment
-	public static final int ERROR_SDB_START = 5;	// Error return when the start '|' is missing from DB
-	public static final int ERROR_SDB_END = 6;		// Error return when the end '|' is missing from DB
-	public static final int ERROR_DB_START = 7;		// Error return when the start '||' is missing
-	public static final int ERROR_DB_END = 8;		// Error return when the end '||' is missing
+	public static final int ERROR_DB_START = 5;		// Error return when the start '||' is missing
+	public static final int ERROR_DB_END = 6;		// Error return when the end '||' is missing
+	public static final int SPECIAL_TRIPLE = 7;		// Return when the string only contains '|||'
 	
-	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|].*[|]\\s*$");// A string enclosed in '|'
+	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|]{1,2}.*[|]{1,2}\\s*$");// A string enclosed in '|'
 	public static final Pattern VALID_START = Pattern.compile("^\\s*[|]\\s*\\S+");	// A string missing the end '|'
 	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*$");	// A string missing the start '|'
 	public static final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
 	public static final Pattern BLANK_STRING = Pattern.compile("^\\s*[|][\\s-]*[|]\\s*$");	// A string of dashes only
-	public static final Pattern VALID_DB_STRING = Pattern.compile("^\\s*[|]{2}.*[|]{2}\\s*$"); // A string enclosed in '||'
 	public static final Pattern VALID_DB_START = Pattern.compile("^\\s*[|]{2}\\s*\\S+\\s*");	// A string missing the end '||'
 	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	// A string missing the start '||'
+	public static final Pattern VALID_TB_END = Pattern.compile("\\s*\\S+\\s*[|]{3}\\s*$");	// A string with '|||' at the end
 	
-	public static final Pattern TRUE_VALID_STRING = Pattern.compile("^[|].*[|]$");	// A string enclosed in '|' with no lead/trailing spaces
-	public static final Pattern TRUE_VALID_DB_STRING = Pattern.compile("^[|]{2}.*[|]{2}$"); // A string enclosed in '||' with no lead/trailing spaces
+	public static final Pattern HARD_VALID_STRING = Pattern.compile("^[|]{1,2}.*[|]{1,2}$");	// A string closed in at least one set of '|' with no trailing spaces
+	public static final Pattern VALID_TRIPLE_STRING = Pattern.compile("^\\s*[|]{3}\\s*$");		// A string containing only '|||'
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
 	public static final String VALID_MSG = "[valid string]";
@@ -62,6 +59,7 @@ public class TabString {
 	public static final String COMMENT_MSG = "[invalid string, assumed to be a comment]";
 	public static final String BOTHFIX_MSG = "[fixed both ends of string]";
 	public static final String BOTHFIX_SPACEFIX_MSG = "[fixed both ends of string, deleted excess spaces]";
+	public static final String SPECIAL_MSG = "[special triple fix]";
 	
 	/* ATTRIBUTES */
 	
@@ -97,14 +95,17 @@ public class TabString {
 	 * 
 	 * @param line	The given string to scan.
 	 * @param start	The starting index in the given string to start scanning from.
+	 * @param repeat If true then it is the first string in a measure and will try to detect the repetition number
 	 * @return	The index number of the line the scanning stops at.
 	 * @return	-1 if the line is all spaces
 	 */
-	public int scanLine(String line, int start) {
+	public int scanLine(String line, int start, boolean first) {
 		boolean singlefound = false;
 		boolean doublefound = false;
 		boolean doubleendfound = false;
+		boolean tripleendfound = false;
 		boolean missingfirst = false;
+		boolean repfound = false;
 		int i = 0;
 		
 		/* Traverse the line and detect the last index of a valid string (i) */
@@ -128,11 +129,22 @@ public class TabString {
 				
 				/* Find the end '|' */
 				else {
-					/* If the next element is a '|' then increment i and break */
-					if (i < line.length()-1 && line.charAt(i+1) == '|') {
+					/* Stop if triple bars are found at the end */
+					if (i < line.length()-2 && line.charAt(i+1) == '|' && line.charAt(i+2) == '|') {
+						tripleendfound = true;
+						i = i + 2;
+						break;
+					/* Stop if double bars are found at the end */
+					} else if (i < line.length()-1 && line.charAt(i+1) == '|') {
 						doubleendfound = true;
 						i++;
 						break;
+					/* Stop if repetition number is found */
+					} else if (i < line.length()-1 && line.charAt(i+1) >= '1' && line.charAt(i+1) <= '9') {
+						repfound = true;
+						i++;
+						break;
+					/* Stop if a bar is found at the end */
 					} else
 						break;
 				}
@@ -149,9 +161,9 @@ public class TabString {
 		for (int j = start; j <= i; j++)
 			this.addChar(line.charAt(j));
 		
-		/* Minus i if a double end bar was found */
-		if (doubleendfound) i--;
-		
+		/* Minus i if a double/triple end bar or repetition was found */
+		if (tripleendfound) i = i - 2;
+		else if (doubleendfound || repfound) i--;
 		return i;
 	}
 	
@@ -189,16 +201,14 @@ public class TabString {
 		TabString s;
 		if (this.isEmpty()) return false;
 		if ((num + this.size() - 1) > MAX_SIZE) return false;
-		if (!TRUE_VALID_STRING.matcher(this.toString()).find() || this.checkError() != NO_ERROR) return false;
+		if (!HARD_VALID_STRING.matcher(this.toString()).find()) return false;
 		
 		s = new TabString();
 
 		/* Do if string is wrapped in '||' */
-		if(TRUE_VALID_DB_STRING.matcher(this.toString()).find()) {
-			s.addChar('|');
-			s.addChar('|');
+		if(VALID_DB_END.matcher(this.toString()).find()) {
 			/* Add the original chars of the string except the '||' */
-			for (int i = 2; i < this.size() - 2; i++)
+			for (int i = 0; i < this.size() - 2; i++)
 				s.addChar(this.getChar(i));
 			/* Add num dashes */
 			for (int i = 0; i < num; i++)
@@ -211,9 +221,8 @@ public class TabString {
 
 		/* Do if string is wrapped in '|' */
 		} else {
-			s.addChar('|');
 			/* Add the original chars of the string except the '|' */
-			for (int i = 1; i < this.size() - 1; i++)
+			for (int i = 0; i < this.size() - 1; i++)
 				s.addChar(this.getChar(i));
 			/* Add num dashes */
 			for (int i = 0; i < num; i++)
@@ -281,14 +290,14 @@ public class TabString {
 			else return VALID_MSG;
 			
 		/* If the start '|' is missing, then add it */
-		} else if (error == ERROR_START || error == ERROR_SDB_START) {
+		} else if (error == ERROR_START) {
 			b = this.delTrailSpaces();
 			this.fixStart();
 			if (b) return STARTFIX_SPACEFIX_MSG;
 			else return STARTFIX_MSG;
 			
 		/* If the end '|' is missing, then add it */
-		} else if (error == ERROR_END || error == ERROR_SDB_END) {
+		} else if (error == ERROR_END) {
 			b = this.delTrailSpaces();
 			this.fixEnd();
 			if (b) return ENDFIX_SPACEFIX_MSG;
@@ -327,6 +336,10 @@ public class TabString {
 				if (b) return BOTHFIX_SPACEFIX_MSG;
 				else return BOTHFIX_MSG;
 			}
+		} else if (error == SPECIAL_TRIPLE) {
+			this.delTrailSpaces();
+			this.addDash(1);
+			return SPECIAL_MSG;
 		}
 		
 		/* It should never reach this return */
@@ -430,6 +443,20 @@ public class TabString {
 	}
 	
 	/**
+	 * Replaces a char in the given index.
+	 * 
+	 * @param c	The char that is replacing
+	 * @param index	The position in the string to replace
+	 */
+	public void replaceChar(char c, int index) {
+		if (c == NULL_CHAR && index == this.size - 1) {
+			this.chars[index] = c;
+			this.size--;
+		}
+		this.chars[index] = c;
+	}
+	
+	/**
 	 * Copies the information from the given string.
 	 * 
 	 * @param string The string to copy from.
@@ -501,15 +528,12 @@ public class TabString {
 	 * @return	3 if the string is empty or contains only spaces
 	 * @return	4 if the string is of length 1 or does not have any '|'
 	 * @return	5 if the start '||' is missing
-	 * @return	6 if the end '||' is missing
+	 * @return	6 if the end '||' is missing	
+	 * @return	7 if the string only contains '|||'
 	 */
 	public int checkError() {
-		if (VALID_DB_STRING.matcher(this.toString()).find()) return NO_ERROR;
-		if (VALID_STRING.matcher(this.toString()).find()) {
-			if (VALID_DB_START.matcher(this.toString()).find()) return ERROR_SDB_END;
-			if (VALID_DB_END.matcher(this.toString()).find()) return ERROR_SDB_START;
-			return NO_ERROR;
-		}
+		if (VALID_TRIPLE_STRING.matcher(this.toString()).find()) return SPECIAL_TRIPLE;
+		if (VALID_STRING.matcher(this.toString()).find()) return NO_ERROR;
 		if (this.isEmpty() || EMPTY_STRING.matcher(this.toString()).find()) return ERROR_EMPTY;
 		if (this.size() == 1) return ERROR_COMMENT;
 		if (VALID_DB_START.matcher(this.toString()).find()) return ERROR_DB_END;

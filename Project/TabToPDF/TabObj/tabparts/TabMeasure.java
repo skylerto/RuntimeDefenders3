@@ -1,8 +1,17 @@
 package tabparts;
 
+import java.util.regex.Pattern;
+
 /*
- * (UPDATE) The equalizeString() method now calls the trimString() method for each of its blank
- * strings that are greater than the max length of the string that isn't blank.
+ * (UPDATE) Added comment and is_comment attributes that work with new methods.
+ * New methods are: setComment(), getComment(), isComment()
+ * 
+ * New attribute: repeat
+ * New methods: setRepeat(), getRepeat()
+ * 
+ * Constructors and copy methods have been edited to account for the new attributes
+ * 
+ * New methods: fixEndBar(), fixStartBar()
  */
 
 /**
@@ -20,6 +29,10 @@ public class TabMeasure {
 	private TabString[] strings;	// The group of strings
 	private int size;				// The number of strings added
 	private int length;				// The length of the longest string
+	private int repeat;				// If > 0, used for the repeat text above the measure
+	
+	private StringBuffer comment;	// If the measure isn't valid then the contents are stored as a string buffer
+	private boolean is_comment;		// True if the measure is not valid and a comment is stored
 	
 	/**
 	 * Creates a TabMeasure with 6 empty TabStrings.
@@ -28,8 +41,11 @@ public class TabMeasure {
 		this.strings = new TabString[MAX_STRINGS];
 		this.size = MAX_STRINGS;
 		this.setLength(0);
+		this.setRepeat(0);
 		for (int i = 0; i < MAX_STRINGS; i++)
 			this.strings[i] = new TabString();
+		this.comment = new StringBuffer();
+		this.is_comment = false;
 	}
 	
 	/**
@@ -53,6 +69,9 @@ public class TabMeasure {
 			this.strings[i] = new TabString(measure.getString(i));
 		this.size = measure.size();
 		this.setLength(measure.length());
+		this.setRepeat(measure.getRepeat());
+		this.addComment(measure.getComment());
+		this.is_comment = measure.isComment();
 	}
 	
 	/**
@@ -73,7 +92,7 @@ public class TabMeasure {
 	 * @return	the TabString at the given index.
 	 */
 	public TabString getString(int index) {
-		return new TabString(this.strings[index]);
+		return this.strings[index];
 	}	
 	
 	/**
@@ -86,17 +105,24 @@ public class TabMeasure {
 			this.strings[i].copyString(measure.strings[i]);
 		this.size = measure.size;
 		this.setLength(measure.length());
+		this.setRepeat(measure.getRepeat());
+		this.addComment(measure.getComment());
+		this.is_comment = measure.isComment();
 	}
 	
 	/**
 	 * Fixes all errors in strings and makes them all equal length
-	 * by adding dashes to the ends.
+	 * by adding dashes to the ends. Finds a repeat number and stores it
+	 * in the measure then changes the number into a bar or deletes it.
 	 */
 	public void fixMeasure() {
 		this.fixStrings();
-		this.doubleBar();
+		this.fixStartBar();
+		this.fixEndBar();
 		this.equalizeStrings();
 	}
+	
+
 	
 	/**
 	 * Fixes errors in the TabString array.
@@ -108,12 +134,12 @@ public class TabMeasure {
 	}
 	
 	/** 
-	 * Makes all the strings in the measure have double bars if at least one
-	 * string has double bars.
+	 * Makes sure the number of bars at the start of each string is the same.
+	 * If at least one has a double barred start, then the rest will have it.
 	 * 
 	 * For example, turns this:
 	 * |------|
-	 * ||------||
+	 * ||------|
 	 * |------|
 	 * |------|
 	 * |------|
@@ -121,19 +147,19 @@ public class TabMeasure {
 	 * 
 	 * into:
 	 * 
-	 * ||------||
-	 * ||------||
-	 * ||------||
-	 * ||------||
-	 * ||------||
-	 * ||------||
+	 * ||------|
+	 * ||------|
+	 * ||------|
+	 * ||------|
+	 * ||------|
+	 * ||------|
 	 */
-	public void doubleBar() {
+	public void fixStartBar() {
 		boolean db = false;
-		/* Detect if there's a string with double bars */
+		
+		/* Detect if there's a string with double bars at the start */
 		for (int i = 0; i < this.size(); i++) {
-			if (TabString.VALID_DB_STRING.matcher(this.getString(i).toString()).find()) {
-				System.out.println("db");
+			if (TabString.VALID_DB_START.matcher(this.getString(i).toString()).find()) {
 				db = true;
 				break;
 			}
@@ -142,9 +168,57 @@ public class TabMeasure {
 		/* If double bars are detected, then make the rest of the strings have double bars */
 		if (db) {
 			for (int i = 0; i < this.size(); i++) {
-				if (!TabString.VALID_DB_STRING.matcher(this.getString(i).toString()).find()) {
-					
-					this.getString(i).fixBoth();
+				/* Add a bar is the string is equal to "|||" */
+				if (TabString.VALID_TRIPLE_STRING.matcher(this.getString(i).toString()).find()) {
+					this.strings[i].fixEnd();
+				/* Add a bar is the string doesn't have a double bar end */
+				} else if (!TabString.VALID_DB_START.matcher(this.getString(i).toString()).find()) {
+					this.strings[i].fixStart();
+				}
+			}
+		}
+	}
+	
+	/** 
+	 * Makes sure the number of bars at the end of each string is the same.
+	 * If at least one has a double barred end, then the rest will have it.
+	 * 
+	 * For example, turns this:
+	 * |------|
+	 * |------||
+	 * |------|
+	 * |------|
+	 * |------|
+	 * |------|
+	 * 
+	 * into:
+	 * 
+	 * |------||
+	 * |------||
+	 * |------||
+	 * |------||
+	 * |------||
+	 * |------||
+	 */
+	public void fixEndBar() {
+		boolean db = false;
+		/* Detect if there's a string with double bars at the end */
+		for (int i = 0; i < this.size(); i++) {
+			if (TabString.VALID_DB_END.matcher(this.getString(i).toString()).find()) {
+				db = true;
+				break;
+			}
+		}
+		
+		/* If double bars are detected, then make the rest of the strings have double bars */
+		if (db) {
+			for (int i = 0; i < this.size(); i++) {
+				/* Add a bar is the string is equal to "|||" */
+				if (TabString.VALID_TRIPLE_STRING.matcher(this.getString(i).toString()).find()) {
+					this.strings[i].fixEnd();
+				/* Add a bar is the string doesn't have a double bar end */
+				} else if (!TabString.VALID_DB_END.matcher(this.getString(i).toString()).find()) {
+					this.strings[i].fixEnd();
 				}
 			}
 		}
@@ -240,21 +314,69 @@ public class TabMeasure {
 	}
 	
 	/**
+	 * Sets the repeats to the given amount.
+	 * 
+	 * @param repeat the number of repeats to set
+	 */
+	public void setRepeat(int repeat) {
+		if (repeat > 9 || repeat < 0) throw new IllegalArgumentException("Error: number of repeats must be >=0 and <=9");
+		this.repeat = repeat;
+	}
+	
+	public int getRepeat() {
+		return this.repeat;
+	}
+	
+	/**
+	 * Appends the given string to the comment.
+	 * 
+	 * @param line	the string to append
+	 */
+	public void addComment(String line) {
+		this.is_comment = true;
+		this.comment.append(line);
+	}
+	
+	/**
+	 * Returns the comment as a string.
+	 * 
+	 * @return	the comment as a string
+	 */
+	public String getComment() {
+		return this.comment.toString();
+	}
+	
+	/**
+	 * Checks to see if the measure is invalid and therefore a comment.
+	 * 
+	 * @return	true if the measure is invalid and a comment
+	 * @return	false if the measure is valid and not a comment
+	 */
+	public boolean isComment() {
+		return this.is_comment;
+	}
+	
+	/**
 	 * Gives a string representation of the TabMeasure by
 	 * displaying the string representation of all its TabStrings.
+	 * If the measure is invalid, then it returns it as a comment.
 	 * 
 	 * @return the string representation of the TabMeasure
 	 */
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		if (this.isEmpty())
-			return "[empty measure]";
-		for (int i = 0; i < MAX_STRINGS; i++) {
-			buf.append(strings[i].toString());
-			if (i < MAX_STRINGS - 1)
-				buf.append("\n");
-		}	
-		return buf.toString();
+		if (this.isComment()) {
+			return this.getComment();
+		} else {
+			if (this.isEmpty())
+				return "[empty measure]";
+			for (int i = 0; i < MAX_STRINGS; i++) {
+				buf.append(strings[i].toString());
+				if (i < MAX_STRINGS - 1)
+					buf.append("\n");
+			}	
+			return buf.toString();
+		}
 	}
 }

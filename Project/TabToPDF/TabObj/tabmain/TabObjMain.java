@@ -3,12 +3,18 @@ import tabparts.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
+
+import com.itextpdf.text.pdf.spatial.Measure;
+
 
 public class TabObjMain {
 
-	public static void main(String[] args) {
+	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
+	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end
+	static TabMeasure measure[] = new TabMeasure[200];
+	public static void main(String[] args) throws Exception {
 		int i, j, k;
-		TabMeasure measure[];
 		TabString s;
 		Random gen = new Random();
 		
@@ -39,11 +45,11 @@ public class TabObjMain {
 		s.addDash(5);
 		System.out.println(s.toString());*/
 		
-		
 		File input = new File("inputfiles/try4.txt");
 		BufferedReader stream;
-		measure = new TabMeasure[200];
+		
 		String line;
+		
 		for (k = 0; k < 200; k++)
 			measure[k] = new TabMeasure();
 		try {
@@ -56,22 +62,56 @@ public class TabObjMain {
 			while ((line = stream.readLine()) != null) {
 				line = line.replaceAll("\\s+$", "");
 				if (line.isEmpty()) {
-					if (!emptyfound) basemeasure = maxmeasure;
+					if (!emptyfound) {
+						if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
+							boolean delete = true;
+							for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
+								if (!measure[maxmeasure-1].getString(d).isEmpty()) delete = false;
+							}
+							if (delete) {
+								measure[maxmeasure-1].getString(0).copyString(new TabString());
+								maxmeasure = maxmeasure - 1;
+							}
+						}
+						basemeasure = maxmeasure;
+					}
 					emptyfound = true;
 					stringnum = 0;
 				} else {
+					/* Special case if there's no line break between measures */
 					if (stringnum >= TabMeasure.MAX_STRINGS) {
+						if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
+							boolean delete = true;
+							for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
+								if (!measure[maxmeasure-1].getString(d).isEmpty()) delete = false;
+							}
+							if (delete) {
+								measure[maxmeasure-1].getString(0).copyString(new TabString());
+								maxmeasure = maxmeasure - 1;
+							}
+						}
 						stringnum = 0;
 						basemeasure = maxmeasure;
 					}
 					emptyfound = false;
 					currentmeasure = basemeasure;
-					inner:
+					
 					for (int p = 0; p < line.length(); currentmeasure++) {
 						s = new TabString();
-						p = s.scanLine(line, p);
+						p = s.scanLine(line, p, stringnum == 0);
+						if (stringnum == 0 && s.checkError() == TabString.ERROR_COMMENT) {
+							measure[currentmeasure].addComment(line);
+						}
 						measure[currentmeasure].setString(s, stringnum);
-						if (p == line.length() - 1) {
+						if (p == line.length() - 2 && 
+								TabString.VALID_DB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
+							currentmeasure++;
+							break;
+						} else if (p == line.length() - 3 && 
+								TabString.VALID_TB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
+							currentmeasure++;
+							break;
+						} else if (p == line.length() - 1) { 
 							currentmeasure++;
 							break;
 						}
@@ -89,12 +129,25 @@ public class TabObjMain {
 			e.printStackTrace();
 		}
 		
-		for (i = 0; i < 1; i++) {
+		/*findRepeats();
+		for (i = 0; i < 35; i++) {
+			System.out.println("Measure " + i + " (repeats=" + measure[i].getRepeat() + "):");
+			measure[i].fixMeasure();
+			System.out.println(measure[i].toString());
+		}*/
+		
+		findRepeats();
+		
+		for (i = 0; i < 30; i++) {
 			System.out.println("......................................");
-			System.out.println("Measure " + i + ":");
+			System.out.println("Measure " + i + "(" + measure[i].getRepeat() + "): ");
 			System.out.println(measure[i].toString());
 			System.out.println("Measure " + i + " fixed errors" + ":");
 			measure[i].fixStrings();
+			System.out.println(measure[i].toString());
+			System.out.println("Measure " + i + " double bar" + ":");
+			measure[i].fixStartBar();
+			measure[i].fixEndBar();
 			System.out.println(measure[i].toString());
 			System.out.println("Measure " + i + " equalized" + ":");
 			measure[i].equalizeStrings();
@@ -161,4 +214,46 @@ public class TabObjMain {
 		System.out.println(string.toString() + " size=" + string.size());*/
 	}
 
+	static public void findRepeats() throws Exception {
+		
+		for (int a = 0; a < 32; a++) {	
+			if (a == 32 - 1 && REPEAT_START.matcher(measure[a].getString(0).toString()).find()) {
+				boolean delete = true;
+				for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
+					if (!measure[a].getString(d).isEmpty()) delete = false;
+				}
+				if (delete) {
+					measure[a].getString(0).copyString(new TabString());
+					//size--;
+				}
+			} else {
+				boolean single = true;
+				if (REPEAT_END.matcher(measure[a].getString(0).toString()).find()) {
+					for (int i = 1; i < TabMeasure.MAX_STRINGS; i++) {
+						if (TabString.VALID_DB_END.matcher(measure[a].getString(i).toString()).find()) {
+							single = false;
+							char t = measure[a].getString(0).getChar(measure[a].getString(i).size() - 1);
+							if (t >= '1' && t <= '9') {
+								measure[a].setRepeat(Character.getNumericValue(t));
+								measure[a].getString(0).replaceChar('|', measure[a].getString(0).size()-1);
+							} else 
+								throw new Exception("Error: repeat number is invalid");
+							if (a < 30 - 1 && measure[a+1].getString(0).getChar(0) == '|' && measure[a+1].getString(0).getChar(1) == t) {
+								for (int v = 1; v < TabMeasure.MAX_STRINGS; v++) {
+									if (TabString.VALID_DB_START.matcher(measure[a+1].getString(v).toString()).find()) {
+										measure[a+1].getString(0).replaceChar('|', 1);
+									}
+								}
+							}
+							break;
+						}				
+					}
+					if (single)
+						measure[a].getString(0).replaceChar(TabString.NULL_CHAR, measure[a].getString(0).size()-1);
+				} else if (TabString.VALID_DB_END.matcher(measure[a].getString(0).toString()).find()) {
+					measure[a].setRepeat(1);
+				}
+			}
+		}	
+	}
 }
