@@ -13,23 +13,7 @@ import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.draw.*;
 public class TextToPDF {
         
-		/* What is new :
-		 * the method of detecting was for title,subtitle,linespacing  but not 100 (see line 162) % .
-		 * Apperantly its adding an empty List<string> to the dynamic_array. I tried to make method
-		 * to remove emtpy array but did not work
-		 * I fixed the method of detecting subtitle ( not detected b string regex ). In fact it was being mached along with title method
-		 *  removal of  dependency of linecount ( to detect title, substring, linespace) making it only dependable on regex  . Plus
-		 * I made sure that it only detects TITLE=string,  subTITLE=string only no numbers, subTITLE=string, only no numbers , spacing=float number no string
-		 * I added extra if statement for currY to move to add new page when needed
-		 */
-		/* what needed to be fixed or add :
-		 * removal of empty list from dynamic array
-		 * when concatinating of list from dynamic array , if the size of dynamic array is even , it does 
-		 * all of them. If the size is odd it does not add the last one. added manually , check line 186
-		 * add feature to make variable line space 
-		 */
-	
-        /* CONSTANTS */
+		/* fist stable version*/
         
         final float LEFT_MARGIN = 36.0f;
         final float RIGHT_MARGIN = 556.0f;
@@ -41,7 +25,7 @@ public class TextToPDF {
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        public static String INPUT_FILENAME = "inputfiles/try.txt";
+        public static String INPUT_FILENAME = "inputfiles/try2.txt";
         public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
        
         
@@ -178,14 +162,19 @@ public class TextToPDF {
             		group1.newPage();
             		same_line_state=0;
                     currX = 36.0f;
-                    currY = 680.0f;
+                    currY = 750.0f;
             	}
         		else {
         		
-        		output.printf("i is   %d\n",i);
-    
+        		output.printf("i is else   %d\n",i);
+        		if (i == 0) {
+        		
+        			same_line_state=0;
+        		} else
+        			same_line_state=1;
+        		
         		DrawMusicNote(dynamic_array.get(i),currX,currY,LINE_SPACE,FONT_SIZE,same_line_state,cb);
-        		same_line_state=1;
+        		
         		currX = currX + getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE);
         		//this.DrawLine(currX, currY, currX, currY+5f, 0.5f, cb);
         		//this.DrawLine(currX, currY, currX, currY+3f, 0.5f, cb);
@@ -196,7 +185,7 @@ public class TextToPDF {
         		
         	}
         	else  {
-        		//output.printf("is   %d\n",i);
+        		output.printf("is else 2  %d\n",i);
         		
         		//output.printf("currx else adding  %f\n",currX);
         		output.printf("before curry else adding  %f\n",currY);
@@ -344,18 +333,27 @@ public class TextToPDF {
          private void Pause(float x , float y,int num_pos,int curr_pos, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
         	 System.out.printf("num_pos is %d\n",num_pos);
         	 System.out.printf("curr_pos is %d\n",curr_pos);
+        	 float xctrl =0;
+        	 if (font_size/line_space <= 1.14 ) 
+        		 xctrl = (x -line_space)-(font_size/1.8f); 
+        	 else 
+        		 xctrl= (x -line_space);
+        		 
         	 int  diff = (curr_pos-num_pos)-1; 
         	 float tempx = (x- diff* (line_space))+((font_size/1.8f)/2.0f);
+        	 //this.DrawLine( (x -line_space)-(font_size/1.8f), y, (x -line_space)-(font_size/1.8f), y+6.0f, 0.5f, cb);
+        	 //this.DrawLine(tempx, y, tempx, y+5f, 0.5f, cb);
+        	 this.DrawLine(x, y, x+3f, y+3f, 0.5f, cb);
         	 float tempy = y +(font_size*0.5f);
         	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         	 cb.saveState();
         	 cb.moveTo(tempx, tempy);
-        	 cb.curveTo(tempx*1.015f, tempy+(line_space*0.4f),  ((x +line_space)+((font_size/1.8f)/2.0f))*(0.975f), tempy+(line_space*0.4f),  (x +(line_space*1.0f))+((font_size/1.8f)/2.0f), tempy);
+        	 cb.curveTo(xctrl, tempy+(line_space*0.4f),  (x +line_space), tempy+(line_space*0.4f),  (x +(line_space*1.0f))+((font_size/1.8f)/2.0f), tempy);
              cb.stroke();
              cb.restoreState();
              cb.saveState();
              cb.beginText();
-             cb.setTextMatrix(x-(line_space*0.3f), tempy+(line_space*0.4f));
+             cb.setTextMatrix(x-(line_space*0.3f), tempy+(line_space*0.5f));
              cb.setFontAndSize(bf, font_size/2);
              cb.showText("p");
              cb.endText();
@@ -425,13 +423,13 @@ public class TextToPDF {
         			else if (inner.get(0).charAt(i) != '|'&& inner.get(0).charAt(i) != ' ')
         				total+= line_space;
         			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  &&  ((inner.get(0).charAt(i+2) != '|' ) || inner.get(0).charAt(i+2) == '$' )) {
-        				System.out.printf("passed through 2 ||\n");
+        				//System.out.printf("passed through 2 ||\n");
         				total+= line_space;
         			}
         			
         				
         			else if (inner.get(0).charAt(i) == '|' &&  inner.get(0).charAt(i+1) == '|'  && inner.get(0).charAt(i+2) == '|' &&   inner.get(0).charAt(i+3) == '$' ) {
-        				System.out.printf("passed through 3 ||\n");
+        				//System.out.printf("passed through 3 ||\n");
         				total+= line_space*1.0f;
         			}
         				
@@ -450,9 +448,10 @@ public class TextToPDF {
         		 for (int i = 0 ; i < inner.get(s).length()-3 ; i++) {
         			 if (i <=2 && inner.get(s).charAt(i) == '|' &&  inner.get(s).charAt(i+1) == '|' && same_line == 1 && s < inner.size() -1 )
         			 {
+        				 DrawLine(x, y, x, y-(FontSize*0.9f),2.0f, cb);
         				 DrawLine(x+(line_space/2.0f),y,x+(line_space/2.0f),y-(FontSize*0.9f),0.5f,cb); // draw thin bar
         				 DrawLine(x,y,x+line_space,y,0.5f,cb); // draw horizital for filling gap
-        				 
+        				 System.out.println("pass same line");
         				 i = i+1;
         				 x+=line_space;
         				 
