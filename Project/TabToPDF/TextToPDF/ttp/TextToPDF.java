@@ -15,8 +15,6 @@ public class TextToPDF {
         
 		/* fist stable version*/
         
-        final float LEFT_MARGIN = 36.0f;
-        final float RIGHT_MARGIN = 556.0f;
         final float LINE_SPACE = 5.0f;
         final float PARA_SPACE = 15.0f;
         final float TITLE_SIZE = 26.0f;
@@ -31,13 +29,9 @@ public class TextToPDF {
         
         private String title;
         private String subtitle;
-        private int spacing;
         
         private List<List<String>> dynamic_array = new ArrayList<List<String>>();
-        private List<String> inner;
-        private List<List<String>> outerconcat;
-        
-        private static final List<Character> special_char  = new ArrayList<Character>();
+        private List<String> inner;        
         PdfWriter document;
         private int same_line_state = 0;
         private int enable_add = 0;
@@ -58,7 +52,7 @@ public class TextToPDF {
                 group1.open();
                 document.open();
                 PdfContentByte cb = document.getDirectContent();
-                BaseFont bf1 = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.EMBEDDED);
+               // BaseFont bf1 = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.EMBEDDED);
                  BaseFont bf_title = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
                 Font title_font = new Font(bf_title,26);
                  BaseFont bf_subtitle = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -279,7 +273,7 @@ public class TextToPDF {
          private  void DrawLine(float x , float y , float toX, float toY,float thinkess,PdfContentByte cb ) {
         	
         	 cb.setLineWidth(thinkess); // Make a bit thicker than 1.0 default , 0.5f
-             cb.setGrayStroke(0.0f);// 1 = black, 0 = white
+             cb.setGrayStroke(0.0f);// 0 = black, 1 = white
              cb.moveTo(x,y);
              cb.lineTo(toX,toY);
              cb.stroke();

@@ -25,6 +25,7 @@ public class GUIModel {
 
 	// Static variables.
 
+	//private static File imageFile= new File("res/nopreview.gif"); temporary fix to initialize imagefile check line 72
 	private static File imageFile;
 	static String logString = "";
 	static BufferedImage image;
@@ -44,7 +45,7 @@ public class GUIModel {
 	public GUIModel() { // BufferedImage image
 
 		try {
-			this.image = ImageIO.read(new File("res/nopreview.gif"));
+			this.image = ImageIO.read(new File("res/nopreview.gif")); // was not initialized give error
 			imageFile = new File("res/nopreview.gif");
 		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,7 +69,7 @@ public class GUIModel {
 		 */
 
 		try {
-			image = ImageIO.read(imageFile);
+			image = ImageIO.read(imageFile);  
 			setImage(image);
 
 		} catch (IOException e) {
