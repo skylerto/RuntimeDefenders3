@@ -31,9 +31,12 @@ public class GUIUtils {
 	/**
 	 * Opens
 	 * 
+	 * Works for linux mac and windows.
+	 * 
 	 * @param file
 	 *            you'd like to open in external text editor.
 	 * @return - returns if the editor was able to open or not.
+	 * @throws OSNotSupportedException
 	 * 
 	 */
 	public static boolean openTextEditor(File file) {
@@ -51,13 +54,32 @@ public class GUIUtils {
 		// Code to open, but user has to select what he wants to open with.
 
 		boolean worked = false;
-		Desktop dt = Desktop.getDesktop();
-		try {
-			dt.open(file);
-			worked = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // TODO Auto-generated catch block e.printStackTrace(); }
+
+		String os = System.getProperty("os.name").toLowerCase();
+
+		// is windows
+		if (os.indexOf("win") >= 0) {
+			Desktop dt = Desktop.getDesktop();
+			try {
+				dt.open(file);
+				worked = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} // TODO Auto-generated catch block e.printStackTrace(); }
+
+		} else if (os.indexOf("mac") >= 0) {
+			//
+		} else if (os.indexOf("nix") >= 0) {
+
+		} else {
+			try {
+				throw new OSNotSupportedException("The operating system: " + os
+						+ " is not supported.");
+			} catch (OSNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		return worked;
 	}

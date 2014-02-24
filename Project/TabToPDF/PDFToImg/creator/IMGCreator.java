@@ -6,16 +6,17 @@
 
 package creator;
 
-import swing.SwingGUI;
-
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.fonts.FontMappings;
+
+import version11.TextToPDFv11;
 
 import MVC.GUIModel;
 
