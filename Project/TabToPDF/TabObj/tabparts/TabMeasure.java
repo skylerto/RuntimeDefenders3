@@ -75,7 +75,7 @@ public class TabMeasure {
 		this.size = measure.size();
 		this.setLength(measure.length());
 		this.setRepeat(measure.getRepeat());
-		this.addComment(measure.getComment());
+		this.comment = measure.comment;
 		this.is_comment = measure.isComment();
 	}
 	
@@ -104,7 +104,13 @@ public class TabMeasure {
 	 * Gets the string as a text from the index given.
 	 * 
 	 * @param index the index of the string
-	 * @return a text representation of the string
+	 * @return a text representation of the string	for (int i = 0; i < MAX_STRINGS; i++)
+			this.strings[i] = new TabString(measure.getString(i));
+		this.size = measure.size();
+		this.setLength(measure.length());
+		this.setRepeat(measure.getRepeat());
+		this.addComment(measure.getComment());
+		this.is_comment = measure.isComment();
 	 */
 	public String getStringText(int index) {
 		return this.getString(index).toString();
@@ -121,7 +127,7 @@ public class TabMeasure {
 		this.size = measure.size;
 		this.setLength(measure.length());
 		this.setRepeat(measure.getRepeat());
-		this.addComment(measure.getComment());
+		this.comment = measure.comment;
 		this.is_comment = measure.isComment();
 	}
 	
