@@ -18,6 +18,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import ttp.TextToPDF;
+import version11.ReadFromInput;
 import version11.TextToPDFv11;
 
 import com.itextpdf.text.DocumentException;
@@ -107,6 +108,7 @@ class selectButtonListener implements ActionListener {
 
 			GUIView.fileToRead = chooser.getSelectedFile();
 			String filenameWithExtension = chooser.getSelectedFile().toString();
+			
 			String filename = GUIUtils
 					.removeFileExtension(filenameWithExtension);
 			GUIModel.setfilenameWithExtension(filenameWithExtension);
@@ -120,11 +122,15 @@ class selectButtonListener implements ActionListener {
 			String output = "outputfiles/"
 					+ GUIUtils.removeFileQualifier(GUIModel.getfilename())
 					+ ".pdf";
+
 			GUIModel.setOutputFilename(output);
-			TextToPDF test = new TextToPDF();
-			TextToPDF.setInputFileName(input);
+			// TextToPDF test = new TextToPDF();
+			// TextToPDF.setInputFileName(input);
+
 			try {
-				test.createPDF(output);
+				TextToPDFv11 test = new TextToPDFv11(output, input);
+				test.WriteToPDF();
+				// test.createPDF(output);
 			} catch (DocumentException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -158,16 +164,17 @@ class convertButtonListener implements ActionListener {
 
 		// output input
 		String input = GUIModel.filenameWithExtension;
-		String output = "outputfiles/" + GUIModel.filename;
+		String output =  GUIModel.filename;
 
 		try {
-			// TextToPDFv11 test = new TextToPDFv11(output, input); - WHEN
-			// VERSION 11 IS RELEASED.
+			TextToPDFv11 test = new TextToPDFv11(output, input);
+			test.WriteToPDF();
+			/*
+			 * // Set the inputfile name and run the create pdf. TextToPDF test
+			 * = new TextToPDF(); TextToPDF.setInputFileName(input);
+			 * test.createPDF(output);
+			 */
 
-			// Set the inputfile name and run the create pdf.
-			TextToPDF test = new TextToPDF();
-			TextToPDF.setInputFileName(input);
-			test.createPDF(output);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -219,7 +226,6 @@ class editButtonListener implements ActionListener {
 									+ "For more information please go to Help > User Manual.");
 
 		} else {
-			// OPEN INPUTFILE IN TEXT EDITOR
 			GUIUtils.openTextEditor(new File(GUIModel
 					.getfilenameWithExtension()));
 
