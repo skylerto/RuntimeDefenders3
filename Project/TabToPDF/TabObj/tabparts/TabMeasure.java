@@ -13,7 +13,10 @@ import java.util.regex.Pattern;
  * 
  * Constructors and copy methods have been edited to account for the new attributes
  * 
- * New methods: fixEndBar(), fixStartBar(), isBlank()
+ * New methods: fixEndBar(), fixStartBar(), isBlank(), getStringText()
+ * 
+ * Edited isEmpty()
+ * Deleted isFull()
  */
 
 /**
@@ -96,6 +99,16 @@ public class TabMeasure {
 	public TabString getString(int index) {
 		return this.strings[index];
 	}	
+	
+	/**
+	 * Gets the string as a text from the index given.
+	 * 
+	 * @param index the index of the string
+	 * @return a text representation of the string
+	 */
+	public String getStringText(int index) {
+		return this.getString(index).toString();
+	}
 	
 	/**
 	 * Copies the given TabMeasure.
@@ -307,23 +320,21 @@ public class TabMeasure {
 	}
 	
 	/**
-	 * Checks whether the TabString array is full or not.
-	 * 
-	 * @return	true if the array is full
-	 * @return	false if the array is not full
-	 */
-	public boolean isFull() {
-		return this.size == MAX_STRINGS;
-	}
-	
-	/**
 	 * Checks whether the TabString array is empty or not.
+	 * An empty measure contains all empty strings and is not a comment.
 	 * 
 	 * @return	true if the array is empty
 	 * @return	false if the array is not empty
 	 */
 	public boolean isEmpty() {
-		return this.size == 0;
+		boolean empty = true;
+		for (int i = 0; i < this.size(); i++) {
+			if (!this.strings[i].isEmpty()) {
+				empty = false;
+				break;
+			}
+		}
+		return empty && !this.isComment();
 	}
 	
 	/**
