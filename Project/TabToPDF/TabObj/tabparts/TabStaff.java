@@ -437,7 +437,7 @@ public class TabStaff {
 			if (staff.get(i).isComment()) {
 				buf.append(staff.get(i).getComment() + "\n\n");
 			} else {
-				buf.append("(" + staff.get(i).getRepeat() + ")\n");
+				buf.append("repeats(" + staff.get(i).getRepeat() + ")\n");
 				buf.append(staff.get(i).toString() + "\n\n");
 			}
 		}

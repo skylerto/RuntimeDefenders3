@@ -2,10 +2,11 @@ title
 subtitle
 size
 
-the four below should disappear because it's a repeat number
+the four below is a repeat number
 
 |-----|4-----
 ||-----||------||
+||2--3||---2--1--4||
 
 |---99999999---|
 ||---9999---|

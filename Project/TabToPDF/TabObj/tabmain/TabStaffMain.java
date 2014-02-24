@@ -10,14 +10,16 @@ public class TabStaffMain {
 		List<List<String>> list;
 		
 		staff.scanFile(new File("inputfiles/try4.txt"));
+		
+		System.out.println(staff.toString());
 
 		list = staff.getList();
 
-		for (int i = 0; i < list.size(); i++) {
+		/*for (int i = 0; i < list.size(); i++) {
 			for (int j = 0; j < list.get(i).size(); j++) {
 				System.out.println(list.get(i).get(j));
 			}
 			System.out.println();
-		}
+		}*/
 	}
 }
