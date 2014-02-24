@@ -10,6 +10,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  * Utilities used for GUIModel.
  * 
@@ -39,17 +42,8 @@ public class GUIUtils {
 	 */
 	public static boolean openTextEditor(File file) {
 
-		/*
-		 * boolean worked = true;
-		 * 
-		 * // Opens a new text area with the required file.
-		 * 
-		 * JFrame editorFrame = new JFrame(logName); JTextArea editArea = new
-		 * JTextArea(); editArea.setEditable(false);
-		 * editArea.setText(GUIUtils.openAndReadFile(file.toString()));
-		 * editorFrame.add(editArea); editorFrame.pack();
-		 */
-		// Code to open, but user has to select what he wants to open with.
+		JOptionPane.showMessageDialog(new JFrame(),
+				"Don't forget to save and re-select the edited file!");
 
 		boolean worked = true;
 
@@ -69,9 +63,10 @@ public class GUIUtils {
 			// is linux ish.
 
 			try {
+				// System.getenv("EDITOR")
 
 				Runtime.getRuntime().exec(
-						new String[] { "jedit", file.toString() });
+						new String[] { "gvim", file.toString() });
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

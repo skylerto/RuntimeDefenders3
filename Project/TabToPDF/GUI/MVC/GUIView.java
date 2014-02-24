@@ -43,14 +43,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionListener;
 
 import print.printPDF;
 import swing.PrinterInterface;
-import ttp.TextToPDF;
 
 public class GUIView {
 
@@ -351,6 +348,8 @@ public class GUIView {
 		// Display the window.
 		frame.pack();
 		frame.setVisible(true);
+		new ReadAndDisplayUserManual();
+
 	}
 
 	public static void main(String args[]) {
@@ -380,6 +379,7 @@ public class GUIView {
 		convertButton.addActionListener(listenForSelectButton);
 
 	}
+
 	void addEditButtonListener(ActionListener listenForSelectButton) {
 
 		edit.addActionListener(listenForSelectButton);
