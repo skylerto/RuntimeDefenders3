@@ -10,8 +10,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Scanner;
 
-import org.lwjgl.Sys;
-
 /**
  * Utilities used for GUIModel.
  * 
@@ -53,12 +51,12 @@ public class GUIUtils {
 		 */
 		// Code to open, but user has to select what he wants to open with.
 
-		boolean worked = false;
+		boolean worked = true;
 
 		String os = System.getProperty("os.name").toLowerCase();
 
-		// is windows
-		if (os.indexOf("win") >= 0) {
+		// is windows or mac
+		if (os.indexOf("win") >= 0 || os.indexOf("mac") >= 0) {
 			Desktop dt = Desktop.getDesktop();
 			try {
 				dt.open(file);
@@ -67,9 +65,17 @@ public class GUIUtils {
 				e.printStackTrace();
 			} // TODO Auto-generated catch block e.printStackTrace(); }
 
-		} else if (os.indexOf("mac") >= 0) {
-			//
-		} else if (os.indexOf("nix") >= 0) {
+		} else if (os.indexOf("nux") >= 0) {
+			// is linux ish.
+
+			try {
+
+				Runtime.getRuntime().exec(
+						new String[] { "jedit", file.toString() });
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
 			try {
