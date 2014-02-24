@@ -61,6 +61,12 @@ public class TabString {
 	public static final String BOTHFIX_SPACEFIX_MSG = "[fixed both ends of string, deleted excess spaces]";
 	public static final String SPECIAL_MSG = "[special triple fix]";
 	
+	public static final Pattern SYMBOL_SLIDE = Pattern.compile("s");
+	public static final Pattern SYMBOL_HAMMER = Pattern.compile("h");
+	public static final Pattern SYMBOL_SPACE = Pattern.compile(" ");
+	public static final Pattern SYMBOL_PULL = Pattern.compile("p");
+	public static final Pattern SYMBOL_STAR = Pattern.compile("\\*");
+	
 	/* ATTRIBUTES */
 	
 	private Character[] chars;	// The characters of the string
@@ -140,7 +146,7 @@ public class TabString {
 						i++;
 						break;
 					/* Stop if repetition number is found */
-					} else if (i < line.length()-1 && line.charAt(i+1) >= '1' && line.charAt(i+1) <= '9') {
+					} else if (first && i < line.length()-1 && line.charAt(i+1) >= '1' && line.charAt(i+1) <= '9') {
 						repfound = true;
 						i++;
 						break;
@@ -334,14 +340,12 @@ public class TabString {
 		} else if (error == ERROR_DB_START) {
 			b = this.delTrailSpaces();
 			this.fixStart();
-			this.fixStart();
 			if (b) return STARTFIX_SPACEFIX_MSG;
 			else return STARTFIX_MSG;
 			
 		/* If the end '||' is missing, then add it */
 		} else if (error == ERROR_DB_END) {
 			b = this.delTrailSpaces();
-			this.fixEnd();
 			this.fixEnd();
 			if (b) return ENDFIX_SPACEFIX_MSG;
 			else return ENDFIX_MSG;
