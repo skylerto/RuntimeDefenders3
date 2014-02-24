@@ -25,10 +25,14 @@ public class GUIModel {
 
 	// Static variables.
 
-	//private static File imageFile= new File("res/nopreview.gif"); temporary fix to initialize imagefile check line 72
+	// private static File imageFile= new File("res/nopreview.gif"); temporary
+	// fix to initialize imagefile check line 72
 	private static File imageFile;
 	static String logString = "";
 	static BufferedImage image;
+	static String filenameWithExtension;
+	static String filename;
+	static String outputFilename;
 
 	static Vector<String> selectionFiles = new Vector<String>();
 
@@ -45,7 +49,10 @@ public class GUIModel {
 	public GUIModel() { // BufferedImage image
 
 		try {
-			this.image = ImageIO.read(new File("res/nopreview.gif")); // was not initialized give error
+			this.image = ImageIO.read(new File("res/nopreview.gif")); // was not
+																		// initialized
+																		// give
+																		// error
 			imageFile = new File("res/nopreview.gif");
 		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,7 +76,7 @@ public class GUIModel {
 		 */
 
 		try {
-			image = ImageIO.read(imageFile);  
+			image = ImageIO.read(imageFile);
 			setImage(image);
 
 		} catch (IOException e) {
@@ -169,6 +176,45 @@ public class GUIModel {
 	 */
 	public static void setPreviewImage(File f) {
 		imageFile = f;
+	}
+
+	/**
+	 * Sets the passed String equal to the filename with file extension.
+	 * 
+	 * @param s
+	 *            - filename with extension.
+	 */
+	public static void setfilenameWithExtension(String s) {
+		filenameWithExtension = s;
+	}
+
+	/**
+	 * Sets the passed string equal to the filename, w/o an extension.
+	 * 
+	 * @param s
+	 *            - filename without extension.
+	 */
+	public static void setfilename(String s) {
+
+		filename = s;
+	}
+
+	public static String getfilenameWithExtension() {
+		return filenameWithExtension;
+	}
+
+	public static String getfilename() {
+
+		return filename;
+	}
+
+	public static String getOutputFilename() {
+
+		return outputFilename;
+	}
+
+	public static void setOutputFilename(String s) {
+		outputFilename = s;
 	}
 
 	/**

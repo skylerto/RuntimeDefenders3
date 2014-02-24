@@ -30,14 +30,14 @@ import MVC.GUIModel;
  */
 public class IMGCreator {
 
-	static int counter;
-	public static String OUTPUT_IMGFILE = "outputfiles/musicIMG" + counter + ".png";
+	static int counter = 0;
+	public static String OUTPUT_IMGFILE = "outputfiles/musicIMG" + counter++
+			+ ".png";
 
 	public static void createPreview() {
 		/* CONSTANTS */
 
-		counter = 0;
-		String INPUT_PDFFILE = "outputfiles/musicPDF.pdf";
+		String INPUT_PDFFILE = GUIModel.getOutputFilename();
 
 		File outputfile = new File(OUTPUT_IMGFILE); // Location of Image file
 
@@ -68,7 +68,6 @@ public class IMGCreator {
 		} catch (PdfException e) {
 			e.printStackTrace();
 		}
-		counter++;
 		System.out.println("Successfully converted " + INPUT_PDFFILE + " to "
 				+ OUTPUT_IMGFILE + " and counter increased to " + counter);
 

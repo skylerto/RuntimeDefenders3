@@ -9,6 +9,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Scanner;
 
+import org.lwjgl.Sys;
+
 /**
  * Utilities used for GUIModel.
  * 
@@ -39,7 +41,6 @@ public class GUIUtils {
 		String filename;
 
 		int lastSeparator = filenameWithExtention.lastIndexOf(fileSeparator);
-
 		// Check to see if it's in the root directory. (Base case, probably will
 		// never happen)
 		if (lastSeparator == -1) {
@@ -53,6 +54,10 @@ public class GUIUtils {
 		}
 
 		return filename;
+	}
+
+	static String removeFileQualifier(String file) {
+		return file.substring(0, file.indexOf('.'));
 	}
 
 	/**
@@ -107,4 +112,7 @@ public class GUIUtils {
 		return message;
 	}
 
+	public static void main(String[] args) {
+
+	}
 }

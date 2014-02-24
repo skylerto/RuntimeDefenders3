@@ -16,6 +16,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import ttp.TextToPDF;
+import version11.TextToPDFv11;
 
 import com.itextpdf.text.DocumentException;
 
@@ -105,9 +106,27 @@ class selectButtonListener implements ActionListener {
 			String filenameWithExtension = chooser.getSelectedFile().toString();
 			String filename = GUIUtils
 					.removeFileExtension(filenameWithExtension);
+			GUIModel.setfilenameWithExtension(filenameWithExtension);
+			GUIModel.setfilename(filename);
 			GUIModel.logString += "File " + "\"" + filename + "\""
 					+ " selected.\n";
 			GUIModel.updateLog();
+
+			// output input
+			String input = GUIModel.filenameWithExtension;
+			String output = "outputfiles/"
+					+ GUIUtils.removeFileQualifier(GUIModel.getfilename())
+					+ ".pdf";
+			GUIModel.setOutputFilename(output);
+			TextToPDF test = new TextToPDF();
+			TextToPDF.setInputFileName(input);
+			try {
+				test.createPDF(output);
+			} catch (DocumentException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			IMGCreator.createPreview();
 
 			if (GUIModel.selectionFiles.size() >= 0) {
@@ -134,17 +153,26 @@ class convertButtonListener implements ActionListener {
 		// DO CONVERT
 		GUIModel.logString += "Attempting to convert file...\n";
 
-		TextToPDF test = new TextToPDF();
+		// output input
+		String input = GUIModel.filenameWithExtension;
+		String output = "outputfiles/" + GUIModel.filename;
 
 		try {
-			test.createPDF(TextToPDF.PDF_FILENAME);
+			// TextToPDFv11 test = new TextToPDFv11(output, input); - WHEN
+			// VERSION 11 IS RELEASED.
+
+			// Set the inputfile name and run the create pdf.
+			TextToPDF test = new TextToPDF();
+			TextToPDF.setInputFileName(input);
+			test.createPDF(output);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully converted " + TextToPDF.INPUT_FILENAME
-				+ " to " + TextToPDF.PDF_FILENAME + "!");
+		System.out.println("Successfully converted "
+				+ TextToPDFv11.INPUT_FILENAME + " to "
+				+ TextToPDFv11.PDF_FILENAME + "!");
 
 		GUIModel.updateLog();
 
