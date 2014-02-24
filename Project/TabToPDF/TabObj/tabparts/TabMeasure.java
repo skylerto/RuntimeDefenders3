@@ -2,6 +2,8 @@ package tabparts;
 
 import java.util.regex.Pattern;
 
+//Fix dots
+
 /*
  * (UPDATE) Added comment and is_comment attributes that work with new methods.
  * New methods are: setComment(), getComment(), isComment()
@@ -11,7 +13,7 @@ import java.util.regex.Pattern;
  * 
  * Constructors and copy methods have been edited to account for the new attributes
  * 
- * New methods: fixEndBar(), fixStartBar()
+ * New methods: fixEndBar(), fixStartBar(), isBlank()
  */
 
 /**
@@ -128,6 +130,7 @@ public class TabMeasure {
 	 * Fixes errors in the TabString array.
 	 */
 	public void fixStrings() {
+		if (this.isComment()) return;
 		for (int i = 0; i < this.size(); i++) {
 			this.strings[i].fixErrors();
 		}
@@ -155,6 +158,7 @@ public class TabMeasure {
 	 * ||------|
 	 */
 	public void fixStartBar() {
+		if (this.isComment()) return;
 		boolean db = false;
 		
 		/* Detect if there's a string with double bars at the start */
@@ -201,6 +205,7 @@ public class TabMeasure {
 	 * |------||
 	 */
 	public void fixEndBar() {
+		if (this.isComment()) return;
 		boolean db = false;
 		/* Detect if there's a string with double bars at the end */
 		for (int i = 0; i < this.size(); i++) {
@@ -248,11 +253,19 @@ public class TabMeasure {
 	 * |1--2---3---------|
 	 */
 	public void equalizeStrings() {
+		if (this.isComment()) return;
 		int max = this.length();
+		/* Finds the max string length if the measure is blank */
+		if (this.isBlank()) {
+			for (int i = 0; i < this.size(); i++)
+				if (this.strings[i].size() > max)
+					max = this.strings[i].size();
 		/* Finds the max string length that isn't blank */
-		for (int i = 0; i < this.size(); i++)
-			if (this.strings[i].size() > max && !this.strings[i].isBlank())
-				max = this.strings[i].size();
+		} else {
+			for (int i = 0; i < this.size(); i++)
+				if (this.strings[i].size() > max && !this.strings[i].isBlank())
+					max = this.strings[i].size();
+		}
 		/* Set the measure length = to max found */
 		this.setLength(max);
 		/* Add dashes to short strings and trim blank strings */
@@ -314,6 +327,20 @@ public class TabMeasure {
 	}
 	
 	/**
+	 * Checks whether the measure contains all blank strings
+	 * 
+	 * @return true if blank, false otherwise
+	 */
+	public boolean isBlank() {
+		for (int i = 0; i < MAX_STRINGS; i++) {
+			if (!strings[i].isBlank()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Sets the repeats to the given amount.
 	 * 
 	 * @param repeat the number of repeats to set
@@ -334,7 +361,7 @@ public class TabMeasure {
 	 */
 	public void addComment(String line) {
 		this.is_comment = true;
-		this.comment.append(line);
+		this.comment.append(line + "\n");
 	}
 	
 	/**
@@ -343,7 +370,9 @@ public class TabMeasure {
 	 * @return	the comment as a string
 	 */
 	public String getComment() {
-		return this.comment.toString();
+		StringBuffer b = new StringBuffer(this.comment.toString());
+		b.deleteCharAt(b.length()-1);
+		return b.toString();
 	}
 	
 	/**

@@ -1,9 +1,8 @@
 package tabparts;
 import java.util.regex.Pattern;
 
-// trimString() needs to work with double bar.
 /*
- * (UPDATED) Edited addDash to work with double bars.
+ * (UPDATED) Edited addDash() and trimString() to work with double bars.
  * Added replaceChar() method
  * 
  * -Ron
@@ -40,13 +39,14 @@ public class TabString {
 	public static final Pattern VALID_START = Pattern.compile("^\\s*[|]\\s*\\S+");	// A string missing the end '|'
 	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*$");	// A string missing the start '|'
 	public static final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
-	public static final Pattern BLANK_STRING = Pattern.compile("^\\s*[|][\\s-]*[|]\\s*$");	// A string of dashes only
+	public static final Pattern BLANK_STRING = Pattern.compile("^\\s*[|]{1,2}[\\s-]*[|]{1,2}\\s*$");	// A string of dashes only
 	public static final Pattern VALID_DB_START = Pattern.compile("^\\s*[|]{2}\\s*\\S+\\s*");	// A string missing the end '||'
 	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	// A string missing the start '||'
 	public static final Pattern VALID_TB_END = Pattern.compile("\\s*\\S+\\s*[|]{3}\\s*$");	// A string with '|||' at the end
 	
 	public static final Pattern HARD_VALID_STRING = Pattern.compile("^[|]{1,2}.*[|]{1,2}$");	// A string closed in at least one set of '|' with no trailing spaces
 	public static final Pattern VALID_TRIPLE_STRING = Pattern.compile("^\\s*[|]{3}\\s*$");		// A string containing only '|||'
+	public static final Pattern VALID_BARS = Pattern.compile("^\\s*[|]{2,}\\s*$");			// A string that contains at least 2 bars and only bars
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
 	public static final String VALID_MSG = "[valid string]";
@@ -250,20 +250,47 @@ public class TabString {
 	 */
 	public boolean trimString(int num) {
 		TabString s;
+		int start = 0;
+		int end = 0;
 		if (this.isEmpty()) return false;
 		if (!this.isBlank()) return false;
-		if (this.getChar(0) != '|' && this.getChar(this.size()- 1) != '|') return false;
+		if (!VALID_STRING.matcher(this.toString()).find()) return false;
+		if (VALID_BARS.matcher(this.toString()).find()) return false;
 		if (this.size() < 3) return false;
-		if ((this.size()-2) <= num) {
+		/* Count the '|'s at the start of the string */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) != '|') break;
+			else
+				start++;
+		}
+		/* Count the '|'s at the end of the string */
+		for (int i = this.size() - 1; i >= 0; i--) {
+			if (this.getChar(end) != '|') break;
+			else
+				end++;
+		}
+		/* Delete everything between bars if num is greater than the number of characters */
+		if ((this.size()-(start + end)) <= num) {
 			s = new TabString();
-			s.addChar('|');
-			s.addChar('|');
+			for (int i = 0; i < start; i++)
+				s.addChar('|');
+			for (int i = 0; i < end; i++)
+				s.addChar('|');
 			this.copyString(s);
+		/* Delete the number of chars given */
 		} else {
 			s = new TabString();
-			for (int i = 0; i < this.size() - num - 1; i++)
-				s.addChar(this.getChar(i));
-			s.addChar('|');
+			if (VALID_DB_END.matcher(this.toString()).find()) {
+				for (int i = 0; i < this.size() - num - 2; i++)
+					s.addChar(this.getChar(i));
+				s.addChar('|');
+				s.addChar('|');
+			} else {
+				for (int i = 0; i < this.size() - num - 1; i++)
+					s.addChar(this.getChar(i));
+				s.addChar('|');
+			}
+			
 			this.copyString(s);
 		}
 		return true;

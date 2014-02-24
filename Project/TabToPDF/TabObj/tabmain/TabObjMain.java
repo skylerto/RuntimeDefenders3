@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.itextpdf.text.pdf.spatial.Measure;
 
+// Handle comments between measures with no empty lines
 
 public class TabObjMain {
 
@@ -15,7 +16,7 @@ public class TabObjMain {
 	static TabMeasure measure[] = new TabMeasure[200];
 	public static void main(String[] args) throws Exception {
 		int i, j, k;
-		TabString s;
+		
 		Random gen = new Random();
 		
 		/*String st = "||-||";
@@ -54,6 +55,9 @@ public class TabObjMain {
 			measure[k] = new TabMeasure();
 		try {
 			stream = new BufferedReader(new FileReader(input));
+			TabString s;
+			TabString temp;
+			boolean commentfound = false;
 			boolean emptyfound = false;
 			int basemeasure = 0;
 			int currentmeasure = 0;
@@ -61,6 +65,7 @@ public class TabObjMain {
 			int stringnum = 0;
 			while ((line = stream.readLine()) != null) {
 				line = line.replaceAll("\\s+$", "");
+				/* If line is empty */
 				if (line.isEmpty()) {
 					if (!emptyfound) {
 						if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
@@ -73,53 +78,76 @@ public class TabObjMain {
 								maxmeasure = maxmeasure - 1;
 							}
 						}
+						if (commentfound) {
+							currentmeasure++;
+							maxmeasure = currentmeasure;
+							commentfound = false;
+						}
 						basemeasure = maxmeasure;
+						stringnum = 0;
 					}
 					emptyfound = true;
-					stringnum = 0;
+					//System.out.println("empty found. base=" + basemeasure + " curr=" + currentmeasure + " max=" + maxmeasure + " cfound=" + String.valueOf(commentfound));
+				/* If the line isn't empty */
 				} else {
-					/* Special case if there's no line break between measures */
-					if (stringnum >= TabMeasure.MAX_STRINGS) {
-						if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
-							boolean delete = true;
-							for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
-								if (!measure[maxmeasure-1].getString(d).isEmpty()) delete = false;
-							}
-							if (delete) {
-								measure[maxmeasure-1].getString(0).copyString(new TabString());
-								maxmeasure = maxmeasure - 1;
-							}
-						}
-						stringnum = 0;
-						basemeasure = maxmeasure;
-					}
 					emptyfound = false;
-					currentmeasure = basemeasure;
-					
-					for (int p = 0; p < line.length(); currentmeasure++) {
-						s = new TabString();
-						p = s.scanLine(line, p, stringnum == 0);
-						if (stringnum == 0 && s.checkError() == TabString.ERROR_COMMENT) {
+					temp = new TabString();
+					temp.scanLine(line, 0, false);
+					/* Check if line is a comment */
+					if (temp.checkError() == TabString.ERROR_COMMENT) {
+						/* If the first line of the measure is a comment then add it as a comment */
+						if (!measure[currentmeasure].isComment()) {
+							commentfound = true;
 							measure[currentmeasure].addComment(line);
+							//System.out.println("Storing first comment " + line + " in measure " + currentmeasure);
+						/* Add any consecutive comment lines */
+						} else if (measure[currentmeasure].isComment()) {
+							measure[currentmeasure].addComment(line);
+							//System.out.println("Storing consec comment " + line + " in measure " + currentmeasure);
+						} 
+					
+					/* The line is a valid or partial valid string */
+					} else {
+						/* Special case if there's no line break between measures */
+						if (stringnum >= TabMeasure.MAX_STRINGS) {
+							if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
+								boolean delete = true;
+								for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
+									if (!measure[maxmeasure-1].getString(d).isEmpty()) delete = false;
+								}
+								if (delete) {
+									measure[maxmeasure-1].getString(0).copyString(new TabString());
+									maxmeasure = maxmeasure - 1;
+								}
+							}
+							stringnum = 0;
+							basemeasure = maxmeasure;
 						}
-						measure[currentmeasure].setString(s, stringnum);
-						if (p == line.length() - 2 && 
-								TabString.VALID_DB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
-							currentmeasure++;
-							break;
-						} else if (p == line.length() - 3 && 
-								TabString.VALID_TB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
-							currentmeasure++;
-							break;
-						} else if (p == line.length() - 1) { 
-							currentmeasure++;
-							break;
+						currentmeasure = basemeasure;
+						
+						for (int p = 0; p < line.length(); currentmeasure++) {
+							s = new TabString();
+							p = s.scanLine(line, p, stringnum == 0);
+							measure[currentmeasure].setString(s, stringnum);
+							//System.out.println("Storing " + s.toString() + " in measure " + currentmeasure);
+							if (p == line.length() - 2 && 
+									TabString.VALID_DB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
+								currentmeasure++;
+								break;
+							} else if (p == line.length() - 3 && 
+									TabString.VALID_TB_END.matcher(measure[currentmeasure].getString(stringnum).toString()).find()) {
+								currentmeasure++;
+								break;
+							} else if (p == line.length() - 1) { 
+								currentmeasure++;
+								break;
+							}		
 						}
+						if (currentmeasure > maxmeasure)
+							maxmeasure = currentmeasure;
+						stringnum++;
 					}
-					if (currentmeasure > maxmeasure)
-						maxmeasure = currentmeasure;
-					stringnum++;
-				}
+				} 
 			}
 			stream.close();
 		} catch (FileNotFoundException e) {
@@ -138,21 +166,29 @@ public class TabObjMain {
 		
 		findRepeats();
 		
-		for (i = 0; i < 30; i++) {
-			System.out.println("......................................");
-			System.out.println("Measure " + i + "(" + measure[i].getRepeat() + "): ");
-			System.out.println(measure[i].toString());
-			System.out.println("Measure " + i + " fixed errors" + ":");
-			measure[i].fixStrings();
-			System.out.println(measure[i].toString());
-			System.out.println("Measure " + i + " double bar" + ":");
-			measure[i].fixStartBar();
-			measure[i].fixEndBar();
-			System.out.println(measure[i].toString());
-			System.out.println("Measure " + i + " equalized" + ":");
-			measure[i].equalizeStrings();
-			System.out.println(measure[i].toString());
-			System.out.println("......................................");
+		for (i = 0; i < 35; i++) {
+			if (measure[i].isComment()) {
+				System.out.println("......................................");
+				System.out.println("Measure comment " + i + ": ");
+				System.out.println(measure[i].toString());
+				System.out.println("......................................\n");
+			} else {
+				System.out.println("......................................");
+				System.out.println("Measure " + i + "(" + measure[i].getRepeat() + "): ");
+				System.out.println(measure[i].toString());
+				System.out.println("Measure " + i + " fixed errors" + ":");
+				measure[i].fixStrings();
+				System.out.println(measure[i].toString());
+				System.out.println("Measure " + i + " double bar" + ":");
+				measure[i].fixStartBar();
+				measure[i].fixEndBar();
+				findOneRepeats();
+				System.out.println(measure[i].toString());
+				System.out.println("Measure " + i + "(" + measure[i].getRepeat() +") equalized" + ":");
+				measure[i].equalizeStrings();
+				System.out.println(measure[i].toString());
+				System.out.println("......................................\n");
+			}
 		}
 		
 		
@@ -214,9 +250,17 @@ public class TabObjMain {
 		System.out.println(string.toString() + " size=" + string.size());*/
 	}
 
+	static public void findOneRepeats() {
+		for (int a = 0; a < 32; a++) {
+			if (measure[a].isComment()) break;
+			if (measure[a].getRepeat() == 0 && TabString.VALID_DB_END.matcher(measure[a].getString(0).toString()).find() && !TabString.VALID_TB_END.matcher(measure[a].getString(0).toString()).find())
+				measure[a].setRepeat(1);
+		}
+	}
 	static public void findRepeats() throws Exception {
 		
 		for (int a = 0; a < 32; a++) {	
+			if (measure[a].isComment()) break;
 			if (a == 32 - 1 && REPEAT_START.matcher(measure[a].getString(0).toString()).find()) {
 				boolean delete = true;
 				for (int d = 1; d < TabMeasure.MAX_STRINGS; d++) {
@@ -250,8 +294,6 @@ public class TabObjMain {
 					}
 					if (single)
 						measure[a].getString(0).replaceChar(TabString.NULL_CHAR, measure[a].getString(0).size()-1);
-				} else if (TabString.VALID_DB_END.matcher(measure[a].getString(0).toString()).find()) {
-					measure[a].setRepeat(1);
 				}
 			}
 		}	
