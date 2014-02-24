@@ -21,7 +21,7 @@ public class TextToPDFv11 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try2.txt";
+	public static String INPUT_FILENAME = "inputfiles/try.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -31,6 +31,7 @@ public class TextToPDFv11 {
 	private ReadFromInput file;
 	private DrawClass draw;
 	private TabStaff staff;
+	private int drawbeginline_state=1;
 
 	public TextToPDFv11(String outputpath, String inputpath)
 			throws DocumentException, IOException {
@@ -38,6 +39,7 @@ public class TextToPDFv11 {
 		file = new ReadFromInput(inputpath);
 		staff  = new TabStaff();
 		staff.scanFile(new File(inputpath));
+		System.out.println(staff.toString());
 		outputpath = "outputfiles/" + file.getTITLE() + ".pdf";
 		GUIModel.setOutputFilename(outputpath);
 		draw = new DrawClass();
@@ -80,13 +82,15 @@ public class TextToPDFv11 {
 			float currY = 680.0f;
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
-
+				
+					
+			
+				
 				if (draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE) < ((writer.getPageSize().getWidth()-36f) - currX)) {
 
 					if (currY <= 120.0f) {
 
-						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
+						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 
 						draw.DrawEndingLines(dynamic_array.get(i),currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE), currY,writer.getPageSize().getWidth(), FONT_SIZE, cb);
 						doc.newPage();
@@ -98,13 +102,13 @@ public class TextToPDFv11 {
 						if (i == 0) {
 
 							same_line_state = 0;
+							draw.DrawEndingLines(dynamic_array.get(i), 0, currY,36f, FONT_SIZE, cb);
 						} else
 							same_line_state = 1;
 
 						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
-						draw.DrawEndingLines(dynamic_array.get(i), 0, currY,36f, FONT_SIZE, cb);
-
+						
 					}
 
 				} else {
@@ -112,6 +116,7 @@ public class TextToPDFv11 {
 					currX = 36.0f;
 					currY = currY - 80;
 					same_line_state = 0;
+					
 					draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 
 					currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
@@ -121,6 +126,8 @@ public class TextToPDFv11 {
 					if (i < dynamic_array.size() - 1) {
 						if (draw.getMusicNotelength(dynamic_array.get(i + 1),
 								LINE_SPACE, FONT_SIZE) < ((writer.getPageSize().getWidth()-36f) - currX)) {
+							same_line_state=1;
+							
 							draw.DrawMusicNote(dynamic_array.get(i + 1), currX,currY, LINE_SPACE, FONT_SIZE,same_line_state, cb);
 							
 						draw.DrawEndingLines(dynamic_array.get(i + 1),currX+ draw.getMusicNotelength(dynamic_array.get(i+1),LINE_SPACE, FONT_SIZE),currY, writer.getPageSize().getWidth(),FONT_SIZE, cb); // error here
@@ -128,13 +135,15 @@ public class TextToPDFv11 {
 						}
 
 					}
-
+					
+					drawbeginline_state =1;
 					doc.newPage();
 					same_line_state = 0;
 					currX = 36.0f;
 					currY = 750.0f;
+					draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,FONT_SIZE, cb); // for begining
 				}
-
+				
 			}
 			draw.DrawEndingLines(dynamic_array.get(dynamic_array.size() - 1),currX, currY, writer.getPageSize().getWidth(), FONT_SIZE,cb);
 			doc.close();
