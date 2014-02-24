@@ -9,7 +9,7 @@ import com.itextpdf.text.pdf.spatial.Measure;
 
 // Handle comments between measures with no empty lines
 
-public class TabObjMain {
+public class Oldmain {
 
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
 	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end

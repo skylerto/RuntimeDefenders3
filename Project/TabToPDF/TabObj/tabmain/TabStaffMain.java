@@ -9,7 +9,7 @@ public class TabStaffMain {
 		TabStaff staff = new TabStaff();
 		List<List<String>> list;
 		
-		staff.scanFile(new File("inputfiles/try.txt"));
+		staff.scanFile(new File("inputfiles/try4.txt"));
 
 		list = staff.getList();
 
