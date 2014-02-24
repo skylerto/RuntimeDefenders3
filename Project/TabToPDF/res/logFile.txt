@@ -1,7 +1,3 @@
 Document preview has been updated.
-Selecting a file...
-File "try2.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
 Opening User Manual...
 Eek! User manual failed to open.

@@ -76,6 +76,7 @@ public class GUIView {
 	static JTextArea log;
 	static JTextPane topBox;
 	static JButton selectButton = new JButton("Select Files to Convert");
+	static JButton edit = new JButton("Edit Textfile");
 	static JPanel finalPanel;
 	static JPanel topPanel;
 	static JButton convertButton = new JButton("Convert Selected Files");
@@ -156,6 +157,14 @@ public class GUIView {
 		panel.add(selectButton, c);
 
 		selectButton.setFont(buttonFont);
+
+		c.gridx = 1;
+		c.gridy = 1;
+		c.insets = new Insets(5, 0, 0, 0);
+		c.ipady = 40;
+		panel.add(edit, c);
+
+		edit.setFont(buttonFont);
 
 		// convertButton = new JButton("Convert Selected Files");
 
@@ -369,6 +378,11 @@ public class GUIView {
 	void addConvertButtonListener(ActionListener listenForSelectButton) {
 
 		convertButton.addActionListener(listenForSelectButton);
+
+	}
+	void addEditButtonListener(ActionListener listenForSelectButton) {
+
+		edit.addActionListener(listenForSelectButton);
 
 	}
 

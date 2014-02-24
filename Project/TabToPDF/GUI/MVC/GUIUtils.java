@@ -1,5 +1,6 @@
 package MVC;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +27,40 @@ import org.lwjgl.Sys;
  */
 
 public class GUIUtils {
+
+	/**
+	 * Opens
+	 * 
+	 * @param file
+	 *            you'd like to open in external text editor.
+	 * @return - returns if the editor was able to open or not.
+	 * 
+	 */
+	public static boolean openTextEditor(File file) {
+
+		/*
+		 * boolean worked = true;
+		 * 
+		 * // Opens a new text area with the required file.
+		 * 
+		 * JFrame editorFrame = new JFrame(logName); JTextArea editArea = new
+		 * JTextArea(); editArea.setEditable(false);
+		 * editArea.setText(GUIUtils.openAndReadFile(file.toString()));
+		 * editorFrame.add(editArea); editorFrame.pack();
+		 */
+		// Code to open, but user has to select what he wants to open with.
+
+		boolean worked = false;
+		Desktop dt = Desktop.getDesktop();
+		try {
+			dt.open(file);
+			worked = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} // TODO Auto-generated catch block e.printStackTrace(); }
+
+		return worked;
+	}
 
 	/**
 	 * 

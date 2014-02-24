@@ -9,7 +9,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
@@ -52,6 +54,7 @@ public class GUIController {
 		this.view.addSelectButtonListener(new selectButtonListener());
 		this.view.addConvertButtonListener(new convertButtonListener());
 		this.view.addMenuItemListener(new menuItemListener());
+		this.view.addEditButtonListener(new editButtonListener());
 		// this.view.addListSelectionListener(new theListSelectionListener());
 
 		// Insert Model compenents in constructor and make changes when needed.
@@ -194,6 +197,32 @@ class menuItemListener implements ActionListener {
 		} else {
 			GUIModel.logString += "Eek! User manual failed to open.\n";
 			GUIModel.updateLog();
+		}
+
+	}
+}
+
+class editButtonListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if (GUIModel.getfilenameWithExtension() == null) {
+			// IF THERE HASN'T BEEN A FILE SELECTED YET PROMPT USER TO SELECT
+			// FILE.
+			JOptionPane
+					.showMessageDialog(
+							new JFrame(),
+							"Please select a file first!"
+									+ "\n\n"
+									+ "To do so, please press the \"Select File to Convert\" button."
+									+ "\n\n"
+									+ "For more information please go to Help > User Manual.");
+
+		} else {
+			// OPEN INPUTFILE IN TEXT EDITOR
+			GUIUtils.openTextEditor(new File(GUIModel
+					.getfilenameWithExtension()));
+
 		}
 
 	}

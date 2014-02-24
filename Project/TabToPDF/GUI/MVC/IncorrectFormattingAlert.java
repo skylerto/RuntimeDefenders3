@@ -22,7 +22,7 @@ public class IncorrectFormattingAlert {
 	private JFrame alertFrame = new JFrame();
 
 	// This should be the name of the file to be changed.
-	File fileToOpen = GUIView.fileToRead;
+	File fileToOpen = new File(GUIModel.getfilenameWithExtension());
 
 	public IncorrectFormattingAlert(String whatWentWrong) {
 
@@ -63,23 +63,26 @@ public class IncorrectFormattingAlert {
 	 */
 	public static boolean openTextEditor(File file, String logName) {
 
-		boolean worked = true;
-
-		// Opens a new text area with the required file.
-		JFrame editorFrame = new JFrame(logName);
-		JTextArea editArea = new JTextArea();
-		editArea.setEditable(false);
-		editArea.setText(GUIUtils.openAndReadFile(file.toString()));
-		editorFrame.add(editArea);
-		editorFrame.pack();
-
+		/*
+		 * boolean worked = true;
+		 * 
+		 * // Opens a new text area with the required file.
+		 * 
+		 * JFrame editorFrame = new JFrame(logName); JTextArea editArea = new
+		 * JTextArea(); editArea.setEditable(false);
+		 * editArea.setText(GUIUtils.openAndReadFile(file.toString()));
+		 * editorFrame.add(editArea); editorFrame.pack();
+		 */
 		// Code to open, but user has to select what he wants to open with.
 
-		/*
-		 * boolean worked = false; Desktop dt = Desktop.getDesktop(); try {
-		 * dt.open(file); worked = true; } catch (IOException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
+		boolean worked = false;
+		Desktop dt = Desktop.getDesktop();
+		try {
+			dt.open(file);
+			worked = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} // TODO Auto-generated catch block e.printStackTrace(); }
 
 		return worked;
 	}

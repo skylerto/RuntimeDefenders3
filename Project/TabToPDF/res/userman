@@ -1,1 +1,9 @@
-THIS IS THE USER MANUAL
+Instructions:
+
+Step 1: Select a file by pressing the "Select Files to Convert button"
+
+Step 2: Confirm the layout of your PDF in the Preview PDF section (At the top of the application).
+
+Step 3: If you would like to change/fix anything press the EDIT button and select your default text editor (Notepad on windows, jedit on linux, SimpleText on mac).
+
+Step 4: When finished editing, save the file then press the Convert Selected Files button; to repreview the edited document reselect the file i.e. return to Step 1.

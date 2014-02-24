@@ -34,9 +34,33 @@ public class ReadAndDisplayUserManual {
 
 	protected String message = "";
 
+	/**
+	 * The text to be displayed in the user manual.
+	 */
+	public static void buildUserMan() {
+		String userman = "Instructions:"
+				+ "\n\n"
+				+ "Step 1:"
+				+ "\n\n"
+				+ "Select a file by pressing the \"Select Files to Convert button\""
+				+ "\n\n"
+				+ "Step 2:"
+				+ "\n\n"
+				+ " Confirm the layout of your PDF in the Preview PDF section (At the top of the application)."
+				+ "\n\n"
+				+ "Step 3:"
+				+ "\n\n"
+				+ " If you would like to change/fix anything press the EDIT button and select your default text editor (Notepad on windows, jedit on linux, SimpleText on mac)."
+				+ "\n\n"
+				+ "Step 4:"
+				+ "\n\n"
+				+ " When finished editing, save the file then press the Convert Selected Files button; to repreview the edited document reselect the file i.e. return to Step 1.";
+		GUIUtils.writeToFile(new File("res/userman"), userman);
+	}
+
 	public static boolean read() {
 		boolean worked = false;
-
+		buildUserMan();
 		/*
 		 * Read in the user manual text and display in a dialog option pane. So
 		 * long as the userman contains text.
