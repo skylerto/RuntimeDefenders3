@@ -3,6 +3,8 @@ package version11;
 import java.io.*;
 import java.util.List;
 
+import tabparts.TabStaff;
+
 import MVC.GUIModel;
 
 import com.itextpdf.text.*;
@@ -19,7 +21,7 @@ public class TextToPDFv11 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try.txt";
+	public static String INPUT_FILENAME = "inputfiles/try2.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -28,11 +30,14 @@ public class TextToPDFv11 {
 	private PdfContentByte cb;
 	private ReadFromInput file;
 	private DrawClass draw;
+	private TabStaff staff;
 
 	public TextToPDFv11(String outputpath, String inputpath)
 			throws DocumentException, IOException {
 
 		file = new ReadFromInput(inputpath);
+		staff  = new TabStaff();
+		staff.scanFile(new File(inputpath));
 		outputpath = "outputfiles/" + file.getTITLE() + ".pdf";
 		GUIModel.setOutputFilename(outputpath);
 		draw = new DrawClass();
@@ -68,16 +73,15 @@ public class TextToPDFv11 {
 			LINE_SPACE = file.getSACING();
 			System.out.println(LINE_SPACE);
 
-			List<List<String>> dynamic_array = draw
-					.StringAnchor(file.getList());
+			List<List<String>> dynamic_array = draw.StringAnchor(staff.getList());
+			//List<List<String>> dynamic_array = draw.StringAnchor(file.getList());
 			System.out.printf("size is %d\n", dynamic_array.size());
 			float currX = 36.0f;
 			float currY = 680.0f;
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
 
-				if (draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,
-						FONT_SIZE) < (writer.getPageSize().getWidth() - currX)) {
+				if (draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE) < ((writer.getPageSize().getWidth()-36f) - currX)) {
 
 					if (currY <= 120.0f) {
 
@@ -116,7 +120,7 @@ public class TextToPDFv11 {
 				if (currY <= 120.0f) {
 					if (i < dynamic_array.size() - 1) {
 						if (draw.getMusicNotelength(dynamic_array.get(i + 1),
-								LINE_SPACE, FONT_SIZE) < (writer.getPageSize().getWidth() - currX)) {
+								LINE_SPACE, FONT_SIZE) < ((writer.getPageSize().getWidth()-36f) - currX)) {
 							draw.DrawMusicNote(dynamic_array.get(i + 1), currX,currY, LINE_SPACE, FONT_SIZE,same_line_state, cb);
 							
 						draw.DrawEndingLines(dynamic_array.get(i + 1),currX+ draw.getMusicNotelength(dynamic_array.get(i+1),LINE_SPACE, FONT_SIZE),currY, writer.getPageSize().getWidth(),FONT_SIZE, cb); // error here
