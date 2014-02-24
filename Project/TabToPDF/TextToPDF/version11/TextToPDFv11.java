@@ -1,30 +1,23 @@
 package version11;
 
-
-
 import java.io.*;
-import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.itextpdf.text.*;
-import com.itextpdf.text.Font.*;
 import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.draw.*;
+
 public class TextToPDFv11 {
         
 		/* fist stable version*/
         
-        final float LINE_SPACE = 5.0f;
+        float LINE_SPACE = 5.0f;
         final float TITLE_SIZE = 26.0f;
         final int FONT_SIZE = 8;
         final float SUBTITLE_SIZE = 12.0f;
         final String CONTAINS_TITLE = "TITLE";
         final String CONTAINS_SUBTITLE = "SUBTITLE";
         final String CONTAINS_SPACING = "SPACING";
-        public static String INPUT_FILENAME = "/home/saad/git/RuntimeDefenders3/Project/TabToPDF/inputfiles/try2.txt";
-        public static String PDF_FILENAME = "/home/saad/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicPDF.pdf";
+        public static String INPUT_FILENAME = "inputfiles/try.txt";
+        public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
         private int same_line_state = 0;
         /* new */
         private Document doc;
@@ -32,18 +25,41 @@ public class TextToPDFv11 {
         private PdfContentByte cb;
         private ReadFromInput file;
         private DrawClass draw;
+        
         public TextToPDFv11 (String outputpath, String inputpath) throws DocumentException, IOException
         {
+        	
         	file = new ReadFromInput(inputpath);
         	draw = new DrawClass();
         	doc = new Document(PageSize.LETTER);
         	writer =PdfWriter.getInstance(doc, new FileOutputStream(new File(outputpath)));
         }
         
+        
         public void WriteToPDF() throws DocumentException, IOException {
+        	
+        	try {
         	doc.open();
         	writer.open();
         	cb = writer.getDirectContent();
+        	
+        	BaseFont bf_title = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+            Font title_font = new Font(bf_title,26);
+            Paragraph title = new Paragraph(file.getTITLE(),title_font);
+            title.setAlignment(Element.TITLE);
+            doc.add(title); 
+    
+            BaseFont bf_subtitle = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+            Font subtitle_font = new Font(bf_subtitle,14);
+            Paragraph subtitle = new Paragraph( file.getSUBTITLE(),subtitle_font);
+            subtitle.setAlignment(Element.ALIGN_CENTER);
+            doc.add(subtitle); 
+            if (file.getSACING() == 0)
+            	file.setLineSpacing(5.0f);
+            
+            LINE_SPACE = file.getSACING();
+            System.out.println(LINE_SPACE);
+        		
         	List<List<String>> dynamic_array = draw.StringAnchor(file.getList());
         	System.out.printf("size is %d\n", dynamic_array.size());
             float currX = 36.0f;
@@ -58,7 +74,6 @@ public class TextToPDFv11 {
              			draw.DrawMusicNote(dynamic_array.get(i),currX,currY,LINE_SPACE,FONT_SIZE,same_line_state,cb);
              			
              			draw.DrawEndingLines(dynamic_array.get(i),currX + draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE),currY,writer.getPageSize().getWidth(),FONT_SIZE,cb);
-             			//DrawEndingLines(dynamic_array.get(i),0,currY,36f,FONT_SIZE,cb);
                  		doc.newPage();
                  		same_line_state=0;
                          currX = 36.0f;
@@ -88,12 +103,30 @@ public class TextToPDFv11 {
              		currX = currX + draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE);
              		draw.DrawEndingLines(dynamic_array.get(i),0,currY,36f,FONT_SIZE,cb); // for begining  		
              	}
-             
+        		if ( currY <= 120.0f  ) {
+        			if (i < dynamic_array.size()-1) {
+        			   if (draw.getMusicNotelength(dynamic_array.get(i+1),LINE_SPACE,FONT_SIZE) < ( writer.getPageSize().getWidth() - currX )) {
+           				draw.DrawMusicNote(dynamic_array.get(i+1),currX,currY,LINE_SPACE,FONT_SIZE,same_line_state,cb);
+             			draw.DrawEndingLines(dynamic_array.get(i+1),currX + draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE),currY,writer.getPageSize().getWidth(),FONT_SIZE,cb);
+             			i+=1;
+        			   }
+             			
+        			}
+        				
+             		doc.newPage();
+             		same_line_state=0;
+                     currX = 36.0f;
+                     currY = 750.0f;
+             	}
              
              }
             draw.DrawEndingLines(dynamic_array.get(dynamic_array.size()-1),currX,currY,writer.getPageSize().getWidth(),FONT_SIZE,cb);
             doc.close();
             writer.close();
+        	} catch (Exception e) {
+        		
+        	}
+        	
       }     
         
         public static void main (String[] args)
@@ -101,7 +134,7 @@ public class TextToPDFv11 {
                 
                 
                 try {
-					TextToPDFv11 saad = new TextToPDFv11("sucess","try.txt");
+					TextToPDFv11 saad = new TextToPDFv11(PDF_FILENAME,INPUT_FILENAME);
 					saad.WriteToPDF();
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block

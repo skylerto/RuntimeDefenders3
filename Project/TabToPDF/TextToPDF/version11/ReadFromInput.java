@@ -1,4 +1,5 @@
 package version11;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,20 +9,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
-
 
 public class ReadFromInput {
 	private List<List<String>> dynamic_array = new ArrayList<List<String>>();
     private List<String> inner;
     
-    private static  String TITLE;
-    private static  String SUBTITLE;
-    private static  float LINE_SPACING;
+    private  String TITLE;
+    private  String SUBTITLE;
+    private  float LINE_SPACING;
     
     private int enable_add = 0;
-     
+    
+    public ReadFromInput(){
+    	
+    }
+    
    public ReadFromInput (String filepath) throws FileNotFoundException, IOException {
 	   readFile(filepath);
 	   
@@ -48,14 +50,16 @@ public class ReadFromInput {
                 
                        
                     if (m_title.find() && !line.isEmpty()) {
-                
+                    	
                        TITLE = m_title.group(3); 
+                       
+                      
                    }
                    
                    else if (m_subtitle.find() && !line.isEmpty()) {
 
                 	   SUBTITLE = m_subtitle.group(3);
-                       
+                	   
                    }
                    else if (m_spacing.find() && !line.isEmpty()) {
                 	   LINE_SPACING=  Float.parseFloat(m_spacing.group(3));
@@ -65,7 +69,6 @@ public class ReadFromInput {
                    	if (!line.isEmpty()) {
                		
                    		line  = m_music.group(0);
-                   	  
                			//line = line.replaceAll("\\p{Z}", "");
                			inner.add(line);
                			enable_add = 1;	
@@ -120,5 +123,6 @@ public class ReadFromInput {
 		   throw new IllegalArgumentException("No music note is found in the input file.");
 	   return dynamic_array;
    }
+   
 
 }
