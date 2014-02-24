@@ -28,6 +28,9 @@ public class TabStringTest {
 	TabString tab14;
 	TabString tab15;
 	TabString tab16;
+	TabString tab17;
+	TabString tab18;
+	TabString tab19;
 
 	@Before
 	public void setUp() throws Exception {
@@ -52,19 +55,19 @@ public class TabStringTest {
 		}
 		tab6.fixBoth();
 		tab7 = new TabString();
-		tab7.addDash(5, 0);
+		tab7.addDash(5);
 	    tab8 = new TabString();
 		tab8.addChar('a');
 		tab8.addChar('x');
 		tab8.addChar('y');
 		tab8.fixBoth();
-		tab8.addDash(5, 0);
+		tab8.addDash(5);
 		tab9 = new TabString();
 		tab9.addChar('a');
 		tab9.addChar('x');
 		tab9.addChar('y');
 		tab9.fixBoth();
-		tab9.addDash(5, 1);
+		tab9.addDash(5);
 		tab10 = new TabString();
 		tab10.addChar('a');
 		tab10.addChar('b');
@@ -95,6 +98,24 @@ public class TabStringTest {
 		tab15 = new TabString();
 		tab15.addChar('c');
 		tab16 = new TabString(tab14);
+		tab17 = new TabString();
+		tab17.addChar('|');
+		for (int i = 0; i < 10; i++) {
+			tab17.addChar(' ');
+		}
+		tab17.addChar('|');
+		tab18 = new TabString();
+		tab18.addChar('|');
+		tab18.addChar('|');
+		for (int i = 0; i < 10; i++) {
+			tab18.addChar(' ');
+		}
+		tab18.addChar('|');
+		tab18.addChar('|');
+		tab19 = new TabString(tab2);
+		tab19.replaceChar('b', 3);
+		
+		
 
 	}
 
@@ -183,49 +204,16 @@ public class TabStringTest {
 
 	}
 
-	@Test
-	public void TestaddDashType0() {
 
-		int j = 0;
-
-		for (int i = 0; i < tab8.size() - 1; i++) {
-			if (tab8.getChar(i) == '-') {
-				j++;
-			}
-		}
-		assertEquals(6, j);
-
-		for (int i = 1; i <= 6; i++) {
-			assertEquals('-', tab8.getChar(i));
-		}
-
-	}
-
-	@Test
-	public void TestaddDashType1() {
-
-		int k = 0;
-
-		for (int i = 0; i < tab9.size() - 1; i++) {
-			if (tab9.getChar(i) == '-') {
-				k++;
-			}
-		}
-		assertEquals(6, k);
-
-		for (int i = 5; i <= 9; i++) {
-			assertEquals('-', tab9.getChar(i));
-		}
-
-	}
-	
 	@Test
 	public void TestaddDashBase() {
 		
-		assertTrue(tab7.isEmpty()); //empty
-		assertFalse(tab3.addDash(6,0)); // dashes more than MAX_SIZE
-		assertFalse(tab3.addDash(2,0)); // if (type == 0 && this.getChar(0) != '|') return false;
-		assertFalse(tab3.addDash(1,1)); // if (type == 1 && this.getChar(this.size()- 1) != '|') return false;
+		assertFalse(tab7.addDash(3)); //empty
+		assertFalse(tab3.addDash(6)); // dashes more than MAX_SIZE
+		assertFalse(tab3.addDash(2)); // if (type == 0 && this.getChar(0) != '|') return false;
+		assertFalse(tab3.addDash(1)); // no BARS AT ALL xxxxxx
+		assertTrue(tab17.addDash(9)); //strings like this | xxxxxx |
+		assertTrue(tab18.addDash(9)); //strings like this || xxxxxx ||
 	}
 	
 	@Test
@@ -278,6 +266,15 @@ public class TabStringTest {
 		assertTrue(tab14.trimString(13));
 		assertTrue(tab16.trimString(3));
 	}
+	
+	@Test
+	public void TestreplaceChar() {
+		
+		char b = 'b';
+		assertEquals(b,tab19.getChar(3));
+		
+	}
+	
 	
 	
 	
