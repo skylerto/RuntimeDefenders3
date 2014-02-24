@@ -2,7 +2,16 @@ title
 subtitle
 size
 
+comment
+blah
+
+|----|
+
 the four below is a repeat number
+hello
+
+zzzz
+zzz
 
 |-----|4-----
 ||-----||------||
@@ -17,6 +26,10 @@ the four below is a repeat number
 ||------2||------2||
 ||------2||------2||
 ||------2||------2||
+|------3||------3|
+|------3||------3|
+|------3||------3|
+|------3||------3|
 
 this is a comment
 

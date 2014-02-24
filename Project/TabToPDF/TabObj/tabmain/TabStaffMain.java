@@ -16,9 +16,17 @@ public class TabStaffMain {
 		}
 		
 		
-		staff.scanFile(new File("inputfiles/try4.txt"));
+		staff.scanFile(new File("inputfiles/case1.txt"));
+		
+		System.out.println(staff.toString());
+		System.out.println(staff.getRepeatMap().toString());
+		
+		
+		//staff.deleteComments();
 		
 		//System.out.println(staff.toString());
+		
+		//System.out.println(staff.getComment(0) + String.valueOf(staff.getMeasure(0).isComment()));
 
 		//list = staff.getList();
 		

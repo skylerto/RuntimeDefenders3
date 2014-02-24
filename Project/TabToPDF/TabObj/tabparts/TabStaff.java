@@ -199,8 +199,6 @@ public class TabStaff {
 			
 			/* Fix errors in the staff and store repeat numbers */
 			this.fixStaff();
-			
-			
 			//this.debugStaff();
 			
 		} catch (FileNotFoundException e) {
@@ -238,6 +236,20 @@ public class TabStaff {
 	}
 	
 	/**
+	 * Gets a hashmap<key, value> where the key is the index of the measure in the list
+	 * and the value is the repeat number of that measure.
+	 * 
+	 * @return hashmap containing the index of each measure in the list as a key and the measure's repeat number as the value
+	 */
+	public HashMap<Integer, Integer> getRepeatMap() {
+		HashMap<Integer, Integer> map = new HashMap<Integer,Integer>();
+		for (int i = 0; i < this.size(); i++) {
+			map.put(i, this.staff.get(i).getRepeat());
+		}
+		return map;
+	}
+	
+	/**
 	 * Gets the text of the TabMeasure's Tabstring with the given
 	 * indexes.
 	 * 
@@ -257,6 +269,16 @@ public class TabStaff {
 	 */
 	public String getComment(int measureindex) {
 		return this.staff.get(measureindex).getComment();
+	}
+	
+	/**
+	 * Gets the TabMeasure at the index in the list.
+	 * 
+	 * @param index	The index of the TabMeasure
+	 * @return	The TabMeasure from the given index
+	 */
+	public TabMeasure getMeasure(int index) {
+		return this.staff.get(index);
 	}
 	
 	/**
@@ -295,10 +317,23 @@ public class TabStaff {
 			this.staff.get(i).equalizeStrings();
 		}
 		this.findOneRepeats();
+		this.deleteComments();
 	}
 	
 	/**
-	 * A special fix where the end measure contains a repeat number that needs to be deleted.
+	 * Deletes all comment measures in the staff.
+	 */
+	public void deleteComments() {
+		for (int i = this.size() - 1; i >= 0; i--) {
+			if (this.staff.get(i).isComment()) {
+				this.staff.remove(i);
+			}
+				
+		}
+	}
+	
+	/**
+	 * * A special fix where the end measure contains a repeat number that needs to be deleted.
 	 */
 	public void fixEnd() {
 		if (!this.staff.get(this.size()-1).isComment()) {
@@ -410,12 +445,16 @@ public class TabStaff {
 	}
 	
 	/**
-	 * A string representation of the staff.
+	 * A string representation of the staff. Displays the measure number and the
+	 * number of repeats for each measure. Also if the measure is comment or not.
+	 * Outputs the total measures found at the end.
 	 * Example output of a staff of size 3:
 	 * 
+	 * comment(0)
 	 * Title = My Song
 	 * By = Ron
 	 * 
+	 * measure(1) repeats(0)
 	 * |---22-|
 	 * |---22-|
 	 * |---22-|
@@ -423,6 +462,7 @@ public class TabStaff {
 	 * |---22-|
 	 * |---22-|
 	 * 
+	 * measure(2) repeats(0)
 	 * |1---3-|||
 	 * |1---3-|||
 	 * |1---3-|||
@@ -434,13 +474,15 @@ public class TabStaff {
 		StringBuffer buf = new StringBuffer();
 		int i;
 		for (i = 0; i < this.size(); i++) {
-			if (staff.get(i).isComment()) {
-				buf.append(staff.get(i).getComment() + "\n\n");
+			if (this.staff.get(i).isComment()) {
+				buf.append("comment(" + i + ") iscomment=" + String.valueOf(this.staff.get(i).isComment())+ "\n");
+				buf.append(this.staff.get(i).getComment() + "\n\n");
 			} else {
-				buf.append("repeats(" + staff.get(i).getRepeat() + ")\n");
-				buf.append(staff.get(i).toString() + "\n\n");
+				buf.append("measure(" + i + ") "+ "repeats(" + staff.get(i).getRepeat() + ")\n");
+				buf.append(this.staff.get(i).toString() + "\n\n");
 			}
 		}
+		buf.append("Total Measures=" + this.size());
 		return buf.toString();
 	}
 }
