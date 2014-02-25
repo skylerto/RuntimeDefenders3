@@ -2,8 +2,6 @@
 ## Eclipse
 #################
 
-logFile.txt
-outputfiles/
 *.pydevproject
 tmp/
 .metadata/
