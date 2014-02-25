@@ -2,7 +2,6 @@
 ## Eclipse
 #################
 
-outputfiles/
 *.pydevproject
 tmp/
 .metadata/
