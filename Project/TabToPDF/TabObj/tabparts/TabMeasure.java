@@ -32,7 +32,7 @@ public class TabMeasure {
 	/* ATTRIBUTES */
 	
 	private TabString[] strings;	// The group of strings
-	private int size;				// The number of strings added
+	public int size;				// The number of strings added
 	private int length;				// The length of the longest string
 	private int repeat;				// If > 0, used for the repeat text above the measure
 	
@@ -185,7 +185,7 @@ public class TabMeasure {
 			if (TabString.VALID_DB_START.matcher(this.getString(i).toString()).find()) {
 				db = true;
 				break;
-			}
+			}                       
 		}
 		
 		/* If double bars are detected, then make the rest of the strings have double bars */
