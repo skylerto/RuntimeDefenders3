@@ -29,7 +29,7 @@ public class TextToPDFv11 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try3.txt";
+	public static String INPUT_FILENAME = "inputfiles/try2.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */

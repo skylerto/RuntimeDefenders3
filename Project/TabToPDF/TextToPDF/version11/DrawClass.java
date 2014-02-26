@@ -108,7 +108,7 @@ public class DrawClass {
           cb.restoreState();
           cb.saveState();
           cb.beginText();
-          cb.setTextMatrix(x-(line_space*0.3f), tempy+(line_space*0.5f));
+          cb.setTextMatrix((p_detect+x)/2f+1.0f, tempy+(line_space*0.5f));
           cb.setFontAndSize(bf, font_size/2);
           cb.showText("p");
           cb.endText();
