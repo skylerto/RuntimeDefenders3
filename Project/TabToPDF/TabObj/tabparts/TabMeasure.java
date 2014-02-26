@@ -138,7 +138,7 @@ public class TabMeasure {
 	/**
 	 * Fixes errors in the TabString array.
 	 */
-	public void fixStrings() {
+	public void fixStrings() throws LargeNumberException {
 		if (this.isComment()) return;
 		for (int i = 0; i < this.size(); i++) {
 			this.strings[i].fixErrors();

@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import org.newdawn.slick.util.Log;
+
 import MVC.IncorrectFormattingAlert;
 
 // Still have to account for comments and strings with no empty lines inbetween them
@@ -214,7 +216,7 @@ public class TabStaff {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (LargeNumberException e) {
-			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + LARGENUMBER_MSG + e.getMessage());
+			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + LARGENUMBER_MSG + e);
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
