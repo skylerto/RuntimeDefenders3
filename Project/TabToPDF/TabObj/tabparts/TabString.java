@@ -1,9 +1,16 @@
 package tabparts;
 import java.util.regex.Pattern;
 
-/*
- * (UPDATED) Edited addDash() and trimString() to work with double bars.
- * Added replaceChar() method
+// Edit addDash() so it adds dashes to the left of stars
+// Add a symbol for sliding down, if first tab is greater than the second
+// Allow cross measure linking for hammers
+// Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
+
+/** (UPDATED) Class will now fix jibberish inside of strings. 
+ * Added fixSymbols() and isSymbol() and getSubstring() methods
+ * Added a new constructor that takes a string
+ * 
+ * fixSymbols() will throw a LargeNumberException
  * 
  * -Ron
  */
@@ -25,15 +32,17 @@ public class TabString {
 	/* CONSTANTS */
 	
 	public static final Character NULL_CHAR = '\0';
-	public static final int MAX_SIZE = 75;			// Max chars it can hold
-	public static final int NO_ERROR = 0;			// Return when no error is found
-	public static final int ERROR_START = 1;		// Error return when the start '|' is missing
-	public static final int ERROR_END = 2;			// Error return when the end '|' is missing
-	public static final int ERROR_EMPTY = 3;		// Error return when the line is empty
-	public static final int ERROR_COMMENT = 4;		// Error return when the line is a comment
-	public static final int ERROR_DB_START = 5;		// Error return when the start '||' is missing
-	public static final int ERROR_DB_END = 6;		// Error return when the end '||' is missing
-	public static final int SPECIAL_TRIPLE = 7;		// Return when the string only contains '|||'
+	public static final int MAX_SIZE = 75;			// Max chars the array can hold
+	
+	public static final Character[] VALID_SYMBOLS = {'|', '-', 's', 'h', 'p', '*', '<', '>', ' '};	// Valid symbols that make up a valid TabString
+	public static final Pattern VALID_SLIDE = Pattern.compile("([0-9][s])|([s][0-9])");				// Valid: #s# or s# or #s
+	public static final Pattern VALID_HAMMER = Pattern.compile("[0-9][h][0-9]");					// Valid: #h#
+	public static final Pattern VALID_SPACE = Pattern.compile("([0-9][\\s][0-9])|([-][\\s][-])");	// Valid: #[space]# or -[space]-
+	public static final Pattern VALID_PULL = Pattern.compile("([0-9][p])|([p][0-9])");				// Valid: #p# or p# or #p
+	public static final Pattern VALID_STAR = Pattern.compile("([|][|][\\*])|([\\*][|][|])");		// Valid: ||* or *||
+	public static final Pattern VALID_HARMONIC = Pattern.compile("[<][1-9][>]");					// Valid: <#>
+	public static final Pattern VALID_HARMONIC2 = Pattern.compile("[<][1-9][1-9][>]");				// Valid: <##>
+	public static final Pattern INVALID_NUMBER = Pattern.compile("[0-9]{3,}");						// Invalid: ### or more consecutive numbers
 	
 	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|]{1,2}.*[|]{1,2}\\s*$");// A string enclosed in '|'
 	public static final Pattern VALID_START = Pattern.compile("^\\s*[|]\\s*\\S+");	// A string missing the end '|'
@@ -44,28 +53,31 @@ public class TabString {
 	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	// A string missing the start '||'
 	public static final Pattern VALID_TB_END = Pattern.compile("\\s*\\S+\\s*[|]{3}\\s*$");	// A string with '|||' at the end
 	
+	public static final int NO_ERROR = 0;			// Return when no error is found
+	public static final int ERROR_START = 1;		// Error return when the start '|' is missing
+	public static final int ERROR_END = 2;			// Error return when the end '|' is missing
+	public static final int ERROR_EMPTY = 3;		// Error return when the line is empty
+	public static final int ERROR_COMMENT = 4;		// Error return when the line is a comment
+	public static final int ERROR_DB_START = 5;		// Error return when the start '||' is missing
+	public static final int ERROR_DB_END = 6;		// Error return when the end '||' is missing
+	public static final int SPECIAL_TRIPLE = 7;		// Return when the string only contains '|||'
+	
 	public static final Pattern HARD_VALID_STRING = Pattern.compile("^[|]{1,2}.*[|]{1,2}$");	// A string closed in at least one set of '|' with no trailing spaces
 	public static final Pattern VALID_TRIPLE_STRING = Pattern.compile("^\\s*[|]{3}\\s*$");		// A string containing only '|||'
 	public static final Pattern VALID_BARS = Pattern.compile("^\\s*[|]{2,}\\s*$");			// A string that contains at least 2 bars and only bars
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
+	public static final String EMPTY_MSG = "[empty string]";
 	public static final String VALID_MSG = "[valid string]";
 	public static final String VALID_SPACEFIX_MSG = "[valid string, deleted excess spaces]";
 	public static final String STARTFIX_MSG = "[fixed start of string]";
 	public static final String STARTFIX_SPACEFIX_MSG = "[fixed start of string, deleted excess spaces]";
 	public static final String ENDFIX_MSG = "[fixed end of string]";
 	public static final String ENDFIX_SPACEFIX_MSG = "[fixed end of string, deleted excess spaces]";
-	public static final String EMPTY_MSG = "[empty string]";
 	public static final String COMMENT_MSG = "[invalid string, assumed to be a comment]";
 	public static final String BOTHFIX_MSG = "[fixed both ends of string]";
 	public static final String BOTHFIX_SPACEFIX_MSG = "[fixed both ends of string, deleted excess spaces]";
 	public static final String SPECIAL_MSG = "[special triple fix]";
-	
-	public static final Pattern SYMBOL_SLIDE = Pattern.compile("s");
-	public static final Pattern SYMBOL_HAMMER = Pattern.compile("h");
-	public static final Pattern SYMBOL_SPACE = Pattern.compile(" ");
-	public static final Pattern SYMBOL_PULL = Pattern.compile("p");
-	public static final Pattern SYMBOL_STAR = Pattern.compile("\\*");
 	
 	/* ATTRIBUTES */
 	
@@ -80,6 +92,19 @@ public class TabString {
 		this.size = 0;
 		for (int i = 0; i < MAX_SIZE; i++)
 			this.chars[i] = NULL_CHAR;
+	}
+	
+	/**
+	 * Creates a TabString using the given string.
+	 * 
+	 * @param line	The string that will represent the TabString
+	 */
+	public TabString(String line) {
+		this();
+		for (int i = 0; i < line.length(); i++) {
+			this.addChar(line.charAt(i));
+		}
+		this.size = line.length();
 	}
 	
 	/**
@@ -203,7 +228,7 @@ public class TabString {
 	 * @param num	The number of dashes to add.
 	 * @return		true if dashes are added, false if not
 	 */
-	public boolean addDash(int num) { // this adds an extra dash ie 5 given adds 6
+	public boolean addDash(int num) {
 		TabString s;
 		if (this.isEmpty()) return false;
 		if ((num + this.size() - 1) > MAX_SIZE) return false;
@@ -572,6 +597,102 @@ public class TabString {
 		if (VALID_START.matcher(this.toString()).find()) return ERROR_END;
 		if (VALID_END.matcher(this.toString()).find()) return ERROR_START;
 		return ERROR_COMMENT;
+	}
+	
+	/**
+	 * This method should only run for each string after the entire measure is fixed.
+	 * Replaces characters that are not valid symbols with dashes. Replaces invalid
+	 * spaces with dashes. Valid symbols that are not used properly are replaced with
+	 * dashes.
+	 * 
+	 * Example, the string:
+	 * 
+	 * ||* - <2<3>-><5 3>bs>a5s5-<6>--dp  h*-1h1-1p-1 2 *||
+	 * 
+	 * becomes:
+	 * 
+	 * ||*----2<3>---5 3-----5s5-<6>---------1h1-1p-1 2-*||
+	 * 
+	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
+	 */
+	public void fixSymbols() throws LargeNumberException {
+		/* Throw an exception if there are 3 consecutive numbers or more */
+		if (INVALID_NUMBER.matcher(this.toString()).find()) {
+			throw new LargeNumberException("Cannot have 3 or more consecutive digits (" + "this.toString()");
+		}
+		/* Replace invalid symbols with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (!this.isSymbol(this.getChar(i)))
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid spaces with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == ' ' && !VALID_SPACE.matcher(this.getSubstring(i-1, i+2)).find())
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid stars with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == '*' && !VALID_STAR.matcher(this.getSubstring(i-2, i+3)).find())
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid slide with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == 's' && !VALID_SLIDE.matcher(this.getSubstring(i-1, i+2)).find())
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid hammer with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == 'h' && !VALID_HAMMER.matcher(this.getSubstring(i-1, i+2)).find())
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid pull with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == 'p' && !VALID_PULL.matcher(this.getSubstring(i-1, i+2)).find())
+				this.replaceChar('-', i);
+		}
+		/* Replace invalid '<' harmonics with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == '<' && !VALID_HARMONIC2.matcher(this.getSubstring(i, i+4)).find())
+				if (this.getChar(i) == '<' && !VALID_HARMONIC.matcher(this.getSubstring(i, i+3)).find())
+					this.replaceChar('-', i);
+					
+		}
+		/* Replace invalid '>' harmonics with dashes */
+		for (int i = 0; i < this.size(); i++) {
+			if (this.getChar(i) == '>' && !VALID_HARMONIC2.matcher(this.getSubstring(i-3, i+1)).find())
+				if (this.getChar(i) == '>' && !VALID_HARMONIC.matcher(this.getSubstring(i-2, i+1)).find())
+					this.replaceChar('-', i);
+		}
+	}
+	
+	/**
+	 * Checks to see if the given character is a valid symbol in the string.
+	 * Valid symbols are spaces and: | - * s p h
+	 * @param c	The character to compare
+	 * @return	true if the character is a valid symbol, false otherwise
+	 */
+	public boolean isSymbol(Character c) {
+		for (int i = 0; i < VALID_SYMBOLS.length; i++) {
+			if (c == VALID_SYMBOLS[i] || c >= '0' && c <= '9')
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns a substring of the TabString given 2 indexes.
+	 * 
+	 * @param index1	The starting index
+	 * @param index2	The ending index
+	 * @return	The substring of the TabString
+	 */
+	public String getSubstring(int index1, int index2) {
+		if (this.isEmpty()) return "";
+		if (index1 < 0) index1 = 0;
+		if (index2 < 0) index2 = 0;
+		if (index1 > this.size()) index1 = this.size();
+		if (index2 > this.size()) index2 = this.size();
+		return this.toString().substring(index1, index2);
 	}
 	
 	/**
