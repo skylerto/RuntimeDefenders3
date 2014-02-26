@@ -39,8 +39,7 @@ public class TextToPDFv11 {
 	private ReadFromInput file;
 	private DrawClass draw;
 	private TabStaff staff;
-	private int drawbeginline_state = 1;
-
+	
 	/**
 	 * 
 	 * @param outputpath
@@ -104,106 +103,54 @@ public class TextToPDFv11 {
 			LINE_SPACE = file.getSACING();
 			System.out.println(LINE_SPACE);
 
-			List<List<String>> dynamic_array = draw.StringAnchor(staff
-					.getList());
-			// List<List<String>> dynamic_array =
-			// draw.StringAnchor(file.getList());
+			List<List<String>> dynamic_array = draw.StringAnchor(staff.getList());
+			//List<List<String>> dynamic_array = draw.StringAnchor(file.getList());
 			System.out.printf("size is %d\n", dynamic_array.size());
 			float currX = 36.0f;
 			float currY = 680.0f;
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
 
-				if (draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,
-						FONT_SIZE) < ((writer.getPageSize().getWidth() - 36f) - currX)) {
+				if (draw.getMusicNotelength(dynamic_array.get(i), LINE_SPACE,FONT_SIZE) < ((writer.getPageSize().getWidth() - 36f) - currX)) {
+					if (i == 0) {
 
-					if (currY <= 120.0f) {
+						same_line_state = 0;
+						draw.DrawEndingLines(dynamic_array.get(i), 0,currY, 36f, FONT_SIZE, cb);
+					} else
+						same_line_state = 1;
 
-						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
+					draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE,DrawClass.getPx1y1(), FONT_SIZE, same_line_state, cb);
+					
+					currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
 
-						draw.DrawEndingLines(
-								dynamic_array.get(i),
-								currX
-										+ draw.getMusicNotelength(
-												dynamic_array.get(i),
-												LINE_SPACE, FONT_SIZE), currY,
-								writer.getPageSize().getWidth(), FONT_SIZE, cb);
+
+				} else {
+					
+					draw.DrawEndingLines(dynamic_array.get(i-1), currX, currY,writer.getPageSize().getWidth(), FONT_SIZE, cb);
+
+					if ( currY> 120) {
+						currX = 36.0f;
+						currY = currY - 80;
+						same_line_state = 0;
+
+						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE,DrawClass.getPx1y1(), FONT_SIZE, same_line_state, cb);
+						draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,FONT_SIZE, cb); // for begining
+						currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
+
+					}
+					else {
 						doc.newPage();
 						same_line_state = 0;
 						currX = 36.0f;
 						currY = 750.0f;
-					} else {
+						draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,FONT_SIZE, cb); // for begining
 
-						if (i == 0) {
-
-							same_line_state = 0;
-							draw.DrawEndingLines(dynamic_array.get(i), 0,
-									currY, 36f, FONT_SIZE, cb);
-						} else
-							same_line_state = 1;
-
-						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
-						currX = currX
-								+ draw.getMusicNotelength(dynamic_array.get(i),
-										LINE_SPACE, FONT_SIZE);
-
-					}
-
-				} else {
-					draw.DrawEndingLines(dynamic_array.get(i), currX, currY,
-							writer.getPageSize().getWidth(), FONT_SIZE, cb);
-					currX = 36.0f;
-					currY = currY - 80;
-					same_line_state = 0;
-
-					draw.DrawMusicNote(dynamic_array.get(i), currX, currY,
-							LINE_SPACE, FONT_SIZE, same_line_state, cb);
-
-					currX = currX
-							+ draw.getMusicNotelength(dynamic_array.get(i),
-									LINE_SPACE, FONT_SIZE);
-					draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,
-							FONT_SIZE, cb); // for begining
-				}
-				if (currY <= 120.0f) {
-					if (i < dynamic_array.size() - 1) {
-						if (draw.getMusicNotelength(dynamic_array.get(i + 1),
-								LINE_SPACE, FONT_SIZE) < ((writer.getPageSize()
-								.getWidth() - 36f) - currX)) {
-							same_line_state = 1;
-
-							draw.DrawMusicNote(dynamic_array.get(i + 1), currX,
-									currY, LINE_SPACE, FONT_SIZE,
-									same_line_state, cb);
-
-							draw.DrawEndingLines(
-									dynamic_array.get(i + 1),
-									currX
-											+ draw.getMusicNotelength(
-													dynamic_array.get(i + 1),
-													LINE_SPACE, FONT_SIZE),
-									currY, writer.getPageSize().getWidth(),
-									FONT_SIZE, cb); // error here
-							i += 1;
 						}
-
+					
 					}
-
-					drawbeginline_state = 1;
-					doc.newPage();
-					same_line_state = 0;
-					currX = 36.0f;
-					currY = 750.0f;
-					draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,
-							FONT_SIZE, cb); // for begining
-				}
-
+			
 			}
-			draw.DrawEndingLines(dynamic_array.get(dynamic_array.size() - 1),
-					currX, currY, writer.getPageSize().getWidth(), FONT_SIZE,
-					cb);
+			draw.DrawEndingLines(dynamic_array.get(dynamic_array.size() - 1),currX, currY, writer.getPageSize().getWidth(), FONT_SIZE,cb);
 			doc.close();
 			writer.close();
 		} catch (Exception e) {
@@ -250,3 +197,4 @@ public class TextToPDFv11 {
 	}
 
 }
+ 
