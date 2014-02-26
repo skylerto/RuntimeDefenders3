@@ -87,7 +87,7 @@ public class DrawClass {
      	
       }
       private void Pause(float x , float y,float p_detect, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-     	 System.out.printf("p is %f\n",p_detect);
+     	 System.out.printf("p_detect is is %f\n",p_detect);
      	 //System.out.printf("curr_pos is %d\n",curr_pos);
      	 /*if (font_size/line_space <= 1.14 ) 
      		 xctrl = (x -line_space)-(font_size/1.8f); 
@@ -98,17 +98,17 @@ public class DrawClass {
      	 //float tempx = (x- diff* (line_space))+((font_size/1.8f)/2.0f);
      	 //this.DrawLine( (x -line_space)-(font_size/1.8f), y, (x -line_space)-(font_size/1.8f), y+6.0f, 0.5f, cb);
      	 //this.DrawLine(tempx, y, tempx, y+5f, 0.5f, cb);
-     	 this.DrawLine(x, y, x+3f, y+3f, 0.5f, cb);
+     	 //this.DrawLine(x, y, x+3f, y+3f, 0.5f, cb);
      	 float tempy = y +(font_size*0.5f);
      	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
      	 cb.saveState();
-     	 cb.moveTo(p_detect, tempy);
-     	 cb.curveTo(p_detect+1.3f, tempy+(line_space*0.4f),  (x +line_space), tempy+(line_space*0.4f),  (x +(line_space*1.0f))+((font_size/1.8f)/2.0f), tempy);
+     	 cb.moveTo(x-(font_size/1.8f), tempy);
+     	 cb.curveTo(x-(font_size/1.8f)+1.3f, tempy+(line_space*0.4f),  (x +line_space), tempy+(line_space*0.4f),  (x +(line_space*1.0f))+((font_size/1.8f)/2.0f), tempy);
           cb.stroke();
           cb.restoreState();
           cb.saveState();
           cb.beginText();
-          cb.setTextMatrix((p_detect+x)/2f+1.0f, tempy+(line_space*0.5f));
+          cb.setTextMatrix(x-1.0f, tempy+(line_space*0.5f));
           cb.setFontAndSize(bf, font_size/2);
           cb.showText("p");
           cb.endText();
