@@ -32,6 +32,12 @@ public class TabMeasureTest {
     TabMeasure tabm11;
     TabMeasure tabm12;
     TabMeasure tabm13;
+    TabMeasure tabm14;
+    TabMeasure tabm15;
+    TabString temp9;
+    TabString temp10;
+    TabString temp11;
+    
 
     @Before
     public void setUp() throws Exception {
@@ -117,6 +123,37 @@ public class TabMeasureTest {
         tabm13.fixEndBar();
 
 
+        char s = '2';
+        temp9 = new TabString();
+        tabm14 = new TabMeasure();
+        temp9.addChar('1');
+        temp9.addChar('-');
+        temp9.addChar('2');
+        for (int i = 0; i < 6; i++) {
+           // temp9.addChar(s);
+            tabm14.setString(temp9, i);
+
+        }
+        
+        temp10 = new TabString();
+        temp10.addChar('|');
+        temp10.addChar('1');
+        temp10.addChar('|');
+        
+        tabm15 = new TabMeasure();
+        temp11 = new TabString();
+        temp11.addChar('1');
+        temp11.addChar('1');
+        temp11.addChar('1');
+        
+        for (int i = 0; i < 6; i++) {
+          
+             tabm15.setString(temp11, i);
+
+         }
+        
+        
+        
 }
     
 
@@ -342,36 +379,36 @@ public class TabMeasureTest {
 
     }
     
-    @Ignore
-    public void testEqualizeStrings() throws Exception { //doesnt work, we will come back to it
-        //setting up tab10
-        tabm10.fixMeasure();
-        tabm10.setString(temp7, 5);
-        //System.out.println(tabm10.toString());
+    @Test
+    public void testEqualizeStrings() throws Exception { 
+        //setting up tab14
+        tabm14.fixMeasure();
+        tabm14.setString(temp10, 5);
+       
         
         /*
          * Tab10 contains
-         * |a|
-         * |a|
-         * |a|
-         * |a|
-         * |a|
-         * |cd||
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1|
          * 
          * after calling the method it should return
          * 
-         * |a--|
-         * |a--|
-         * |a--|
-         * |a--|
-         * |a--|
-         * |cd||
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1-2|
+         * |1--|
          * 
          */
         
-        String expect_5 = "|a--|\n|a--|\n|a--|\n|a--|\n|a--|\n|cd||";
-        tabm10.equalizeStrings();
-        assertEquals(expect_5,tabm10.toString());
+       String expect_5 = "|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1--|";
+        tabm14.equalizeStrings();
+        assertEquals(expect_5,tabm14.toString());
         
      
        
@@ -451,13 +488,65 @@ public class TabMeasureTest {
     }
     
     
-    @Ignore
-    public void testFixMeasure() throws Exception { // sending in  a a a a a cd
-                                    // should print out |a-||a-||a-||a-||a-||cd|
-        String expect_1 = "|a-|\n|a-|\n|a-|\n|a-|\n|a-|\n|cd|";
-        tabm11.fixMeasure();
-        assertEquals(expect_1, tabm11.toString());
+    @Test
+    public void testFixMeasure() throws Exception { 
+    	/*
+    	 * tabm14 contains 
+				1-2
+				1-2
+				1-2
+				1-2
+				1-2
+				1-2
+			after calling the method should return
+			
+				|1-2|
+				|1-2|
+				|1-2|
+				|1-2|
+				|1-2|
+				|1-2|
+    	 */
+    	
+                                 
+        String expect_1 = "|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1-2|";
+       tabm14.fixMeasure();
+        assertEquals(expect_1, tabm14.toString());
         
+    }
+    
+    @Test(expected = LargeNumberException.class)
+    public void testFixMeasureException() throws LargeNumberException{
+    	/*
+    	 * tam15 contains
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 
+    	 * it should throw large number exception because there are 3 consecutive 1's
+    	 */
+    	tabm15.fixMeasure();
+    	System.out.println(tabm15.toString());
+    }
+    
+    @Test(expected = LargeNumberException.class)
+    public void testFixStringsException() throws LargeNumberException{
+    	/*
+    	 * tam15 contains
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 111
+    	 * 
+    	 * it should throw large number exception because there are 3 consecutive 1's
+    	 */
+    	tabm15.fixStrings();
+    	System.out.println(tabm15.toString());
     }
     
 
