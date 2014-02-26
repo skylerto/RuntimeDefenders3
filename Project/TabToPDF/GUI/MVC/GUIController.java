@@ -106,24 +106,24 @@ class selectButtonListener implements ActionListener {
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-			GUIView.fileToRead = chooser.getSelectedFile();
+			// GUIView.fileToRead = chooser.getSelectedFile();
+
 			String filenameWithExtension = chooser.getSelectedFile().toString();
-			
+
 			String filename = GUIUtils
 					.removeFileExtension(filenameWithExtension);
 			GUIModel.setfilenameWithExtension(filenameWithExtension);
-			GUIModel.setfilename(filename);
+			GUIModel.setfilename(GUIUtils.removeFileQualifier(filename));
 			GUIModel.logString += "File " + "\"" + filename + "\""
 					+ " selected.\n";
 			GUIModel.updateLog();
 
 			// output input
-			String input = GUIModel.filenameWithExtension;
-			String output = "outputfiles/"
-					+ GUIUtils.removeFileQualifier(GUIModel.getfilename())
-					+ ".pdf";
 
-			GUIModel.setOutputFilename(output);
+			GUIModel.setfilenameWithExtension(filenameWithExtension);
+			String input = GUIModel.getfilenameWithExtension();
+			String output = "outputfiles/";
+
 			// TextToPDF test = new TextToPDF();
 			// TextToPDF.setInputFileName(input);
 
@@ -162,30 +162,51 @@ class convertButtonListener implements ActionListener {
 		// DO CONVERT
 		GUIModel.logString += "Attempting to convert file...\n";
 
-		// output input
-		String input = GUIModel.filenameWithExtension;
-		String output =  GUIModel.filename;
+		// CHOOSE A DESTINATION
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new java.io.File("."));
+		chooser.setDialogTitle("Select PDF Destination");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-		try {
-			TextToPDFv11 test = new TextToPDFv11(output, input);
-			test.WriteToPDF();
-			/*
-			 * // Set the inputfile name and run the create pdf. TextToPDF test
-			 * = new TextToPDF(); TextToPDF.setInputFileName(input);
-			 * test.createPDF(output);
-			 */
+			// GUIView.fileToRead = chooser.getCurrentDirectory();
+			String fileDestinationWithExtension = chooser.getSelectedFile()
+					.toString() + System.getProperty("file.separator");
 
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			GUIModel.logString += "Directory " + "\""
+					+ fileDestinationWithExtension + "\""
+					+ " selected to output to.\n";
+			GUIModel.updateLog();
+
+			// outputpath and input
+			String input = GUIModel.getfilenameWithExtension();
+			String outputpath = fileDestinationWithExtension;
+
+			// TextToPDF test = new TextToPDF();
+			// TextToPDF.setInputFileName(input);
+
+			try {
+				TextToPDFv11 test = new TextToPDFv11(outputpath, input);
+				test.WriteToPDF();
+				/*
+				 * // Set the inputfile name and run the create pdf. TextToPDF
+				 * test = new TextToPDF(); TextToPDF.setInputFileName(input);
+				 * test.createPDF(output);
+				 */
+
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Successfully converted "
+					+ TextToPDFv11.INPUT_FILENAME + " to "
+					+ TextToPDFv11.PDF_FILENAME + "!");
+
+			GUIModel.updateLog();
+
 		}
-		System.out.println("Successfully converted "
-				+ TextToPDFv11.INPUT_FILENAME + " to "
-				+ TextToPDFv11.PDF_FILENAME + "!");
-
-		GUIModel.updateLog();
-
 	}
 }
 
@@ -214,7 +235,8 @@ class editButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (GUIModel.getfilenameWithExtension() == null) {
-			// IF THERE HASN'T BEEN A FILE SELECTED YET PROMPT USER TO SELECT
+			// IF THERE HASN'T BEEN A FILE SELECTED YET PROMPT USER TO
+			// SELECT
 			// FILE.
 			JOptionPane
 					.showMessageDialog(
@@ -230,7 +252,6 @@ class editButtonListener implements ActionListener {
 					.getfilenameWithExtension()));
 
 		}
-
 	}
 }
 

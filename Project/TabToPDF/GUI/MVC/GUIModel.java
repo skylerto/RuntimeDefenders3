@@ -218,6 +218,14 @@ public class GUIModel {
 	}
 
 	/**
+	 * 
+	 * @return - True if outputFilename is empty.
+	 */
+	public static boolean outputFileIsEmpty() {
+		return (outputFilename == null);
+	}
+
+	/**
 	 * Updates the log box with current activity.
 	 */
 	static void updateLog() {

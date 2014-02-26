@@ -1,14 +1,22 @@
 package version11;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import tabparts.TabStaff;
-
 import MVC.GUIModel;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class TextToPDFv11 {
 
@@ -36,7 +44,7 @@ public class TextToPDFv11 {
 	/**
 	 * 
 	 * @param outputpath
-	 *            - Path (including file name) to where the output file should
+	 *            - Path (excluding file name) to where the output file should
 	 *            go.
 	 * @param inputpath
 	 *            - Path (including file name) to where the desired text file
@@ -46,17 +54,22 @@ public class TextToPDFv11 {
 	 */
 	public TextToPDFv11(String outputpath, String inputpath)
 			throws DocumentException, IOException {
-
+		System.out.println(outputpath);
 		file = new ReadFromInput(inputpath);
 		staff = new TabStaff();
 		staff.scanFile(new File(inputpath));
 		System.out.println(staff.toString());
 
+		String filename;
+
 		// ALGORITHM TO SET OUTPUT NAME OF PDF.
 		if (!(file.titleIsEmpty())) {
-			outputpath = ("outputfiles/" + file.getTITLE() + ".pdf");
+			filename = file.getTITLE() + ".pdf";
+		} else {
+			filename = GUIModel.getfilename() + ".pdf";
 		}
 
+		outputpath = outputpath + filename;
 		GUIModel.setOutputFilename(outputpath);
 		draw = new DrawClass();
 		doc = new Document(PageSize.LETTER);
