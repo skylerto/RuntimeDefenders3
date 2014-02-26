@@ -56,7 +56,14 @@ public class TextToPDFv11 {
 		System.out.println(outputpath);
 		file = new ReadFromInput(inputpath);
 		staff = new TabStaff();
-		staff.scanFile(new File(inputpath));
+		try {
+			staff.scanFile(new File(inputpath));
+		} catch (Exception e) {
+			System.exit(0);
+			
+			
+			
+		}
 		System.out.println(staff.toString());
 
 		String filename;
@@ -189,6 +196,7 @@ public class TextToPDFv11 {
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -3,31 +3,3 @@ Selecting a file...
 File "case5.txt" selected.
 Document preview has been updated.
 Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case5.txt" selected.
-Document preview has been updated.
-Document preview has been updated.
-Selecting a file...
-File "case6.txt" selected.
-Document preview has been updated.
-Document preview has been updated.

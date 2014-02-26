@@ -87,7 +87,7 @@ public class DrawClass {
      	
       }
       private void Pause(float x , float y,float p_detect, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-     	 System.out.printf("p_detect is is %f\n",p_detect);
+     	// System.out.printf("p_detect is is %f\n",p_detect);
      	 //System.out.printf("curr_pos is %d\n",curr_pos);
      	 /*if (font_size/line_space <= 1.14 ) 
      		 xctrl = (x -line_space)-(font_size/1.8f); 
