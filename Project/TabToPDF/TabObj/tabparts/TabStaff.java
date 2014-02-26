@@ -78,15 +78,18 @@ public class TabStaff {
 	 * blah blah
 	 *
 	 * @param file	The file to read the input data from.
+	 * @throws Exception 
 	 */
-	public void scanFile(File file) {
+	public void scanFile(File file) throws Exception {
 		File input = file;
 		BufferedReader stream;
 		String line;			// A line read from the input file
 		int linenum = 0;			// The number line in the input file currently being read
 		//GUIModel.logString += "Preprocessing file\n";
 		//GUIModel.updateLog();
+			
 		try {
+			
 			stream = new BufferedReader(new FileReader(input));
 			TabString s;		// A string to be stored in a measure
 			TabString temp;		// Used to differentiate between comments and strings
@@ -96,6 +99,14 @@ public class TabStaff {
 			int currentmeasure = 0;			// Represents the total number of measures in the staff
 			int maxmeasure = 0;				// The max measure seen in a row of measures
 			int stringnum = 0;			// The string of the current measure
+			
+			/* Stop if file is empty */
+			if (stream.readLine() == null) {
+				new IncorrectFormattingAlert("\nError: The file " + file.getName() + " is empty.\n");
+				stream.close();
+				throw new Exception("\nError: The file " + file.getName() + " is empty.\n");
+			}
+			
 			/* If we not at the end of the file, then read a line and process it */
 			while ((line = stream.readLine()) != null) {
 				linenum++;
@@ -219,7 +230,7 @@ public class TabStaff {
 			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + LARGENUMBER_MSG + e);
 			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception (e.getMessage());
 		}
 	}
 	

@@ -3,7 +3,8 @@ import java.util.regex.Pattern;
 
 // Edit addDash() so it adds dashes to the left of stars
 // Add a symbol for sliding down, if first tab is greater than the second
-// Allow cross measure linking for hammers
+// Allow cross measure linking for hammers?
+// Add a regex that will deletes p from p# if there's no number before it
 // Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
 
 /** (UPDATED) Class will now fix jibberish inside of strings. 
