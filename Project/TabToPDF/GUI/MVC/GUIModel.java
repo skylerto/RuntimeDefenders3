@@ -28,7 +28,7 @@ public class GUIModel {
 	// private static File imageFile= new File("res/nopreview.gif"); temporary
 	// fix to initialize imagefile check line 72
 	private static File imageFile;
-	static String logString = "";
+	public static String logString = "";
 	static BufferedImage image;
 	static String filenameWithExtension;
 	static String filename;
