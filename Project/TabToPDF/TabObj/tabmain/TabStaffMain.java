@@ -16,14 +16,17 @@ public class TabStaffMain {
 		}
 		
 		
-		staff.scanFile(new File("inputfiles/case1.txt"));
+		staff.scanFile(new File("inputfiles/try4.txt"));
 		
 		System.out.println(staff.toString());
-		System.out.println(staff.getRepeatMap().toString());
 		
 		
-		//staff.deleteComments();
+/*		TabString test = new TabString("||* - <2<3>-><5 3>bs>a5s5-<6>--dp  h*-1h1-1p-1 2 *||");
 		
+		System.out.println(test.toString());
+		test.fixSymbols();
+		System.out.println(test.toString());
+		*/
 		//System.out.println(staff.toString());
 		
 		//System.out.println(staff.getComment(0) + String.valueOf(staff.getMeasure(0).isComment()));

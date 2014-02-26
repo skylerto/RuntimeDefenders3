@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import MVC.IncorrectFormattingAlert;
+
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 // Questions:
@@ -206,6 +208,9 @@ public class TabStaff {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (LargeNumberException e) {
+			new IncorrectFormattingAlert("\nError: Cannot have 3 consecutive digits in the tab staff.\n");
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -303,19 +308,16 @@ public class TabStaff {
 	/**
 	 * Fixes errors for each TabMeasure. In addition, removes empty measures
 	 * and stores and fixes repeating numbers.
+	 * @throws LargeNumberException 
 	 * 
 	 * @throws Exception
 	 */
-	public void fixStaff() throws Exception {
+	public void fixStaff() throws LargeNumberException, Exception{
 		this.removeEmpty();
 		this.findRepeats();
 		this.fixEnd();
-		for (int i = 0; i < this.size(); i++) {
-			this.staff.get(i).fixStrings();
-			this.staff.get(i).fixStartBar();
-			this.staff.get(i).fixEndBar();
-			this.staff.get(i).equalizeStrings();
-		}
+		for (int i = 0; i < this.size(); i++)
+			this.staff.get(i).fixMeasure();
 		this.findOneRepeats();
 		this.deleteComments();
 	}

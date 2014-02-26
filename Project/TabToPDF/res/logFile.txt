@@ -1,8 +1,33 @@
 Document preview has been updated.
-Opening User log...
 Selecting a file...
-File "try2.txt" selected.
+File "case5.txt" selected.
 Document preview has been updated.
 Document preview has been updated.
-Attempting to convert file...
-Opening User log...
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case5.txt" selected.
+Document preview has been updated.
+Document preview has been updated.
+Selecting a file...
+File "case6.txt" selected.
+Document preview has been updated.
+Document preview has been updated.

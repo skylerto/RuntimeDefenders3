@@ -2,21 +2,10 @@ package tabparts;
 
 import java.util.regex.Pattern;
 
-//Fix dots
-
+// Make double bars have stars only in the 3rd and 4th strings
 /*
- * (UPDATE) Added comment and is_comment attributes that work with new methods.
- * New methods are: setComment(), getComment(), isComment()
- * 
- * New attribute: repeat
- * New methods: setRepeat(), getRepeat()
- * 
- * Constructors and copy methods have been edited to account for the new attributes
- * 
- * New methods: fixEndBar(), fixStartBar(), isBlank(), getStringText()
- * 
- * Edited isEmpty()
- * Deleted isFull()
+ * (UPDATE) Added fixSymbols() method
+ * fixSymbols() and fixMeasure() throw a LargeNumberException
  */
 
 /**
@@ -136,11 +125,12 @@ public class TabMeasure {
 	 * by adding dashes to the ends. Finds a repeat number and stores it
 	 * in the measure then changes the number into a bar or deletes it.
 	 */
-	public void fixMeasure() {
+	public void fixMeasure() throws LargeNumberException {
 		this.fixStrings();
 		this.fixStartBar();
 		this.fixEndBar();
 		this.equalizeStrings();
+		this.fixSymbols();
 	}
 	
 
@@ -294,6 +284,19 @@ public class TabMeasure {
 			}
 			else
 				this.strings[i].addDash(this.length() - this.strings[i].size());
+		}
+			
+	}
+	
+	/** 
+	 * Fixes the symbols for each string of the measure.
+	 * 
+	 * @throws	LargeNumberException when 3 or more consecutive digits are found in a string.
+	 */
+	public void fixSymbols() throws LargeNumberException {
+		if (this.isComment()) return;
+		for (int i = 0; i < this.size; i++) {
+			this.strings[i].fixSymbols();
 		}
 			
 	}

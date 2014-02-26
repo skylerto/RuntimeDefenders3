@@ -1,11 +1,12 @@
-title
-subtitle
-size
+TITLE=TRY4
+SUBITITLE=SUB
+SIZE=5.0
 
-comment
-blah
-
-|----|
+||* - <2<3>-><5 3>bs>a5s5-<6>--dp  h*-1h1-1p-1 2 *||
+  |  -1sva2--            --5fk10f-
+||----<12>>--<<23>--<<23>>---<222>---||
+  
+|*-----2-----*|
 
 the four below is a repeat number
 hello
