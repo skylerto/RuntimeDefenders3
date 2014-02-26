@@ -22,14 +22,14 @@ public class TextToPDFv11 {
 
 	/* fist stable version */
 
-	float LINE_SPACE = 5.0f;
+	float LINE_SPACE = 8.0f;
 	final float TITLE_SIZE = 26.0f;
 	final int FONT_SIZE = 8;
 	final float SUBTITLE_SIZE = 12.0f;
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try3.txt";
+	public static String INPUT_FILENAME = "inputfiles/try.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -145,7 +145,7 @@ public class TextToPDFv11 {
 						currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
 
 					}
-					else {
+					else if (currY <= 120 && i <dynamic_array.size()-1) {
 						doc.newPage();
 						same_line_state = 0;
 						currX = 36.0f;
