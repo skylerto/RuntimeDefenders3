@@ -26,15 +26,30 @@ public class IncorrectFormattingAlert {
 
 	public IncorrectFormattingAlert(String whatWentWrong) {
 
-		Object[] options = { "Show log", "Fix it error" };
-		int result = JOptionPane.showOptionDialog(alertFrame,
+		Object[] options = { "Show log", "Fix error" };
+		int result = JOptionPane.showOptionDialog(new JFrame(),
 				"There was in error in the document we couldn't handle for you! \n"
-						+ whatWentWrong + "\n What would you like to do?",
-				"Something went wrong!", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-		switch (result) {
-		case 0:
+						+ whatWentWrong + "\n" + "What would you like to do?"
+						+ " (Please reopen the application).",
+				"Something went wrong!", 0, 0, null, options, options[1]);
 
+		checkClicked(result);
+
+		/*
+		 * switch (result) { case 0:
+		 * 
+		 * break;
+		 * 
+		 * case 1:
+		 * 
+		 * break; }
+		 */
+
+	}
+
+	public void checkClicked(int result) {
+
+		if (result == 0) {
 			// Try catch checks if the log file has been created or not.
 			try {
 				new ShowLog();
@@ -42,57 +57,14 @@ public class IncorrectFormattingAlert {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			break;
-		case 1:
-			if (fileToOpen != null)
-				openTextEditor(fileToOpen, "Incorrect Formatting Alert!");
-			else
+
+		} else {
+			if (fileToOpen != null) {
+				GUIUtils.openTextEditor(fileToOpen);
+
+			} else
 				throw new NullPointerException("Missing file!");
-			break;
 		}
 
-	}
-
-	/**
-	 * Opens
-	 * 
-	 * @param file
-	 *            you'd like to open in external text editor.
-	 * @return - returns if the editor was able to open or not.
-	 * 
-	 */
-	public static boolean openTextEditor(File file, String logName) {
-
-		/*
-		 * boolean worked = true;
-		 * 
-		 * // Opens a new text area with the required file.
-		 * 
-		 * JFrame editorFrame = new JFrame(logName); JTextArea editArea = new
-		 * JTextArea(); editArea.setEditable(false);
-		 * editArea.setText(GUIUtils.openAndReadFile(file.toString()));
-		 * editorFrame.add(editArea); editorFrame.pack();
-		 */
-		// Code to open, but user has to select what he wants to open with.
-
-		boolean worked = false;
-		Desktop dt = Desktop.getDesktop();
-		try {
-			dt.open(file);
-			worked = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // TODO Auto-generated catch block e.printStackTrace(); }
-
-		return worked;
-	}
-
-	/**
-	 * Created for testing
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new IncorrectFormattingAlert("Wrong!");
 	}
 }

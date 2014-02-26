@@ -29,7 +29,8 @@ public class ShowLog {
 
 		String message = GUIUtils.openAndReadFile("res/logFile.txt");
 		if (message != null) {
-			JOptionPane.showMessageDialog(new JFrame(), message);
+			JOptionPane.showMessageDialog(new JFrame(), message, "Log",
+					JOptionPane.INFORMATION_MESSAGE);
 			worked = true;
 		}
 
@@ -43,6 +44,12 @@ public class ShowLog {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		try {
+			new ShowLog();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
