@@ -28,6 +28,7 @@ public class TabStaff {
 	public static final int MAX_SIZE = 1000;
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
 	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end
+	public static final String LARGENUMBER_MSG = "\n3 or more consecutive digits were detected.\nOnly 2 consecutive digits are allowed since guitars have at most 24 frets.\n";
 	
 	/* ATTRIBUTES */
 	
@@ -80,6 +81,7 @@ public class TabStaff {
 		File input = file;
 		BufferedReader stream;
 		String line;			// A line read from the input file
+		int linenum = 0;			// The number line in the input file currently being read
 		//GUIModel.logString += "Preprocessing file\n";
 		//GUIModel.updateLog();
 		try {
@@ -92,9 +94,9 @@ public class TabStaff {
 			int currentmeasure = 0;			// Represents the total number of measures in the staff
 			int maxmeasure = 0;				// The max measure seen in a row of measures
 			int stringnum = 0;			// The string of the current measure
-			
 			/* If we not at the end of the file, then read a line and process it */
 			while ((line = stream.readLine()) != null) {
+				linenum++;
 				line = line.replaceAll("\\s+$", "");	// Removes trailing blank spaces
 				
 				/* If line is empty then process index variables */
@@ -212,7 +214,7 @@ public class TabStaff {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (LargeNumberException e) {
-			new IncorrectFormattingAlert("\nError: Cannot have 3 consecutive digits in the tab staff.\n");
+			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + LARGENUMBER_MSG + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();

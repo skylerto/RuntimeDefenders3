@@ -336,8 +336,9 @@ public class TabString {
 	 * @param fixboth	If true, the method with add a '|' to both ends of
 	 * 					a comment, assuming it's a string.
 	 * @return	a message saying what was fixed.
+	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public String fixErrors() {
+	public String fixErrors() throws LargeNumberException {
 		/* Find what type of error needs to be fixed */
 		int error = this.checkError();
 		boolean b = false;
@@ -586,8 +587,11 @@ public class TabString {
 	 * @return	5 if the start '||' is missing
 	 * @return	6 if the end '||' is missing	
 	 * @return	7 if the string only contains '|||'
+	 * 
+	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public int checkError() {
+	public int checkError() throws LargeNumberException {
+		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have 3 or more consecutive digits (" + "this.toString()");
 		if (VALID_TRIPLE_STRING.matcher(this.toString()).find()) return SPECIAL_TRIPLE;
 		if (VALID_STRING.matcher(this.toString()).find()) return NO_ERROR;
 		if (this.isEmpty() || EMPTY_STRING.matcher(this.toString()).find()) return ERROR_EMPTY;
@@ -613,13 +617,8 @@ public class TabString {
 	 * 
 	 * ||*----2<3>---5 3-----5s5-<6>---------1h1-1p-1 2-*||
 	 * 
-	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public void fixSymbols() throws LargeNumberException {
-		/* Throw an exception if there are 3 consecutive numbers or more */
-		if (INVALID_NUMBER.matcher(this.toString()).find()) {
-			throw new LargeNumberException("Cannot have 3 or more consecutive digits (" + "this.toString()");
-		}
+	public void fixSymbols() {
 		/* Replace invalid symbols with dashes */
 		for (int i = 0; i < this.size(); i++) {
 			if (!this.isSymbol(this.getChar(i)))
