@@ -1,5 +1,8 @@
 package tabparts;
 
+import MVC.GUIController;
+import MVC.GUIModel;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -8,8 +11,7 @@ import MVC.IncorrectFormattingAlert;
 
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
-// Questions:
-// 1) Do you want jibberish chars inside of valid strings?
+
 
 /**
  * A TabStaff contains a list of TabMeasures. TabStaff can read in tab strings
@@ -78,7 +80,8 @@ public class TabStaff {
 		File input = file;
 		BufferedReader stream;
 		String line;			// A line read from the input file
-
+		//GUIModel.logString += "Preprocessing file\n";
+		//GUIModel.updateLog();
 		try {
 			stream = new BufferedReader(new FileReader(input));
 			TabString s;		// A string to be stored in a measure
