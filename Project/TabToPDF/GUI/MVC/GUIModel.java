@@ -203,6 +203,14 @@ public class GUIModel {
 		return filenameWithExtension;
 	}
 
+	/**
+	 * 
+	 * @return - True if filenameWithExtension is empty.
+	 */
+	public static boolean filenameWithExtensionIsEmpty() {
+		return (filenameWithExtension == null);
+	}
+
 	public static String getfilename() {
 
 		return filename;

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -55,6 +56,7 @@ public class GUIController {
 		this.view.addSelectButtonListener(new selectButtonListener());
 		this.view.addConvertButtonListener(new convertButtonListener());
 		this.view.addMenuItemListener(new menuItemListener());
+		this.view.addMenuItem3Listener(new menuItem3Listener());
 		this.view.addEditButtonListener(new editButtonListener());
 		// this.view.addListSelectionListener(new theListSelectionListener());
 
@@ -162,50 +164,56 @@ class convertButtonListener implements ActionListener {
 		// DO CONVERT
 		GUIModel.logString += "Attempting to convert file...\n";
 
-		// CHOOSE A DESTINATION
-		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new java.io.File("."));
-		chooser.setDialogTitle("Select PDF Destination");
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setAcceptAllFileFilterUsed(false);
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+		if (!(GUIModel.filenameWithExtensionIsEmpty())) {
 
-			// GUIView.fileToRead = chooser.getCurrentDirectory();
-			String fileDestinationWithExtension = chooser.getSelectedFile()
-					.toString() + System.getProperty("file.separator");
+			// CHOOSE A DESTINATION
+			JFileChooser chooser = new JFileChooser();
+			chooser.setCurrentDirectory(new java.io.File("."));
+			chooser.setDialogTitle("Select PDF Destination");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setAcceptAllFileFilterUsed(false);
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-			GUIModel.logString += "Directory " + "\""
-					+ fileDestinationWithExtension + "\""
-					+ " selected to output to.\n";
-			GUIModel.updateLog();
+				// GUIView.fileToRead = chooser.getCurrentDirectory();
+				String fileDestinationWithExtension = chooser.getSelectedFile()
+						.toString() + System.getProperty("file.separator");
 
-			// outputpath and input
-			String input = GUIModel.getfilenameWithExtension();
-			String outputpath = fileDestinationWithExtension;
+				GUIModel.logString += "Directory " + "\""
+						+ fileDestinationWithExtension + "\""
+						+ " selected to output to.\n";
+				GUIModel.updateLog();
 
-			// TextToPDF test = new TextToPDF();
-			// TextToPDF.setInputFileName(input);
+				// outputpath and input
+				String input = GUIModel.getfilenameWithExtension();
+				String outputpath = fileDestinationWithExtension;
 
-			try {
-				TextToPDFv11 test = new TextToPDFv11(outputpath, input);
-				test.WriteToPDF();
-				/*
-				 * // Set the inputfile name and run the create pdf. TextToPDF
-				 * test = new TextToPDF(); TextToPDF.setInputFileName(input);
-				 * test.createPDF(output);
-				 */
+				// TextToPDF test = new TextToPDF();
+				// TextToPDF.setInputFileName(input);
 
-			} catch (DocumentException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					TextToPDFv11 test = new TextToPDFv11(outputpath, input);
+					test.WriteToPDF();
+					/*
+					 * // Set the inputfile name and run the create pdf.
+					 * TextToPDF test = new TextToPDF();
+					 * TextToPDF.setInputFileName(input);
+					 * test.createPDF(output);
+					 */
+
+				} catch (DocumentException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				System.out.println("Successfully converted "
+						+ TextToPDFv11.INPUT_FILENAME + " to "
+						+ TextToPDFv11.PDF_FILENAME + "!");
+
+				GUIModel.updateLog();
+
 			}
-			System.out.println("Successfully converted "
-					+ TextToPDFv11.INPUT_FILENAME + " to "
-					+ TextToPDFv11.PDF_FILENAME + "!");
-
-			GUIModel.updateLog();
-
+		} else {
+			new NoFileFound("Please select a file before trying to convert!");
 		}
 	}
 }
@@ -230,9 +238,29 @@ class menuItemListener implements ActionListener {
 	}
 }
 
+class menuItem3Listener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		// OPEN USER MANUAL AND UPDATE LOG
+		GUIModel.logString += "Opening User log...\n";
+		GUIModel.updateLog();
+
+		try {
+			new ShowLog();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+}
+
 class editButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		GUIModel.logString += "User editing text file...\n";
+		GUIModel.updateLog();
 
 		if (GUIModel.getfilenameWithExtension() == null) {
 			// IF THERE HASN'T BEEN A FILE SELECTED YET PROMPT USER TO

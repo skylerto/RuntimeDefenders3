@@ -73,7 +73,7 @@ public class GUIView {
 	static JTextArea log;
 	static JTextPane topBox;
 	static JButton selectButton = new JButton("Select Files to Convert");
-	static JButton edit = new JButton("Edit Textfile");
+	static JButton edit = new JButton("Edit Text file");
 	static JPanel finalPanel;
 	static JPanel topPanel;
 	static JButton convertButton = new JButton("Convert Selected Files");
@@ -82,6 +82,7 @@ public class GUIView {
 	static JFrame frame;
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 	static JMenuItem menuItem2 = new JMenuItem("User Manual");
+	static JMenuItem menuItem3 = new JMenuItem("User Log");
 
 	public static JMenuBar createMenuBar() {
 		JMenuBar menuBar;
@@ -126,6 +127,7 @@ public class GUIView {
 		menuBar.add(menu);
 
 		menu.add(menuItem2);
+		menu.add(menuItem3);
 
 		return menuBar;
 	}
@@ -149,19 +151,12 @@ public class GUIView {
 		// selectButton.addActionListener(addSelectButtonListener());
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 0, 0, 0);
+		c.insets = new Insets(5, 0, 0, 5);
 		c.ipady = 40;
+		c.ipadx = 40;
 		panel.add(selectButton, c);
 
 		selectButton.setFont(buttonFont);
-
-		c.gridx = 1;
-		c.gridy = 1;
-		c.insets = new Insets(5, 0, 0, 0);
-		c.ipady = 40;
-		panel.add(edit, c);
-
-		edit.setFont(buttonFont);
 
 		// convertButton = new JButton("Convert Selected Files");
 
@@ -169,9 +164,21 @@ public class GUIView {
 		c.gridy = 2;
 		c.insets = new Insets(5, 0, 0, 0);
 		c.ipady = 40;
+		c.ipadx = 40;
+
 		panel.add(convertButton, c);
 
 		convertButton.setFont(buttonFont);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(5, 0, 0, 0);
+		c.ipady = 40;
+		c.ipadx = 40;
+
+		panel.add(edit, c);
+
+		edit.setFont(buttonFont);
 
 	}
 
@@ -389,6 +396,12 @@ public class GUIView {
 	void addMenuItemListener(ActionListener listenForSelectButton) {
 
 		menuItem2.addActionListener(listenForSelectButton);
+
+	}
+
+	void addMenuItem3Listener(ActionListener listenForSelectButton) {
+
+		menuItem3.addActionListener(listenForSelectButton);
 
 	}
 

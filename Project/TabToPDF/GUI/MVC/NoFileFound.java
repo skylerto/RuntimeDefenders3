@@ -17,7 +17,8 @@ public class NoFileFound {
 	 */
 	public NoFileFound() {
 		JOptionPane.showMessageDialog(new JFrame(),
-				"File was not found.\nPlease select a valid file.");
+				"File was not found.\nPlease select a valid file." + "\n\n"
+						+ "For more information go to Help > User Manual");
 
 	}
 
@@ -30,7 +31,8 @@ public class NoFileFound {
 	 */
 	public NoFileFound(String message) {
 		JOptionPane.showMessageDialog(new JFrame(), message + "\n\n"
-				+ "Please select a valid file.");
+				+ "Please select a valid file." + "\n\n"
+				+ "For more information go to Help > User Manual");
 
 	}
 

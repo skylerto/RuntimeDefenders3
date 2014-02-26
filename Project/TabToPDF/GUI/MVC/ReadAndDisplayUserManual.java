@@ -46,19 +46,23 @@ public class ReadAndDisplayUserManual {
 				+ "\n\n"
 				+ "Step 1:"
 				+ "\n\n"
-				+ "Select a file by pressing the \"Select Files to Convert button\""
+				+ "\tSelect a file by pressing the \"Select Files to Convert button\""
 				+ "\n\n"
 				+ "Step 2:"
 				+ "\n\n"
-				+ " Confirm the layout of your PDF in the Preview PDF section (At the top of the application)."
+				+ "\tConfirm the layout of your PDF in the Preview PDF section (At the top of the application)."
 				+ "\n\n"
 				+ "Step 3:"
 				+ "\n\n"
-				+ " If you would like to change/fix anything press the EDIT button and select your default text editor (Notepad on windows, jedit on linux, SimpleText on mac)."
+				+ "\tIf you like the layout, skip to Step 5. If you would like to change/fix anything in the PDF\npress the EDIT button and select your default text editor\n(Notepad on windows, vim on linux, SimpleText on mac)."
 				+ "\n\n"
 				+ "Step 4:"
 				+ "\n\n"
-				+ " When finished editing, save the file then press the Convert Selected Files button; to repreview the edited document reselect the file i.e. return to Step 1.";
+				+ "\tWhen finished editing, save the file and return to Step 1."
+				+ "\n\n"
+				+ "Step 5:"
+				+ "\n\n"
+				+ "\tOnce everything is ready, finish off by pressing the \"Convert Selected Files\" button\nThen select where you would like to save your PDF";
 		GUIUtils.writeToFile(new File("res/userman"), userman);
 	}
 
