@@ -29,7 +29,7 @@ public class TextToPDFv11 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try.txt";
+	public static String INPUT_FILENAME = "inputfiles/try3.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -119,7 +119,7 @@ public class TextToPDFv11 {
 					} else
 						same_line_state = 1;
 
-					draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE,DrawClass.getPx1y1(), FONT_SIZE, same_line_state, cb);
+					draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 					
 					currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
 
@@ -133,7 +133,7 @@ public class TextToPDFv11 {
 						currY = currY - 80;
 						same_line_state = 0;
 
-						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE,DrawClass.getPx1y1(), FONT_SIZE, same_line_state, cb);
+						draw.DrawMusicNote(dynamic_array.get(i), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						draw.DrawEndingLines(dynamic_array.get(i), 0, currY, 36f,FONT_SIZE, cb); // for begining
 						currX = currX+ draw.getMusicNotelength(dynamic_array.get(i),LINE_SPACE, FONT_SIZE);
 

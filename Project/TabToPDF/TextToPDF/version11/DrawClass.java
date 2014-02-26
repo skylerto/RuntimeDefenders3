@@ -18,9 +18,6 @@ public class DrawClass {
 		
 	}
 	
-	static float getPx1y1() {
-		return p_detect_pos;
-	}
 	  private  void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
      	 
      	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
@@ -89,8 +86,8 @@ public class DrawClass {
           cb.restoreState();
      	
       }
-      private void Pause(float x , float y,float p_detect,int curr_pos, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-     	 //System.out.printf("num_pos is %f\n",p_detect);
+      private void Pause(float x , float y,float p_detect, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
+     	 System.out.printf("p is %f\n",p_detect);
      	 //System.out.printf("curr_pos is %d\n",curr_pos);
      	 /*if (font_size/line_space <= 1.14 ) 
      		 xctrl = (x -line_space)-(font_size/1.8f); 
@@ -101,7 +98,7 @@ public class DrawClass {
      	 //float tempx = (x- diff* (line_space))+((font_size/1.8f)/2.0f);
      	 //this.DrawLine( (x -line_space)-(font_size/1.8f), y, (x -line_space)-(font_size/1.8f), y+6.0f, 0.5f, cb);
      	 //this.DrawLine(tempx, y, tempx, y+5f, 0.5f, cb);
-     	 //this.DrawLine(x, y, x+3f, y+3f, 0.5f, cb);
+     	 this.DrawLine(x, y, x+3f, y+3f, 0.5f, cb);
      	 float tempy = y +(font_size*0.5f);
      	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
      	 cb.saveState();
@@ -197,7 +194,7 @@ public class DrawClass {
       	 return total;
        }
        
-       void DrawMusicNote (List<String> inner , float x , float y , float line_space ,float p_detect, int FontSize ,int same_line,PdfContentByte cb  ) throws DocumentException, IOException
+       void DrawMusicNote (List<String> inner , float x , float y , float line_space , int FontSize ,int same_line,PdfContentByte cb  ) throws DocumentException, IOException
       {
     	   
      	 float tempx = x;
@@ -320,6 +317,7 @@ public class DrawClass {
      				 InsertText( inner.get(s).charAt(i)+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
      				 InsertText( inner.get(s).charAt(i+1)+"",x-(line_space*0.3f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
      				 DrawLine(x-(line_space*0.3f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,cb);
+     				p_detect_pos= x-(line_space*0.3f)+(FontSize/2.5f);
      				 x+=(line_space*2.0f);
      				 //num_pos = i+1;
      				 i = i+1;
@@ -327,12 +325,14 @@ public class DrawClass {
      			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1)== '|'){
      				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
      				 DrawLine(x+(FontSize/2.3f),y,x+(line_space),y,0.5f,cb);
+     				p_detect_pos= x+(FontSize/2.3f);
      				 x+=line_space;
      				 //num_pos = i;
      			 }
      			 else if ( inner.get(s).charAt(i) >= '0' &&  inner.get(s).charAt(i) <='9' &&  inner.get(s).charAt(i+1)== ' '){
      				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
      				 DrawLine(x+(FontSize/1.8f),y,x+(line_space),y,0.5f,cb);
+     				p_detect_pos= x+(FontSize/1.8f);
      				 x+=line_space;
      				 //num_pos = i;
      				 i = i+1;
@@ -343,7 +343,7 @@ public class DrawClass {
      				 x+=line_space;
      			 }
      			 else if ( inner.get(s).charAt(i) == 'p') {
-     				 Pause(x,y,p_detect,i,FontSize,line_space,cb);
+     				 Pause(x,y,p_detect_pos,FontSize,line_space,cb);
      				 DrawLine(x,y,x+line_space,y,0.5f,cb);
      				 x+=line_space;
      			 }
@@ -352,6 +352,7 @@ public class DrawClass {
      			 else if ( inner.get(s).charAt(i) != ' ' && inner.get(s).charAt(i) != '|' ) {
      				 InsertText( inner.get(s).charAt(i)+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);// write character taking account how many points it takes
      				 DrawLine(x+(FontSize/1.8f),y,x+line_space,y,0.5f,cb);
+     				 
      				p_detect_pos= x+(FontSize/1.8f);
      				 x+=line_space;
      				 //num_pos = i;
