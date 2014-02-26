@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 // Allow cross measure linking for hammers?
 // Add a regex that will deletes p from p# if there's no number before it
 // Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
+// Fix p across measures
 
 /** (UPDATED) Class will now fix jibberish inside of strings. 
  * Added fixSymbols() and isSymbol() and getSubstring() methods
@@ -39,7 +40,7 @@ public class TabString {
 	public static final Pattern VALID_SLIDE = Pattern.compile("([0-9][s])|([s][0-9])");				// Valid: #s# or s# or #s
 	public static final Pattern VALID_HAMMER = Pattern.compile("[0-9][h][0-9]");					// Valid: #h#
 	public static final Pattern VALID_SPACE = Pattern.compile("([0-9][\\s][0-9])|([-][\\s][-])");	// Valid: #[space]# or -[space]-
-	public static final Pattern VALID_PULL = Pattern.compile("([0-9][p])|([p][0-9])");				// Valid: #p# or p# or #p
+	public static final Pattern VALID_PULL = Pattern.compile("[0-9][p][0-9]");						// Valid: #p#
 	public static final Pattern VALID_STAR = Pattern.compile("([|][|][\\*])|([\\*][|][|])");		// Valid: ||* or *||
 	public static final Pattern VALID_HARMONIC = Pattern.compile("[<][1-9][>]");					// Valid: <#>
 	public static final Pattern VALID_HARMONIC2 = Pattern.compile("[<][1-9][1-9][>]");				// Valid: <##>
