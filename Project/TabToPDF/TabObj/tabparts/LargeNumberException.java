@@ -10,6 +10,6 @@ public class LargeNumberException extends Exception{
 	public LargeNumberException(){}
 	
 	public LargeNumberException(String message) {
-		super();
+		super(message);
 	}
 }

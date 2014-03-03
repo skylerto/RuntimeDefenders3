@@ -8,11 +8,8 @@ import java.util.regex.Pattern;
 // Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
 // Fix p across measures
 
-/** (UPDATED) Class will now fix jibberish inside of strings. 
- * Added fixSymbols() and isSymbol() and getSubstring() methods
- * Added a new constructor that takes a string
- * 
- * fixSymbols() will throw a LargeNumberException
+/* (UPDATED) fixErrors() and checkErrors() no longer throw the LargeNumberException.
+ * Created a new method called checkNumberException() that will throw the LargeNumberException.
  * 
  * -Ron
  */
@@ -340,7 +337,7 @@ public class TabString {
 	 * @return	a message saying what was fixed.
 	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public String fixErrors() throws LargeNumberException {
+	public String fixErrors() {
 		/* Find what type of error needs to be fixed */
 		int error = this.checkError();
 		boolean b = false;
@@ -590,10 +587,8 @@ public class TabString {
 	 * @return	6 if the end '||' is missing	
 	 * @return	7 if the string only contains '|||'
 	 * 
-	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public int checkError() throws LargeNumberException {
-		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have 3 or more consecutive digits (" + "this.toString()");
+	public int checkError() {
 		if (VALID_TRIPLE_STRING.matcher(this.toString()).find()) return SPECIAL_TRIPLE;
 		if (VALID_STRING.matcher(this.toString()).find()) return NO_ERROR;
 		if (this.isEmpty() || EMPTY_STRING.matcher(this.toString()).find()) return ERROR_EMPTY;
@@ -603,6 +598,18 @@ public class TabString {
 		if (VALID_START.matcher(this.toString()).find()) return ERROR_END;
 		if (VALID_END.matcher(this.toString()).find()) return ERROR_START;
 		return ERROR_COMMENT;
+	}
+	
+	/**
+	 * Assuming that the string is part of a measure that isn't a comment,
+	 * it will throw an exception if there are 3 or more consecutive numbers
+	 * in the string.
+	 * 
+	 * @throws LargeNumberException 3 or more consecutive numbers found in the string
+	 */
+	
+	public void checkNumberException() throws LargeNumberException {
+		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have 3 or more consecutive digits on the string: " + this.toString());
 	}
 	
 	/**

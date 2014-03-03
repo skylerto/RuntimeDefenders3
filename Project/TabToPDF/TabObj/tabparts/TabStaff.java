@@ -30,7 +30,6 @@ public class TabStaff {
 	public static final int MAX_SIZE = 1000;
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
 	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end
-	public static final String LARGENUMBER_MSG = "\n3 or more consecutive digits were detected.\nOnly 2 consecutive digits are allowed since guitars have at most 24 frets.\n";
 	
 	/* ATTRIBUTES */
 	
@@ -227,7 +226,7 @@ public class TabStaff {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (LargeNumberException e) {
-			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + LARGENUMBER_MSG + e);
+			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + e.getMessage() + "\n");
 			e.printStackTrace();
 		} catch (Exception e) {
 			throw new Exception (e.getMessage());
@@ -312,7 +311,9 @@ public class TabStaff {
 	}
 	
 	/**
-	 * Removes all empty TabMeasures from the list.
+	 * Removes all empty TabMeasures from the list.for (int i = 0; i < this.size(); i++) {
+				this.strings[i].fixErrors();
+			}
 	 */
 	public void removeEmpty() {
 		if (this.size() > 0) {
