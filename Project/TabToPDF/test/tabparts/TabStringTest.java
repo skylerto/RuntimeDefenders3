@@ -32,6 +32,15 @@ public class TabStringTest {
 	TabString tab18;
 	TabString tab19;
 	TabString tab20;
+	TabString tab21;//free
+	TabString tab22;//free
+	TabString tab23;//free
+	TabString tab24;//free
+	TabString tab25;//free
+	TabString tab26;//free
+	TabString tab27;//free
+	TabString tab28;//free
+	
 	String s;
 
 	@Before
@@ -129,7 +138,7 @@ public class TabStringTest {
 			assertEquals('\0', tab.getChar(i));
 		}
 		assertEquals(0, tab.size());
-		System.out.println(tab2.toString());
+		
 	}
 
 	@Test
@@ -317,6 +326,27 @@ public class TabStringTest {
 		char b = 'b';
 		assertEquals(b, tab19.getChar(3));
 
+	}
+	
+	@Test
+	public void TestCheckError() throws LargeNumberException{
+		
+		tab21 = new TabString("|||");
+		assertEquals(TabString.SPECIAL_TRIPLE,tab21.checkError());
+		tab22 = new TabString("|-6--7--6-||");
+		assertEquals(TabString.NO_ERROR,tab22.checkError());
+		tab23 = new TabString("");
+		assertEquals(TabString.ERROR_EMPTY,tab23.checkError());
+		tab24 = new TabString("1");
+		assertEquals(TabString.ERROR_COMMENT,tab24.checkError());
+		tab25 = new TabString("-----6-||");
+		assertEquals(TabString.ERROR_DB_START,tab25.checkError());
+		tab26 = new TabString("||--4---6-");
+		assertEquals(TabString.ERROR_DB_END,tab26.checkError());
+		tab27 = new TabString("|--4---6-");
+		assertEquals(TabString.ERROR_END,tab27.checkError());
+		tab28 = new TabString("--4---6-|");
+		assertEquals(TabString.ERROR_START,tab28.checkError());
 	}
 
 }
