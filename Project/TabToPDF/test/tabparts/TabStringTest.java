@@ -32,15 +32,15 @@ public class TabStringTest {
 	TabString tab18;
 	TabString tab19;
 	TabString tab20;
-	TabString tab21;//free
-	TabString tab22;//free
-	TabString tab23;//free
-	TabString tab24;//free
-	TabString tab25;//free
-	TabString tab26;//free
-	TabString tab27;//free
-	TabString tab28;//free
-	
+	TabString tab21;
+	TabString tab22;
+	TabString tab23;
+	TabString tab24;
+	TabString tab25;
+	TabString tab26;
+	TabString tab27;
+	TabString tab28;
+	TabString tab29;
 	String s;
 
 	@Before
@@ -329,7 +329,7 @@ public class TabStringTest {
 	}
 	
 	@Test
-	public void TestCheckError() throws LargeNumberException{
+	public void TestCheckError(){
 		
 		tab21 = new TabString("|||");
 		assertEquals(TabString.SPECIAL_TRIPLE,tab21.checkError());
@@ -347,6 +347,12 @@ public class TabStringTest {
 		assertEquals(TabString.ERROR_END,tab27.checkError());
 		tab28 = new TabString("--4---6-|");
 		assertEquals(TabString.ERROR_START,tab28.checkError());
+	}
+	
+	@Test(expected = LargeNumberException.class)
+	public void testcheckError() throws LargeNumberException {
+		tab29 = new TabString("|----123--||");
+		tab29.checkNumberException();
 	}
 
 }
