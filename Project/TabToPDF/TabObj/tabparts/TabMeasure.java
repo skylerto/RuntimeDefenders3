@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 // Make double bars have stars only in the 3rd and 4th strings
 /*
- * (UPDATE) Added checkNumberException() method
+ * (UPDATE) Added checkNumberException() method. fixStrings() and fixSymbols() dont throw exceptions anymore
  */
 
 /**
@@ -148,7 +148,7 @@ public class TabMeasure {
 	/**
 	 * Fixes errors in the TabString array.
 	 */
-	public void fixStrings() throws LargeNumberException {
+	public void fixStrings() {
 		if (this.isComment()) return;
 		for (int i = 0; i < this.size(); i++) {
 			this.strings[i].fixErrors();
@@ -303,7 +303,7 @@ public class TabMeasure {
 	 * 
 	 * @throws	LargeNumberException when 3 or more consecutive digits are found in a string.
 	 */
-	public void fixSymbols() throws LargeNumberException {
+	public void fixSymbols() {
 		if (this.isComment()) return;
 		for (int i = 0; i < this.size; i++) {
 			this.strings[i].fixSymbols();
