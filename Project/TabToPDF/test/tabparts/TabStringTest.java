@@ -31,9 +31,15 @@ public class TabStringTest {
 	TabString tab17;
 	TabString tab18;
 	TabString tab19;
+	TabString tab20;
+	String s;
+	
 
 	@Before
 	public void setUp() throws Exception {
+		s = "1 2 4 4 5 a";
+		tab20 = new TabString(s);
+		
 		tab = new TabString();
 		tab1 = new TabString(tab);
 		tab2 = new TabString();
@@ -115,6 +121,7 @@ public class TabStringTest {
 		tab19 = new TabString(tab2);
 		tab19.replaceChar('b', 3);
 		
+
 		
 
 	}
@@ -126,6 +133,15 @@ public class TabStringTest {
 			assertEquals('\0', tab.getChar(i));
 		}
 		assertEquals(0, tab.size());
+	}
+	
+	@Test
+	public void testTabString_String() {
+		assertEquals(75, tab20.MAX_SIZE);
+		for (int i = 0; i < s.length(); i++) {
+			assertEquals(s.charAt(i), tab20.getChar(i));
+		}
+		assertEquals(s.length(), tab20.size());
 
 	}
 
@@ -217,6 +233,24 @@ public class TabStringTest {
 	}
 	
 	@Test
+	public void TestfixSymbols() {
+		//1 2 3 4 5 a becomes 1 2 3 4 5--
+		//System.out.println(tab20.toString());
+		tab20.fixSymbols();
+		//System.out.println(tab20.toString());
+		for(int i = 0; i <tab20.size();i++){
+			assertTrue(tab20.isSymbol(tab20.getChar(i)));
+		}
+	}
+	
+	@Test
+	public void TestGetSubstring() {
+	   String t = tab20.getSubstring(0, 5);
+	   String e = s.substring(0,5);
+	   assertTrue(e.equals(t));
+	}
+	
+	@Test
 	public void TestisEmpty() {
 		assertTrue(tab7.isEmpty());
 	}
@@ -257,6 +291,22 @@ public class TabStringTest {
 	}
 	
 	@Test
+	public void TestisSymbol() {
+		
+		assertFalse(tab20.isSymbol('a'));
+		assertTrue(tab20.isSymbol('3'));
+		assertTrue(tab20.isSymbol('|'));
+		assertTrue(tab20.isSymbol('-'));
+		assertTrue(tab20.isSymbol('s'));
+		assertTrue(tab20.isSymbol('h'));
+		assertTrue(tab20.isSymbol('p'));
+		assertTrue(tab20.isSymbol('*'));
+		assertTrue(tab20.isSymbol('<'));
+		assertTrue(tab20.isSymbol('>'));
+		assertTrue(tab20.isSymbol(' '));
+	}
+	
+	@Test
 	public void TesttrimString() {
 		
 		assertFalse(tab.trimString(3));
@@ -266,6 +316,8 @@ public class TabStringTest {
 		assertTrue(tab14.trimString(13));
 		assertTrue(tab16.trimString(3));
 	}
+	
+	
 	
 	@Test
 	public void TestreplaceChar() {
