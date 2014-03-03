@@ -33,13 +33,12 @@ public class TabStringTest {
 	TabString tab19;
 	TabString tab20;
 	String s;
-	
 
 	@Before
 	public void setUp() throws Exception {
 		s = "1 2 4 4 5 a";
 		tab20 = new TabString(s);
-		
+
 		tab = new TabString();
 		tab1 = new TabString(tab);
 		tab2 = new TabString();
@@ -62,7 +61,7 @@ public class TabStringTest {
 		tab6.fixBoth();
 		tab7 = new TabString();
 		tab7.addDash(5);
-	    tab8 = new TabString();
+		tab8 = new TabString();
 		tab8.addChar('a');
 		tab8.addChar('x');
 		tab8.addChar('y');
@@ -120,9 +119,6 @@ public class TabStringTest {
 		tab18.addChar('|');
 		tab19 = new TabString(tab2);
 		tab19.replaceChar('b', 3);
-		
-
-		
 
 	}
 
@@ -133,8 +129,9 @@ public class TabStringTest {
 			assertEquals('\0', tab.getChar(i));
 		}
 		assertEquals(0, tab.size());
+		System.out.println(tab2.toString());
 	}
-	
+
 	@Test
 	public void testTabString_String() {
 		assertEquals(75, tab20.MAX_SIZE);
@@ -220,79 +217,76 @@ public class TabStringTest {
 
 	}
 
-
 	@Test
 	public void TestaddDashBase() {
-		
-		assertFalse(tab7.addDash(3)); //empty
+
+		assertFalse(tab7.addDash(3)); // empty
 		assertFalse(tab3.addDash(6)); // dashes more than MAX_SIZE
-		assertFalse(tab3.addDash(2)); // if (type == 0 && this.getChar(0) != '|') return false;
+		assertFalse(tab3.addDash(2)); // if (type == 0 && this.getChar(0) !=
+										// '|') return false;
 		assertFalse(tab3.addDash(1)); // no BARS AT ALL xxxxxx
-		assertTrue(tab17.addDash(9)); //strings like this | xxxxxx |
-		assertTrue(tab18.addDash(9)); //strings like this || xxxxxx ||
+		assertTrue(tab17.addDash(9)); // strings like this | xxxxxx |
+		assertTrue(tab18.addDash(9)); // strings like this || xxxxxx ||
 	}
-	
+
 	@Test
 	public void TestfixSymbols() {
-		//1 2 3 4 5 a becomes 1 2 3 4 5--
-		//System.out.println(tab20.toString());
+
 		tab20.fixSymbols();
-		//System.out.println(tab20.toString());
-		for(int i = 0; i <tab20.size();i++){
+	       for (int i = 0; i < tab20.size(); i++) {
 			assertTrue(tab20.isSymbol(tab20.getChar(i)));
 		}
 	}
-	
+
 	@Test
 	public void TestGetSubstring() {
-	   String t = tab20.getSubstring(0, 5);
-	   String e = s.substring(0,5);
-	   assertTrue(e.equals(t));
+		String t = tab20.getSubstring(0, 5);
+		String e = s.substring(0, 5);
+		assertTrue(e.equals(t));
 	}
-	
+
 	@Test
 	public void TestisEmpty() {
 		assertTrue(tab7.isEmpty());
 	}
-	
+
 	@Test
 	public void TestisFull() {
 		assertTrue(tab2.isFull());
 	}
-	
+
 	@Test
 	public void Testsize() {
-		assertEquals(0,tab7.size());
+		assertEquals(0, tab7.size());
 	}
-	
+
 	@Test
 	public void TesttoString() {
 		String s = "abc";
 		String t = "[empty string]";
-		assertEquals(s,tab10.toString());
-		assertEquals(t,tab7.toString());
+		assertEquals(s, tab10.toString());
+		assertEquals(t, tab7.toString());
 	}
-	
+
 	@Test
 	public void TestdelTrailSpaces() {
 		String s = "abc";
-		assertEquals(s,tab11.toString());
-		
-		
+		assertEquals(s, tab11.toString());
+
 	}
-	
+
 	@Test
 	public void TestisBlank() {
-		
+
 		assertFalse(tab8.isBlank());
 		assertFalse(tab12.isBlank());
 		assertTrue(tab13.isBlank());
 		assertTrue(tab14.isBlank());
 	}
-	
+
 	@Test
 	public void TestisSymbol() {
-		
+
 		assertFalse(tab20.isSymbol('a'));
 		assertTrue(tab20.isSymbol('3'));
 		assertTrue(tab20.isSymbol('|'));
@@ -305,10 +299,10 @@ public class TabStringTest {
 		assertTrue(tab20.isSymbol('>'));
 		assertTrue(tab20.isSymbol(' '));
 	}
-	
+
 	@Test
 	public void TesttrimString() {
-		
+
 		assertFalse(tab.trimString(3));
 		assertFalse(tab12.trimString(3));
 		assertFalse(tab3.trimString(3));
@@ -316,27 +310,13 @@ public class TabStringTest {
 		assertTrue(tab14.trimString(13));
 		assertTrue(tab16.trimString(3));
 	}
-	
-	
-	
+
 	@Test
 	public void TestreplaceChar() {
-		
-		char b = 'b';
-		assertEquals(b,tab19.getChar(3));
-		
-	}
-	
-	
-	
-	
-}
-	
-	
-	
-	
-	
-	
 
-	
-	
+		char b = 'b';
+		assertEquals(b, tab19.getChar(3));
+
+	}
+
+}
