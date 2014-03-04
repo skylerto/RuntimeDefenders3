@@ -1,3 +1,4 @@
 logFile.txt
+autofixlog.txt
 *.pdf
 outputfiles/[^.]*
