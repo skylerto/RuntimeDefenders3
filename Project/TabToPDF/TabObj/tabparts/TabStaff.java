@@ -1,19 +1,18 @@
 package tabparts;
 
-import MVC.GUIController;
-import MVC.GUIModel;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
-
-import org.newdawn.slick.util.Log;
 
 import MVC.IncorrectFormattingAlert;
 
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
+/* (UPDATE) Added 5 methods: fixedLogAtt(), writeAutofixLog(), maxOriginalLength(), getStartLine(), getEndLine()
+ * 
+ */
 
 /**
  * A TabStaff contains a list of TabMeasures. TabStaff can read in tab strings
@@ -84,8 +83,6 @@ public class TabStaff {
 		BufferedReader stream;
 		String line;			// A line read from the input file
 		int linenum = 0;			// The number line in the input file currently being read
-		//GUIModel.logString += "Preprocessing file\n";
-		//GUIModel.updateLog();
 			
 		try {
 			
@@ -145,7 +142,7 @@ public class TabStaff {
 				} else {
 					emptyfound = false;
 					temp = new TabString();
-					temp.scanLine(line, 0, false);
+					temp.scanLine(line, 0, false, linenum);
 					
 					/* If the line is a comment */
 					if (temp.checkError() == TabString.ERROR_COMMENT) {
@@ -185,9 +182,8 @@ public class TabStaff {
 						/* Each string in a line will create a new measure */
 						for (int p = 0; p < line.length(); currentmeasure++) {
 							s = new TabString();
-							p = s.scanLine(line, p, stringnum == 0);	// Stores the string in 's' and 'p' is the char index where it left off in the line
+							p = s.scanLine(line, p, stringnum == 0, linenum);	// Stores the string in 's' and 'p' is the char index where it left off in the line
 							this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
-							//System.out.println("Storing " + s.toString() + " in measure " + currentmeasure);
 							
 							/* Break from the loop if a double barred end is detected */
 							if (p == line.length() - 2 && 
@@ -220,6 +216,10 @@ public class TabStaff {
 			this.fixStaff();
 			//this.debugStaff();
 			
+			/* Writes the auto-fix changes to the log */
+			this.fixedLogAtt();
+			this.writeAutofixLog();
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -229,12 +229,12 @@ public class TabStaff {
 			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + e.getMessage() + "\n");
 			e.printStackTrace();
 		} catch (Exception e) {
-			throw new Exception (e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Returns a 2-dimentional array list of strings. The outer list is the collection
+	 * Returns a 2-dimensional array list of strings. The outer list is the collection
 	 * of the staff's TabMeasures in text form. For each TabMeasure (inner list) is
 	 * the text of each TabString.
 	 * 
@@ -420,6 +420,153 @@ public class TabStaff {
 		}	
 	}
 
+	/**
+	 * Checks each string and turns on its fixed flag in its LogAttributes variable if the string was auto-fixed.
+	 */
+	public void fixedLogAtt() {
+		if (this.size() == 0) return;
+		for (int i = 0 ; i < this.size(); i++)
+			if (!this.staff.get(i).isComment())
+				for (int j = 0; j< TabMeasure.MAX_STRINGS; j++)
+					if (this.staff.get(i).getString(j).getLogAtt().checkFixed(this.staff.get(i).getString(j).toString()));
+	}
+	
+	/**
+	 * Writes the the measures that were auto-fixed to the auto-fix log file. It displays
+	 * the measure number, the lines in the text file the measure was found and it shows the
+	 * before and after effects of the auto-fix.
+	 * 
+	 * Example output in the auto-fix log file:
+	 * 
+		*****************************************************************************************************
+		*****************************************************************************************************
+		
+		Measure 2 from line 12 to 17 of the text file was auto-fixed:
+		
+		|---------7--------| -------------------> |---------7--------|
+		|-----5s7---7------| -------------------> |-----5s7---7------|
+		|---0s--------0----| -------------------> |---0s--------0----|
+		|-------------ss-2-| [string 4 fixed]---> |----------------2-|
+		|--sssssssss-------| [string 5 fixed]---> |------------------|
+		|-0----------------| -------------------> |-0----------------|
+	 *
+	 */
+	public void writeAutofixLog() {
+		if (this.size() == 0) return;
+		AutofixLog log = new AutofixLog();	// The log file to write to
+		/* Do for each measure that isn't a comment */
+		for (int i = 0 ; i < this.size(); i++) {
+			if (!this.staff.get(i).isComment()) {
+				/* If there exists a measure that has been fixed */
+				inner :
+				for (int j = 0; j< TabMeasure.MAX_STRINGS; j++) {
+					if (this.staff.get(i).getString(j).getLogAtt().isFixed()) {
+						int length = this.maxOriginalLength(i);
+						log.writeNL("*****************************************************************************************************");
+						log.writeNL("*****************************************************************************************************");
+						log.writeNL("");
+						log.writeNL("Measure " + (i+1) + " from line " + (this.getStartLine(i)+1) + " to " + (this.getEndLine(i)+1)
+								+ " of the text file was auto-fixed:");
+						log.writeNL("");
+						/* Print out the original string followed by the fixed string */
+						for (int k = 0; k < TabMeasure.MAX_STRINGS; k++) {
+							String original = this.staff.get(i).getString(k).getLogAtt().getOriginal();
+							String fixed = this.staff.get(i).getString(k).toString();
+							String middle1 = "------------------->";
+							String middle2 = "[string " + (k+1) + " fixed]--->";
+							if (this.staff.get(i).getString(k).getLogAtt().isFixed())
+								log.writeNL(String.format("%-" + length +"s %s %s", original, middle2, fixed));
+							else
+								log.writeNL(String.format("%-" + length +"s %s %s", original, middle1, fixed));
+							
+							
+						}
+						log.writeNL("");
+						log.writeNL("");
+						break inner;
+					}
+				}
+			}
+		}
+		log.close();
+	}
+	
+	/**
+	 * Used for the writeAutofixLog() method to find the starting line of the measure in the
+	 * text file. This is needed if the original measure had missing strings that were added later.
+	 * 
+	 * For example, in the original measure:
+	 * 
+	 * [empty string]
+	 * [empty string]
+	 * ||-----2-0------2-0------0------||
+	 * ||-----3-0------3-0------0------||
+	 * [empty string]
+	 * [empty string]
+	 * 
+	 * The first empty string doesn't exist in the text file therefore it has no line number.
+	 * This method would find the line number of string 3 since it exists in the text file.
+	 * 
+	 * @param measureindex the index of the measure in the staff list
+	 * @return the string number of the starting line in the text file
+	 */
+	public int getStartLine(int measureindex) {
+		int linenum = -1;
+		for (int i = 0; i < TabMeasure.MAX_STRINGS; i++) {
+			if (this.staff.get(measureindex).getString(i).getLogAtt().getLineNum() != -1) {
+				linenum = this.staff.get(measureindex).getString(i).getLogAtt().getLineNum();
+				return linenum;
+			}
+		}
+		return linenum;
+	}
+	
+	/**
+	 * Used for the writeAutofixLog() method to find the ending line of the measure in the
+	 * text file. This is needed if the original measure had missing strings that were added later.
+	 * 
+	 * For example, in the original measure:
+	 * 
+	 * [empty string]
+	 * [empty string]
+	 * ||-----1-0------1-0------0------||
+	 * ||-----6-0------6-0------0------||
+	 * [empty string]
+	 * [empty string]
+	 * 
+	 * The 6th empty string doesn't exist in the text file therefore it has no line number.
+	 * This method would find the line number of string 4 since it exists in the text file.
+	 * 
+	 * @param measureindex the index of the measure in the staff list
+	 * @return the string number of the ending line in the text file
+	 */
+	public int getEndLine(int measureindex) {
+		int linenum = -1;
+		for (int i = TabMeasure.MAX_STRINGS - 1; i >= 0; i--) {
+			if (this.staff.get(measureindex).getString(i).getLogAtt().getLineNum() != -1) {
+				linenum = this.staff.get(measureindex).getString(i).getLogAtt().getLineNum();
+				return linenum;
+			}
+		}
+		return linenum;
+	}
+	
+	/**
+	 * Used for the writeAutofixLog() method for finding the maximum length of the original
+	 * measure so it can be formatted properly in the auto-fix log file.
+	 * 
+	 * @param measureindex The measure index in the staff list
+	 * @return the max length of the original measure
+	 */
+	public int maxOriginalLength(int measureindex) {
+		int max = 0;
+		for (int i = 0; i < TabMeasure.MAX_STRINGS; i++) {
+			if (this.staff.get(measureindex).getString(i).getLogAtt().getOriginal().length() > max)
+				max = this.staff.get(measureindex).getString(i).getLogAtt().getOriginal().length();
+		}
+		return max;
+	}
+	
 	/**
 	 * Returns the size of the list.
 	 * @return

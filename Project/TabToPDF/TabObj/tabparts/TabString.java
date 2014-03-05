@@ -8,8 +8,11 @@ import java.util.regex.Pattern;
 // Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
 // Fix p across measures
 
-/* (UPDATED) fixErrors() and checkErrors() no longer throw the LargeNumberException.
- * Created a new method called checkNumberException() that will throw the LargeNumberException.
+/* (UPDATED) Added a new attribute, LogAttributes, which is initialized in the constructors and copy method.
+ * Added a new method: getLogAtt()
+ * Added a new constructor that takes a LogAttributes parameter
+ * 
+ * scanLine() method now takes another int parameter: linenum
  * 
  * -Ron
  */
@@ -25,6 +28,9 @@ import java.util.regex.Pattern;
  * outside them. If a '|' is missing from one end it will add a '|'
  * to the other end. If the line is only length 1 or has no '|' it's
  * assumed to be a comment and there are no attempts to fix it.
+ * 
+ * Each string will have a LogAttributes object that stores information
+ * needed to write to the auto-fix log file.
  */
 public class TabString {
 	
@@ -82,6 +88,7 @@ public class TabString {
 	
 	private Character[] chars;	// The characters of the string
 	private int size;			// Number of chars added
+	private LogAttributes log;	// Information used to write to the auto-fix log file
 	
 	/**
 	 * Creates an empty string with no characters.
@@ -91,6 +98,17 @@ public class TabString {
 		this.size = 0;
 		for (int i = 0; i < MAX_SIZE; i++)
 			this.chars[i] = NULL_CHAR;
+		this.log = new LogAttributes();
+	}
+	
+	/**
+	 * Creates an empty TabString with the given log attributes.
+	 * 
+	 * @param log The log attributes to copy from
+	 */
+	public TabString(LogAttributes log) {
+		this();
+		this.log.copyLogAtt(log);
 	}
 	
 	/**
@@ -104,6 +122,8 @@ public class TabString {
 			this.addChar(line.charAt(i));
 		}
 		this.size = line.length();
+		this.log = new LogAttributes();
+		this.log.setOriginal(line);
 	}
 	
 	/**
@@ -114,6 +134,7 @@ public class TabString {
 	public TabString(TabString string) {
 		this.chars = new Character[MAX_SIZE];
 		this.copyString(string);
+		this.log.copyLogAtt(string.getLogAtt());
 	}
 	
 	/**
@@ -129,7 +150,7 @@ public class TabString {
 	 * @return	The index number of the line the scanning stops at.
 	 * @return	-1 if the line is all spaces
 	 */
-	public int scanLine(String line, int start, boolean first) {
+	public int scanLine(String line, int start, boolean first, int linenum) {
 		boolean singlefound = false;
 		boolean doublefound = false;
 		boolean doubleendfound = false;
@@ -191,6 +212,10 @@ public class TabString {
 		for (int j = start; j <= i; j++)
 			this.addChar(line.charAt(j));
 		
+		/* Saves the original representation of the string before fixes and the line number in the text file */
+		this.getLogAtt().setLineNum(linenum);
+		this.getLogAtt().setOriginal(this.toString());
+		
 		/* Minus i if a double/triple end bar or repetition was found */
 		if (tripleendfound) i = i - 2;
 		else if (doubleendfound || repfound) i--;
@@ -233,7 +258,7 @@ public class TabString {
 		if ((num + this.size() - 1) > MAX_SIZE) return false;
 		if (!HARD_VALID_STRING.matcher(this.toString()).find()) return false;
 		
-		s = new TabString();
+		s = new TabString(this.getLogAtt());
 
 		/* Do if string is wrapped in '||' */
 		if(VALID_DB_END.matcher(this.toString()).find()) {
@@ -301,7 +326,7 @@ public class TabString {
 		}
 		/* Delete everything between bars if num is greater than the number of characters */
 		if ((this.size()-(start + end)) <= num) {
-			s = new TabString();
+			s = new TabString(this.getLogAtt());
 			for (int i = 0; i < start; i++)
 				s.addChar('|');
 			for (int i = 0; i < end; i++)
@@ -309,7 +334,7 @@ public class TabString {
 			this.copyString(s);
 		/* Delete the number of chars given */
 		} else {
-			s = new TabString();
+			s = new TabString(this.getLogAtt());
 			if (VALID_DB_END.matcher(this.toString()).find()) {
 				for (int i = 0; i < this.size() - num - 2; i++)
 					s.addChar(this.getChar(i));
@@ -521,6 +546,7 @@ public class TabString {
 		for (int i = 0; i < MAX_SIZE; i++)
 			this.chars[i] = string.getChar(i);
 		this.size = string.size;
+		this.log.copyLogAtt(string.getLogAtt());
 	}
 	
 	/**
@@ -701,6 +727,15 @@ public class TabString {
 		if (index1 > this.size()) index1 = this.size();
 		if (index2 > this.size()) index2 = this.size();
 		return this.toString().substring(index1, index2);
+	}
+	
+	/**
+	 * Gets the log attributes.
+	 * 
+	 * @return
+	 */
+	public LogAttributes getLogAtt() {
+		return this.log;
 	}
 	
 	/**

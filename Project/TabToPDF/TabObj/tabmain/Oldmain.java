@@ -92,7 +92,7 @@ public class Oldmain {
 				} else {
 					emptyfound = false;
 					temp = new TabString();
-					temp.scanLine(line, 0, false);
+					temp.scanLine(line, 0, false, 0);
 					/* Check if line is a comment */
 					if (temp.checkError() == TabString.ERROR_COMMENT) {
 						/* If the first line of the measure is a comment then add it as a comment */
@@ -127,7 +127,7 @@ public class Oldmain {
 						
 						for (int p = 0; p < line.length(); currentmeasure++) {
 							s = new TabString();
-							p = s.scanLine(line, p, stringnum == 0);
+							p = s.scanLine(line, p, stringnum == 0, 0);
 							measure[currentmeasure].setString(s, stringnum);
 							//System.out.println("Storing " + s.toString() + " in measure " + currentmeasure);
 							if (p == line.length() - 2 && 
