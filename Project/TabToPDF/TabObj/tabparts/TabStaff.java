@@ -214,7 +214,6 @@ public class TabStaff {
 			
 			/* Fix errors in the staff and store repeat numbers */
 			this.fixStaff();
-			//this.debugStaff();
 			
 			/* Writes the auto-fix changes to the log */
 			this.fixedLogAtt();
@@ -573,43 +572,6 @@ public class TabStaff {
 	 */
 	public int size() {
 		return this.staff.size();
-	}
-	
-	/**
-	 * Used to test the staff.
-	 * 
-	 * @throws Exception
-	 */
-	public void debugStaff() throws Exception {
-		int i;
-		this.findRepeats();
-		for (i = 0; i < this.size(); i++) {
-			if (staff.get(i).isComment()) {
-				System.out.println("......................................");
-				System.out.println("Measure comment " + i + ": ");
-				System.out.println(staff.get(i).toString());
-				System.out.println("......................................\n");
-			} else {
-				System.out.println("......................................");
-				System.out.println("Measure " + i + "(" + staff.get(i).getRepeat() + "): ");
-				System.out.println(staff.get(i).toString());
-				System.out.println("Measure " + i + " fixed errors" + ":");
-				staff.get(i).fixStrings();
-				System.out.println(staff.get(i).toString());
-				System.out.println("Measure " + i + " double bar" + ":");
-				staff.get(i).fixStartBar();
-				staff.get(i).fixEndBar();
-				findOneRepeats();
-				this.removeEmpty();
-				this.fixEnd();
-				System.out.println(staff.get(i).toString());
-				System.out.println("Measure " + i + "(" + staff.get(i).getRepeat() +") equalized" + ":");
-				staff.get(i).equalizeStrings();
-				System.out.println(staff.get(i).toString());
-				System.out.println("......................................\n");
-			}
-		}
-		System.out.println(this.size());
 	}
 	
 	/**
