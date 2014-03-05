@@ -15,9 +15,11 @@ public class Oldmain {
 	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end
 	static TabMeasure measure[] = new TabMeasure[200];
 	public static void main(String[] args) throws Exception {
-		int i, j, k;
 		
-		Random gen = new Random();
+		TabString tab = new TabString();
+		
+		LogAttributes log = tab.getLogAtt();
+		
 		
 		/*String st = "||-||";
 		
@@ -46,7 +48,7 @@ public class Oldmain {
 		s.addDash(5);
 		System.out.println(s.toString());*/
 		
-		File input = new File("inputfiles/try4.txt");
+		/*File input = new File("inputfiles/try4.txt");
 		BufferedReader stream;
 		
 		String line;
@@ -65,7 +67,7 @@ public class Oldmain {
 			int stringnum = 0;
 			while ((line = stream.readLine()) != null) {
 				line = line.replaceAll("\\s+$", "");
-				/* If line is empty */
+				 If line is empty 
 				if (line.isEmpty()) {
 					if (!emptyfound) {
 						if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
@@ -88,27 +90,27 @@ public class Oldmain {
 					}
 					emptyfound = true;
 					//System.out.println("empty found. base=" + basemeasure + " curr=" + currentmeasure + " max=" + maxmeasure + " cfound=" + String.valueOf(commentfound));
-				/* If the line isn't empty */
+				 If the line isn't empty 
 				} else {
 					emptyfound = false;
 					temp = new TabString();
 					temp.scanLine(line, 0, false, 0);
-					/* Check if line is a comment */
+					 Check if line is a comment 
 					if (temp.checkError() == TabString.ERROR_COMMENT) {
-						/* If the first line of the measure is a comment then add it as a comment */
+						 If the first line of the measure is a comment then add it as a comment 
 						if (!measure[currentmeasure].isComment()) {
 							commentfound = true;
 							measure[currentmeasure].addComment(line);
 							//System.out.println("Storing first comment " + line + " in measure " + currentmeasure);
-						/* Add any consecutive comment lines */
+						 Add any consecutive comment lines 
 						} else if (measure[currentmeasure].isComment()) {
 							measure[currentmeasure].addComment(line);
 							//System.out.println("Storing consec comment " + line + " in measure " + currentmeasure);
 						} 
 					
-					/* The line is a valid or partial valid string */
+					 The line is a valid or partial valid string 
 					} else {
-						/* Special case if there's no line break between measures */
+						 Special case if there's no line break between measures 
 						if (stringnum >= TabMeasure.MAX_STRINGS) {
 							if (maxmeasure > 0 && REPEAT_START.matcher(measure[maxmeasure-1].getString(0).toString()).find()) {
 								boolean delete = true;
@@ -157,12 +159,12 @@ public class Oldmain {
 			e.printStackTrace();
 		}
 		
-		/*findRepeats();
+		findRepeats();
 		for (i = 0; i < 35; i++) {
 			System.out.println("Measure " + i + " (repeats=" + measure[i].getRepeat() + "):");
 			measure[i].fixMeasure();
 			System.out.println(measure[i].toString());
-		}*/
+		}
 		
 		findRepeats();
 		
@@ -189,7 +191,7 @@ public class Oldmain {
 				System.out.println(measure[i].toString());
 				System.out.println("......................................\n");
 			}
-		}
+		}*/
 		
 		
 		

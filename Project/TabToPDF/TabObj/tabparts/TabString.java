@@ -133,8 +133,9 @@ public class TabString {
 	 */
 	public TabString(TabString string) {
 		this.chars = new Character[MAX_SIZE];
+		this.log = new LogAttributes();
 		this.copyString(string);
-		this.log.copyLogAtt(string.getLogAtt());
+		
 	}
 	
 	/**
