@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tabparts.TabString;
+import tabparts.LogAttributes;
 
 public class TabStringTest {
 
@@ -41,10 +42,17 @@ public class TabStringTest {
 	TabString tab27;
 	TabString tab28;
 	TabString tab29;
+	TabString tab30;
 	String s;
+	LogAttributes violet;
 
 	@Before
 	public void setUp() throws Exception {
+
+		violet = new LogAttributes(5, "hello world", true);
+		tab30 = new TabString(violet);
+		// System.out.println(tab30.toString());
+
 		s = "1 2 4 4 5 a";
 		tab20 = new TabString(s);
 
@@ -133,12 +141,24 @@ public class TabStringTest {
 
 	@Test
 	public void testTabString() {
+
 		assertEquals(75, tab.MAX_SIZE);
 		for (int i = 0; i < tab.MAX_SIZE; i++) {
 			assertEquals('\0', tab.getChar(i));
 		}
 		assertEquals(0, tab.size());
-		
+		LogAttributes log1 = tab.getLogAtt();
+		LogAttributes log2 = new LogAttributes();
+		assertEquals(log2.getLineNum(), log1.getLineNum());
+		assertEquals(log2.getOriginal(), log1.getOriginal());
+		assertEquals(log2.isFixed(), log1.isFixed());
+	}
+
+	@Test
+	public void testTabString_LOGATTRIBUTE() {
+		assertEquals(violet.getLineNum(), tab30.getLogAtt().getLineNum());
+		assertEquals(violet.getOriginal(), tab30.getLogAtt().getOriginal());
+		assertEquals(violet.isFixed(), tab30.getLogAtt().isFixed());
 	}
 
 	@Test
@@ -148,6 +168,12 @@ public class TabStringTest {
 			assertEquals(s.charAt(i), tab20.getChar(i));
 		}
 		assertEquals(s.length(), tab20.size());
+		LogAttributes log1 = tab20.getLogAtt();
+		LogAttributes log2 = new LogAttributes();
+		log2.setOriginal(s);
+		assertEquals(log2.getLineNum(), log1.getLineNum());
+		assertEquals(log2.getOriginal(), log1.getOriginal());
+		assertEquals(log2.isFixed(), log1.isFixed());
 
 	}
 
@@ -158,6 +184,11 @@ public class TabStringTest {
 			assertEquals(tab.getChar(i), tab1.getChar(i));
 		}
 		assertEquals(tab.size(), tab1.size());
+		LogAttributes log2 = tab.getLogAtt(); // expected
+		LogAttributes log1 = tab1.getLogAtt(); // passed in
+		assertEquals(log2.getLineNum(), log1.getLineNum());
+		assertEquals(log2.getOriginal(), log1.getOriginal());
+		assertEquals(log2.isFixed(), log1.isFixed());
 
 	}
 
@@ -242,7 +273,7 @@ public class TabStringTest {
 	public void TestfixSymbols() {
 
 		tab20.fixSymbols();
-	       for (int i = 0; i < tab20.size(); i++) {
+		for (int i = 0; i < tab20.size(); i++) {
 			assertTrue(tab20.isSymbol(tab20.getChar(i)));
 		}
 	}
@@ -327,32 +358,39 @@ public class TabStringTest {
 		assertEquals(b, tab19.getChar(3));
 
 	}
-	
+
 	@Test
-	public void TestCheckError(){
-		
+	public void TestCheckError() {
+
 		tab21 = new TabString("|||");
-		assertEquals(TabString.SPECIAL_TRIPLE,tab21.checkError());
+		assertEquals(TabString.SPECIAL_TRIPLE, tab21.checkError());
 		tab22 = new TabString("|-6--7--6-||");
-		assertEquals(TabString.NO_ERROR,tab22.checkError());
+		assertEquals(TabString.NO_ERROR, tab22.checkError());
 		tab23 = new TabString("");
-		assertEquals(TabString.ERROR_EMPTY,tab23.checkError());
+		assertEquals(TabString.ERROR_EMPTY, tab23.checkError());
 		tab24 = new TabString("1");
-		assertEquals(TabString.ERROR_COMMENT,tab24.checkError());
+		assertEquals(TabString.ERROR_COMMENT, tab24.checkError());
 		tab25 = new TabString("-----6-||");
-		assertEquals(TabString.ERROR_DB_START,tab25.checkError());
+		assertEquals(TabString.ERROR_DB_START, tab25.checkError());
 		tab26 = new TabString("||--4---6-");
-		assertEquals(TabString.ERROR_DB_END,tab26.checkError());
+		assertEquals(TabString.ERROR_DB_END, tab26.checkError());
 		tab27 = new TabString("|--4---6-");
-		assertEquals(TabString.ERROR_END,tab27.checkError());
+		assertEquals(TabString.ERROR_END, tab27.checkError());
 		tab28 = new TabString("--4---6-|");
-		assertEquals(TabString.ERROR_START,tab28.checkError());
+		assertEquals(TabString.ERROR_START, tab28.checkError());
 	}
-	
+
 	@Test(expected = LargeNumberException.class)
 	public void testcheckError() throws LargeNumberException {
 		tab29 = new TabString("|----123--||");
 		tab29.checkNumberException();
+	}
+
+	@Test
+	public void TestGetLogAttribute() { // this is temporary i will get back
+										// when toString is implemeneted
+		LogAttributes alpha = tab20.getLogAtt();
+		assertEquals(alpha, tab20.getLogAtt());
 	}
 
 }

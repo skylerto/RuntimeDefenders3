@@ -47,7 +47,8 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionListener;
 
 import print.printPDF;
-import swing.PrinterInterface;
+
+
 
 public class GUIView {
 

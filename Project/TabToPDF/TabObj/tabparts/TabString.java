@@ -37,7 +37,7 @@ public class TabString {
 	/* CONSTANTS */
 	
 	public static final Character NULL_CHAR = '\0';
-	public static final int MAX_SIZE = 75;			// Max chars the array can hold
+	public static final int MAX_SIZE = 1000;			// Max chars the array can hold
 	
 	public static final Character[] VALID_SYMBOLS = {'|', '-', 's', 'h', 'p', '*', '<', '>', ' '};	// Valid symbols that make up a valid TabString
 	public static final Pattern VALID_SLIDE = Pattern.compile("([0-9][s])|([s][0-9])");				// Valid: #s# or s# or #s

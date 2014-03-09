@@ -18,7 +18,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import ttp.TextToPDF;
 import version11.ReadFromInput;
 import version11.TextToPDFv11;
 
