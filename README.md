@@ -1,6 +1,7 @@
 NEWS
 =================
 
+- (Mar. 9 Sun) Here are the new GUI specifications. Please read all of it carefully! http://i.imgur.com/JuWYa9q.png
 - (Feb. 18 Tue) So this is the schedule for the rest of this week and next week:  
    > Feb. 20 Thur: We will have a meeting at 8PM to talk about any recent work people have done. We will work on debugging everyone's individual code.  
    > Feb. 22 Sat: Meeting at 8PM. Everyone should have their code finished. We start combining the code and debugging.  
