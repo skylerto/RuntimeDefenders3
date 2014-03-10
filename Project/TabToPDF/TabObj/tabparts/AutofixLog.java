@@ -15,12 +15,12 @@ public class AutofixLog {
 	
 	/* CONSTANTS */
 	
-	private static final String LOG_NAME = "autofixlog.txt";
+	private static final String LOG_NAME = "autofixlog.txt"; //also used for testing purposes
 	private static final String LOG_PATH = "outputfiles/" + LOG_NAME;
 	
 	/* ATTRIBUTES */
 	
-	private File log;
+	public File log; //made publicc for testing
 	private PrintStream stream;
 	
 	/**
