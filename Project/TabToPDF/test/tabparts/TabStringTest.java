@@ -59,7 +59,7 @@ public class TabStringTest {
 		tab = new TabString();
 		tab1 = new TabString(tab);
 		tab2 = new TabString();
-		for (int i = 0; i < 75; i++) {
+		for (int i = 0; i < 1000; i++) {
 			tab2.addChar('a');
 		}
 		tab3 = new TabString();
@@ -142,7 +142,7 @@ public class TabStringTest {
 	@Test
 	public void testTabString() {
 
-		assertEquals(75, tab.MAX_SIZE);
+		assertEquals(1000, tab.MAX_SIZE);
 		for (int i = 0; i < tab.MAX_SIZE; i++) {
 			assertEquals('\0', tab.getChar(i));
 		}
@@ -163,7 +163,7 @@ public class TabStringTest {
 
 	@Test
 	public void testTabString_String() {
-		assertEquals(75, tab20.MAX_SIZE);
+		assertEquals(1000, tab20.MAX_SIZE);
 		for (int i = 0; i < s.length(); i++) {
 			assertEquals(s.charAt(i), tab20.getChar(i));
 		}
@@ -195,7 +195,7 @@ public class TabStringTest {
 	@Test
 	public void testAddChar() {
 
-		assertEquals(75, tab2.size()); // to test if size increments
+		assertEquals(1000, tab2.size()); // to test if size increments
 		for (int i = 0; i < tab.MAX_SIZE; i++) {
 			assertEquals('a', tab2.getChar(i));
 		}
