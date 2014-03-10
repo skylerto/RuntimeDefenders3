@@ -30,11 +30,11 @@ public class View {
 	private static JFrame frame;
 
 	// Buttons
-	protected static JButton inputButton;
-	protected static JButton destinationButton;
-	protected static JButton editButton;
-	protected static JButton convertButton;
-	protected static JButton helpButton;
+	protected static JButton inputButton = new JButton("Browse");
+	protected static JButton destinationButton = new JButton("Browse");
+	protected static JButton editButton = new JButton();
+	protected static JButton convertButton = new JButton("Convert To PDF");
+	protected static JButton helpButton = new JButton();
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
@@ -49,6 +49,10 @@ public class View {
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
+
+	public View() {
+		CreateAndShowGUI();
+	}
 
 	public static JMenuBar createMenuBar() {
 		JMenuBar menuBar;
@@ -111,34 +115,32 @@ public class View {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = c.WEST;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(inputLabel, c);
 
 		// Inline
 		input = new JTextField(25);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(input, c);
 
-		editButton = new JButton();
 		editButton.setIcon(new ImageIcon("res/editButton.jpg"));
 		c.gridx = 1;
 		c.gridy = 1;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(editButton, c);
 
-		inputButton = new JButton("Browse");
 		c.gridx = 2;
 		c.gridy = 1;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(inputButton, c);
 
 		JLabel destinationLabel = new JLabel("Destination Folder");
 		destinationLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 2;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(destinationLabel, c);
 
 		// Inline
@@ -146,12 +148,11 @@ public class View {
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 2;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(destination, c);
-		destinationButton = new JButton("Browse");
 		c.gridx = 2;
 		c.gridy = 3;
-		c.insets = new Insets(5, 0, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(destinationButton, c);
 
 		return panel;
@@ -159,7 +160,6 @@ public class View {
 
 	public static JPanel convertButton() {
 		JPanel panel = new JPanel();
-		convertButton = new JButton("Convert To PDF");
 		convertButton.setPreferredSize(new Dimension(150, 50));
 		panel.add(convertButton);
 
@@ -168,7 +168,6 @@ public class View {
 
 	public static JPanel helpButton() {
 		JPanel panel = new JPanel();
-		helpButton = new JButton();
 		helpButton.setIcon(new ImageIcon("res/helpButton.png"));
 		panel.add(helpButton);
 		return panel;
