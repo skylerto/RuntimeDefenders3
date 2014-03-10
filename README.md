@@ -1,6 +1,7 @@
 NEWS
 =================
 
+- (Mar. 10 Mon) Here's a status bar addition to the GUI specs: http://i.imgur.com/UwJHL8t.png
 - (Mar. 9 Sun) Here are the new GUI specifications. Please read all of it carefully! http://i.imgur.com/JuWYa9q.png
 - (Feb. 18 Tue) So this is the schedule for the rest of this week and next week:  
    > Feb. 20 Thur: We will have a meeting at 8PM to talk about any recent work people have done. We will work on debugging everyone's individual code.  
