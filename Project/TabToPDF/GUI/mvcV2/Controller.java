@@ -49,16 +49,16 @@ class destinationListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// Select a folder
-		/*
-		 * JFileChooser chooser = new JFileChooser();
-		 * chooser.setCurrentDirectory(new java.io.File("."));
-		 * chooser.setDialogTitle("Select PDF Destination");
-		 * chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		 * chooser.setAcceptAllFileFilterUsed(false); if
-		 * (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-		 * 
-		 * }
-		 */
+
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new java.io.File("."));
+		chooser.setDialogTitle("Select PDF Destination");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+		}
+
 	}
 
 }
