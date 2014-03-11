@@ -139,7 +139,6 @@ public class HPStack {
 	public boolean canPushNumber() {
 		if (this.isEmpty()) return true;
 		if (this.isFull()) return false;
-		boolean can = true;
 		int flag = 0;
 		for (int i = 0; i < this.size; i++) {
 			if (flag == 0 && this.isNumber(this.stack[i].getSymbol()))
