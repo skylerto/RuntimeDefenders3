@@ -144,6 +144,8 @@ public class HPStack {
 		for (int i = 0; i < this.size; i++) {
 			if (flag == 0 && this.isNumber(this.stack[i].getSymbol()))
 				flag = 1;
+			else if (flag == 0 && !this.isNumber(this.stack[i].getSymbol()))
+				flag = 2;
 			else if (flag == 1 && !this.isNumber(this.stack[i].getSymbol()))
 				flag = 2;
 			else if (flag == 2 && this.isNumber(this.stack[i].getSymbol()))
