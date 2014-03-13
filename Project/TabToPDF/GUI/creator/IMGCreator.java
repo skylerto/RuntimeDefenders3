@@ -12,13 +12,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import mvcV2.Model;
+
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.fonts.FontMappings;
 
 import version11.TextToPDFv11;
-
-import MVC.GUIModel;
 
 /**
  * Sample image creator - converts the first page of a pdf into png NOTE: Code
@@ -38,7 +38,7 @@ public class IMGCreator {
 	public static void createPreview() {
 		/* CONSTANTS */
 
-		String INPUT_PDFFILE = GUIModel.getOutputFilename();
+		String INPUT_PDFFILE = Model.getOutputFilename();
 
 		File outputfile = new File(OUTPUT_IMGFILE); // Location of Image file
 
@@ -58,8 +58,8 @@ public class IMGCreator {
 			try {
 				ImageIO.write(img, "png", outputfile); // Saving the image to
 														// png
-				GUIModel.setPreviewImage(outputfile);
-				GUIModel.updateTopBoxLogic();
+				Model.setPreviewImage(outputfile);
+				Model.setImgOutput(OUTPUT_IMGFILE);
 			} catch (IOException exception) {
 			}
 

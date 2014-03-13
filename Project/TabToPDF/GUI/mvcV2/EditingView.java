@@ -5,7 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,16 +17,23 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import version11.TextToPDFv11;
+
+import com.itextpdf.text.DocumentException;
+
+import creator.IMGCreator;
+
 public class EditingView {
 
 	private static JFrame frame;
 
-	protected static JTextField docTitle;
 	protected static JTextField title;
 	protected static JTextField subtitle;
 
 	protected static JComboBox pageSize;
-	protected static JTextField fontSize;
+	protected static JTextField titleFontSize;
+	protected static JTextField subTitleFontSize;
+	protected static JTextField measureFontSize;
 	protected static JTextField staffSpacing;
 
 	protected static JButton apply = new JButton("Apply");
@@ -46,15 +55,6 @@ public class EditingView {
 
 		// Document Name.
 		JLabel docLabel = new JLabel("Document Title: ");
-		docLabel.setFont(labelFont);
-		docTitle = new JTextField(20);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = c.BASELINE_TRAILING;
-		panel.add(docLabel, c);
-		c.gridx = 1;
-		c.gridy = 0;
-		panel.add(docTitle, c);
 
 		// Song Title.
 		JLabel songLabel = new JLabel("Song Title: ");
@@ -80,6 +80,9 @@ public class EditingView {
 		c.gridy = 2;
 		panel.add(subtitle, c);
 
+		title.setText(Model.getTitle());
+		subtitle.setText(Model.getSubtitle());
+
 		return panel;
 	}
 
@@ -104,12 +107,31 @@ public class EditingView {
 		panel.add(spacingLabel);
 		panel.add(staffSpacing);
 
-		// Font size.
-		JLabel fontLabel = new JLabel("Font Size: ");
-		fontLabel.setFont(labelFont);
-		fontSize = new JTextField(5);
-		panel.add(fontLabel);
-		panel.add(fontSize);
+		// Title Font size.
+		JLabel titleFontLabel = new JLabel("Title Font Size: ");
+		titleFontLabel.setFont(labelFont);
+		titleFontSize = new JTextField(5);
+		panel.add(titleFontLabel);
+		panel.add(titleFontSize);
+
+		// Subtitle Font size.
+		JLabel subTitleFontLabel = new JLabel("Subtitle Font Size: ");
+		subTitleFontLabel.setFont(labelFont);
+		subTitleFontSize = new JTextField(5);
+		panel.add(subTitleFontLabel);
+		panel.add(subTitleFontSize);
+
+		// Measure Font size.
+		JLabel measureFontLabel = new JLabel("Note Font Size: ");
+		measureFontLabel.setFont(labelFont);
+		measureFontSize = new JTextField(5);
+		panel.add(measureFontLabel);
+		panel.add(measureFontSize);
+
+		staffSpacing.setText("" + Model.getStaffSpacing());
+		titleFontSize.setText("" + Model.getTitleFontSize());
+		subTitleFontSize.setText("" + Model.getSubTitleFontSize());
+		measureFontSize.setText("" + Model.getMeasureFontSize());
 
 		return panel;
 	}
@@ -119,7 +141,42 @@ public class EditingView {
 		panel.setLayout(new FlowLayout());
 		// Buttons (Apply & Cancel).
 		panel.add(apply);
+		apply.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Model.setTitle(EditingView.title.getText());
+				Model.setSubtitle(EditingView.subtitle.getText());
+				Model.setMeasureFontSize(EditingView.measureFontSize.getText());
+				Model.setTitleFontSize(EditingView.titleFontSize.getText());
+				Model.setSubTitleFontSize(EditingView.subTitleFontSize
+						.getText());
+				String input = Model.getFilenameWithExtention();
+				String output = "outputfiles/";
+				try {
+					TextToPDFv11 test = new TextToPDFv11(output, input);
+					test.WriteToPDF();
+					IMGCreator.createPreview();
+
+					// test.createPDF(output);
+				} catch (DocumentException | IOException b) {
+					// TODO Auto-generated catch block
+					b.printStackTrace();
+				}
+				Preview.resetImage();
+			}
+
+		});
 		panel.add(cancel);
+		cancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+
+		});
 		return panel;
 	}
 

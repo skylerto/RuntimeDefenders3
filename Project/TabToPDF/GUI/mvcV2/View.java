@@ -31,10 +31,8 @@ public class View {
 
 	// Buttons
 	protected static JButton inputButton = new JButton("Browse");
-	protected static JButton destinationButton = new JButton("Browse");
-	protected static JButton editButton = new JButton();
 	protected static JButton convertButton = new JButton("Convert To PDF");
-	protected static JButton helpButton = new JButton();
+	protected static JButton previewButton = new JButton();
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
@@ -120,40 +118,16 @@ public class View {
 
 		// Inline
 		input = new JTextField(25);
+		input.setEnabled(false);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(input, c);
 
-		editButton.setIcon(new ImageIcon("res/editButton.jpg"));
-		c.gridx = 1;
-		c.gridy = 1;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(editButton, c);
-
 		c.gridx = 2;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 0, 5);
 		panel.add(inputButton, c);
-
-		JLabel destinationLabel = new JLabel("Destination Folder");
-		destinationLabel.setFont(labelFont);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(destinationLabel, c);
-
-		// Inline
-		destination = new JTextField(30);
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(destination, c);
-		c.gridx = 2;
-		c.gridy = 3;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(destinationButton, c);
 
 		return panel;
 	}
@@ -161,6 +135,7 @@ public class View {
 	public static JPanel convertButton() {
 		JPanel panel = new JPanel();
 		convertButton.setPreferredSize(new Dimension(150, 50));
+		convertButton.setEnabled(false);
 		panel.add(convertButton);
 
 		return panel;
@@ -168,8 +143,9 @@ public class View {
 
 	public static JPanel helpButton() {
 		JPanel panel = new JPanel();
-		helpButton.setIcon(new ImageIcon("res/helpButton.png"));
-		panel.add(helpButton);
+		previewButton.setIcon(new ImageIcon("res/previewImage.jpg"));
+		previewButton.setEnabled(false);
+		panel.add(previewButton);
 		return panel;
 	}
 
@@ -196,8 +172,9 @@ public class View {
 		frame.setLayout(new BorderLayout());
 		frame.setJMenuBar(createMenuBar());
 		frame.add(addSelectionPanel(), BorderLayout.PAGE_START);
+		frame.add(new JPanel(), BorderLayout.WEST);
 		frame.add(convertButton(), BorderLayout.CENTER);
-		frame.add(helpButton(), BorderLayout.LINE_END);
+		frame.add(helpButton(), BorderLayout.EAST);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -218,16 +195,8 @@ public class View {
 
 	}
 
-	void addDestinationButtonListener(ActionListener listenForSelectButton) {
-
-		destinationButton.addActionListener(listenForSelectButton);
-
-	}
-
-	void addEditButtonListener(ActionListener listenForSelectButton) {
-
-		editButton.addActionListener(listenForSelectButton);
-
+	void addPreviewListener(ActionListener previewListener) {
+		previewButton.addActionListener(previewListener);
 	}
 
 	void addLogListener(ActionListener listenForSelectButton) {
