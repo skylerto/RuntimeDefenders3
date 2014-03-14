@@ -44,8 +44,9 @@ public class Preview {
 
 	public static void resetImage() {
 		frame.remove(imageLabel);
-		image = new ImageIcon(Model.getPreviewImage().getAbsolutePath());
-		imageLabel.setIcon(image);
+		// image = new ImageIcon(Model.getImgOutput());
+		// imageLabel.setIcon(image);
+		imageLabel = new JLabel(new ImageIcon(Model.getImgOutput()));
 		frame.add(imageLabel);
 		frame.revalidate();
 	}
@@ -63,6 +64,7 @@ public class Preview {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				new EditingView();
+				frame.revalidate();
 			}
 
 		});

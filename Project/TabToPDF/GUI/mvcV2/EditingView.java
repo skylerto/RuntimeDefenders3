@@ -1,6 +1,5 @@
 package mvcV2;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -14,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
@@ -31,10 +31,35 @@ public class EditingView {
 	protected static JTextField subtitle;
 
 	protected static JComboBox pageSize;
-	protected static JTextField titleFontSize;
-	protected static JTextField subTitleFontSize;
-	protected static JTextField measureFontSize;
-	protected static JTextField staffSpacing;
+
+	// protected static JTextField titleFontSize;
+	// protected static JTextField subTitleFontSize;
+	// protected static JTextField measureFontSize;
+	// protected static JTextField staffSpacing;
+
+	// TITLE SLIDER INFO
+	protected static JSlider titleFontSize;
+	private static final int titleFontMin = 0;
+	private static final int titleFontMax = 40;
+	private static final int titleSized = Model.getTitleFontSize();
+
+	// SUBTITLE SLIDER INFO
+	protected static JSlider subTitleFontSize;
+	private static final int subTitleFontMin = 0;
+	private static final int subTitleFontMax = 40;
+	private static final int subTitleSized = Model.getSubTitleFontSize();
+
+	// MEASURE SLIDER INFO
+	protected static JSlider measureFontSize;
+	private static final int measureFontMin = 0;
+	private static final int measureFontMax = 40;
+	private static final int measureSized = Model.getMeasureFontSize();
+
+	// SPACING SLIDER INFO
+	protected static JSlider staffSpacing;
+	private static final int staffSpacingMin = 0;
+	private static final int staffSpacingMax = 40;
+	private static final int staffSpacingCurrent = Model.getSubTitleFontSize();
 
 	protected static JButton apply = new JButton("Apply");
 	protected static JButton cancel = new JButton("Cancel");
@@ -103,35 +128,51 @@ public class EditingView {
 		// Staff spacing.
 		JLabel spacingLabel = new JLabel("Staff Spacing: ");
 		spacingLabel.setFont(labelFont);
-		staffSpacing = new JTextField(5);
+		staffSpacing = new JSlider();
 		panel.add(spacingLabel);
 		panel.add(staffSpacing);
 
 		// Title Font size.
 		JLabel titleFontLabel = new JLabel("Title Font Size: ");
 		titleFontLabel.setFont(labelFont);
-		titleFontSize = new JTextField(5);
+		titleFontSize = new JSlider(JSlider.HORIZONTAL, titleFontMin,
+				titleFontMax, titleSized);
+		titleFontSize.setMajorTickSpacing(10);
+		titleFontSize.setMinorTickSpacing(1);
+		titleFontSize.setPaintTicks(true);
+		titleFontSize.setPaintLabels(true);
 		panel.add(titleFontLabel);
 		panel.add(titleFontSize);
 
 		// Subtitle Font size.
 		JLabel subTitleFontLabel = new JLabel("Subtitle Font Size: ");
 		subTitleFontLabel.setFont(labelFont);
-		subTitleFontSize = new JTextField(5);
+		subTitleFontSize = new JSlider(JSlider.HORIZONTAL, subTitleFontMin,
+				subTitleFontMax, subTitleSized);
+
+		subTitleFontSize.setMajorTickSpacing(10);
+		subTitleFontSize.setMinorTickSpacing(1);
+		subTitleFontSize.setPaintTicks(true);
+		subTitleFontSize.setPaintLabels(true);
 		panel.add(subTitleFontLabel);
 		panel.add(subTitleFontSize);
 
 		// Measure Font size.
 		JLabel measureFontLabel = new JLabel("Note Font Size: ");
 		measureFontLabel.setFont(labelFont);
-		measureFontSize = new JTextField(5);
+		measureFontSize = new JSlider(JSlider.HORIZONTAL, measureFontMin,
+				measureFontMax, measureSized);
+		measureFontSize.setMajorTickSpacing(10);
+		measureFontSize.setMinorTickSpacing(1);
+		measureFontSize.setPaintTicks(true);
+		measureFontSize.setPaintLabels(true);
 		panel.add(measureFontLabel);
 		panel.add(measureFontSize);
 
-		staffSpacing.setText("" + Model.getStaffSpacing());
-		titleFontSize.setText("" + Model.getTitleFontSize());
-		subTitleFontSize.setText("" + Model.getSubTitleFontSize());
-		measureFontSize.setText("" + Model.getMeasureFontSize());
+		staffSpacing.setValue(Model.getStaffSpacing());
+		titleFontSize.setValue(Model.getTitleFontSize());
+		subTitleFontSize.setValue(Model.getSubTitleFontSize());
+		measureFontSize.setValue(Model.getMeasureFontSize());
 
 		return panel;
 	}
@@ -148,10 +189,12 @@ public class EditingView {
 
 				Model.setTitle(EditingView.title.getText());
 				Model.setSubtitle(EditingView.subtitle.getText());
-				Model.setMeasureFontSize(EditingView.measureFontSize.getText());
-				Model.setTitleFontSize(EditingView.titleFontSize.getText());
-				Model.setSubTitleFontSize(EditingView.subTitleFontSize
-						.getText());
+				Model.setMeasureFontSize(""
+						+ EditingView.measureFontSize.getValue());
+				Model.setTitleFontSize(""
+						+ EditingView.titleFontSize.getValue());
+				Model.setSubTitleFontSize(""
+						+ EditingView.subTitleFontSize.getValue());
 				String input = Model.getFilenameWithExtention();
 				String output = "outputfiles/";
 				try {
