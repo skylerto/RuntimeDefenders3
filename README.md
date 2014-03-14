@@ -1,6 +1,7 @@
 NEWS
 =================
 
+- (Mar. 14 Fri) Here's the complete remake of the GUI specs V2: http://i.imgur.com/zrLEY4E.png
 - (Mar. 10 Mon) Here's a status bar addition to the GUI specs: http://i.imgur.com/UwJHL8t.png
 - (Mar. 9 Sun) Here are the new GUI specifications. Please read all of it carefully! http://i.imgur.com/JuWYa9q.png
 - (Feb. 18 Tue) So this is the schedule for the rest of this week and next week:  
