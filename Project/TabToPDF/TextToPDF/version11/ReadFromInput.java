@@ -29,7 +29,7 @@ public class ReadFromInput {
 
 	}
 
-	private void readFile(String file_path) throws FileNotFoundException,
+	public void readFile(String file_path) throws FileNotFoundException,
 			IOException {
 
 		try (BufferedReader inputStream = new BufferedReader(new FileReader(
