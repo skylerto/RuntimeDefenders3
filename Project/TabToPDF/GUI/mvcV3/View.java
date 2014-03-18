@@ -1,4 +1,4 @@
-package mvcV2;
+package mvcV3;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -27,7 +27,7 @@ import MVC.PrinterInterface;
 
 public class View {
 
-	static JFrame frame;
+	protected static JFrame frame;
 
 	// Buttons
 	protected static JButton inputButton = new JButton("Browse");
@@ -216,4 +216,5 @@ public class View {
 		autoCorrection.addActionListener(listenForSelectButton);
 
 	}
+
 }
