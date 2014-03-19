@@ -10,7 +10,7 @@ import MVC.IncorrectFormattingAlert;
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
-/* (UPDATE) Added 5 methods: fixedLogAtt(), writeAutofixLog(), maxOriginalLength(), getStartLine(), getEndLine()
+/* (UPDATE) Added new method: setMaxMeasureLength() not yet implemented
  * 
  */
 
