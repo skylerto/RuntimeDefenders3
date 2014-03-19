@@ -232,6 +232,10 @@ public class TabStaff {
 		}
 	}
 	
+	public void setMaxMeasureLength(int max) {
+		
+	}
+	
 	/**
 	 * Returns a 2-dimensional array list of strings. The outer list is the collection
 	 * of the staff's TabMeasures in text form. For each TabMeasure (inner list) is
