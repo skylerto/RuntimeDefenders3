@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 public class TabStaffTest {
 
@@ -127,6 +128,34 @@ public class TabStaffTest {
 		String j = tabs1.getList().toString();
 		assertTrue(h.equals(j));
 
+
+	}
+	
+	@Test
+	public void testAddMeasureAndGetMeasure() throws Exception {
+		File f = new File(
+				"inputfiles/case7.txt");
+		tabs1.scanFile(f);
+		tabs1.addMeasure();
+		
+		/*
+		 * tab s1 contains only one measure
+		 * |----------------|
+		   |--------------3-|
+		   |---------------2|
+	       |--1-------------|
+		   |----------------|
+		   |-------2--------|
+		   
+		   
+		   after inserting an empty measure which addMeasure does, it should return
+		   [empty measure] when we call the toString method on index 1
+		 */
+		
+		String expected = "[empty measure]"; 
+		
+		assertEquals(expected,tabs1.getMeasure(1).toString());
+		
 	}
 	
 	
@@ -160,8 +189,36 @@ public class TabStaffTest {
 	
 		String expected = "measure(0) repeats(0)\n|----------------|\n|--------------3-|\n|---------------2|\n|--1-------------|\n|----------------|\n|-------2--------|\n\nTotal Measures=1";
 		assertEquals(expected, tabs1.toString());
+	
+		
 		
 	
+	}
+	
+	@Ignore
+	public void testGetRepeatMap() throws Exception {
+		File f = new File(
+				"inputfiles/case7.txt");
+		tabs1.scanFile(f);
+		/*
+		 * tab s1 contains 
+		 * |----------------|
+		   |--------------3-|
+		   |---------------2|
+	       |--1-------------|
+		   |----------------|
+		   |-------2--------|
+		   
+		   *since it has no repeats,
+		   *the repeat map should be <0.0>
+		   */
+		
+	
+	
+		String expected = "{0=0}";
+		assertEquals(expected, tabs1.getRepeatMap());
+		
+		
 	}
 	
 	

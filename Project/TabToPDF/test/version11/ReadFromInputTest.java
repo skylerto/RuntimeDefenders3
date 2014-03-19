@@ -2,6 +2,9 @@ package version11;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,6 +17,45 @@ public class ReadFromInputTest {
 	
 	r1 = new ReadFromInput();	
 	}
+	
+	
+	@Test
+	public void testReadFileSmallFile() throws FileNotFoundException, IOException{
+		r1.readFile("inputfiles/fixed.txt");
+		
+		//This file called fixed contains
+		/*
+		 * TITLE=Moonlight Sonata
+			SUBTITLE=Daylight Sonata
+			SPACING=5.0
+
+			|----------------|
+			|--------------3-|
+			|---------------2|
+			|--1-------------|
+			|----------------|
+			|-------2--------|
+			
+			
+		 */
+		
+		//We are going to read this file using readfile() method
+		//and see if it works properly
+		
+		String expect_title = "Moonlight Sonata";
+		String expect_subtitle = "Daylight Sonata";
+		String expect_list = "[[|----------------|, |--------------3-|, |---------------2|, |--1-------------|, |----------------|, |-------2--------|]]";
+
+		float expect_spacing = 5;
+		
+		assertEquals(expect_title, r1.getTITLE()); //check the title
+		assertEquals(expect_subtitle, r1.getSUBTITLE()); // check the subtitle
+		assertEquals(expect_spacing, r1.getSACING(),1); // check the spacing
+		assertEquals(expect_list, r1.getList().toString());
+
+	}
+	
+	
 	
 	@Test
 	public void testSetTitleAndGetTitle() {
