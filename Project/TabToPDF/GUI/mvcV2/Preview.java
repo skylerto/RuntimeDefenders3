@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -94,6 +95,10 @@ public class Preview {
 	protected static String[] pageSizes = { "A4", "A5", "Long page name" };
 	private static java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
 
+	// MENUBAR ITEMS
+	static JMenuItem saveMenu = new JMenuItem("Save");
+	static JMenuItem saveAsMenu = new JMenuItem("Save As...");
+
 	public Preview() {
 		CreateAndShowGUI();
 	}
@@ -119,6 +124,13 @@ public class Preview {
 		menuBar.setLayout(layout);
 
 		// Build the first menu.
+		menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_A);
+		menu.getAccessibleContext().setAccessibleDescription("File menu bar");
+		menuBar.add(menu);
+		menu.add(saveMenu);
+		menu.add(saveAsMenu);
+
 		menu = new JMenu("View");
 		menu.setMnemonic(KeyEvent.VK_A);
 		menu.getAccessibleContext().setAccessibleDescription("The first menu");

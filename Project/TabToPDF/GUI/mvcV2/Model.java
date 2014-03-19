@@ -20,7 +20,6 @@ public class Model {
 	private static String title = "";
 	private static String imgOutput;
 	private static String subtitle = "";
-
 	private static int subTitleFontSize = 14;
 	private static int measureFontSize = 8;
 	private static int titleFontSize = 26; // NEED TO SET TO A DEAFULT FONT SIZE
@@ -29,6 +28,9 @@ public class Model {
 											// DONT PASS AN INT.
 	private static int staffSpacing; // NEED TO SET TO A DEAFULT FONT SIZE IF
 										// THEY DONT PASS AN INT.
+
+	private static String destinationFolder;
+	private static String destinationName;
 
 	/**
 	 * Default constructor
