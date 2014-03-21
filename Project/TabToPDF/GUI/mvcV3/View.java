@@ -19,20 +19,32 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import print.printPDF;
 import MVC.PrinterInterface;
 
+import com.alee.extended.layout.VerticalFlowLayout;
+
 public class View {
 
 	protected static JFrame frame;
 
+	// Panels to add to frame.
+	protected static JPanel leftSide = new JPanel();
+	protected static JPanel rightSide = new JPanel();
+
+	protected static JScrollPane previewPane;
+
 	// Buttons
-	protected static JButton inputButton = new JButton("Browse");
-	protected static JButton convertButton = new JButton("Convert To PDF");
-	protected static JButton previewButton = new JButton();
+	protected static JButton browseButton = new JButton("Browse");
+	protected static JButton convertButton = new JButton("Convert");
+	protected static JButton saveButton = new JButton("Save As...");
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
@@ -45,8 +57,29 @@ public class View {
 	protected static JTextField input;
 	protected static JTextField destination;
 
+	// TITLES
+	protected static JTextField title;
+	protected static JTextField subtitle;
+
+	// SLIDER INFO
+	// MEASURE SLIDER INFO
+	protected static JSlider measureFontSize;
+	private static final int measureFontMin = 0;
+	private static final int measureFontMax = 40;
+	private static int measureSized;
+
+	// SPACING SLIDER INFO
+	protected static JSlider staffSpacing;
+	private static final int staffSpacingMin = 0;
+	private static final int staffSpacingMax = 40;
+	private static int staffSpacingCurrent;
+
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
+
+	protected static Dimension frameSize = new Dimension(1000, 800);
+
+	protected static String previewImage = "";
 
 	public View() {
 		CreateAndShowGUI();
@@ -102,51 +135,150 @@ public class View {
 		return menuBar;
 	}
 
-	public static JPanel addSelectionPanel() {
+	public static JPanel titles() {
+
 		JPanel panel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
 		panel.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		JLabel inputLabel = new JLabel("Text File to Convert:");
-		inputLabel.setFont(labelFont);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = c.WEST;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(inputLabel, c);
+		return panel;
+	}
 
-		// Inline
-		input = new JTextField(25);
-		input.setEnabled(false);
+	private static JPanel pageProperties() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+
+		// Song Title.
+		JLabel songLabel = new JLabel("Title: ");
+		songLabel.setFont(labelFont);
+		title = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(input, c);
+		c.anchor = c.BASELINE_TRAILING;
+		c.insets = new Insets(5, 5, 5, 5);
 
-		c.gridx = 2;
-		c.gridy = 1;
-		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(inputButton, c);
+		panel.add(songLabel, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(5, 5, 5, 5);
+
+		panel.add(title, c);
+
+		// Subtitle.
+		JLabel subLabel = new JLabel("Subtitle: ");
+		subLabel.setFont(labelFont);
+		subtitle = new JTextField(20);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.anchor = c.BASELINE_TRAILING;
+		panel.add(subLabel, c);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.insets = new Insets(5, 5, 5, 5);
+
+		panel.add(subtitle, c);
+
+		// Staff spacing.
+		JLabel pageProperties = new JLabel("Edit Document");
+		pageProperties.setFont(new Font("SANS_SERIF", Font.BOLD, 12));
+		c.gridx = 0;
+		c.gridy = 5;
+		panel.add(pageProperties, c);
+		JLabel spacingLabel = new JLabel("Staff Spacing: ");
+		spacingLabel.setFont(labelFont);
+		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
+				staffSpacingMax, staffSpacingCurrent);
+		staffSpacing.setMajorTickSpacing(10);
+		staffSpacing.setMinorTickSpacing(1);
+		staffSpacing.setPaintTicks(true);
+		staffSpacing.setPaintLabels(true);
+
+		c.gridx = 0;
+		c.gridy = 6;
+		panel.add(spacingLabel, c);
+
+		c.gridx = 0;
+		c.gridy = 7;
+		c.insets = new Insets(5, 5, 5, 5);
+
+		panel.add(staffSpacing, c);
+
+		// Measure Font size.
+		JLabel measureFontLabel = new JLabel("Note Font Size: ");
+		measureFontLabel.setFont(labelFont);
+		measureFontSize = new JSlider(JSlider.HORIZONTAL, measureFontMin,
+				measureFontMax, measureSized);
+		measureFontSize.setMajorTickSpacing(10);
+		measureFontSize.setMinorTickSpacing(1);
+		measureFontSize.setPaintTicks(true);
+		measureFontSize.setPaintLabels(true);
+
+		c.gridx = 0;
+		c.gridy = 8;
+		panel.add(measureFontLabel, c);
+
+		c.gridx = 0;
+		c.gridy = 9;
+		c.insets = new Insets(5, 5, 5, 5);
+
+		panel.add(measureFontSize, c);
 
 		return panel;
 	}
 
-	public static JPanel convertButton() {
+	protected static JPanel buttonPanel() {
 		JPanel panel = new JPanel();
-		convertButton.setPreferredSize(new Dimension(150, 50));
-		convertButton.setEnabled(false);
+		panel.add(browseButton);
 		panel.add(convertButton);
-
+		panel.add(saveButton);
 		return panel;
 	}
 
-	public static JPanel helpButton() {
+	protected static JPanel autoCorrections() {
 		JPanel panel = new JPanel();
-		previewButton.setIcon(new ImageIcon("res/previewImage.jpg"));
-		previewButton.setEnabled(false);
-		panel.add(previewButton);
 		return panel;
+	}
+
+	protected static void populateLeftPanel() {
+		leftSide.setLayout(new VerticalFlowLayout());
+		leftSide.add(buttonPanel());
+		leftSide.add(pageProperties());
+		leftSide.add(autoCorrections());
+
+	}
+
+	protected static JScrollPane buildPreviewScrollPane() {
+		previewPane = new JScrollPane();
+		Dimension scroll = new Dimension((int) (frameSize.getWidth() / 2), 750);
+		previewPane.setMaximumSize(scroll);
+		previewPane.setPreferredSize(scroll);
+		previewPane.setMinimumSize(scroll);
+		ImageIcon ic = new ImageIcon(previewImage);
+		previewPane.add(new JLabel(ic));
+		return previewPane;
+	}
+
+	/**
+	 * Adds all the components to the right panel.
+	 * 
+	 * 
+	 */
+	protected static void populateRightPanel() {
+		rightSide.setLayout(new VerticalFlowLayout());
+
+		// Initiates the input label and adds to the right side panel.
+		input = new JTextField(40);
+		input.setEnabled(false);
+		rightSide.add(input);
+		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+		rightSide.add(separator);
+		JLabel previewLabel = new JLabel();
+		rightSide.add(previewLabel); // Label naming the display pane.
+		rightSide.add(buildPreviewScrollPane()); // Display a scrollPane of the
+													// image.
 	}
 
 	/**
@@ -171,10 +303,17 @@ public class View {
 		frame.setResizable(false);
 		frame.setLayout(new BorderLayout());
 		frame.setJMenuBar(createMenuBar());
-		frame.add(addSelectionPanel(), BorderLayout.PAGE_START);
-		frame.add(new JPanel(), BorderLayout.WEST);
-		frame.add(convertButton(), BorderLayout.CENTER);
-		frame.add(helpButton(), BorderLayout.EAST);
+
+		frame.setMaximumSize(frameSize);
+		frame.setPreferredSize(frameSize);
+		frame.setMinimumSize(frameSize);
+
+		populateLeftPanel(); // Adds all the elements to the left panel.
+		populateRightPanel(); // Adds all the elements to the right panel.
+
+		// Add panels.
+		frame.add(leftSide, BorderLayout.WEST);
+		frame.add(rightSide, BorderLayout.EAST);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -191,12 +330,8 @@ public class View {
 
 	void addInputButtonListener(ActionListener listenForSelectButton) {
 
-		inputButton.addActionListener(listenForSelectButton);
+		browseButton.addActionListener(listenForSelectButton);
 
-	}
-
-	void addPreviewListener(ActionListener previewListener) {
-		previewButton.addActionListener(previewListener);
 	}
 
 	void addLogListener(ActionListener listenForSelectButton) {

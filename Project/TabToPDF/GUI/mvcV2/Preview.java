@@ -432,6 +432,7 @@ public class Preview {
 		imageLabel = new JLabel(new ImageIcon(Model.getImgOutput()));
 		frame.add(imageLabel);
 		frame.revalidate();
+		frame.repaint();
 	}
 
 	public static void CreateAndShowGUI() {
@@ -450,14 +451,16 @@ public class Preview {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		imageLabel = new JLabel(image);
 
+		JPanel editingPane = addEditingTools();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
 		panel.add(fileSelection(), c);
+
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(addEditingTools(), c);
+		panel.add(editingPane, c);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridheight = 5;

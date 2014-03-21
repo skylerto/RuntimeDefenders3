@@ -31,6 +31,7 @@ public class Model {
 
 	private static String destinationFolder;
 	private static String destinationName;
+	private static String desitinationPathName;
 
 	/**
 	 * Default constructor
