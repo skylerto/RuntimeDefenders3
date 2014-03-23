@@ -376,7 +376,7 @@ public class View {
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
-				"PDF Properties:");
+				"PDF Preview:");
 		titled.setTitleJustification(TitledBorder.LEFT);
 		pane.setBorder(titled);
 		c.gridx = 0;
@@ -434,6 +434,12 @@ public class View {
 				CreateAndShowGUI();
 			}
 		});
+	}
+
+	void addSaveButtonListener(ActionListener listenForSelectButton) {
+
+		saveButton.addActionListener(listenForSelectButton);
+
 	}
 
 	void addBrowseButtonListener(ActionListener listenForSelectButton) {
