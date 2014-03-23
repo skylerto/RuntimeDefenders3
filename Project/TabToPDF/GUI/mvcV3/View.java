@@ -41,6 +41,7 @@ public class View {
 	// Panels to add to frame.
 	protected static JPanel leftSide = new JPanel();
 	protected static JPanel rightSide = new JPanel();
+	protected static JPanel autoCorrectionPanel = new JPanel();
 
 	protected static JScrollPane previewPane;
 
@@ -48,6 +49,8 @@ public class View {
 	protected static JButton browseButton = new JButton("Browse");
 	protected static JButton convertButton = new JButton("Convert");
 	protected static JButton saveButton = new JButton("Save As...");
+	protected static JButton applyButton = new JButton("A");
+	protected static JButton settingsButton = new JButton("B");
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
@@ -150,6 +153,7 @@ public class View {
 
 	private static JPanel pageProperties() {
 		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(270, 300));
 
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
@@ -162,19 +166,31 @@ public class View {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
+		panel.add(applyButton, c);
+
+		c.gridx = 1;
+		c.gridy = 0;
+		panel.add(settingsButton, c);
+
 		// Song Title.
 		JLabel songLabel = new JLabel("Title: ");
 		songLabel.setFont(labelFont);
 		title = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridwidth = 2;
 		c.anchor = c.BASELINE_TRAILING;
-		c.insets = new Insets(5, 5, 5, 5);
+		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(songLabel, c);
 		c.gridx = 0;
 		c.gridy = 2;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.gridwidth = 2;
+		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(title, c);
 
@@ -184,11 +200,13 @@ public class View {
 		subtitle = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 3;
+		c.gridwidth = 2;
 		c.anchor = c.BASELINE_TRAILING;
 		panel.add(subLabel, c);
 		c.gridx = 0;
 		c.gridy = 4;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.gridwidth = 2;
+		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(subtitle, c);
 
@@ -204,10 +222,12 @@ public class View {
 
 		c.gridx = 0;
 		c.gridy = 6;
+		c.gridwidth = 2;
 		panel.add(spacingLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 7;
+		c.gridwidth = 2;
 		c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(staffSpacing, c);
@@ -224,47 +244,89 @@ public class View {
 
 		c.gridx = 0;
 		c.gridy = 8;
+		c.gridwidth = 2;
 		panel.add(measureFontLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 9;
-		c.insets = new Insets(5, 5, 5, 5);
-
+		c.gridwidth = 2;
 		panel.add(measureFontSize, c);
+
+		applyButton.setEnabled(false);
+		settingsButton.setEnabled(false);
+		title.setEditable(false);
+		subtitle.setEditable(false);
+		staffSpacing.setEnabled(false);
+		measureFontSize.setEnabled(false);
+		panel.setEnabled(false);
 
 		return panel;
 	}
 
 	protected static JPanel buttonPanel() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new VerticalFlowLayout());
-		panel.add(browseButton);
-		panel.add(convertButton);
-		panel.add(saveButton);
+		panel.setPreferredSize(new Dimension(270, 225));
+		GridBagConstraints c = new GridBagConstraints();
+		panel.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.HORIZONTAL;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(browseButton, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(convertButton, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(saveButton, c);
+
+		convertButton.setEnabled(false);
+		saveButton.setEnabled(false);
+
 		return panel;
 	}
 
 	protected static JPanel autoCorrections() {
-		JPanel panel = new JPanel();
-		return panel;
+		JPanel autoCorrectionPanel = new JPanel();
+		autoCorrectionPanel.setPreferredSize(new Dimension(270, 100));
+		autoCorrectionPanel.setMaximumSize(new Dimension(270, 100));
+		autoCorrectionPanel.setMinimumSize(new Dimension(270, 100));
+		autoCorrectionPanel.setVisible(true);
+		autoCorrectionPanel.setEnabled(false);
+		return autoCorrectionPanel;
 	}
 
 	protected static void populateLeftPanel() {
-		leftSide.setLayout(new VerticalFlowLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		leftSide.setLayout(new GridBagLayout());
+		// c.anchor = GridBagConstraints.NORTHWEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		rightSide.setPreferredSize(new Dimension(300, 650));
 
-		leftSide.add(buttonPanel());
-		leftSide.add(pageProperties());
-		leftSide.add(autoCorrections());
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 5, 5, 5);
+		leftSide.add(buttonPanel(), c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
+		leftSide.add(pageProperties(), c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(5, 5, 5, 5);
+		leftSide.add(autoCorrections(), c);
 
 	}
 
 	protected static JPanel buildPreviewScrollPane() {
 		JPanel panel = new JPanel();
 
-		Dimension scroll = new Dimension(650, 550);
+		Dimension scroll = new Dimension(615, 575);
 
-		ImageIcon ic = new ImageIcon(
-				"C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png");
+		ImageIcon ic = new ImageIcon("");
 
 		JTextPane topBox = new JTextPane();
 		topBox.setBorder(null);
@@ -296,17 +358,18 @@ public class View {
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(650, 750));
+		rightSide.setPreferredSize(new Dimension(650, 660));
 
 		// Initiates the input label and adds to the right side panel.
-		input = new JTextField(40);
+		input = new JTextField(1);
 		JLabel previewLabel = new JLabel();
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
 		rightSide.add(input, c);
 		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(20, 5, 20, 5);
+		c.gridy = 2;
+		c.insets = new Insets(1, 1, 1, 1);
 		rightSide.add(previewLabel, c); // Label naming the display pane.
 
 		JPanel pane = buildPreviewScrollPane();
@@ -317,8 +380,7 @@ public class View {
 		titled.setTitleJustification(TitledBorder.LEFT);
 		pane.setBorder(titled);
 		c.gridx = 0;
-		c.gridy = 2
-				;
+		c.gridy = 3;
 		rightSide.add(pane, c); // Display a scrollPane of the
 								// image.
 	}
@@ -343,19 +405,23 @@ public class View {
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.setLayout(new BorderLayout());
-		frame.setJMenuBar(createMenuBar());
 
-		frame.setMaximumSize(frameSize);
-		frame.setPreferredSize(frameSize);
-		frame.setMinimumSize(frameSize);
+		GridBagConstraints c = new GridBagConstraints();
+		frame.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.HORIZONTAL;
+		frame.setJMenuBar(createMenuBar());
 
 		populateLeftPanel(); // Adds all the elements to the left panel.
 		populateRightPanel(); // Adds all the elements to the right panel.
 
 		// Add panels.
-		frame.add(leftSide, BorderLayout.WEST);
-		frame.add(rightSide, BorderLayout.EAST);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
+		frame.add(leftSide, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		frame.add(rightSide, c);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -370,15 +436,15 @@ public class View {
 		});
 	}
 
-	void addInputButtonListener(ActionListener listenForSelectButton) {
+	void addBrowseButtonListener(ActionListener listenForSelectButton) {
 
 		browseButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addLogListener(ActionListener listenForSelectButton) {
+	void addSettingsButtonListener(ActionListener listenForSelectButton) {
 
-		log.addActionListener(listenForSelectButton);
+		settingsButton.addActionListener(listenForSelectButton);
 
 	}
 
@@ -388,9 +454,9 @@ public class View {
 
 	}
 
-	void addAutoCorrectListener(ActionListener listenForSelectButton) {
+	void addApplyButtonListener(ActionListener listenForSelectButton) {
 
-		autoCorrection.addActionListener(listenForSelectButton);
+		applyButton.addActionListener(listenForSelectButton);
 
 	}
 

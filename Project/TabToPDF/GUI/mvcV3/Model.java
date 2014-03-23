@@ -10,6 +10,9 @@ public class Model {
 	protected int subTitleFontSize;
 	protected int measureFontSize;
 
+	protected String filename;
+	protected String filenameWithExtention;
+
 	protected int spacing;
 
 	/**
@@ -24,6 +27,8 @@ public class Model {
 		this.subTitleFontSize = 0;
 		this.measureFontSize = 0;
 		this.spacing = 0;
+		this.filename = "";
+		this.filenameWithExtention = "";
 
 	}
 
@@ -47,9 +52,11 @@ public class Model {
 	 *            - spacing between elements.
 	 */
 	public Model(String title, String subTitle, String previewImage,
-			int titleFontSize, int subTitleFontSize, int measureFontSize,
-			int spacing) {
+			String filename, String filenameWithExtension, int titleFontSize,
+			int subTitleFontSize, int measureFontSize, int spacing) {
 		this.title = title;
+		this.filename = filename;
+		this.filenameWithExtention = filenameWithExtension;
 		this.subTitle = subTitle;
 		this.previewImage = previewImage;
 		this.titleFontSize = titleFontSize;
@@ -64,6 +71,22 @@ public class Model {
 
 	protected void setTitle(String title) {
 		this.title = title;
+	}
+
+	protected String getFilename() {
+		return filename;
+	}
+
+	protected void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	protected String getFilenameWithExtension() {
+		return filenameWithExtention;
+	}
+
+	protected void setFilenameWithExtention(String filenameWithExtention) {
+		this.filenameWithExtention = filenameWithExtention;
 	}
 
 	protected String getSubTitle() {
