@@ -32,10 +32,15 @@ public class Log {
 		}
 	}
 
-	protected void writeToLog(String toWrite) {
+	/**
+	 * Writes the passed message to file
+	 * 
+	 * @param message
+	 */
+	protected void writeToLog(String message) {
 
 		try {
-			writer.write(toWrite);
+			writer.write(message);
 			writer.close();
 
 		} catch (IOException e1) {
