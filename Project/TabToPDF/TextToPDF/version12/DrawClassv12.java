@@ -37,12 +37,12 @@ public class DrawClassv12 {
       private void slide(float x , float y, int font_size, float line_space, PdfContentByte cb) {
     	    
      	  cb.setLineWidth(0.5f); // Make a bit thicker than 1.0 default
-          cb.setGrayStroke(0.20f);// 1 = black, 0 = white
+          cb.setGrayStroke(0f);// 1 = black, 0 = white
           cb.moveTo(x,y);
           cb.lineTo(x+((line_space/2.0f)-0.3f),y+(font_size/3.4f));
           cb.stroke();
           cb.setLineWidth(0.5f); // Make a bit thicker than 1.0 default
-          cb.setGrayStroke(0.20f);// 1 = black, 0 = white
+          cb.setGrayStroke(0f);// 1 = black, 0 = white
           cb.moveTo(x,y);
           cb.lineTo(x-((line_space/2.0f)-0.3f),y-(font_size/3.4f));
           cb.stroke(); 
@@ -167,7 +167,7 @@ public class DrawClassv12 {
         	int count_music_lines = 0; // count music line in order to draw thin bar
         	int is_second_beginstar = 0; // tell whether the beginning of the star is first one or second one
         	int is_second_endnstar = 0; // tell whether the beginning of the star is first one or second one
-        	
+       	
         	for (int i = 0 ; i < list.size() ; i++) {
         		switch (list.get(i).getchartype()) {
         		
@@ -269,11 +269,11 @@ public class DrawClassv12 {
     				break;
         		case Star_Begin:
         			if (is_second_beginstar == 0) {
-        				drawLine(x-((line_space*1.0f)/2.0f),y,x-((line_space*1.0f)/2.0f),y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
+        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
         				is_second_beginstar = 1;
         			} else {
-        				drawLine(x-((line_space*1.0f)/2.0f),y,x-((line_space*1.0f)/2.0f),y+(FontSize*0.9f),0.5f,0, cb);
-        				drawLine(x-((line_space*1.0f)/2.0f),y,x-((line_space*1.0f)/2.0f),y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
+        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y+(FontSize*0.9f),0.5f,0, cb);
+        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
         				is_second_beginstar = 0;
         				
         			}
@@ -296,7 +296,7 @@ public class DrawClassv12 {
       				break;
         		case Right_half_Diamond:
         			drawLine(x,y,x+line_space,y,0.5f,0, cb);
-    				DrawDiamond(x+(line_space*0.1f), y, (FontSize/1.3f)-(FontSize*0.5f), line_space-(line_space*0.15f), cb);
+        			DrawDiamond(x+(line_space*0.2f), y, (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
     				x+=line_space;
     				break;
         		case End_music_line:	
