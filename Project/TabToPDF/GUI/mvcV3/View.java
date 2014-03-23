@@ -1,6 +1,7 @@
 package mvcV3;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,11 +22,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import print.printPDF;
 import MVC.PrinterInterface;
@@ -77,9 +80,9 @@ public class View {
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
-	protected static Dimension frameSize = new Dimension(1000, 800);
+	protected static Dimension frameSize = new Dimension(950, 650);
 
-	protected static String previewImage = "";
+	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
 	public View() {
 		CreateAndShowGUI();
@@ -147,6 +150,14 @@ public class View {
 
 	private static JPanel pageProperties() {
 		JPanel panel = new JPanel();
+
+		// Set border
+		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
+				"PDF Properties:");
+		titled.setTitleJustification(TitledBorder.LEFT);
+		panel.setBorder(titled);
+
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -182,11 +193,6 @@ public class View {
 		panel.add(subtitle, c);
 
 		// Staff spacing.
-		JLabel pageProperties = new JLabel("Edit Document");
-		pageProperties.setFont(new Font("SANS_SERIF", Font.BOLD, 12));
-		c.gridx = 0;
-		c.gridy = 5;
-		panel.add(pageProperties, c);
 		JLabel spacingLabel = new JLabel("Staff Spacing: ");
 		spacingLabel.setFont(labelFont);
 		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
@@ -231,6 +237,7 @@ public class View {
 
 	protected static JPanel buttonPanel() {
 		JPanel panel = new JPanel();
+		panel.setLayout(new VerticalFlowLayout());
 		panel.add(browseButton);
 		panel.add(convertButton);
 		panel.add(saveButton);
@@ -244,41 +251,76 @@ public class View {
 
 	protected static void populateLeftPanel() {
 		leftSide.setLayout(new VerticalFlowLayout());
+
 		leftSide.add(buttonPanel());
 		leftSide.add(pageProperties());
 		leftSide.add(autoCorrections());
 
 	}
 
-	protected static JScrollPane buildPreviewScrollPane() {
-		previewPane = new JScrollPane();
-		Dimension scroll = new Dimension((int) (frameSize.getWidth() / 2), 750);
-		previewPane.setMaximumSize(scroll);
-		previewPane.setPreferredSize(scroll);
-		previewPane.setMinimumSize(scroll);
-		ImageIcon ic = new ImageIcon(previewImage);
-		previewPane.add(new JLabel(ic));
-		return previewPane;
+	protected static JPanel buildPreviewScrollPane() {
+		JPanel panel = new JPanel();
+
+		Dimension scroll = new Dimension(650, 550);
+
+		ImageIcon ic = new ImageIcon(
+				"C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png");
+
+		JTextPane topBox = new JTextPane();
+		topBox.setBorder(null);
+		topBox.setEditable(false);
+		topBox.setBackground(new java.awt.Color(0, 0, 0, 0));
+		JScrollPane imgScrollPane = new JScrollPane(topBox);
+		imgScrollPane.setBackground(new java.awt.Color(0, 0, 0, 0));
+		imgScrollPane.setPreferredSize(scroll);
+		imgScrollPane.setMinimumSize(scroll);
+		topBox.insertIcon(ic);
+		// JLabel jl = new JLabel(ic);
+		// JTextPane ta = new JTextPane();
+		// ta.insertIcon(ic);
+		// / previewPane.add(jl);
+		panel.add(imgScrollPane);
+		return panel;
 	}
 
+	/**
+	 * 
+	 */
 	/**
 	 * Adds all the components to the right panel.
 	 * 
 	 * 
 	 */
 	protected static void populateRightPanel() {
-		rightSide.setLayout(new VerticalFlowLayout());
+
+		GridBagConstraints c = new GridBagConstraints();
+		rightSide.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.HORIZONTAL;
+		rightSide.setPreferredSize(new Dimension(650, 750));
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(40);
-		input.setEnabled(false);
-		rightSide.add(input);
-		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-		rightSide.add(separator);
 		JLabel previewLabel = new JLabel();
-		rightSide.add(previewLabel); // Label naming the display pane.
-		rightSide.add(buildPreviewScrollPane()); // Display a scrollPane of the
-													// image.
+		c.gridx = 0;
+		c.gridy = 0;
+		rightSide.add(input, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(20, 5, 20, 5);
+		rightSide.add(previewLabel, c); // Label naming the display pane.
+
+		JPanel pane = buildPreviewScrollPane();
+		// Set border
+		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
+				"PDF Properties:");
+		titled.setTitleJustification(TitledBorder.LEFT);
+		pane.setBorder(titled);
+		c.gridx = 0;
+		c.gridy = 2
+				;
+		rightSide.add(pane, c); // Display a scrollPane of the
+								// image.
 	}
 
 	/**
