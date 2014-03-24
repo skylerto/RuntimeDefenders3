@@ -13,7 +13,8 @@ public class Model {
 	protected String filename;
 	protected String filenameWithExtention;
 
-	protected int spacing;
+	protected float spacing;
+	protected String outputpath;
 
 	/**
 	 * Deafault constructor, initializes strings to be empty integers to be 0.
@@ -53,7 +54,7 @@ public class Model {
 	 */
 	public Model(String title, String subTitle, String previewImage,
 			String filename, String filenameWithExtension, int titleFontSize,
-			int subTitleFontSize, int measureFontSize, int spacing) {
+			int subTitleFontSize, int measureFontSize, float spacing) {
 		this.title = title;
 		this.filename = filename;
 		this.filenameWithExtention = filenameWithExtension;
@@ -65,76 +66,84 @@ public class Model {
 		this.spacing = spacing;
 	}
 
-	protected String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
-	protected void setTitle(String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	protected String getFilename() {
+	public String getFilename() {
 		return filename;
 	}
 
-	protected void setFilename(String filename) {
+	public void setFilename(String filename) {
 		this.filename = filename;
 	}
 
-	protected String getFilenameWithExtension() {
+	public String getFilenameWithExtension() {
 		return filenameWithExtention;
 	}
 
-	protected void setFilenameWithExtention(String filenameWithExtention) {
+	public void setFilenameWithExtention(String filenameWithExtention) {
 		this.filenameWithExtention = filenameWithExtention;
 	}
 
-	protected String getSubTitle() {
+	public String getSubTitle() {
 		return subTitle;
 	}
 
-	protected void setSubTitle(String subTitle) {
+	public void setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
 	}
 
-	protected String getPreviewImage() {
+	public String getPreviewImage() {
 		return previewImage;
 	}
 
-	protected void setPreviewImage(String previewImage) {
+	public void setPreviewImage(String previewImage) {
 		this.previewImage = previewImage;
 	}
 
-	protected int getTitleFontSize() {
+	public int getTitleFontSize() {
 		return titleFontSize;
 	}
 
-	protected void setTitleFontSize(int titleFontSize) {
+	public void setTitleFontSize(int titleFontSize) {
 		this.titleFontSize = titleFontSize;
 	}
 
-	protected int getSubTitleFontSize() {
+	public int getSubTitleFontSize() {
 		return subTitleFontSize;
 	}
 
-	protected void setSubTitleFontSize(int subTitleFontSize) {
+	public void setSubTitleFontSize(int subTitleFontSize) {
 		this.subTitleFontSize = subTitleFontSize;
 	}
 
-	protected int getMeasureFontSize() {
+	public int getMeasureFontSize() {
 		return measureFontSize;
 	}
 
-	protected void setMeasureFontSize(int measureFontSize) {
+	public void setMeasureFontSize(int measureFontSize) {
 		this.measureFontSize = measureFontSize;
 	}
 
-	protected int getSpacing() {
+	public float getSpacing() {
 		return spacing;
 	}
 
-	protected void setSpacing(int spacing) {
+	public void setSpacing(float spacing) {
 		this.spacing = spacing;
+	}
+
+	public void setOutputFilename(String outputpath) {
+		this.outputpath = outputpath;
+	}
+
+	public String getOutputFilename() {
+		return this.outputpath;
 	}
 
 }

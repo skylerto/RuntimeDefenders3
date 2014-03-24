@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import mvcV2.Model;
+import mvcV3.Model;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
@@ -32,16 +32,24 @@ import version11.TextToPDFv11;
 public class IMGCreator {
 
 	static int counter = 0;
-	public static String OUTPUT_IMGFILE = "outputfiles/musicIMG" + counter++
-			+ ".png";
 
-	public static void createPreview() {
+	private static String lastConverted;
+	Model model;
+
+	public static void createPreview(Model model) {
 		/* CONSTANTS */
 
-		String INPUT_PDFFILE = Model.getOutputFilename();
+		String INPUT_PDFFILE = model.getOutputFilename();
+		// "outputfiles/"+ model.getFilename().substring(0,
+		// model.getFilename().indexOf('.') - 1)
 
-		File outputfile = new File(OUTPUT_IMGFILE); // Location of Image file
-
+		File outputfile = new File(model.getOutputFilename().substring(0,
+				model.getOutputFilename().indexOf('.'))
+				+ ".png"); // Location of
+		// Image
+		// file
+		System.out.println(INPUT_PDFFILE + " " + outputfile);
+		setLastConverted(outputfile.toString());
 		/** instance of PdfDecoder to convert PDF into image */
 		PdfDecoder decode_pdf = new PdfDecoder(true);
 
@@ -58,8 +66,6 @@ public class IMGCreator {
 			try {
 				ImageIO.write(img, "png", outputfile); // Saving the image to
 														// png
-				Model.setPreviewImage(outputfile);
-				Model.setImgOutput(OUTPUT_IMGFILE);
 			} catch (IOException exception) {
 			}
 
@@ -69,8 +75,13 @@ public class IMGCreator {
 		} catch (PdfException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully converted " + INPUT_PDFFILE + " to "
-				+ OUTPUT_IMGFILE + " and counter increased to " + counter);
+	}
 
+	public static void setLastConverted(String name) {
+		lastConverted = name;
+	}
+
+	public static String getLastConverted() {
+		return lastConverted;
 	}
 }

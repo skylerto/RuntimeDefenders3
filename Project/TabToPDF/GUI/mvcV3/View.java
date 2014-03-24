@@ -87,8 +87,23 @@ public class View {
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
+	protected static ImageIcon ic;
+	protected static JTextPane topBox;
+	protected static JScrollPane imgScrollPane;
+
 	public View() {
 		CreateAndShowGUI();
+	}
+
+	protected static void repaintPreview(String image) {
+		topBox.removeAll();
+		topBox.insertIcon(new ImageIcon(image));
+		imgScrollPane.repaint();
+		imgScrollPane.revalidate();
+		topBox.repaint();
+		topBox.revalidate();
+		frame.repaint();
+		frame.revalidate();
 	}
 
 	public static JMenuBar createMenuBar() {
@@ -258,7 +273,7 @@ public class View {
 		subtitle.setEditable(false);
 		staffSpacing.setEnabled(false);
 		measureFontSize.setEnabled(false);
-		panel.setEnabled(false);
+		// panel.setEnabled(false);
 
 		return panel;
 	}
@@ -308,15 +323,15 @@ public class View {
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(buttonPanel(), c);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(pageProperties(), c);
 		c.gridx = 0;
 		c.gridy = 2;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(autoCorrections(), c);
 
 	}
@@ -326,13 +341,13 @@ public class View {
 
 		Dimension scroll = new Dimension(615, 575);
 
-		ImageIcon ic = new ImageIcon("");
+		ic = new ImageIcon("");
 
-		JTextPane topBox = new JTextPane();
+		topBox = new JTextPane();
 		topBox.setBorder(null);
 		topBox.setEditable(false);
 		topBox.setBackground(new java.awt.Color(0, 0, 0, 0));
-		JScrollPane imgScrollPane = new JScrollPane(topBox);
+		imgScrollPane = new JScrollPane(topBox);
 		imgScrollPane.setBackground(new java.awt.Color(0, 0, 0, 0));
 		imgScrollPane.setPreferredSize(scroll);
 		imgScrollPane.setMinimumSize(scroll);
@@ -365,11 +380,11 @@ public class View {
 		JLabel previewLabel = new JLabel();
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(5, 5, 5, 10);
 		rightSide.add(input, c);
 		c.gridx = 0;
 		c.gridy = 2;
-		c.insets = new Insets(1, 1, 1, 1);
+		c.insets = new Insets(1, 1, 1, 10);
 		rightSide.add(previewLabel, c); // Label naming the display pane.
 
 		JPanel pane = buildPreviewScrollPane();
@@ -381,6 +396,8 @@ public class View {
 		pane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 3;
+		c.insets = new Insets(1, 1, 1, 10);
+
 		rightSide.add(pane, c); // Display a scrollPane of the
 								// image.
 	}

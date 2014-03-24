@@ -5,7 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import mvcV2.Model;
+import mvcV3.Controller;
+import mvcV3.Model;
 import tabparts.TabStaff;
 
 import com.itextpdf.text.Document;
@@ -33,7 +34,7 @@ public class TextToPDFv11 {
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
 	public static String INPUT_FILENAME = "inputfiles/try.txt";
-	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
+	public static String PDF_FILENAME = "outputfiles/"; // musicPDF.pdf
 	private int same_line_state = 0;
 	/* new */
 	private Document doc;
@@ -48,6 +49,7 @@ public class TextToPDFv11 {
 	static String subtitleString;
 	static String tempTitle;
 	static String tempSubtitle;
+	Model model;
 
 	/**
 	 * 
@@ -60,28 +62,33 @@ public class TextToPDFv11 {
 	 * @throws DocumentException
 	 * @throws IOException
 	 */
-	public TextToPDFv11(String outputpath, String inputpath)
+	public TextToPDFv11(String outputpath, String inputpath, Model model)
 			throws DocumentException, IOException {
+		System.out.println(inputpath + " " + outputpath);
 
-		titleFontSize = Model.getTitleFontSize();
-		subTitleFontSize = Model.getSubTitleFontSize();
-		FONT_SIZE = Model.getMeasureFontSize();
+		this.model = model;
+		if (model.getSpacing() == 0) {
+
+		}
+		titleFontSize = model.getTitleFontSize();
+		subTitleFontSize = model.getSubTitleFontSize();
+		FONT_SIZE = model.getMeasureFontSize();
 
 		System.out.println(outputpath);
 		file = new ReadFromInput(inputpath);
 
-		if (Model.getTitle().isEmpty()) {
+		if (model.getTitle().isEmpty()) {
 			titleString = file.getTITLE();
 		} else {
-			titleString = Model.getTitle();
+			titleString = model.getTitle();
 		}
-		if (Model.getSubtitle().isEmpty()) {
+		if (model.getSubTitle().isEmpty()) {
 			subtitleString = file.getSUBTITLE();
 		} else {
-			subtitleString = Model.getSubtitle();
+			subtitleString = model.getSubTitle();
 		}
-		Model.setTitle(titleString);
-		Model.setSubtitle(subtitleString);
+		model.setTitle(titleString);
+		model.setSubTitle(subtitleString);
 
 		staff = new TabStaff();
 		try {
@@ -98,11 +105,11 @@ public class TextToPDFv11 {
 		if (!(file.titleIsEmpty())) {
 			filename = file.getTITLE() + ".pdf";
 		} else {
-			filename = Model.getFilename() + ".pdf";
+			filename = model.getFilename() + ".pdf";
 		}
 
 		outputpath = outputpath + filename;
-		Model.setOutputFilename(outputpath);
+		model.setOutputFilename(outputpath);
 		draw = new DrawClass();
 		doc = new Document(PageSize.LETTER);
 		writer = PdfWriter.getInstance(doc, new FileOutputStream(new File(
@@ -111,11 +118,11 @@ public class TextToPDFv11 {
 
 	public void WriteToPDF() throws DocumentException, IOException {
 
-		titleString = Model.getTitle();
-		subtitleString = Model.getSubtitle();
-		titleFontSize = Model.getTitleFontSize();
-		subTitleFontSize = Model.getSubTitleFontSize();
-		FONT_SIZE = Model.getMeasureFontSize();
+		titleString = model.getTitle();
+		subtitleString = model.getSubTitle();
+		titleFontSize = model.getTitleFontSize();
+		subTitleFontSize = model.getSubTitleFontSize();
+		FONT_SIZE = model.getMeasureFontSize();
 
 		try {
 			doc.open();
@@ -135,10 +142,10 @@ public class TextToPDFv11 {
 			Paragraph subtitle = new Paragraph(subtitleString, subtitle_font);
 			subtitle.setAlignment(Element.ALIGN_CENTER);
 			doc.add(subtitle);
-			if (file.getSACING() == 0)
+			if (file.getSPACING() == 0)
 				file.setLineSpacing(5.0f);
 
-			LINE_SPACE = file.getSACING();
+			LINE_SPACE = file.getSPACING();
 			System.out.println(LINE_SPACE);
 
 			List<List<String>> dynamic_array = draw.StringAnchor(staff
@@ -235,15 +242,15 @@ public class TextToPDFv11 {
 
 	public static void main(String[] args) {
 
+		Model model = new Model();
 		try {
-			TextToPDFv11 saad = new TextToPDFv11(PDF_FILENAME, INPUT_FILENAME);
+			TextToPDFv11 saad = new TextToPDFv11(PDF_FILENAME, INPUT_FILENAME,
+					model);
 			saad.WriteToPDF();
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO Auto-generated catch block e.printStackTrace();
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -42,7 +42,7 @@ public class ReadFromInput {
 					.compile("^(SPACING)(=)(\\d*(\\.)?\\d+)(?![0-9\\.])");
 			Pattern p_music = Pattern.compile("^(\\|)(.+)+");
 			while ((line = inputStream.readLine()) != null) {
-				
+
 				Matcher m_title = p_title.matcher(line);
 				Matcher m_subtitle = p_subtitle.matcher(line);
 				Matcher m_spacing = p_spacing.matcher(line);
@@ -75,41 +75,41 @@ public class ReadFromInput {
 					dynamic_array.add(new ArrayList<String>(inner));
 					inner.clear();
 					enable_add = 0;
-				} else;
-				
+				} else
+					;
 
 			} // end of while loop
 			dynamic_array.add(new ArrayList<String>(inner));
 			inner.clear();
 
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 
 	}
 
-	String getTITLE() {
+	public String getTITLE() {
 		return TITLE;
 	}
 
-	String getSUBTITLE() {
+	public String getSUBTITLE() {
 		return SUBTITLE;
 	}
 
-	float getSACING() {
+	public float getSACING() {
 		return LINE_SPACING;
 	}
 
-	void setTITLE(String title) {
+	public void setTITLE(String title) {
 		TITLE = title;
 	}
 
-	void setSUBTITLE(String subtitle) {
+	public void setSUBTITLE(String subtitle) {
 		SUBTITLE = subtitle;
 	}
 
-	void setLineSpacing(float line_space) {
+	public void setLineSpacing(float line_space) {
 		LINE_SPACING = line_space;
 	}
 

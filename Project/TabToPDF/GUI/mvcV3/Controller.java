@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
-import version11.TextToPDFv11;
+import version12.TextToPDFv12;
 
 import com.itextpdf.text.DocumentException;
 
@@ -17,8 +17,7 @@ public class Controller {
 	static Model model;
 	View view;
 
-	public Controller(Model model, View view) {
-		Controller.model = model;
+	public Controller(View view) {
 		this.view = view;
 
 		this.view.addConvertListener(new ConvertButtonListener());
@@ -32,7 +31,7 @@ public class Controller {
 		model = model2;
 	}
 
-	protected static Model getModel() {
+	public static Model getModel() {
 		return model;
 	}
 }
@@ -43,6 +42,7 @@ class BrowseButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Model model = new Model();
 		Controller.setModel(model);
+		View.repaintPreview("");
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
@@ -102,18 +102,40 @@ class ConvertButtonListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println(" ghfjgf");
+
 		Model model = Controller.getModel();
 
 		String input = model.getFilenameWithExtension();
 		String output = "outputfiles/";
 		try {
-			TextToPDFv11 test = new TextToPDFv11(output, input);
+			TextToPDFv12 test = new TextToPDFv12(output, input);
 			test.WriteToPDF();
-			IMGCreator.createPreview();
+			model.setSpacing(test.file.getSACING());
+			model.setTitle(test.file.getTITLE());
+			model.setSubTitle(test.file.getSUBTITLE());
+			IMGCreator.createPreview(model);
 
 			// CHECK IF CONVERTION WAS DONE PROPTERLY.
 
+			String image = IMGCreator.getLastConverted();
+			View.repaintPreview(image);
 			// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
+
+			// GET CONVERTED FIELD VALUES.
+			// ENABLE FIELDS
+			View.applyButton.setEnabled(true);
+			View.settingsButton.setEnabled(true);
+			View.title.setEditable(true);
+			View.subtitle.setEditable(true);
+			View.staffSpacing.setEnabled(true);
+			View.measureFontSize.setEnabled(true);
+
+			// SET FIELD VALUES
+			View.subtitle.setText(model.getSubTitle());
+			View.title.setText(model.getTitle());
+			View.staffSpacing.setValue((int) model.getSpacing());
+			View.measureFontSize.setValue(model.getMeasureFontSize());
 
 			// ELSE display the error message and don't enable buttons.
 
