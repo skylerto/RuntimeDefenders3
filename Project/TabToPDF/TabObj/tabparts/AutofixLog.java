@@ -20,7 +20,7 @@ public class AutofixLog {
 	
 	/* ATTRIBUTES */
 	
-	public File log; //made publicc for testing
+	public File log; //made public for testing
 	private PrintStream stream;
 	
 	/**
@@ -62,5 +62,27 @@ public class AutofixLog {
 	public void close() {
 		//System.out.println("Closing " + LOG_NAME);
 		this.stream.close();
+	}
+	
+	/**
+	 * Checks to see if the called autofixlog.txt in the input folder is
+	 * empty or not.
+	 * 
+	 * @return true if empty, false otherwise
+	 */
+	public static boolean isEmpty() {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(LOG_PATH));
+			if (br.readLine() == null) {
+			    return true;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

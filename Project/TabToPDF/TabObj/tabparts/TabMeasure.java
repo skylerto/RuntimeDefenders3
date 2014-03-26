@@ -133,6 +133,19 @@ public class TabMeasure {
 		this.fixSymbols();
 	}
 	
+/*	public TabMeasure splitMeasure(int max) {
+		TabMeasure mleftover;
+		if (this.length() > max) {
+			mleftover = new TabMeasure();
+			for (int i = 0; i < MAX_STRINGS; i++) {
+				TabString sleftover = new TabString(this.getStringText(i).substring(max, this.length()));
+				mleftover.setString(sleftover, i);
+				
+			}
+		}
+		return mleftover;
+	}*/
+	
 	/**
 	 * Checks each string for 3 or more consecutive numbers.
 	 * 

@@ -10,7 +10,7 @@ import MVC.IncorrectFormattingAlert;
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
-/* (UPDATE) Added 3 methods: removeIncompletePulls, removeIncompleteHammers, removeIncompleteSlides
+/* (UPDATE) Added 3 methods: removeIncompleteSymbols
  * 
  */
 
@@ -342,17 +342,50 @@ public class TabStaff {
 			this.staff.get(i).fixMeasure();
 		this.findOneRepeats();
 		this.deleteComments();
+		this.removeIncompleteSymbols();
 	}
 	
-	public void removeIncompletePulls() {
-		
-	}
-	
-	public void removeIncompleteHammers() {
-		
-	}
-	
-	public void removeIncompleteSlides() {
+	/**
+	 * Removes the symbols p, h and s if they are dangling at the start or beginning of the staff.
+	 * Example:
+	 * 
+	 * |-----h3----|
+	 * 
+	 * This is a string in the first measure of the staff. There is no number before h to connect
+	 * 3 with so the h is replaced with a dash. All other h, p and s within the staff are assumed
+	 * to be valid.
+	 */
+	public void removeIncompleteSymbols() {
+		/* Start to End */
+		for (int j = 0; j < TabMeasure.MAX_STRINGS; j++) {
+			staff :
+			for (int i = 0; i < staff.size(); i++) {
+				String s = this.getMeasure(i).getStringText(j);
+				for (int k = 0; k < s.length(); k++) {
+					if (s.charAt(k) >= '0' && s.charAt(k) <= '9')
+						break staff;
+					else if (s.charAt(k) == 'p' || s.charAt(k) == 'h' || s.charAt(k) == 's') {
+						this.getMeasure(i).getString(j).replaceChar('-', k);
+						break staff;
+					}
+				}
+			}
+		}
+		/* End to Start */
+		for (int j = 0; j < TabMeasure.MAX_STRINGS; j++) {
+			staff :
+			for (int i = staff.size()- 1; i >= 0; i--) {
+				String s = this.getMeasure(i).getStringText(j);
+				for (int k = s.length() - 1; k >= 0; k--) {
+					if (s.charAt(k) >= '0' && s.charAt(k) <= '9')
+						break staff;
+					else if (s.charAt(k) == 'p' || s.charAt(k) == 'h' || s.charAt(k) == 's') {
+						this.getMeasure(i).getString(j).replaceChar('-', k);
+						break staff;
+					}
+				}
+			}
+		}
 		
 	}
 	
