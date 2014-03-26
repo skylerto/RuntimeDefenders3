@@ -47,10 +47,10 @@ public class TextToPDFv12 {
 	private MusicNoteProcess sp;
 
 	/* */
-	public static String titleString;
-	public static String subtitleString;
-	public static String tempTitle;
-	public static String tempSubtitle;
+	public String titleString;
+	public String subtitleString;
+	public String tempTitle;
+	public String tempSubtitle;
 
 	/**
 	 * 

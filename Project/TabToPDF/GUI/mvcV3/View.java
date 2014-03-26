@@ -58,10 +58,6 @@ public class View {
 	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
 	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonShow.png");
 	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/res/gui_images/SaveButtonPressed.png");
-	protected static ImageIcon RefreshButtonIcon = CreateImageIcon("/res/gui_images/RefreshButtonShow.png");
-	protected static ImageIcon RefreshButtonPressedIcon = CreateImageIcon("/res/gui_images/RefreshButtonPressed.png");
-	protected static ImageIcon SettingsButtonIcon = CreateImageIcon("/res/gui_images/SettingsButtonShow.png");
-	protected static ImageIcon SettingsButtonPressedIcon = CreateImageIcon("/res/gui_images/SettingsButtonPressed.png");
 
 	// Buttons
 	protected static JButton browseButton = CreateButton(SelectButtonIcon,
@@ -70,11 +66,6 @@ public class View {
 			ConvertButtonPressedIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
 			SaveButtonPressedIcon);
-	protected static JButton refreshButton = CreateButton(RefreshButtonIcon,
-			RefreshButtonPressedIcon);
-	protected static JButton settingsButton = CreateButton(SettingsButtonIcon,
-			SettingsButtonPressedIcon);
-
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
@@ -121,24 +112,13 @@ public class View {
 	}
 
 	protected static void repaintPreview(String image) {
-		try {
 
-			Thread.sleep(1000);
-			imagePanel.removeAll();
-			ImageIcon icon = new ImageIcon(image);
-			JLabel label = new JLabel(icon);
-			imagePanel.add(label);
-
-			imgScrollPane.revalidate();
-			imgScrollPane.repaint();
-			frame.revalidate();
-			frame.repaint();
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		imagePanel.removeAll();
+		ImageIcon icon = new ImageIcon(image);
+		JLabel label = new JLabel(icon);
+		imagePanel.add(label);
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public static JMenuBar createMenuBar() {
@@ -216,15 +196,6 @@ public class View {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.NONE;
-		panel.add(refreshButton, c);
-
-		c.gridx = 1;
-		c.gridy = 0;
-		panel.add(settingsButton, c);
-
 		// Song Title.
 		JLabel songLabel = new JLabel("Title: ");
 		songLabel.setFont(labelFont);
@@ -300,8 +271,6 @@ public class View {
 		c.gridwidth = 2;
 		panel.add(measureFontSize, c);
 
-		refreshButton.setEnabled(false);
-		settingsButton.setEnabled(false);
 		title.setEditable(false);
 		subtitle.setEditable(false);
 		staffSpacing.setEnabled(false);
@@ -376,15 +345,7 @@ public class View {
 		imagePanel.setPreferredSize(scroll);
 		imagePanel.setMinimumSize(scroll);
 		// imagePanel.add(label);
-		imgScrollPane = new JScrollPane(imagePanel);
-		imgScrollPane.setBackground(new java.awt.Color(0, 0, 0, 0));
-		imgScrollPane.setPreferredSize(scroll);
-		imgScrollPane.setMinimumSize(scroll);
 
-		imgScrollPane
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		imgScrollPane
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 	/**
@@ -513,21 +474,9 @@ public class View {
 
 	}
 
-	void addSettingsButtonListener(ActionListener listenForSelectButton) {
-
-		settingsButton.addActionListener(listenForSelectButton);
-
-	}
-
 	void addConvertListener(ActionListener listenForSelectButton) {
 
 		convertButton.addActionListener(listenForSelectButton);
-
-	}
-
-	void addApplyButtonListener(ActionListener listenForSelectButton) {
-
-		refreshButton.addActionListener(listenForSelectButton);
 
 	}
 
@@ -541,8 +490,8 @@ public class View {
 		title.addActionListener(titleListener);
 	}
 
-	void subTitleListener(ActionListener subTitleListener) {
-		title.addActionListener(subTitleListener);
+	void subtitleListener(ActionListener subtitleListener) {
+		title.addActionListener(subtitleListener);
 	}
 
 }

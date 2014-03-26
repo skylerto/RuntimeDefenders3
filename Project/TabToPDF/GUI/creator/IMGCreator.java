@@ -76,6 +76,7 @@ public class IMGCreator {
 			e.printStackTrace();
 		}
 
+		model.setPreviewImage(outputfile.getAbsolutePath());
 		setLastConverted(outputfile.toString());
 	}
 
