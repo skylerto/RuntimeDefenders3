@@ -240,6 +240,14 @@ public class TextToPDFv12 {
 		INPUT_FILENAME = s;
 	}
 
+	public void setLineSpacing(int spacing) {
+		this.LINE_SPACE = spacing;
+	}
+
+	public float getLineSpacing() {
+		return this.LINE_SPACE;
+	}
+
 	/**
 	 * Sets the INPUTFILENAME.
 	 * 

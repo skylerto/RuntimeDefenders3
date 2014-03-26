@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import version12.TextToPDFv12;
 
@@ -16,6 +19,7 @@ public class Controller {
 
 	static Model model;
 	View view;
+	static TextToPDFv12 test;
 
 	public Controller(View view) {
 		this.view = view;
@@ -25,6 +29,15 @@ public class Controller {
 		this.view.addApplyButtonListener(new ApplyButtonListener());
 		this.view.addSettingsButtonListener(new SettingsButtonListener());
 		this.view.addSaveButtonListener(new SaveButtonListener());
+		this.view.spacingListener(new SpacingListener());
+	}
+
+	protected static void setWriter(TextToPDFv12 test2) {
+		test = test2;
+	}
+
+	protected static TextToPDFv12 getWriter() {
+		return test;
 	}
 
 	protected static void setModel(Model model2) {
@@ -42,7 +55,6 @@ class BrowseButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Model model = new Model();
 		Controller.setModel(model);
-		View.repaintPreview("");
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
@@ -62,6 +74,7 @@ class BrowseButtonListener implements ActionListener {
 		// Save the path and filename.
 		// Update destination path.
 
+		View.repaintPreview("");
 	}
 }
 
@@ -110,6 +123,7 @@ class ConvertButtonListener implements ActionListener {
 		String output = "outputfiles/";
 		try {
 			TextToPDFv12 test = new TextToPDFv12(output, input);
+			Controller.setWriter(test);
 			test.WriteToPDF();
 			model.setSpacing(test.file.getSACING());
 			model.setTitle(test.file.getTITLE());
@@ -118,13 +132,13 @@ class ConvertButtonListener implements ActionListener {
 
 			// CHECK IF CONVERTION WAS DONE PROPTERLY.
 
-			String image = IMGCreator.getLastConverted();
-			View.repaintPreview(image);
+			String image2 = IMGCreator.getLastConverted();
+			View.repaintPreview(image2);
 			// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
 
 			// GET CONVERTED FIELD VALUES.
 			// ENABLE FIELDS
-			View.applyButton.setEnabled(true);
+			View.refreshButton.setEnabled(true);
 			View.settingsButton.setEnabled(true);
 			View.title.setEditable(true);
 			View.subtitle.setEditable(true);
@@ -136,6 +150,7 @@ class ConvertButtonListener implements ActionListener {
 			View.title.setText(model.getTitle());
 			View.staffSpacing.setValue((int) model.getSpacing());
 			View.measureFontSize.setValue(model.getMeasureFontSize());
+			View.saveButton.setEnabled(true);
 
 			// ELSE display the error message and don't enable buttons.
 
@@ -145,6 +160,44 @@ class ConvertButtonListener implements ActionListener {
 		}
 	}
 
+}
+
+class SpacingListener implements ChangeListener {
+
+	Model model = Controller.getModel();
+
+	// TextToPDFv12 test = Controller.getWriter();
+
+	public void stateChanged(ChangeEvent e) {
+		JSlider source = (JSlider) e.getSource();
+		if (!source.getValueIsAdjusting()) {
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			String input = model.getFilenameWithExtension();
+			String output = "outputfiles/";
+			try {
+				TextToPDFv12 test = new TextToPDFv12(output, input);
+				test.file.setLineSpacing((View.staffSpacing.getValue()));
+				// test.setLineSpacing(View.staffSpacing.getValue());
+				test.WriteToPDF();
+				IMGCreator.createPreview(model);
+
+				// CHECK IF CONVERTION WAS DONE PROPTERLY.
+				model.setSpacing(View.staffSpacing.getValue());
+				String image = IMGCreator.getLastConverted();
+				View.staffSpacing.setValue((int) model.getSpacing());
+				View.repaintPreview(image);
+
+			} catch (DocumentException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else {
+			String image = IMGCreator.getLastConverted();
+			View.repaintPreview(image);
+		}
+
+	}
 }
 
 /**

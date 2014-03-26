@@ -1,6 +1,5 @@
 package mvcV3;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -11,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,14 +25,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.itextpdf.text.DocumentException;
+
+import creator.IMGCreator;
 
 import print.printPDF;
+import version12.TextToPDFv12;
 import MVC.PrinterInterface;
-
-import com.alee.extended.layout.VerticalFlowLayout;
 
 public class View {
 
@@ -45,12 +51,29 @@ public class View {
 
 	protected static JScrollPane previewPane;
 
+	// ImageIcons
+	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonShow.png");
+	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/res/gui_images/SelectButtonPressed.png");
+	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonShow.png");
+	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
+	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonShow.png");
+	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/res/gui_images/SaveButtonPressed.png");
+	protected static ImageIcon RefreshButtonIcon = CreateImageIcon("/res/gui_images/RefreshButtonShow.png");
+	protected static ImageIcon RefreshButtonPressedIcon = CreateImageIcon("/res/gui_images/RefreshButtonPressed.png");
+	protected static ImageIcon SettingsButtonIcon = CreateImageIcon("/res/gui_images/SettingsButtonShow.png");
+	protected static ImageIcon SettingsButtonPressedIcon = CreateImageIcon("/res/gui_images/SettingsButtonPressed.png");
+
 	// Buttons
-	protected static JButton browseButton = new JButton("Browse");
-	protected static JButton convertButton = new JButton("Convert");
-	protected static JButton saveButton = new JButton("Save As...");
-	protected static JButton applyButton = new JButton("A");
-	protected static JButton settingsButton = new JButton("B");
+	protected static JButton browseButton = CreateButton(SelectButtonIcon,
+			SelectButtonPressedIcon);
+	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
+			ConvertButtonPressedIcon);
+	protected static JButton saveButton = CreateButton(SaveButtonIcon,
+			SaveButtonPressedIcon);
+	protected static JButton refreshButton = CreateButton(RefreshButtonIcon,
+			RefreshButtonPressedIcon);
+	protected static JButton settingsButton = CreateButton(SettingsButtonIcon,
+			SettingsButtonPressedIcon);
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
@@ -90,20 +113,29 @@ public class View {
 	protected static ImageIcon ic;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
+	protected static JPanel imagePanel;
 
 	public View() {
 		CreateAndShowGUI();
 	}
 
 	protected static void repaintPreview(String image) {
-		topBox.removeAll();
-		topBox.insertIcon(new ImageIcon(image));
-		imgScrollPane.repaint();
-		imgScrollPane.revalidate();
-		topBox.repaint();
-		topBox.revalidate();
-		frame.repaint();
-		frame.revalidate();
+		try {
+			Thread.sleep(5000);
+			imagePanel.removeAll();
+			ImageIcon icon = new ImageIcon(image);
+			JLabel label = new JLabel(icon);
+			imagePanel.add(label);
+			imgScrollPane.revalidate();
+			imgScrollPane.repaint();
+			frame.revalidate();
+			frame.repaint();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static JMenuBar createMenuBar() {
@@ -184,7 +216,7 @@ public class View {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.fill = GridBagConstraints.NONE;
-		panel.add(applyButton, c);
+		panel.add(refreshButton, c);
 
 		c.gridx = 1;
 		c.gridy = 0;
@@ -256,7 +288,6 @@ public class View {
 		measureFontSize.setMinorTickSpacing(1);
 		measureFontSize.setPaintTicks(true);
 		measureFontSize.setPaintLabels(true);
-
 		c.gridx = 0;
 		c.gridy = 8;
 		c.gridwidth = 2;
@@ -267,7 +298,7 @@ public class View {
 		c.gridwidth = 2;
 		panel.add(measureFontSize, c);
 
-		applyButton.setEnabled(false);
+		refreshButton.setEnabled(false);
 		settingsButton.setEnabled(false);
 		title.setEditable(false);
 		subtitle.setEditable(false);
@@ -336,28 +367,25 @@ public class View {
 
 	}
 
-	protected static JPanel buildPreviewScrollPane() {
-		JPanel panel = new JPanel();
+	protected static void buildPreviewScrollPane() {
 
 		Dimension scroll = new Dimension(615, 575);
 
-		ic = new ImageIcon("");
-
-		topBox = new JTextPane();
-		topBox.setBorder(null);
-		topBox.setEditable(false);
-		topBox.setBackground(new java.awt.Color(0, 0, 0, 0));
-		imgScrollPane = new JScrollPane(topBox);
+		imagePanel = new JPanel();
+		// ic = new ImageIcon("");
+		// JLabel label = new JLabel(ic);
+		imagePanel.setPreferredSize(scroll);
+		imagePanel.setMinimumSize(scroll);
+		// imagePanel.add(label);
+		imgScrollPane = new JScrollPane(imagePanel);
 		imgScrollPane.setBackground(new java.awt.Color(0, 0, 0, 0));
 		imgScrollPane.setPreferredSize(scroll);
 		imgScrollPane.setMinimumSize(scroll);
-		topBox.insertIcon(ic);
-		// JLabel jl = new JLabel(ic);
-		// JTextPane ta = new JTextPane();
-		// ta.insertIcon(ic);
-		// / previewPane.add(jl);
-		panel.add(imgScrollPane);
-		return panel;
+
+		imgScrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		imgScrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 	/**
@@ -387,19 +415,19 @@ public class View {
 		c.insets = new Insets(1, 1, 1, 10);
 		rightSide.add(previewLabel, c); // Label naming the display pane.
 
-		JPanel pane = buildPreviewScrollPane();
+		buildPreviewScrollPane();
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
 				"PDF Preview:");
 		titled.setTitleJustification(TitledBorder.LEFT);
-		pane.setBorder(titled);
+		imagePanel.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(1, 1, 1, 10);
 
-		rightSide.add(pane, c); // Display a scrollPane of the
-								// image.
+		rightSide.add(imagePanel, c); // Display a scrollPane of the
+		// image.
 	}
 
 	/**
@@ -445,6 +473,27 @@ public class View {
 
 	}
 
+	/** Return a JButton with the given default icon and pressed icon */
+	public static JButton CreateButton(ImageIcon defaultIcon,
+			ImageIcon pressedIcon) {
+		JButton button = new JButton(defaultIcon);
+		button.setPressedIcon(pressedIcon);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setContentAreaFilled(false);
+		return button;
+	}
+
+	/** Returns an ImageIcon, or null if the path was invalid. */
+	protected static ImageIcon CreateImageIcon(String path) {
+		java.net.URL imgURL = View.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
+
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -479,7 +528,13 @@ public class View {
 
 	void addApplyButtonListener(ActionListener listenForSelectButton) {
 
-		applyButton.addActionListener(listenForSelectButton);
+		refreshButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void spacingListener(ChangeListener spacingListener) {
+
+		staffSpacing.addChangeListener(spacingListener);
 
 	}
 

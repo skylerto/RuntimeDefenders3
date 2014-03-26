@@ -49,7 +49,7 @@ public class IMGCreator {
 		// Image
 		// file
 		System.out.println(INPUT_PDFFILE + " " + outputfile);
-		setLastConverted(outputfile.toString());
+
 		/** instance of PdfDecoder to convert PDF into image */
 		PdfDecoder decode_pdf = new PdfDecoder(true);
 
@@ -75,6 +75,8 @@ public class IMGCreator {
 		} catch (PdfException e) {
 			e.printStackTrace();
 		}
+
+		setLastConverted(outputfile.toString());
 	}
 
 	public static void setLastConverted(String name) {
