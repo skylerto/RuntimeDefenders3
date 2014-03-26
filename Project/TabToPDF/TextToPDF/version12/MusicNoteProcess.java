@@ -164,6 +164,14 @@ public class MusicNoteProcess {
 	public List<MusicSymbols> getSymbolsList() {
 		return new ArrayList<MusicSymbols>(list);
 	}
+public String toString(){
+	String s ="";
+		for (MusicSymbols ms: list ) {
+			s+="["+ ms.getchartype()+"," + ms.getValue()+ "]"+ "+";
+		}
+		return s;
+		
+	}
 	
 		
 }
