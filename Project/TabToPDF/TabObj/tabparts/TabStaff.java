@@ -10,7 +10,7 @@ import MVC.IncorrectFormattingAlert;
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
-/* (UPDATE) Added new method: setMaxMeasureLength() not yet implemented
+/* (UPDATE) Added 3 methods: removeIncompletePulls, removeIncompleteHammers, removeIncompleteSlides
  * 
  */
 
@@ -342,6 +342,18 @@ public class TabStaff {
 			this.staff.get(i).fixMeasure();
 		this.findOneRepeats();
 		this.deleteComments();
+	}
+	
+	public void removeIncompletePulls() {
+		
+	}
+	
+	public void removeIncompleteHammers() {
+		
+	}
+	
+	public void removeIncompleteSlides() {
+		
 	}
 	
 	/**
