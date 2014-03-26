@@ -34,7 +34,7 @@ public class TextToPDFv12 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try2.txt";
+	public static String INPUT_FILENAME = "inputfiles/try.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -47,10 +47,10 @@ public class TextToPDFv12 {
 	private MusicNoteProcess sp;
 
 	/* */
-	static String titleString;
-	static String subtitleString;
-	static String tempTitle;
-	static String tempSubtitle;
+	public static String titleString;
+	public static String subtitleString;
+	public static String tempTitle;
+	public static String tempSubtitle;
 
 	/**
 	 * 
@@ -105,8 +105,8 @@ public class TextToPDFv12 {
 		}
 
 		outputpath = outputpath + filename;
-		Model.setOutputFilename(outputpath);
 		Controller.getModel().setOutputFilename(outputpath);
+
 		draw = new DrawClassv12();
 		doc = new Document(PageSize.LETTER);
 		writer = PdfWriter.getInstance(doc, new FileOutputStream(new File(
@@ -114,13 +114,6 @@ public class TextToPDFv12 {
 	}
 
 	public void WriteToPDF() throws DocumentException, IOException {
-
-		titleString = Model.getTitle();
-		subtitleString = Model.getSubtitle();
-		titleFontSize = Model.getTitleFontSize();
-		subTitleFontSize = Model.getSubTitleFontSize();
-		// FONT_SIZE = Model.getMeasureFontSize();
-		FONT_SIZE = Model.getMeasureFontSize();
 
 		try {
 			doc.open();

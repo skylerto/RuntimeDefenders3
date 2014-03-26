@@ -30,6 +30,8 @@ public class Controller {
 		this.view.addSettingsButtonListener(new SettingsButtonListener());
 		this.view.addSaveButtonListener(new SaveButtonListener());
 		this.view.spacingListener(new SpacingListener());
+		this.view.titleListener(new TitleListener());
+		this.view.subTitleListener(new SubtitleListener());
 	}
 
 	protected static void setWriter(TextToPDFv12 test2) {
@@ -47,6 +49,44 @@ public class Controller {
 	public static Model getModel() {
 		return model;
 	}
+}
+
+class TitleListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Model model = Controller.getModel();
+		TextToPDFv12 test = Controller.getWriter();
+		String newTitle = View.title.getText();
+		model.setFilename(newTitle);
+		test
+
+		try {
+
+			test.WriteToPDF();
+			IMGCreator.createPreview(model);
+
+			// CHECK IF CONVERTION WAS DONE PROPTERLY.
+			String image = IMGCreator.getLastConverted();
+			View.repaintPreview(image);
+
+		} catch (DocumentException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+
+}
+
+class SubtitleListener implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
 
 class BrowseButtonListener implements ActionListener {
@@ -169,13 +209,16 @@ class SpacingListener implements ChangeListener {
 	// TextToPDFv12 test = Controller.getWriter();
 
 	public void stateChanged(ChangeEvent e) {
+
 		JSlider source = (JSlider) e.getSource();
+
 		if (!source.getValueIsAdjusting()) {
 			// TODO Auto-generated method stub
 			Model model = Controller.getModel();
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
 			try {
+
 				TextToPDFv12 test = new TextToPDFv12(output, input);
 				test.file.setLineSpacing((View.staffSpacing.getValue()));
 				// test.setLineSpacing(View.staffSpacing.getValue());
@@ -184,17 +227,17 @@ class SpacingListener implements ChangeListener {
 
 				// CHECK IF CONVERTION WAS DONE PROPTERLY.
 				model.setSpacing(View.staffSpacing.getValue());
-				String image = IMGCreator.getLastConverted();
 				View.staffSpacing.setValue((int) model.getSpacing());
+				System.out.println("kjaewfkjsadfkjadsfkj");
+				String image = IMGCreator.getLastConverted();
+
 				View.repaintPreview(image);
 
 			} catch (DocumentException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else {
-			String image = IMGCreator.getLastConverted();
-			View.repaintPreview(image);
+
 		}
 
 	}

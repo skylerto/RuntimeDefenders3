@@ -87,8 +87,8 @@ public class View {
 	protected static JTextField destination;
 
 	// TITLES
-	protected static JTextField title;
-	protected static JTextField subtitle;
+	protected static JTextField title = new JTextField(20);
+	protected static JTextField subtitle = new JTextField(20);
 
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
@@ -100,13 +100,14 @@ public class View {
 	// SPACING SLIDER INFO
 	protected static JSlider staffSpacing;
 	private static final int staffSpacingMin = 0;
-	private static final int staffSpacingMax = 40;
+	private static final int staffSpacingMax = 12;
 	private static int staffSpacingCurrent;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
 	protected static Dimension frameSize = new Dimension(950, 650);
+	static Dimension scroll = new Dimension(615, 575);
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
@@ -121,11 +122,13 @@ public class View {
 
 	protected static void repaintPreview(String image) {
 		try {
-			Thread.sleep(5000);
+
+			Thread.sleep(1000);
 			imagePanel.removeAll();
 			ImageIcon icon = new ImageIcon(image);
 			JLabel label = new JLabel(icon);
 			imagePanel.add(label);
+
 			imgScrollPane.revalidate();
 			imgScrollPane.repaint();
 			frame.revalidate();
@@ -225,7 +228,7 @@ public class View {
 		// Song Title.
 		JLabel songLabel = new JLabel("Title: ");
 		songLabel.setFont(labelFont);
-		title = new JTextField(20);
+
 		c.gridx = 0;
 		c.gridy = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -244,7 +247,6 @@ public class View {
 		// Subtitle.
 		JLabel subLabel = new JLabel("Subtitle: ");
 		subLabel.setFont(labelFont);
-		subtitle = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 2;
@@ -262,7 +264,7 @@ public class View {
 		spacingLabel.setFont(labelFont);
 		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
 				staffSpacingMax, staffSpacingCurrent);
-		staffSpacing.setMajorTickSpacing(10);
+		staffSpacing.setMajorTickSpacing(2);
 		staffSpacing.setMinorTickSpacing(1);
 		staffSpacing.setPaintTicks(true);
 		staffSpacing.setPaintLabels(true);
@@ -368,9 +370,6 @@ public class View {
 	}
 
 	protected static void buildPreviewScrollPane() {
-
-		Dimension scroll = new Dimension(615, 575);
-
 		imagePanel = new JPanel();
 		// ic = new ImageIcon("");
 		// JLabel label = new JLabel(ic);
@@ -536,6 +535,14 @@ public class View {
 
 		staffSpacing.addChangeListener(spacingListener);
 
+	}
+
+	void titleListener(ActionListener titleListener) {
+		title.addActionListener(titleListener);
+	}
+
+	void subTitleListener(ActionListener subTitleListener) {
+		title.addActionListener(subTitleListener);
 	}
 
 }
