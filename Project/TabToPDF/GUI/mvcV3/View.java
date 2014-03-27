@@ -359,9 +359,6 @@ public class View
 	}
 
 	/**
-	 * 
-	 */
-	/**
 	 * Adds all the components to the right panel.
 	 * 
 	 * 
@@ -459,7 +456,7 @@ public class View
 		return button;
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
+	/** Returns an ImageIcon if the path is valid, otherwise null. */
 	protected static ImageIcon CreateImageIcon(String path)
 	{
 		java.net.URL imgURL = View.class.getResource(path);
