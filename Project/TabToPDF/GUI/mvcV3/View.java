@@ -32,11 +32,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import mvcV2.Model;
+
 import com.itextpdf.text.DocumentException;
 
 import creator.IMGCreator;
 
 import print.printPDF;
+import tabparts.AutofixLog;
 import version12.TextToPDFv12;
 import MVC.PrinterInterface;
 
@@ -62,6 +65,9 @@ public class View
 	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/gui_images/SaveButtonDefault.png");
 	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/gui_images/SaveButtonPressed.png");
 	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/gui_images/SaveButtonDisabled.png");
+	protected static ImageIcon CorrectionButtonIcon = CreateImageIcon("/gui_images/CorrectionButtonDefault.png");
+	protected static ImageIcon CorrectionButtonPressedIcon = CreateImageIcon("/gui_images/CorrectionButtonPressed.png");
+	protected static ImageIcon CorrectionButtonDisabledIcon = CreateImageIcon("/gui_images/CorrectionButtonDisabled.png");
 
 	// Buttons
 	protected static JButton selectButton = CreateButton(SelectButtonIcon,
@@ -70,6 +76,10 @@ public class View
 			ConvertButtonPressedIcon, ConvertButtonDisabledIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
 			SaveButtonPressedIcon, SaveButtonDisabledIcon);
+	protected static JButton correctionButton = CreateButton(
+			CorrectionButtonIcon, CorrectionButtonPressedIcon,
+			CorrectionButtonDisabledIcon);
+
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
@@ -110,6 +120,7 @@ public class View
 	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
+	protected static JLabel correctionLabel;
 
 	public View()
 	{
@@ -118,9 +129,22 @@ public class View
 
 	protected static void repaintPreview(String image)
 	{
+
 		ic = new ImageIcon(image);
 		ic.getImage().flush();
 		iconLabel.setIcon(ic);
+	}
+
+	// NOTE! Might want to combine this with repaintPreview into updateView
+	protected static void updateCorrection(String filename)
+	{
+		// if there are fixes in the autofixlog, then show correctionPanel
+		if (!AutofixLog.isEmpty())
+		{
+			correctionLabel.setText("Errors were found in " + filename);
+			correctionLabel.setVisible(true);
+			correctionButton.setVisible(true);
+		}
 	}
 
 	public static JMenuBar createMenuBar()
@@ -324,6 +348,28 @@ public class View
 		autoCorrectionPanel.setMinimumSize(new Dimension(270, 100));
 		autoCorrectionPanel.setVisible(true);
 		autoCorrectionPanel.setEnabled(false);
+
+		// Setting up GridbagLayout
+		GridBagConstraints c = new GridBagConstraints();
+		autoCorrectionPanel.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.NONE;
+
+		// Adding label and button
+		correctionLabel = new JLabel("");
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 10, 5, 5);
+		autoCorrectionPanel.add(correctionLabel, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 10, 5, 5);
+		autoCorrectionPanel.add(correctionButton, c);
+
+		// hiding button and label
+		correctionLabel.setVisible(false);
+		correctionButton.setVisible(false);
+
 		return autoCorrectionPanel;
 	}
 
@@ -347,7 +393,6 @@ public class View
 		c.gridy = 2;
 		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(autoCorrections(), c);
-
 	}
 
 	protected static void buildPreviewScrollPane()
@@ -500,6 +545,13 @@ public class View
 	{
 
 		convertButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void addCorrectionListener(ActionListener listenForSelectButton)
+	{
+
+		correctionButton.addActionListener(listenForSelectButton);
 
 	}
 

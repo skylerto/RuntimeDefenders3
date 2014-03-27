@@ -263,13 +263,13 @@ class SpacingListener implements ChangeListener {
 				test.WriteToPDF();
 				IMGCreator.createPreview(model);
 
-				// CHECK IF CONVERTION WAS DONE PROPTERLY.
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
 				model.setSpacing(View.staffSpacing.getValue());
 				View.staffSpacing.setValue((int) model.getSpacing());
-				System.out.println("kjaewfkjsadfkjadsfkj");
 				String image = IMGCreator.getLastConverted();
 
 				View.repaintPreview(image);
+				View.updateCorrection(model.getFilename());
 
 			} catch (DocumentException | IOException e1) {
 				// TODO Auto-generated catch block
