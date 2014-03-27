@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
@@ -138,8 +139,11 @@ public class View
 	// NOTE! Might want to combine this with repaintPreview into updateView
 	protected static void updateCorrection(String filename)
 	{
-		// if there are fixes in the autofixlog, then show correctionPanel
-		if (!AutofixLog.isEmpty())
+		if (AutofixLog.isEmpty())
+		{
+			correctionLabel.setVisible(false);
+			correctionButton.setVisible(false);
+		} else
 		{
 			correctionLabel.setText("Errors were found in " + filename);
 			correctionLabel.setVisible(true);
@@ -567,9 +571,19 @@ public class View
 		title.addActionListener(titleListener);
 	}
 
+	void titleFocusListener(FocusListener titleFocusListener)
+	{
+		title.addFocusListener(titleFocusListener);
+	}
+		
 	void subtitleListener(ActionListener subtitleListener)
 	{
 		subtitle.addActionListener(subtitleListener);
+	}
+	
+	void subtitleFocusListener(FocusListener subtitleFocusListener)
+	{
+		subtitle.addFocusListener(subtitleFocusListener);
 	}
 
 }

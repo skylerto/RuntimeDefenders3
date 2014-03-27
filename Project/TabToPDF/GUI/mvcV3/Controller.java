@@ -2,6 +2,8 @@ package mvcV3;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -33,6 +35,8 @@ public class Controller
 		this.view.spacingListener(new SpacingListener());
 		this.view.titleListener(new TitleListener());
 		this.view.subtitleListener(new SubtitleListener());
+		this.view.titleFocusListener(new TitleFocusListener());
+		this.view.subtitleFocusListener(new SubtitleFocusListener());
 	}
 
 	protected static void setWriter(TextToPDFv12 test2)
@@ -56,11 +60,17 @@ public class Controller
 	}
 }
 
-class TitleListener implements ActionListener
+class TitleFocusListener implements FocusListener
 {
+	Model model = Controller.getModel();
 
 	@Override
-	public void actionPerformed(ActionEvent e)
+	public void focusGained(FocusEvent e)
+	{
+	}
+
+	@Override
+	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
 		String newTitle = View.title.getText();
@@ -68,7 +78,6 @@ class TitleListener implements ActionListener
 
 		try
 		{
-
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
 			TextToPDFv12 test = new TextToPDFv12(output, input);
@@ -85,24 +94,59 @@ class TitleListener implements ActionListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 	}
-
 }
 
-class SubtitleListener implements ActionListener
+class TitleListener implements ActionListener
 {
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
+		String newTitle = View.title.getText();
+		model.setFilename(newTitle);
+
+		try
+		{
+			String input = model.getFilenameWithExtension();
+			String output = "outputfiles/";
+			TextToPDFv12 test = new TextToPDFv12(output, input);
+			test.titleString = newTitle;
+			test.WriteToPDF();
+			IMGCreator.createPreview(model);
+
+			// CHECK IF CONVERTION WAS DONE PROPTERLY.
+			String image = model.getPreviewImage();
+			View.repaintPreview(image);
+
+		} catch (DocumentException | IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+}
+
+class SubtitleFocusListener implements FocusListener
+{
+	Model model = Controller.getModel();
+
+	@Override
+	public void focusGained(FocusEvent e)
+	{
+	}
+
+	@Override
+	public void focusLost(FocusEvent e)
+	{
+		System.out.println("Lost title");
+		Model model = Controller.getModel();
 		String newTitle = View.subtitle.getText();
 		model.setFilename(newTitle);
 
 		try
 		{
-
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
 			TextToPDFv12 test = new TextToPDFv12(output, input);
@@ -120,7 +164,37 @@ class SubtitleListener implements ActionListener
 			e1.printStackTrace();
 		}
 	}
+}
 
+class SubtitleListener implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Model model = Controller.getModel();
+		String newTitle = View.subtitle.getText();
+		model.setFilename(newTitle);
+
+		try
+		{
+			String input = model.getFilenameWithExtension();
+			String output = "outputfiles/";
+			TextToPDFv12 test = new TextToPDFv12(output, input);
+			test.subtitleString = newTitle;
+			test.WriteToPDF();
+			IMGCreator.createPreview(model);
+
+			// CHECK IF CONVERTION WAS DONE PROPTERLY.
+			String image = model.getPreviewImage();
+			View.repaintPreview(image);
+
+		} catch (DocumentException | IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 }
 
 class SelectButtonListener implements ActionListener
@@ -226,7 +300,6 @@ class CorrectionButtonListener implements ActionListener
 		Model model = Controller.getModel();
 		String input = model.getFilenameWithExtension();
 		Utils.openAndReadFile(input);
-		System.out.println(input);
 	}
 }
 
@@ -252,7 +325,7 @@ class ConvertButtonListener implements ActionListener
 			model.setSubTitle(test.file.getSUBTITLE());
 			IMGCreator.createPreview(model);
 
-			// CHECK IF CONVERTION WAS DONE PROPTERLY.
+			// CHECK IF CONVERSION WAS DONE PROPERLY.
 
 			String image2 = IMGCreator.getLastConverted();
 			View.repaintPreview(image2);
