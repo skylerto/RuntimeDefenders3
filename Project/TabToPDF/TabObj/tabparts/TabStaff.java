@@ -10,7 +10,7 @@ import MVC.IncorrectFormattingAlert;
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
-/* (UPDATE) Added 3 methods: removeIncompleteSymbols
+/* (UPDATE) Added 2 methods: removeIncompleteSymbols() and splitLongMeasures()
  * 
  */
 
@@ -232,10 +232,6 @@ public class TabStaff {
 		}
 	}
 	
-	public void setMaxMeasureLength(int max) {
-		
-	}
-	
 	/**
 	 * Returns a 2-dimensional array list of strings. The outer list is the collection
 	 * of the staff's TabMeasures in text form. For each TabMeasure (inner list) is
@@ -352,8 +348,14 @@ public class TabStaff {
 	 * |-----h3----|
 	 * 
 	 * This is a string in the first measure of the staff. There is no number before h to connect
-	 * 3 with so the h is replaced with a dash. All other h, p and s within the staff are assumed
-	 * to be valid.
+	 * 3 with so the h is replaced with a dash. 
+	 * 
+	 * |---3s------|
+	 * 
+	 * This string is in the last measure of the staff. There is no number after s to connect
+	 * 3 with so the s is replaced with a dash.
+	 * 
+	 * All other h, p and s within the staff are assumed to be valid.
 	 */
 	public void removeIncompleteSymbols() {
 		/* Start to End */
@@ -388,6 +390,8 @@ public class TabStaff {
 		}
 		
 	}
+	
+	
 	
 	/**
 	 * Deletes all comment measures in the staff.
@@ -597,6 +601,69 @@ public class TabStaff {
 			}
 		}
 		return linenum;
+	}
+	
+	/**
+	 * Splits measures into two measures if they are longer than the given
+	 * max length. If the second measure is also longer then it is split again
+	 * and so on. Split measures maintain their original order in the staff.
+	 * 
+	 * Example, this staff is split with max length 10:
+	 * 
+	 * ||---------3----------10-----0-------0---------------7-||
+	 * ||----0---------10--------------0-------0-------5s7----||
+	 * ||*------2----------0----------2-------2-------0-------||
+	 * ||*----------------------------------------------------||
+	 * ||---2--------------------3----------------------------||
+	 * ||-0-----------7-----------------------------0---------||
+	 * 
+	 * this measure is split into the following measures in the staff:
+	 * 
+	 * ||---------3--------|
+	 * ||----0---------10--|
+	 * ||*------2----------|
+	 * ||*-----------------|
+	 * ||---2--------------|
+	 * ||-0-----------7----|
+	 * 
+	 * |--10-----0-------0-|
+	 * |------------0------|
+	 * |0----------2-------|
+	 * |-------------------|
+	 * |------3------------|
+	 * |-------------------|
+	 * 
+	 * |--------------7-||
+	 * |-0-------5s7----||
+	 * |2-------0-------||
+	 * |----------------||
+	 * |----------------||
+	 * |------0---------||
+	 * 
+	 * @param maxlength The max number of characters a measure can have in a string.
+	 */
+	public void splitLongMeasures(int maxlength) {
+		List<TabMeasure> newstaff = new ArrayList<TabMeasure>();	// The new staff with the split measures
+		
+		/* For each measure in the staff, split it if it's longer than maxlength */
+		for (int i = 0; i < this.size(); i++) {
+			TabMeasure shortened = this.staff.get(i);
+			TabMeasure split;
+			
+			/* While the split part is still too long, then continue to split it */
+			while ((split = shortened.splitMeasure(maxlength)) != null) {
+				newstaff.add(shortened);	// Add first half of the split
+				shortened = split;			// Set second half of the split to check if it needs to be split
+			}
+			newstaff.add(shortened);
+		}
+		/* If splits were made then set the new staff list equal to the current staff list */
+		if (!this.staff.equals(newstaff)) {
+			System.out.println("not equal");
+			this.staff.clear();
+			for (int i = 0; i < newstaff.size(); i++)
+				this.staff.add(newstaff.get(i));
+		}
 	}
 	
 	/**

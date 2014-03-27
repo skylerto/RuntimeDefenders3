@@ -4,7 +4,10 @@ import java.util.regex.Pattern;
 
 // Make double bars have stars only in the 3rd and 4th strings
 /*
- * (UPDATE) Added checkNumberException() method. fixStrings() and fixSymbols() dont throw exceptions anymore
+ * (UPDATE) Added a new method: splitMeasure().
+ * 
+ * The setString() method now sets the measure length to the greatest seen
+ * TabString length.
  */
 
 /**
@@ -76,6 +79,9 @@ public class TabMeasure {
 	public void setString(TabString string, int index) {
 		if (index >= MAX_STRINGS) throw new IllegalArgumentException("error, index must be < " + MAX_STRINGS);
 		this.strings[index].copyString(string);
+		if (this.length() < string.size()) {
+			this.setLength(string.size());
+		}
 	}
 	
 	/**
@@ -133,18 +139,81 @@ public class TabMeasure {
 		this.fixSymbols();
 	}
 	
-/*	public TabMeasure splitMeasure(int max) {
-		TabMeasure mleftover;
-		if (this.length() > max) {
+	/**
+	 * Splits the measure into two if the measure's length is greater than the max parameter passed.
+	 * All measures are assumed to be valid and fixed.
+	 * 
+	 * Example, this method run with maxlength = 4 on this measure:
+	 * 
+	 * |----3--||
+	 * |--2----||
+	 * |--2----||
+	 * |-------||
+	 * |---4---||
+	 * |------1||
+	 * 
+	 * will shorten the original measure to:
+	 * 
+	 * |----|
+	 * |--2-|
+	 * |--2-|
+	 * |----|
+	 * |---4|
+	 * |----|
+	 * 
+	 * and return the cut part as a new measure:
+	 * 
+	 * |3--||
+	 * |---||
+	 * |---||
+	 * |---||
+	 * |---||
+	 * |--1||
+	 * 
+	 * @param maxlength The character index in the strings to make the cut at.
+	 * @return The measure that is cut from the original. Returns null if the measure 
+	 * 			doesn't need to be cut or if it only cut away the vertical bars which 
+	 * 			are negligible.
+	 */
+	public TabMeasure splitMeasure(int maxlength) {
+		TabMeasure mleftover = null;	// The cut measure to return
+		TabMeasure mshort = null;		// The shortened original measure
+		
+		/* If the length of the measure is greater than max, split it */
+		if (this.length() > maxlength) {
+			Pattern bars = Pattern.compile("^[|]*$");	// A string of only bars
 			mleftover = new TabMeasure();
+			mshort = new TabMeasure();
+			
+			/* For each TabString in the TabMeasure, make a split at the given max index */
 			for (int i = 0; i < MAX_STRINGS; i++) {
-				TabString sleftover = new TabString(this.getStringText(i).substring(max, this.length()));
+
+				/* Add the left over strings to a new measure */
+				TabString sleftover = new TabString(this.getStringText(i).substring(maxlength, this.length()));
 				mleftover.setString(sleftover, i);
 				
+				/* Shorten each original string */
+				TabString shortened = new TabString(this.getStringText(i).substring(0, maxlength));
+				mshort.setString(shortened, i);
+			}
+			
+			/* If the shortened or cut part contains only bars then disregard the split and return null */
+			if (bars.matcher(mshort.getStringText(0)).find() || bars.matcher(mleftover.getStringText(0)).find()) {
+				return null;
+			} else {
+				this.copyMeasure(mshort); // Make the original measure the shortened measure
+				/* Fix the split measures */
+				try {
+					this.fixMeasure();
+					mleftover.fixMeasure();
+				} catch (LargeNumberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		return mleftover;
-	}*/
+	}
 	
 	/**
 	 * Checks each string for 3 or more consecutive numbers.
