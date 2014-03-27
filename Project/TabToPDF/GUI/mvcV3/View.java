@@ -40,7 +40,8 @@ import print.printPDF;
 import version12.TextToPDFv12;
 import MVC.PrinterInterface;
 
-public class View {
+public class View
+{
 
 	protected static JFrame frame;
 
@@ -107,21 +108,22 @@ public class View {
 	protected static JScrollPane imgScrollPane;
 	protected static JPanel imagePanel;
 
-	public View() {
+	public View()
+	{
 		CreateAndShowGUI();
 	}
 
-	protected static void repaintPreview(String image) {
-
-		imagePanel.removeAll();
+	protected static void repaintPreview(String image)
+	{
 		ImageIcon icon = new ImageIcon(image);
 		JLabel label = new JLabel(icon);
-		imagePanel.add(label);
+		previewPane.setViewportView(label);
 		frame.revalidate();
 		frame.repaint();
 	}
 
-	public static JMenuBar createMenuBar() {
+	public static JMenuBar createMenuBar()
+	{
 		JMenuBar menuBar;
 		JMenu menu;
 		menuBar = new JMenuBar();
@@ -137,10 +139,12 @@ public class View {
 
 		// Print function for "File" tab section.
 		JMenuItem menu2 = new JMenuItem("Print");
-		menu2.addActionListener(new ActionListener() {
+		menu2.addActionListener(new ActionListener()
+		{
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				// logString += "Opening Printer Interface...\n";
 				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
@@ -171,7 +175,8 @@ public class View {
 		return menuBar;
 	}
 
-	public static JPanel titles() {
+	public static JPanel titles()
+	{
 
 		JPanel panel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -181,7 +186,8 @@ public class View {
 		return panel;
 	}
 
-	private static JPanel pageProperties() {
+	private static JPanel pageProperties()
+	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(270, 300));
 
@@ -280,7 +286,8 @@ public class View {
 		return panel;
 	}
 
-	protected static JPanel buttonPanel() {
+	protected static JPanel buttonPanel()
+	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(270, 225));
 		GridBagConstraints c = new GridBagConstraints();
@@ -306,7 +313,8 @@ public class View {
 		return panel;
 	}
 
-	protected static JPanel autoCorrections() {
+	protected static JPanel autoCorrections()
+	{
 		JPanel autoCorrectionPanel = new JPanel();
 		autoCorrectionPanel.setPreferredSize(new Dimension(270, 100));
 		autoCorrectionPanel.setMaximumSize(new Dimension(270, 100));
@@ -316,7 +324,8 @@ public class View {
 		return autoCorrectionPanel;
 	}
 
-	protected static void populateLeftPanel() {
+	protected static void populateLeftPanel()
+	{
 		GridBagConstraints c = new GridBagConstraints();
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
@@ -338,14 +347,11 @@ public class View {
 
 	}
 
-	protected static void buildPreviewScrollPane() {
-		imagePanel = new JPanel();
-		// ic = new ImageIcon("");
-		// JLabel label = new JLabel(ic);
-		imagePanel.setPreferredSize(scroll);
-		imagePanel.setMinimumSize(scroll);
-		// imagePanel.add(label);
-
+	protected static void buildPreviewScrollPane()
+	{
+		previewPane = new JScrollPane();
+		previewPane.setPreferredSize(scroll);
+		previewPane.setMinimumSize(scroll);
 	}
 
 	/**
@@ -356,7 +362,8 @@ public class View {
 	 * 
 	 * 
 	 */
-	protected static void populateRightPanel() {
+	protected static void populateRightPanel()
+	{
 
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
@@ -381,23 +388,26 @@ public class View {
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
 				"PDF Preview:");
 		titled.setTitleJustification(TitledBorder.LEFT);
-		imagePanel.setBorder(titled);
+		previewPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(1, 1, 1, 10);
 
-		rightSide.add(imagePanel, c); // Display a scrollPane of the
+		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
 	}
 
 	/**
 	 * Sets the look and feel of the Java application.
 	 */
-	private static void setLookAndFeel() {
-		try {
+	private static void setLookAndFeel()
+	{
+		try
+		{
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception exc) {
+		} catch (Exception exc)
+		{
 
 		}
 	}
@@ -405,7 +415,8 @@ public class View {
 	/**
 	 * Creates and shows the GUI
 	 */
-	public static void CreateAndShowGUI() {
+	public static void CreateAndShowGUI()
+	{
 		setLookAndFeel();
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -435,7 +446,8 @@ public class View {
 
 	/** Return a JButton with the given default icon and pressed icon */
 	public static JButton CreateButton(ImageIcon defaultIcon,
-			ImageIcon pressedIcon) {
+			ImageIcon pressedIcon)
+	{
 		JButton button = new JButton(defaultIcon);
 		button.setPressedIcon(pressedIcon);
 		button.setBorder(BorderFactory.createEmptyBorder());
@@ -444,53 +456,65 @@ public class View {
 	}
 
 	/** Returns an ImageIcon, or null if the path was invalid. */
-	protected static ImageIcon CreateImageIcon(String path) {
+	protected static ImageIcon CreateImageIcon(String path)
+	{
 		java.net.URL imgURL = View.class.getResource(path);
-		if (imgURL != null) {
+		if (imgURL != null)
+		{
 			return new ImageIcon(imgURL);
-		} else {
+		} else
+		{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 	}
 
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args)
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
 				CreateAndShowGUI();
 			}
 		});
 	}
 
-	void addSaveButtonListener(ActionListener listenForSelectButton) {
+	void addSaveButtonListener(ActionListener listenForSelectButton)
+	{
 
 		saveButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addBrowseButtonListener(ActionListener listenForSelectButton) {
+	void addBrowseButtonListener(ActionListener listenForSelectButton)
+	{
 
 		browseButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addConvertListener(ActionListener listenForSelectButton) {
+	void addConvertListener(ActionListener listenForSelectButton)
+	{
 
 		convertButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void spacingListener(ChangeListener spacingListener) {
+	void spacingListener(ChangeListener spacingListener)
+	{
 
 		staffSpacing.addChangeListener(spacingListener);
 
 	}
 
-	void titleListener(ActionListener titleListener) {
+	void titleListener(ActionListener titleListener)
+	{
 		title.addActionListener(titleListener);
 	}
 
-	void subtitleListener(ActionListener subtitleListener) {
+	void subtitleListener(ActionListener subtitleListener)
+	{
 		title.addActionListener(subtitleListener);
 	}
 
