@@ -6,12 +6,22 @@ import tabparts.*;
 
 public class LogMain {
 	public static void main(String[] args) {
+		
+		PDFProperties prop = new PDFProperties();
+		
+		System.out.println(prop.getTitle());
+		System.out.println(prop.getSubtitle());
+		System.out.println(prop.getSpacing());
+		prop.extractProperties(new File("inputfiles/case01.txt"));
+		System.out.println(prop.getTitle());
+		System.out.println(prop.getSubtitle());
+		System.out.println(prop.getSpacing());
 		/*AutofixLog log = new AutofixLog();
 		log.write("huh");
 		log.writeNL("new line!");
 		log.close();*/
 		
-		TabStaff s = new TabStaff();
+		/*TabStaff s = new TabStaff();
 		try {
 			s.scanFile(new File("inputfiles/tabtester.txt"));
 		} catch (Exception e) {
@@ -23,6 +33,6 @@ public class LogMain {
 		
 		s.splitLongMeasures(100);
 		
-		System.out.println(s.toString());
+		System.out.println(s.toString());*/
 	}
 }
