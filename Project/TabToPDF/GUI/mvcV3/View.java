@@ -64,7 +64,7 @@ public class View
 	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/res/gui_images/SaveButtonDisabled.png");
 
 	// Buttons
-	protected static JButton browseButton = CreateButton(SelectButtonIcon,
+	protected static JButton selectButton = CreateButton(SelectButtonIcon,
 			SelectButtonPressedIcon, SelectButtonDisabledIcon);
 	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
 			ConvertButtonPressedIcon, ConvertButtonDisabledIcon);
@@ -110,7 +110,6 @@ public class View
 	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
-	protected static JPanel imagePanel;
 
 	public View()
 	{
@@ -299,7 +298,7 @@ public class View
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(browseButton, c);
+		panel.add(selectButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 5, 5);
@@ -488,10 +487,10 @@ public class View
 
 	}
 
-	void addBrowseButtonListener(ActionListener listenForSelectButton)
+	void addSelectButtonListener(ActionListener listenForSelectButton)
 	{
 
-		browseButton.addActionListener(listenForSelectButton);
+		selectButton.addActionListener(listenForSelectButton);
 
 	}
 
@@ -516,7 +515,7 @@ public class View
 
 	void subtitleListener(ActionListener subtitleListener)
 	{
-		title.addActionListener(subtitleListener);
+		subtitle.addActionListener(subtitleListener);
 	}
 
 }

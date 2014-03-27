@@ -25,7 +25,7 @@ public class Controller {
 		this.view = view;
 
 		this.view.addConvertListener(new ConvertButtonListener());
-		this.view.addBrowseButtonListener(new BrowseButtonListener());
+		this.view.addSelectButtonListener(new SelectButtonListener());
 		this.view.addSaveButtonListener(new SaveButtonListener());
 		this.view.spacingListener(new SpacingListener());
 		this.view.titleListener(new TitleListener());
@@ -108,7 +108,7 @@ class SubtitleListener implements ActionListener {
 
 }
 
-class BrowseButtonListener implements ActionListener {
+class SelectButtonListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
