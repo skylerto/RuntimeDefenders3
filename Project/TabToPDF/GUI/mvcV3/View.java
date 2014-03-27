@@ -53,21 +53,23 @@ public class View
 	protected static JScrollPane previewPane;
 
 	// ImageIcons
-	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonShow.png");
+	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonDefault.png");
 	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/res/gui_images/SelectButtonPressed.png");
-	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/res/gui_images/SelectButtonGreyed.png");
-	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonShow.png");
+	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/res/gui_images/SelectButtonDisabled.png");
+	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonDefault.png");
 	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
-	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonShow.png");
+	protected static ImageIcon ConvertButtonDisabledIcon = CreateImageIcon("/res/gui_images/ConvertButtonDisabled.png");
+	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonDefault.png");
 	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/res/gui_images/SaveButtonPressed.png");
+	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/res/gui_images/SaveButtonDisabled.png");
 
 	// Buttons
 	protected static JButton browseButton = CreateButton(SelectButtonIcon,
 			SelectButtonPressedIcon, SelectButtonDisabledIcon);
 	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
-			ConvertButtonPressedIcon, SelectButtonDisabledIcon);
+			ConvertButtonPressedIcon, ConvertButtonDisabledIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
-			SaveButtonPressedIcon, SelectButtonDisabledIcon);
+			SaveButtonPressedIcon, SaveButtonDisabledIcon);
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
@@ -366,7 +368,6 @@ public class View
 	 */
 	protected static void populateRightPanel()
 	{
-
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
