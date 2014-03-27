@@ -15,49 +15,59 @@ import com.itextpdf.text.DocumentException;
 
 import creator.IMGCreator;
 
-public class Controller {
+public class Controller
+{
 
 	static Model model;
 	View view;
 	static TextToPDFv12 test;
 
-	public Controller(View view) {
+	public Controller(View view)
+	{
 		this.view = view;
 
-		this.view.addConvertListener(new ConvertButtonListener());
+		this.view.addConvertButtonListener(new ConvertButtonListener());
 		this.view.addSelectButtonListener(new SelectButtonListener());
 		this.view.addSaveButtonListener(new SaveButtonListener());
+		this.view.addCorrectionButtonListener(new CorrectionButtonListener());
 		this.view.spacingListener(new SpacingListener());
 		this.view.titleListener(new TitleListener());
 		this.view.subtitleListener(new SubtitleListener());
 	}
 
-	protected static void setWriter(TextToPDFv12 test2) {
+	protected static void setWriter(TextToPDFv12 test2)
+	{
 		test = test2;
 	}
 
-	protected static TextToPDFv12 getWriter() {
+	protected static TextToPDFv12 getWriter()
+	{
 		return test;
 	}
 
-	protected static void setModel(Model model2) {
+	protected static void setModel(Model model2)
+	{
 		model = model2;
 	}
 
-	public static Model getModel() {
+	public static Model getModel()
+	{
 		return model;
 	}
 }
 
-class TitleListener implements ActionListener {
+class TitleListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		Model model = Controller.getModel();
 		String newTitle = View.title.getText();
 		model.setFilename(newTitle);
 
-		try {
+		try
+		{
 
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
@@ -70,7 +80,8 @@ class TitleListener implements ActionListener {
 			String image = model.getPreviewImage();
 			View.repaintPreview(image);
 
-		} catch (DocumentException | IOException e1) {
+		} catch (DocumentException | IOException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -79,15 +90,18 @@ class TitleListener implements ActionListener {
 
 }
 
-class SubtitleListener implements ActionListener {
+class SubtitleListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		Model model = Controller.getModel();
 		String newTitle = View.subtitle.getText();
 		model.setFilename(newTitle);
 
-		try {
+		try
+		{
 
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
@@ -100,7 +114,8 @@ class SubtitleListener implements ActionListener {
 			String image = model.getPreviewImage();
 			View.repaintPreview(image);
 
-		} catch (DocumentException | IOException e1) {
+		} catch (DocumentException | IOException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -108,10 +123,12 @@ class SubtitleListener implements ActionListener {
 
 }
 
-class SelectButtonListener implements ActionListener {
+class SelectButtonListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		Model model = new Model();
 		Controller.setModel(model);
 
@@ -120,7 +137,8 @@ class SelectButtonListener implements ActionListener {
 		chooser.setDialogTitle("Select File");
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+		{
 
 			String filenameWithExtension = chooser.getSelectedFile().toString();
 			model.setFilenameWithExtention(filenameWithExtension);
@@ -143,10 +161,12 @@ class SelectButtonListener implements ActionListener {
  * @author Skyler
  * 
  */
-class SaveButtonListener implements ActionListener {
+class SaveButtonListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		Model model = Controller.getModel();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
@@ -155,17 +175,21 @@ class SaveButtonListener implements ActionListener {
 		chooser.setAcceptAllFileFilterUsed(false);
 
 		String input = model.getFilenameWithExtension();
-		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+		{
 			String outputFilename = chooser.getSelectedFile().toString();
 			TextToPDFv12 test;
-			try {
+			try
+			{
 				test = new TextToPDFv12(outputFilename, input);
 				test.WriteToPDF();
 
-			} catch (DocumentException e1) {
+			} catch (DocumentException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (IOException e1) {
+			} catch (IOException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -181,27 +205,45 @@ class SaveButtonListener implements ActionListener {
  * @author Skyler
  * 
  */
-class ApplyButtonListener implements ActionListener {
+class ApplyButtonListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 }
 
-class ConvertButtonListener implements ActionListener {
+class CorrectionButtonListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
+		Model model = Controller.getModel();
+		String input = model.getFilenameWithExtension();
+		Utils.openAndReadFile(input);
+		System.out.println(input);
+	}
+}
+
+class ConvertButtonListener implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
 		System.out.println(" ghfjgf");
 
 		Model model = Controller.getModel();
 
 		String input = model.getFilenameWithExtension();
 		String output = "outputfiles/";
-		try {
+		try
+		{
 			TextToPDFv12 test = new TextToPDFv12(output, input);
 			Controller.setWriter(test);
 			test.WriteToPDF();
@@ -232,7 +274,8 @@ class ConvertButtonListener implements ActionListener {
 
 			// ELSE display the error message and don't enable buttons.
 
-		} catch (DocumentException | IOException b) {
+		} catch (DocumentException | IOException b)
+		{
 			// TODO Auto-generated catch block
 			b.printStackTrace();
 		}
@@ -240,22 +283,26 @@ class ConvertButtonListener implements ActionListener {
 
 }
 
-class SpacingListener implements ChangeListener {
+class SpacingListener implements ChangeListener
+{
 
 	Model model = Controller.getModel();
 
 	// TextToPDFv12 test = Controller.getWriter();
 
-	public void stateChanged(ChangeEvent e) {
+	public void stateChanged(ChangeEvent e)
+	{
 
 		JSlider source = (JSlider) e.getSource();
 
-		if (!source.getValueIsAdjusting()) {
+		if (!source.getValueIsAdjusting())
+		{
 			// TODO Auto-generated method stub
 			Model model = Controller.getModel();
 			String input = model.getFilenameWithExtension();
 			String output = "outputfiles/";
-			try {
+			try
+			{
 
 				TextToPDFv12 test = new TextToPDFv12(output, input);
 				test.file.setLineSpacing((View.staffSpacing.getValue()));
@@ -271,7 +318,8 @@ class SpacingListener implements ChangeListener {
 				View.repaintPreview(image);
 				View.updateCorrection(model.getFilename());
 
-			} catch (DocumentException | IOException e1) {
+			} catch (DocumentException | IOException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -287,10 +335,12 @@ class SpacingListener implements ChangeListener {
  * @author Skyler
  * 
  */
-class SettingsButtonListener implements ActionListener {
+class SettingsButtonListener implements ActionListener
+{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		// TODO Auto-generated method stub
 
 	}

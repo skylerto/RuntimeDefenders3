@@ -541,14 +541,14 @@ public class View
 
 	}
 
-	void addConvertListener(ActionListener listenForSelectButton)
+	void addConvertButtonListener(ActionListener listenForSelectButton)
 	{
 
 		convertButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addCorrectionListener(ActionListener listenForSelectButton)
+	void addCorrectionButtonListener(ActionListener listenForSelectButton)
 	{
 
 		correctionButton.addActionListener(listenForSelectButton);
