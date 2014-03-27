@@ -104,6 +104,7 @@ public class View
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
 	protected static ImageIcon ic;
+	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
 	protected static JPanel imagePanel;
@@ -115,11 +116,9 @@ public class View
 
 	protected static void repaintPreview(String image)
 	{
-		ImageIcon icon = new ImageIcon(image);
-		JLabel label = new JLabel(icon);
-		previewPane.setViewportView(label);
-		frame.revalidate();
-		frame.repaint();
+		ic = new ImageIcon(image);
+		ic.getImage().flush();
+		iconLabel.setIcon(ic);
 	}
 
 	public static JMenuBar createMenuBar()
@@ -352,6 +351,8 @@ public class View
 		previewPane = new JScrollPane();
 		previewPane.setPreferredSize(scroll);
 		previewPane.setMinimumSize(scroll);
+		iconLabel = new JLabel();
+		previewPane.setViewportView(iconLabel);
 	}
 
 	/**
