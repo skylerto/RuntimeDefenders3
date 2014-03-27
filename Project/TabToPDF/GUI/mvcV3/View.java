@@ -53,15 +53,15 @@ public class View
 	protected static JScrollPane previewPane;
 
 	// ImageIcons
-	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonDefault.png");
-	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/res/gui_images/SelectButtonPressed.png");
-	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/res/gui_images/SelectButtonDisabled.png");
-	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonDefault.png");
-	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
-	protected static ImageIcon ConvertButtonDisabledIcon = CreateImageIcon("/res/gui_images/ConvertButtonDisabled.png");
-	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonDefault.png");
-	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/res/gui_images/SaveButtonPressed.png");
-	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/res/gui_images/SaveButtonDisabled.png");
+	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
+	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/gui_images/SelectButtonPressed.png");
+	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/gui_images/SelectButtonDisabled.png");
+	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/gui_images/ConvertButtonDefault.png");
+	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/gui_images/ConvertButtonPressed.png");
+	protected static ImageIcon ConvertButtonDisabledIcon = CreateImageIcon("/gui_images/ConvertButtonDisabled.png");
+	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/gui_images/SaveButtonDefault.png");
+	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/gui_images/SaveButtonPressed.png");
+	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/gui_images/SaveButtonDisabled.png");
 
 	// Buttons
 	protected static JButton selectButton = CreateButton(SelectButtonIcon,
