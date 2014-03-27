@@ -55,6 +55,7 @@ public class View
 	// ImageIcons
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonShow.png");
 	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/res/gui_images/SelectButtonPressed.png");
+	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/res/gui_images/SelectButtonGreyed.png");
 	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonShow.png");
 	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
 	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonShow.png");
@@ -62,11 +63,11 @@ public class View
 
 	// Buttons
 	protected static JButton browseButton = CreateButton(SelectButtonIcon,
-			SelectButtonPressedIcon);
+			SelectButtonPressedIcon, SelectButtonDisabledIcon);
 	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
-			ConvertButtonPressedIcon);
+			ConvertButtonPressedIcon, SelectButtonDisabledIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
-			SaveButtonPressedIcon);
+			SaveButtonPressedIcon, SelectButtonDisabledIcon);
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
@@ -445,12 +446,13 @@ public class View
 
 	}
 
-	/** Return a JButton with the given default icon and pressed icon */
+	/** Returns a JButton with the given default, pressed, and disabled icons */
 	public static JButton CreateButton(ImageIcon defaultIcon,
-			ImageIcon pressedIcon)
+			ImageIcon pressedIcon, ImageIcon disabledIcon)
 	{
 		JButton button = new JButton(defaultIcon);
 		button.setPressedIcon(pressedIcon);
+		button.setDisabledIcon(disabledIcon);
 		button.setBorder(BorderFactory.createEmptyBorder());
 		button.setContentAreaFilled(false);
 		return button;
