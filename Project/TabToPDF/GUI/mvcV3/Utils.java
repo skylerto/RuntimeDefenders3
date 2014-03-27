@@ -9,7 +9,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Scanner;
 
-public class Utils {
+public class Utils
+{
 
 	/**
 	 * 
@@ -19,7 +20,8 @@ public class Utils {
 	 *            - File name with extension you wish to remove.
 	 * @return
 	 */
-	static String removeFileExtension(String filenameWithExtention) {
+	static String removeFileExtension(String filenameWithExtention)
+	{
 
 		String fileSeparator = System.getProperty("file.separator");
 		String filename;
@@ -27,10 +29,12 @@ public class Utils {
 		int lastSeparator = filenameWithExtention.lastIndexOf(fileSeparator);
 		// Check to see if it's in the root directory. (Base case, probably will
 		// never happen)
-		if (lastSeparator == -1) {
+		if (lastSeparator == -1)
+		{
 
 			filename = filenameWithExtention;
-		} else {
+		} else
+		{
 
 			// Create substring from index of last file separator to the end of
 			// the String.
@@ -40,7 +44,8 @@ public class Utils {
 		return filename;
 	}
 
-	static String removeFileQualifier(String file) {
+	static String removeFileQualifier(String file)
+	{
 		return file.substring(0, file.indexOf('.'));
 	}
 
@@ -51,21 +56,26 @@ public class Utils {
 	 * @param filename
 	 * @param toWrite
 	 */
-	static void writeToFile(File filename, String toWrite) {
+	static void writeToFile(File filename, String toWrite)
+	{
 
 		Writer writer = null;
 
-		try {
+		try
+		{
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(filename), "utf-8"));
 			writer.write(toWrite);
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 
-		try {
+		try
+		{
 			writer.close();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -78,17 +88,21 @@ public class Utils {
 	 * @param fileName
 	 * @return
 	 */
-	static String openAndReadFile(String fileName) {
+	static String openAndReadFile(String fileName)
+	{
 
 		String message = "";
 		File userman = new File(fileName);
-		try {
+		try
+		{
 			Scanner sc = new Scanner(userman);
-			while (sc.hasNext()) {
+			while (sc.hasNext())
+			{
 				message += sc.nextLine() + "\n";
 			}
 			sc.close();
-		} catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}

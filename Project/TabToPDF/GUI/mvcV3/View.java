@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
@@ -32,15 +33,19 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import mvcV2.Model;
+
 import com.itextpdf.text.DocumentException;
 
 import creator.IMGCreator;
 
 import print.printPDF;
+import tabparts.AutofixLog;
 import version12.TextToPDFv12;
 import MVC.PrinterInterface;
 
-public class View {
+public class View
+{
 
 	protected static JFrame frame;
 
@@ -52,20 +57,30 @@ public class View {
 	protected static JScrollPane previewPane;
 
 	// ImageIcons
-	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/res/gui_images/SelectButtonShow.png");
-	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/res/gui_images/SelectButtonPressed.png");
-	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/res/gui_images/ConvertButtonShow.png");
-	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/res/gui_images/ConvertButtonPressed.png");
-	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/res/gui_images/SaveButtonShow.png");
-	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/res/gui_images/SaveButtonPressed.png");
+	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
+	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/gui_images/SelectButtonPressed.png");
+	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/gui_images/SelectButtonDisabled.png");
+	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/gui_images/ConvertButtonDefault.png");
+	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/gui_images/ConvertButtonPressed.png");
+	protected static ImageIcon ConvertButtonDisabledIcon = CreateImageIcon("/gui_images/ConvertButtonDisabled.png");
+	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/gui_images/SaveButtonDefault.png");
+	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/gui_images/SaveButtonPressed.png");
+	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/gui_images/SaveButtonDisabled.png");
+	protected static ImageIcon CorrectionButtonIcon = CreateImageIcon("/gui_images/CorrectionButtonDefault.png");
+	protected static ImageIcon CorrectionButtonPressedIcon = CreateImageIcon("/gui_images/CorrectionButtonPressed.png");
+	protected static ImageIcon CorrectionButtonDisabledIcon = CreateImageIcon("/gui_images/CorrectionButtonDisabled.png");
 
 	// Buttons
-	protected static JButton browseButton = CreateButton(SelectButtonIcon,
-			SelectButtonPressedIcon);
+	protected static JButton selectButton = CreateButton(SelectButtonIcon,
+			SelectButtonPressedIcon, SelectButtonDisabledIcon);
 	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
-			ConvertButtonPressedIcon);
+			ConvertButtonPressedIcon, ConvertButtonDisabledIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
-			SaveButtonPressedIcon);
+			SaveButtonPressedIcon, SaveButtonDisabledIcon);
+	protected static JButton correctionButton = CreateButton(
+			CorrectionButtonIcon, CorrectionButtonPressedIcon,
+			CorrectionButtonDisabledIcon);
+
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
@@ -78,8 +93,8 @@ public class View {
 	protected static JTextField destination;
 
 	// TITLES
-	protected static JTextField title = new JTextField(20);
-	protected static JTextField subtitle = new JTextField(20);
+	protected static JTextField title;
+	protected static JTextField subtitle;
 
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
@@ -103,25 +118,41 @@ public class View {
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
 	protected static ImageIcon ic;
+	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
-	protected static JPanel imagePanel;
+	protected static JLabel correctionLabel;
 
-	public View() {
+	public View()
+	{
 		CreateAndShowGUI();
 	}
 
-	protected static void repaintPreview(String image) {
+	protected static void repaintPreview(String image)
+	{
 
-		imagePanel.removeAll();
-		ImageIcon icon = new ImageIcon(image);
-		JLabel label = new JLabel(icon);
-		imagePanel.add(label);
-		frame.revalidate();
-		frame.repaint();
+		ic = new ImageIcon(image);
+		ic.getImage().flush();
+		iconLabel.setIcon(ic);
 	}
 
-	public static JMenuBar createMenuBar() {
+	// NOTE! Might want to combine this with repaintPreview into updateView
+	protected static void updateCorrection(String filename)
+	{
+		if (AutofixLog.isEmpty())
+		{
+			correctionLabel.setVisible(false);
+			correctionButton.setVisible(false);
+		} else
+		{
+			correctionLabel.setText("Errors were found in " + filename);
+			correctionLabel.setVisible(true);
+			correctionButton.setVisible(true);
+		}
+	}
+
+	public static JMenuBar createMenuBar()
+	{
 		JMenuBar menuBar;
 		JMenu menu;
 		menuBar = new JMenuBar();
@@ -137,10 +168,12 @@ public class View {
 
 		// Print function for "File" tab section.
 		JMenuItem menu2 = new JMenuItem("Print");
-		menu2.addActionListener(new ActionListener() {
+		menu2.addActionListener(new ActionListener()
+		{
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				// logString += "Opening Printer Interface...\n";
 				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
@@ -171,7 +204,8 @@ public class View {
 		return menuBar;
 	}
 
-	public static JPanel titles() {
+	public static JPanel titles()
+	{
 
 		JPanel panel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -181,7 +215,8 @@ public class View {
 		return panel;
 	}
 
-	private static JPanel pageProperties() {
+	private static JPanel pageProperties()
+	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(270, 300));
 
@@ -208,11 +243,12 @@ public class View {
 		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(songLabel, c);
+
+		title = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 2;
 		// c.insets = new Insets(5, 5, 5, 5);
-
 		panel.add(title, c);
 
 		// Subtitle.
@@ -223,11 +259,12 @@ public class View {
 		c.gridwidth = 2;
 		c.anchor = c.BASELINE_TRAILING;
 		panel.add(subLabel, c);
+
+		subtitle = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 2;
 		// c.insets = new Insets(5, 5, 5, 5);
-
 		panel.add(subtitle, c);
 
 		// Staff spacing.
@@ -271,8 +308,8 @@ public class View {
 		c.gridwidth = 2;
 		panel.add(measureFontSize, c);
 
-		title.setEditable(false);
-		subtitle.setEditable(false);
+		title.setEnabled(false);
+		subtitle.setEnabled(false);
 		staffSpacing.setEnabled(false);
 		measureFontSize.setEnabled(false);
 		// panel.setEnabled(false);
@@ -280,7 +317,8 @@ public class View {
 		return panel;
 	}
 
-	protected static JPanel buttonPanel() {
+	protected static JPanel buttonPanel()
+	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(270, 225));
 		GridBagConstraints c = new GridBagConstraints();
@@ -290,7 +328,7 @@ public class View {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(browseButton, c);
+		panel.add(selectButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 5, 5);
@@ -306,17 +344,41 @@ public class View {
 		return panel;
 	}
 
-	protected static JPanel autoCorrections() {
+	protected static JPanel autoCorrections()
+	{
 		JPanel autoCorrectionPanel = new JPanel();
 		autoCorrectionPanel.setPreferredSize(new Dimension(270, 100));
 		autoCorrectionPanel.setMaximumSize(new Dimension(270, 100));
 		autoCorrectionPanel.setMinimumSize(new Dimension(270, 100));
 		autoCorrectionPanel.setVisible(true);
 		autoCorrectionPanel.setEnabled(false);
+
+		// Setting up GridbagLayout
+		GridBagConstraints c = new GridBagConstraints();
+		autoCorrectionPanel.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.NONE;
+
+		// Adding label and button
+		correctionLabel = new JLabel("");
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 10, 5, 5);
+		autoCorrectionPanel.add(correctionLabel, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 10, 5, 5);
+		autoCorrectionPanel.add(correctionButton, c);
+
+		// hiding button and label
+		correctionLabel.setVisible(false);
+		correctionButton.setVisible(false);
+
 		return autoCorrectionPanel;
 	}
 
-	protected static void populateLeftPanel() {
+	protected static void populateLeftPanel()
+	{
 		GridBagConstraints c = new GridBagConstraints();
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
@@ -335,29 +397,24 @@ public class View {
 		c.gridy = 2;
 		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(autoCorrections(), c);
-
 	}
 
-	protected static void buildPreviewScrollPane() {
-		imagePanel = new JPanel();
-		// ic = new ImageIcon("");
-		// JLabel label = new JLabel(ic);
-		imagePanel.setPreferredSize(scroll);
-		imagePanel.setMinimumSize(scroll);
-		// imagePanel.add(label);
-
+	protected static void buildPreviewScrollPane()
+	{
+		previewPane = new JScrollPane();
+		previewPane.setPreferredSize(scroll);
+		previewPane.setMinimumSize(scroll);
+		iconLabel = new JLabel();
+		previewPane.setViewportView(iconLabel);
 	}
 
-	/**
-	 * 
-	 */
 	/**
 	 * Adds all the components to the right panel.
 	 * 
 	 * 
 	 */
-	protected static void populateRightPanel() {
-
+	protected static void populateRightPanel()
+	{
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -381,23 +438,26 @@ public class View {
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
 				"PDF Preview:");
 		titled.setTitleJustification(TitledBorder.LEFT);
-		imagePanel.setBorder(titled);
+		previewPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(1, 1, 1, 10);
 
-		rightSide.add(imagePanel, c); // Display a scrollPane of the
+		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
 	}
 
 	/**
 	 * Sets the look and feel of the Java application.
 	 */
-	private static void setLookAndFeel() {
-		try {
+	private static void setLookAndFeel()
+	{
+		try
+		{
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception exc) {
+		} catch (Exception exc)
+		{
 
 		}
 	}
@@ -405,7 +465,8 @@ public class View {
 	/**
 	 * Creates and shows the GUI
 	 */
-	public static void CreateAndShowGUI() {
+	public static void CreateAndShowGUI()
+	{
 		setLookAndFeel();
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -433,65 +494,96 @@ public class View {
 
 	}
 
-	/** Return a JButton with the given default icon and pressed icon */
+	/** Returns a JButton with the given default, pressed, and disabled icons */
 	public static JButton CreateButton(ImageIcon defaultIcon,
-			ImageIcon pressedIcon) {
+			ImageIcon pressedIcon, ImageIcon disabledIcon)
+	{
 		JButton button = new JButton(defaultIcon);
 		button.setPressedIcon(pressedIcon);
+		button.setDisabledIcon(disabledIcon);
 		button.setBorder(BorderFactory.createEmptyBorder());
 		button.setContentAreaFilled(false);
 		return button;
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
-	protected static ImageIcon CreateImageIcon(String path) {
+	/** Returns an ImageIcon if the path is valid, otherwise null. */
+	protected static ImageIcon CreateImageIcon(String path)
+	{
 		java.net.URL imgURL = View.class.getResource(path);
-		if (imgURL != null) {
+		if (imgURL != null)
+		{
 			return new ImageIcon(imgURL);
-		} else {
+		} else
+		{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 	}
 
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args)
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
 				CreateAndShowGUI();
 			}
 		});
 	}
 
-	void addSaveButtonListener(ActionListener listenForSelectButton) {
+	void addSaveButtonListener(ActionListener listenForSelectButton)
+	{
 
 		saveButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addBrowseButtonListener(ActionListener listenForSelectButton) {
+	void addSelectButtonListener(ActionListener listenForSelectButton)
+	{
 
-		browseButton.addActionListener(listenForSelectButton);
+		selectButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void addConvertListener(ActionListener listenForSelectButton) {
+	void addConvertButtonListener(ActionListener listenForSelectButton)
+	{
 
 		convertButton.addActionListener(listenForSelectButton);
 
 	}
 
-	void spacingListener(ChangeListener spacingListener) {
+	void addCorrectionButtonListener(ActionListener listenForSelectButton)
+	{
+
+		correctionButton.addActionListener(listenForSelectButton);
+
+	}
+
+	void spacingListener(ChangeListener spacingListener)
+	{
 
 		staffSpacing.addChangeListener(spacingListener);
 
 	}
 
-	void titleListener(ActionListener titleListener) {
+	void titleListener(ActionListener titleListener)
+	{
 		title.addActionListener(titleListener);
 	}
 
-	void subtitleListener(ActionListener subtitleListener) {
-		title.addActionListener(subtitleListener);
+	void titleFocusListener(FocusListener titleFocusListener)
+	{
+		title.addFocusListener(titleFocusListener);
+	}
+		
+	void subtitleListener(ActionListener subtitleListener)
+	{
+		subtitle.addActionListener(subtitleListener);
+	}
+	
+	void subtitleFocusListener(FocusListener subtitleFocusListener)
+	{
+		subtitle.addFocusListener(subtitleFocusListener);
 	}
 
 }
