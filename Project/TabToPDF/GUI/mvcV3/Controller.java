@@ -218,8 +218,8 @@ class ConvertButtonListener implements ActionListener {
 
 			// GET CONVERTED FIELD VALUES.
 			// ENABLE FIELDS
-			View.title.setEditable(true);
-			View.subtitle.setEditable(true);
+			View.title.setEnabled(true);
+			View.subtitle.setEnabled(true);
 			View.staffSpacing.setEnabled(true);
 			View.measureFontSize.setEnabled(true);
 

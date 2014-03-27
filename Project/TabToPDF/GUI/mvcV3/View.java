@@ -82,8 +82,8 @@ public class View
 	protected static JTextField destination;
 
 	// TITLES
-	protected static JTextField title = new JTextField(20);
-	protected static JTextField subtitle = new JTextField(20);
+	protected static JTextField title;
+	protected static JTextField subtitle;
 
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
@@ -215,11 +215,12 @@ public class View
 		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(songLabel, c);
+
+		title = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 2;
 		// c.insets = new Insets(5, 5, 5, 5);
-
 		panel.add(title, c);
 
 		// Subtitle.
@@ -230,11 +231,12 @@ public class View
 		c.gridwidth = 2;
 		c.anchor = c.BASELINE_TRAILING;
 		panel.add(subLabel, c);
+
+		subtitle = new JTextField(20);
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 2;
 		// c.insets = new Insets(5, 5, 5, 5);
-
 		panel.add(subtitle, c);
 
 		// Staff spacing.
@@ -278,8 +280,8 @@ public class View
 		c.gridwidth = 2;
 		panel.add(measureFontSize, c);
 
-		title.setEditable(false);
-		subtitle.setEditable(false);
+		title.setEnabled(false);
+		subtitle.setEnabled(false);
 		staffSpacing.setEnabled(false);
 		measureFontSize.setEnabled(false);
 		// panel.setEnabled(false);
