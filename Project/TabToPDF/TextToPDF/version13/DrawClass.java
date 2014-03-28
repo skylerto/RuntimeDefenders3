@@ -54,42 +54,104 @@ public class DrawClass {
       } 
     
       private void hammer(float x , float y, float tox, float toy, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-    	     
-      	 float tempy = y +(font_size*0.5f);
-      	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-      	 cb.saveState();
-      	 cb.setLineWidth(0.5f);
-      	 cb.setGrayStroke(0);
-      	 cb.moveTo(x+(font_size/1.8f),tempy);	 
-      	 cb.curveTo(x+(font_size/1.8f)+2.5f, tempy+(line_space*0.26f),  tox-2.2f, tempy+(line_space*0.26f),  tox, tempy);
-         cb.stroke();
-         cb.restoreState();
-         cb.saveState();
-         cb.beginText();
-         cb.setTextMatrix(x+(font_size/1.8f)+(tox-(x+(font_size/1.8f)))/2f-1f, tempy+(line_space*0.26f));
-         cb.setFontAndSize(bf, font_size/2);
-         cb.showText("h");
-         cb.endText();
-         cb.restoreState();
-      	
-       }
+  	     
+        	 float tempy = y +(font_size*0.5f);
+        	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        	 cb.saveState();
+        	 cb.setLineWidth(0.5f);
+        	 cb.setGrayStroke(0);
+        	 if (y == toy) {
+        		 cb.saveState();
+        		 cb.moveTo(x+(font_size/1.8f),tempy);	 
+            	 cb.curveTo(x+(font_size/1.8f)+2.5f, tempy+(line_space*0.26f),  tox-2.2f, tempy+(line_space*0.26f),  tox, tempy);
+            	 cb.stroke();
+            	 cb.restoreState();
+            	 cb.saveState();
+            	 cb.beginText();
+            	 cb.setTextMatrix(x+(font_size/1.8f)+(tox-(x+(font_size/1.8f)))/2f-1f, tempy+(line_space*0.26f));
+            	 cb.setFontAndSize(bf, font_size/2);
+            	 cb.showText("h");
+            	 cb.endText();
+            	 cb.restoreState();
+        	 } else {
+        		 cb.saveState();	 
+        		 cb.moveTo(x+(font_size/1.8f),y+font_size*0.4f);	 
+            	 cb.curveTo(x+(font_size/1.8f)+1.0f, y+font_size*0.45f+(line_space*0.26f), (x+(font_size/1.8f)+(line_space/2f))-1.5f, y+font_size*0.48f+(line_space*0.26f),  x+(font_size/1.8f)+(line_space/2f), y+font_size*0.6f);             
+            	 cb.stroke();
+        		 cb.restoreState();
+        		 cb.saveState();
+                 cb.beginText();
+                 cb.setTextMatrix(x+(font_size/1.8f)+(line_space/2f)-1f, y+font_size*0.6f+(line_space*0.26f));
+                 cb.setFontAndSize(bf, font_size/2);
+                 cb.showText("h");
+                 cb.endText();
+                 cb.restoreState();
+        		 cb.saveState();
+        		 cb.moveTo(tox,toy+font_size*0.4f);	 
+            	 cb.curveTo( tox-(line_space/2f)+2.2f, toy+font_size*0.5f+(line_space*0.26f),tox-2.2f , toy+font_size*0.5f+(line_space*0.26f),  tox-(line_space/2f),toy+font_size*0.7f );
+            	 cb.stroke();
+            	 cb.restoreState();
+            	 cb.saveState();
+            	 cb.beginText();
+            	 cb.setTextMatrix(tox-(line_space/2f)-1f, toy+font_size*0.6f+(line_space*0.26f));
+            	 cb.setFontAndSize(bf, font_size/2);
+            	 cb.showText("h");
+            	 cb.endText();
+            	 cb.restoreState();
+        	 }
+        	
+           cb.restoreState();
+        	
+         }
     
       private void pull(float x , float y,float tox,float toy, int font_size, float line_space, PdfContentByte cb) throws DocumentException, IOException {
-     	 
+       	 
      	  BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
      	  cb.saveState();
      	  cb.setLineWidth(0.5f);
       	  cb.setGrayStroke(0);
-     	  cb.moveTo(x+(font_size/1.8f)/2f, y+(font_size*0.5f));
-     	  cb.curveTo(x+(font_size/1.8f)/2f+1.3f, y+(line_space*0.4f)+(font_size*0.5f),  tox, toy+(line_space*0.4f)+(font_size*0.5f),  tox+(font_size/1.8f)/2f, toy+(font_size*0.5f));
-          cb.stroke();
-          cb.restoreState();
-          cb.saveState();
-          cb.beginText();
-          cb.setTextMatrix(x+(tox-x)/2f+1.2f, toy+(font_size*0.5f)+(line_space*0.5f));
-          cb.setFontAndSize(bf, font_size/2);
-          cb.showText("p");
-          cb.endText();
+      	 if (y == toy) {
+        		
+       		 cb.saveState();
+       		 cb.moveTo(x+(font_size/1.8f), y+(font_size*0.5f));	 
+           	 cb.curveTo(x+(font_size/1.8f)/2f+1.3f,  y+(line_space*0.4f)+(font_size*0.5f),  tox,  toy+(line_space*0.4f)+(font_size*0.5f),  tox+(font_size/1.8f)/2f, toy+(font_size*0.5f));
+             cb.stroke();
+             cb.restoreState();
+             cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(x+(tox-x)/2f+1.2f, toy+(font_size*0.5f)+(line_space*0.5f));
+             cb.setFontAndSize(bf, font_size/2);
+             cb.showText("p");
+             cb.endText();
+             cb.restoreState();
+       	 } else {
+    
+       		 cb.saveState();	 
+       		 cb.moveTo(x+(font_size/1.8f)/2f,y+font_size*0.4f);	 
+           	 cb.curveTo(x+(font_size/1.8f)/2f+1.0f, y+font_size*0.45f+(line_space*0.26f), (x+(font_size/1.8f)+(line_space/2f))-1.5f, y+font_size*0.48f+(line_space*0.26f),  x+(font_size/1.8f)+(line_space/2f), y+font_size*0.6f);             
+           	 cb.stroke();
+       		 cb.restoreState();
+       		 cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(x+(font_size/1.8f)+(line_space/2f)-1f, y+font_size*0.6f+(line_space*0.26f));
+             cb.setFontAndSize(bf, font_size/2);
+             cb.showText("p");
+             cb.endText();
+             cb.restoreState();
+       		 cb.saveState();
+       		 cb.moveTo(tox+(font_size/1.8f)/2f,toy+font_size*0.4f);	 
+           	 cb.curveTo( tox+(font_size/1.8f)/2f-(line_space/2f)+2.2f, toy+font_size*0.48f+(line_space*0.26f),tox-2.2f , toy+font_size*0.45f+(line_space*0.26f),  tox-(line_space/2f),toy+font_size*0.7f );
+             cb.stroke();
+             cb.restoreState();
+             cb.saveState();
+             cb.beginText();
+             cb.setTextMatrix(tox-(line_space/2f)-1f, toy+font_size*0.6f+(line_space*0.26f));
+             cb.setFontAndSize(bf, font_size/2);
+             cb.showText("p");
+             cb.endText();
+             cb.restoreState();
+       	 }
+     	  
           cb.restoreState();
      	
       }
@@ -107,6 +169,8 @@ public class DrawClass {
       private void DrawDiamond(float x, float y,float height,float diagonal ,PdfContentByte cb) {
     	 
      	  cb.saveState();
+     	  cb.setLineWidth(0.5f);
+     	  cb.setGrayStroke(0);
      	  cb.setColorStroke(BaseColor.BLACK);
      	  cb.setColorFill(BaseColor.WHITE);
      	  cb.moveTo(x, y);
@@ -258,6 +322,7 @@ public class DrawClass {
     				InsertText(Integer.toString(list.get(i).getValue()).charAt(0)+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
     				InsertText( Integer.toString(list.get(i).getValue()).charAt(1)+"",x-(line_space*0.3f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
     				drawLine(x-(line_space*0.3f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,0, cb);
+    				symbolp_list.add(new SymbolPoint(list.get(i).getValue(),x,y,count_music_lines+1));
         			x+=(line_space*2.0f);
         			break;
         		case Slide:

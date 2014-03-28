@@ -33,7 +33,7 @@ public class TextToPDFv12 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try.txt";
+	public static String INPUT_FILENAME = "inputfiles/try3.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -152,8 +152,7 @@ public class TextToPDFv12 {
 				if (draw.getMusicNotelength(sp.getSymbolsList(), LINE_SPACE) < ((writer.getPageSize().getWidth() - 36f) - currX)) {
 					if (i == 0) {
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,
-								currY, 36f, FONT_SIZE, cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,currY, 36f, FONT_SIZE, cb);
 					} else
 						same_line_state = 1;
 

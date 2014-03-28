@@ -509,7 +509,7 @@ public class TextToPDFv13 {
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
 		TextToPDFv13 conversion = new TextToPDFv13
-				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 5.0f, 10, PageSize.LETTER, 16, 14);
+				("outputfiles/musicPDF.pdf", "inputfiles/try3.txt", 8.0f, 8, PageSize.LETTER, 16, 14);
 		conversion.WriteToPDF();
 		System.out.println(conversion.staff.toString());
 	}
