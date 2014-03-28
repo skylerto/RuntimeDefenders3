@@ -169,7 +169,7 @@ public class TextToPDFv12 {
 						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 					} else if (currY <= 120 && i < dynamic_array.size() - 1) {
 						draw.printSymbolList();
-						draw.drawrest(FONT_SIZE, LINE_SPACE, cb);
+						draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
 						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
@@ -179,6 +179,8 @@ public class TextToPDFv12 {
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 					} else if (currY <= 120 && i == dynamic_array.size() - 1) {
+						draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
+						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = 36.0f;
@@ -194,8 +196,8 @@ public class TextToPDFv12 {
 			}
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1)).getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), FONT_SIZE, cb);
 			
-			//draw.drawrest(FONT_SIZE, LINE_SPACE, cb);
-			//draw.FlushSymbol();
+			draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
+			draw.FlushSymbol();
 			doc.close();
 			writer.close();
 

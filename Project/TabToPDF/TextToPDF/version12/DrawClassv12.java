@@ -332,7 +332,7 @@ public class DrawClassv12 {
 
 
                   
-        public void drawrest(int FontSize,float  line_space,PdfContentByte cb) throws DocumentException, IOException {
+        public void drawSymbols(int FontSize,float  line_space,PdfContentByte cb) throws DocumentException, IOException {
         	
         	SymbolPointv12 temp = null;
         	SymbolPointv12 temp2 = null;
