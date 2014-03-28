@@ -5,10 +5,6 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import MVC.IncorrectFormattingAlert;
-
-// Still have to account for comments and strings with no empty lines inbetween them
-// Still have to convert comments inside of measures to strings.. maybe..
 
 /* (UPDATE) findRepeats() doesn't throw an exception anymore
  * scanFile() will only throw a LargeNumberException
@@ -30,7 +26,8 @@ public class TabStaff {
 	
 	public static final int MAX_SIZE = 1000;
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
-	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*[|][1-9]\\s*$");	// The string that has a repeat number at the end
+	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*.*-.*[|][1-9]\\s*$");	// The string that has a repeat number at the end
+	public static final Pattern NO_DASH = Pattern.compile("[|][^-]+[|]");
 	
 	/* ATTRIBUTES */
 	
@@ -155,8 +152,8 @@ public class TabStaff {
 					
 					/* If the line is a valid or partial valid string */
 					} else {
-						/* If there's no line break after 6 strings have been read, go to the next measure */
-						if (stringnum >= TabMeasure.MAX_STRINGS) {
+						/* If there's no line break after 6 strings have been read or there's no line break after a comment, go to the next measure */
+						if (stringnum >= TabMeasure.MAX_STRINGS || commentfound == true) {
 							
 							/* Special case that detects if the start of the measure contains a repeat number that needs to be deleted */
 							if (maxmeasure > 0 && REPEAT_START.matcher(this.staff.get(maxmeasure-1).getString(0).toString()).find()) {
@@ -169,6 +166,12 @@ public class TabStaff {
 									maxmeasure = maxmeasure - 1;
 								}
 							}
+							/* If a block comment was found previously, then increment current measure */
+							if (commentfound) {
+								currentmeasure++;
+								maxmeasure = currentmeasure;	// The max number of measures seen is equal to the current measure
+								commentfound = false;
+							}
 							stringnum = 0;
 							basemeasure = maxmeasure;
 						}
@@ -179,25 +182,31 @@ public class TabStaff {
 						for (int p = 0; p < line.length(); currentmeasure++) {
 							s = new TabString();
 							p = s.scanLine(line, p, stringnum == 0, linenum);	// Stores the string in 's' and 'p' is the char index where it left off in the line
-							this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
 							
-							/* Break from the loop if a double barred end is detected */
-							if (p == line.length() - 2 && 
-									TabString.VALID_DB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
-								currentmeasure++;
-								break;
-								
-							/* Break from the loop if a triple barred end is detected */
-							} else if (p == line.length() - 3 && 
-									TabString.VALID_TB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
-								currentmeasure++;
-								break;
-								
-							/* Break from the loop if at the end of the line */
-							} else if (p == line.length() - 1) { 
-								currentmeasure++;
-								break;
-							}		
+							if (!NO_DASH.matcher(s.toString()).find()) {
+								this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
+	
+								/* Break from the loop if a double barred end is detected */
+								if (p == line.length() - 2 && this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 1) == '|'
+										&& this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 2) == '|') {
+									//TabString.VALID_DB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
+									currentmeasure++;
+									break;
+	
+									/* Break from the loop if a triple barred end is detected */
+								} else if (p == line.length() - 3 && this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 1) == '|'
+										&& this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 2) == '|'
+										&& this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 3) == '|') {
+									//TabString.VALID_TB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
+									currentmeasure++;
+									break;
+	
+									/* Break from the loop if at the end of the line */
+								} else if (p == line.length() - 1) { 
+									currentmeasure++;
+									break;
+								}
+							}
 						}
 						/* Increases maxmeasure when more measures are detected in the row */
 						if (currentmeasure > maxmeasure)
@@ -644,6 +653,8 @@ public class TabStaff {
 	public void splitLongMeasures(int maxlength) {
 		List<TabMeasure> newstaff = new ArrayList<TabMeasure>();	// The new staff with the split measures
 		
+		maxlength = maxlength - 4;
+		
 		/* For each measure in the staff, split it if it's longer than maxlength */
 		for (int i = 0; i < this.size(); i++) {
 			int repeat = this.staff.get(i).getRepeat();	// Save the repeat
@@ -663,7 +674,6 @@ public class TabStaff {
 		}
 		/* If splits were made then set the new staff list equal to the current staff list */
 		if (!this.staff.equals(newstaff)) {
-			System.out.println("not equal");
 			this.staff.clear();
 			for (int i = 0; i < newstaff.size(); i++)
 				this.staff.add(newstaff.get(i));

@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import tabparts.LargeNumberException;
 import tabparts.TabStaff;
+import tabparts.TabString;
 import version13.MusicNoteProcess;
 import version13.DrawClass;
 
@@ -18,15 +19,15 @@ import com.itextpdf.text.pdf.*;
  *
  */
 
-public class TextToPDFv13 {
+public class TextToPDF {
 	
 	/* CONSTANTS */
 	
-	private static final String DEFAULT_INPUTPATH = "inputfiles/try.txt";
-	private static final String DEFAULT_OUTPUTPATH = "outputfiles/musicPDF.pdf";
+	public static final String DEFAULT_INPUTPATH = "inputfiles/try.txt";
+	public static final String DEFAULT_OUTPUTPATH = "outputfiles/musicPDF.pdf";
 	private static final float TOPTITLE_MARGIN = 112;
 	private static final float TOP_MARGIN = 42;
-	private static final float BOT_MARGIN = 120;
+	private static final float BOT_MARGIN = 80;
 	
 	
 	/* ATTRIBUTES */
@@ -46,7 +47,7 @@ public class TextToPDFv13 {
 	 * @throws NoMusicException
 	 * @throws LargeNumberException
 	 */
-	public TextToPDFv13 () throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public TextToPDF () throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
 		this.inputpath = DEFAULT_INPUTPATH;
 		this.outputpath = DEFAULT_OUTPUTPATH;
 		this.properties = new PDFProperties();
@@ -64,6 +65,11 @@ public class TextToPDFv13 {
 		} catch (LargeNumberException e) {
 			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
 		}
+		
+		/* Checks if staff has music */
+		if (this.staff.size() == 0) {
+			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
+		}
 	}
 	
 	/**
@@ -78,7 +84,7 @@ public class TextToPDFv13 {
 	 * @throws NoMusicException
 	 * @throws LargeNumberException
 	 */
-	public TextToPDFv13 (String outputpath, String inputpath) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public TextToPDF (String outputpath, String inputpath) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
 		this.inputpath = inputpath;
 		this.outputpath = outputpath;
 		this.properties = new PDFProperties();
@@ -95,6 +101,11 @@ public class TextToPDFv13 {
 			this.staff.scanFile(new File(this.inputpath));
 		} catch (LargeNumberException e) {
 			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
+		}
+		
+		/* Checks if staff has music */
+		if (this.staff.size() == 0) {
+			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
 		}
 	}
 	
@@ -114,7 +125,7 @@ public class TextToPDFv13 {
 	 * @throws NoMusicException
 	 * @throws LargeNumberException
 	 */
-	public TextToPDFv13 (String outputpath, String inputpath, float spacing, int elementsize, Rectangle pagesize,
+	public TextToPDF (String outputpath, String inputpath, float spacing, int elementsize, Rectangle pagesize,
 				int titlefontsize, int subtitlefontsize) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
 		this.inputpath = inputpath;
 		this.outputpath = outputpath;
@@ -135,6 +146,11 @@ public class TextToPDFv13 {
 		} catch (LargeNumberException e) {
 			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
 		}
+		
+		/* Checks if staff has music */
+		if (this.staff.size() == 0) {
+			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
+		}
 	}
 
 	/**
@@ -150,6 +166,9 @@ public class TextToPDFv13 {
 		Document doc = new Document(this.getPageSize());
 		DrawClass draw = new DrawClass();
 		int same_line_state = 0;
+		
+		this.splitStaff();	// Splits the measures in the staff if they are too long to fit onto the page
+		
 		List<List<String>> dynamic_array = staff.getList();
 		
 		try {
@@ -187,7 +206,9 @@ public class TextToPDFv13 {
 			subtitle.setAlignment(Element.ALIGN_CENTER);
 			doc.add(subtitle);
 
+			/* Loop through the staff and write all measures to the PDF */
 			for (int i = 0; i < dynamic_array.size(); i++) {
+				
 				boolean enable_repeat = false;
 				sp = new MusicNoteProcess(dynamic_array.get(i));
 				if (staff.getMeasureRepeat(i) > 1) {
@@ -207,7 +228,7 @@ public class TextToPDFv13 {
 				} else {
 					draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(i - 1)).getSymbolsList(), currX,
 							currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
-					if (currY > BOT_MARGIN) {
+					if (currY - this.getMeasureSpace() > BOT_MARGIN ) {
 						currX = this.getLeftMargin();
 						currY = currY - this.getMeasureSpace();
 						same_line_state = 0;
@@ -216,7 +237,7 @@ public class TextToPDFv13 {
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 						if(enable_repeat)
 							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
-					} else if (currY <= BOT_MARGIN && i < dynamic_array.size() - 1) {
+					} else if (currY - this.getMeasureSpace() <= BOT_MARGIN && i < dynamic_array.size() - 1) {
 						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
 						draw.FlushSymbol();
 						doc.newPage();
@@ -228,7 +249,7 @@ public class TextToPDFv13 {
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 						if(enable_repeat)
 							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
-					} else if (currY <= BOT_MARGIN && i == dynamic_array.size() - 1) {
+					} else if (currY - this.getMeasureSpace() <= BOT_MARGIN && i == dynamic_array.size() - 1) {
 						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
 						draw.FlushSymbol();
 						doc.newPage();
@@ -248,16 +269,17 @@ public class TextToPDFv13 {
 			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getElementSize());
 			if (staff.getMeasureRepeat(staff.size()-1) > 1) 	
 			    draw.InsertText("Repeat "+staff.getMeasureRepeat(staff.size()-1)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
-			draw.printSymbolList();
 			draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
 			draw.FlushSymbol();
 			doc.close();
 			writer.close();
+			
+			System.out.println("Successfully converted the file " + this.getInputPath() + " to PDF: " + this.getOutputPath());
 
 		} catch (IOException e) {
-			throw new ConversionException("Error detected creating the PDF file for: " + this.getInputPath());
+			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
 		} catch (DocumentException e) {
-			throw new ConversionException("Error detected creating the PDF file for: " + this.getInputPath());
+			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
 		}
 
 	}
@@ -273,7 +295,6 @@ public class TextToPDFv13 {
 	public void checkInputErrors() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException {
 		File test = new File(inputpath);
 		BufferedReader stream;
-		Pattern music = Pattern.compile("([|][^\\s]+)|([^\\s]+[|])");
 		
 		/* Checks input file existence */
 		if (!test.exists())
@@ -303,7 +324,7 @@ public class TextToPDFv13 {
 			stream = new BufferedReader(new FileReader(test));
 			String line;
 			while ((line = stream.readLine()) != null) {
-				if (music.matcher(line).find()) {
+				if (TabString.VALID_STRING.matcher(line).find()) {
 					hasmusic = true;
 					break;
 				}
@@ -319,6 +340,15 @@ public class TextToPDFv13 {
 		}
 	}
 
+	/**
+	 * Splits each measure in the staff that is too long to fit in the page width.
+	 */
+	public void splitStaff() {
+		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
+		int maxchars = (int) (innerwidth/this.getSpacing());
+		this.staff.splitLongMeasures(maxchars);
+	}
+	
 	/**
 	 * Changes the title and recreates the PDF document.
 	 * @param title
@@ -386,6 +416,36 @@ public class TextToPDFv13 {
 	 */
 	public void updateSubtitleSize(int subtitlesize) throws ConversionException {
 		this.properties.setSubtitleFontSize(subtitlesize);
+		this.WriteToPDF();
+	}
+	
+	/**
+	 * Changes the left margin and recreates the PDF document.
+	 * @param leftmargin
+	 * @throws ConversionException
+	 */
+	public void updateLeftMargin(float leftmargin) throws ConversionException {
+		this.properties.setLeftMargin(leftmargin);
+		this.WriteToPDF();
+	}
+	
+	/**
+	 * Changes right margin and recreates the PDF document.
+	 * @param rightmargin
+	 * @throws ConversionException
+	 */
+	public void updateRightMargin(float rightmargin) throws ConversionException {
+		this.properties.setRightMargin(rightmargin);
+		this.WriteToPDF();
+	}
+	
+	/**
+	 * Changes measure space and recreates the PDF document.
+	 * @param measurespace
+	 * @throws ConversionException
+	 */
+	public void updateMeasureSpace(float measurespace) throws ConversionException {
+		this.properties.setMeasureSpace(measurespace);
 		this.WriteToPDF();
 	}
 	
@@ -508,9 +568,14 @@ public class TextToPDFv13 {
 	 * 
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
-		TextToPDFv13 conversion = new TextToPDFv13
-				("outputfiles/musicPDF.pdf", "inputfiles/try3.txt", 8.0f, 8, PageSize.LETTER, 16, 14);
+		/*TextToPDFv13 conversion = new TextToPDFv13
+				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 5.0f, 10, PageSize.LETTER, 16, 14);*/
+		
+		TextToPDF conversion = new TextToPDF
+				("outputfiles/musicPDF.pdf", "inputfiles/try3.txt");
+		//conversion.updateLeftMargin(100f);
 		conversion.WriteToPDF();
-		System.out.println(conversion.staff.toString());
+		System.out.println(conversion.getProperties().toString());
+		//System.out.println(conversion.staff.toString());
 	}
 }

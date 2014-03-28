@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tabparts.TabString;
+
 import com.itextpdf.text.*;
 
 /**
@@ -20,7 +22,6 @@ public class PDFProperties {
 	
 	/* CONSTANTS */
 	
-	public static final int EXTRACTABLE_VALUES = 3;				// The 3 values extracted: title, subtitle, spacing
 	public static final String DEFAULT_TITLE = "My Guitar Tab";
 	public static final String DEFAULT_SUBTITLE = "";
 	public static final float DEFAULT_SPACING = 5.0f;
@@ -100,19 +101,22 @@ public class PDFProperties {
 		File input = file;
 		BufferedReader stream;
 		try {
-			int i = 0;
 			String line;
 			Matcher m_title, m_subtitle, m_spacing;
 			StringBuffer extractable = new StringBuffer();
 			stream = new BufferedReader(new FileReader(input));
 			
-			/* Read the first 3 non-empty lines from the input file and concatenate them */
-			while ((line = stream.readLine()) != null && i < EXTRACTABLE_VALUES) {
+			/* Read all comment lines from the input file and concatenate them */
+			while ((line = stream.readLine()) != null) {
 				line = line.replaceAll("\\s+$", "");
+				TabString temp = new TabString(line);
 				if (!line.isEmpty()) {
-					extractable.append("%" + line + "%");
-					i++;
+					if (temp.checkError() == TabString.ERROR_COMMENT)
+						extractable.append("%" + line + "%");
+					else
+						break;
 				}
+				
 			}
 			/* Return if nothing was found */
 			if (extractable.length() == 0) {

@@ -2,10 +2,9 @@ package tabparts;
 
 import java.util.regex.Pattern;
 
-// Make double bars have stars only in the 3rd and 4th strings
 /*
- * (UPDATE) Added a new method: splitMeasure().
- * 
+ * (UPDATE) Added a new method: splitMeasure() and fixSpacing();
+ *  
  * The setString() method now sets the measure length to the greatest seen
  * TabString length.
  */
@@ -79,9 +78,6 @@ public class TabMeasure {
 	public void setString(TabString string, int index) {
 		if (index >= MAX_STRINGS) throw new IllegalArgumentException("error, index must be < " + MAX_STRINGS);
 		this.strings[index].copyString(string);
-		if (this.length() < string.size()) {
-			this.setLength(string.size());
-		}
 	}
 	
 	/**
@@ -137,6 +133,7 @@ public class TabMeasure {
 		this.fixEndBar();
 		this.equalizeStrings();
 		this.fixSymbols();
+		this.fixSpacing();
 	}
 	
 	/**
@@ -191,10 +188,16 @@ public class TabMeasure {
 				/* Add the left over strings to a new measure */
 				TabString sleftover = new TabString(this.getStringText(i).substring(maxlength, this.length()));
 				mleftover.setString(sleftover, i);
+				if (mleftover.length() < sleftover.size()) {
+					mleftover.setLength(sleftover.size());
+				}
 				
 				/* Shorten each original string */
 				TabString shortened = new TabString(this.getStringText(i).substring(0, maxlength));
 				mshort.setString(shortened, i);
+				if (mshort.length() < shortened.size()) {
+					mshort.setLength(shortened.size());
+				}
 			}
 			
 			/* If the shortened or cut part contains only bars then disregard the split and return null */
@@ -391,6 +394,49 @@ public class TabMeasure {
 			this.strings[i].fixSymbols();
 		}
 			
+	}
+	
+	/**
+	 * Deletes a space if it isn't found in any of the other strings in the same char index.
+	 * Example:
+	 * 
+	 * |--3 4--|
+	 * |--- ---|
+	 * |- - - -|
+	 * | -- ---|
+	 * |--- ---|
+	 * |--- ---|
+	 * 
+	 * gets turned into: 
+	 * 
+	 * |--3 4--|
+	 * |--- ---|
+	 * |--- ---|
+	 * |--- ---|
+	 * |--- ---|
+	 * |--- ---|
+	 */
+	public void fixSpacing() {
+		if (this.isComment()) return;
+		for (int i = 0; i < MAX_STRINGS; i++) {
+			if (TabString.VALID_SPACE.matcher(this.getStringText(i)).find()) {
+				for (int k = 0; k < this.getStringText(i).length(); k++) {
+					if (this.getStringText(i).charAt(k) == ' ') {
+						inner :
+						for (int n = 0; n < MAX_STRINGS; n++) {
+							if (n != i && !(this.getStringText(n).charAt(k) == ' ')) {
+								for (int m = 0; m < MAX_STRINGS; m++) {
+									if (this.getStringText(m).charAt(k) == ' ') {
+										this.getString(m).replaceChar('-', k);
+										break inner;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**

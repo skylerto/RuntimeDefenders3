@@ -9,7 +9,7 @@ import version13.ConversionException;
 import version13.EmptyFileException;
 import version13.NoFileExistsException;
 import version13.NoMusicException;
-import version13.TextToPDFv13;
+import version13.TextToPDF;
 
 public class LogMain {
 	public static void main(String[] args) {
@@ -24,9 +24,9 @@ public class LogMain {
 			System.err.println(e.getMessage());
 		}*/
 		
-		/*Pattern music = Pattern.compile("([|][^\\s]+)|([^\\s]+[|])");
+		Pattern music = Pattern.compile("[-]+");
 		
-		System.out.println(String.valueOf((music.matcher("--|--")).find()));*/
+		System.out.println(String.valueOf((music.matcher("| dawd-|")).find()));
 		
 		/*PDFProperties prop = new PDFProperties();
 		
@@ -42,7 +42,7 @@ public class LogMain {
 		log.writeNL("new line!");
 		log.close();*/
 		
-		TabStaff s = new TabStaff();
+		/*TabStaff s = new TabStaff();
 		try {
 			s.scanFile(new File("inputfiles/tabtester.txt"));
 		} catch (Exception e) {
@@ -50,7 +50,7 @@ public class LogMain {
 			e.printStackTrace();
 		}
 		System.out.println(s.toString());
-		/*s.splitLongMeasures(20);
+		s.splitLongMeasures(108);
 		System.out.println(s.toString());*/
 	}
 }

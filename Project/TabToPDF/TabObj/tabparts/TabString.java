@@ -1,14 +1,9 @@
 package tabparts;
 import java.util.regex.Pattern;
 
-// Edit addDash() so it adds dashes to the left of stars
-// Add a symbol for sliding down, if first tab is greater than the second
-// Allow cross measure linking for hammers?
-// Add a regex that will deletes p from p# if there's no number before it
-// Fix spacing in measures for cases like |--- ---| |---2 5---| where space is in same spot
-// Fix p across measures
+/* (UPDATED) Valid strings must have at least 1 dash between the bars.
 
-/* (UPDATED) Valid Hammers and Pulls now have the same pattern as valid Slides.
+Valid Hammers and Pulls now have the same pattern as valid Slides.
  * 
  * -Ron
  */
@@ -33,26 +28,27 @@ public class TabString {
 	/* CONSTANTS */
 	
 	public static final Character NULL_CHAR = '\0';
-	public static final int MAX_SIZE = 1000;			// Max chars the array can hold
+	public static final int MAX_SIZE = 3000;			// Max chars the array can hold
 	
 	public static final Character[] VALID_SYMBOLS = {'|', '-', 's', 'h', 'p', '*', '<', '>', ' '};	// Valid symbols that make up a valid TabString
 	public static final Pattern VALID_SLIDE = Pattern.compile("([0-9][s])|([s][0-9])");				// Valid: #s# or s# or #s
 	public static final Pattern VALID_HAMMER = Pattern.compile("([0-9][h])|([h][0-9])");			// Valid: #h# or h# or #h
-	public static final Pattern VALID_SPACE = Pattern.compile("([0-9][\\s][0-9])|([-][\\s][-])");	// Valid: #[space]# or -[space]-
+	public static final Pattern VALID_SPACE = Pattern.compile("([^\\s^<][\\s][^\\s^>])");			// Valid: #[space]#
 	public static final Pattern VALID_PULL = Pattern.compile("([0-9][p])|([p][0-9])");				// Valid: #p# or #p or p#
 	public static final Pattern VALID_STAR = Pattern.compile("([|][|][\\*])|([\\*][|][|])");		// Valid: ||* or *||
 	public static final Pattern VALID_HARMONIC = Pattern.compile("[<][1-9][>]");					// Valid: <#>
 	public static final Pattern VALID_HARMONIC2 = Pattern.compile("[<][1-9][1-9][>]");				// Valid: <##>
 	public static final Pattern INVALID_NUMBER = Pattern.compile("[0-9]{3,}");						// Invalid: ### or more consecutive numbers
 	
-	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|]{1,2}.*[|]{1,2}\\s*$");// A string enclosed in '|'
-	public static final Pattern VALID_START = Pattern.compile("^\\s*[|]\\s*\\S+");	// A string missing the end '|'
-	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*[|]\\s*$");	// A string missing the start '|'
+	public static final Pattern VALID_STRING = Pattern.compile("^\\s*[|]{1,2}.*-.*[|]{1,2}\\s*$");// A string enclosed in '|'
+	public static final Pattern VALID_START = Pattern.compile("^\\s*[|].*[-].*\\s*\\S+");	// A string missing the end '|'
+	public static final Pattern VALID_END = Pattern.compile("\\S+\\s*.*[-].*[|]\\s*$");	// A string missing the start '|'
 	public static final Pattern EMPTY_STRING = Pattern.compile("^\\s*$");			// An empty string of none more spaces
 	public static final Pattern BLANK_STRING = Pattern.compile("^\\s*[|]{1,2}[\\s-]*[|]{1,2}\\s*$");	// A string of dashes only
-	public static final Pattern VALID_DB_START = Pattern.compile("^\\s*[|]{2}\\s*\\S+\\s*");	// A string missing the end '||'
-	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	// A string missing the start '||'
-	public static final Pattern VALID_TB_END = Pattern.compile("\\s*\\S+\\s*[|]{3}\\s*$");	// A string with '|||' at the end
+	public static final Pattern VALID_DB_START = Pattern.compile("^\\s*[|]{2}.*[-].*\\s*\\S+\\s*");	// A string missing the end '||'
+	public static final Pattern VALID_DB_END = Pattern.compile("\\s*\\S+\\s*.*[-].*[|]{2}\\s*$");	// A string missing the start '||'
+	public static final Pattern VALID_STAR_END = Pattern.compile("\\s*\\S+\\s*.*[-].*[*][|]{2}\\s*$");	// A string with '*||' in the end
+	public static final Pattern VALID_TB_END = Pattern.compile("\\s*\\S+\\s*.*[-].*[|]{3}\\s*$");	// A string with '|||' at the end
 	
 	public static final int NO_ERROR = 0;			// Return when no error is found
 	public static final int ERROR_START = 1;		// Error return when the start '|' is missing
@@ -63,9 +59,10 @@ public class TabString {
 	public static final int ERROR_DB_END = 6;		// Error return when the end '||' is missing
 	public static final int SPECIAL_TRIPLE = 7;		// Return when the string only contains '|||'
 	
-	public static final Pattern HARD_VALID_STRING = Pattern.compile("^[|]{1,2}.*[|]{1,2}$");	// A string closed in at least one set of '|' with no trailing spaces
+	public static final Pattern HARD_VALID_STRING = Pattern.compile("^[|]{1,2}.*[-].*[|]{1,2}$");	// A string closed in at least one set of '|' with no trailing spaces
 	public static final Pattern VALID_TRIPLE_STRING = Pattern.compile("^\\s*[|]{3}\\s*$");		// A string containing only '|||'
 	public static final Pattern VALID_BARS = Pattern.compile("^\\s*[|]{2,}\\s*$");			// A string that contains at least 2 bars and only bars
+	public static final Pattern EMPTY_BARS = Pattern.compile("^\\s*[|]{1,2}.*[|]{1,2}\\s*$");	// Anything enclosed in bars with no dashes
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
 	public static final String EMPTY_MSG = "[empty string]";
@@ -154,6 +151,7 @@ public class TabString {
 		boolean tripleendfound = false;
 		boolean missingfirst = false;
 		boolean repfound = false;
+		
 		int i = 0;
 		
 		/* Traverse the line and detect the last index of a valid string (i) */
@@ -216,6 +214,7 @@ public class TabString {
 		/* Minus i if a double/triple end bar or repetition was found */
 		if (tripleendfound) i = i - 2;
 		else if (doubleendfound || repfound) i--;
+		
 		return i;
 	}
 	
@@ -258,7 +257,22 @@ public class TabString {
 		s = new TabString(this.getLogAtt());
 
 		/* Do if string is wrapped in '||' */
-		if(VALID_DB_END.matcher(this.toString()).find()) {
+		if(VALID_STAR_END.matcher(this.toString()).find()) {
+			/* Add the original chars of the string except the '*||' */
+			for (int i = 0; i < this.size() - 3; i++)
+				s.addChar(this.getChar(i));
+			/* Add num dashes */
+			for (int i = 0; i < num; i++)
+				s.addChar('-');
+			s.addChar('*');
+			s.addChar('|');
+			s.addChar('|');
+			/* Copy the temp string to this string */
+			this.copyString(s);
+			return true;
+
+		/* Do if string is wrapped in '||' */
+		}	else if(VALID_DB_END.matcher(this.toString()).find()) {
 			/* Add the original chars of the string except the '||' */
 			for (int i = 0; i < this.size() - 2; i++)
 				s.addChar(this.getChar(i));

@@ -1,6 +1,6 @@
 TITLE=Remembering Rain
 SUBTITLE=Jim Matheos
-SPACING=4.4
+SPACING=10
 
 ||------------------------------<12>----------||
 ||-<12>------------------------------<12>-----||
