@@ -22,12 +22,15 @@ public class PDFProperties {
 	
 	public static final int EXTRACTABLE_VALUES = 3;				// The 3 values extracted: title, subtitle, spacing
 	public static final String DEFAULT_TITLE = "My Guitar Tab";
-	public static final String DEFAULT_SUBTITLE = "Author";
+	public static final String DEFAULT_SUBTITLE = "";
 	public static final float DEFAULT_SPACING = 5.0f;
 	public static final int DEFAULT_ELEMENTSIZE = 8;
 	public static final Rectangle DEFAULT_PAGESIZE = PageSize.LETTER;
 	public static final int DEFAULT_TITLE_FONTSIZE = 16;
 	public static final int DEFAULT_SUBTITLE_FONTSIZE = 14;
+	public static final float DEFAULT_LEFTMARGIN = 36f;
+	public static final float DEFAULT_RIGHTMARGIN = 36f;
+	public static final float DEFAULT_MEASURESPACE = 80f;
 	
 	public static final int VALUE_POSITION = 3;		// The position in the patterns where information is extracted from
 	public static final Pattern TITLE_PATTERN = Pattern.compile("(%\\s*TITLE\\s*=)(\\s*)([\\w+\\s*]+)(\\s*%)", Pattern.CASE_INSENSITIVE);		// Extracts the title after the equal sign of "Title="
@@ -43,6 +46,9 @@ public class PDFProperties {
 	private Rectangle pagesize;
 	private int title_fontsize;
 	private int subtitle_fontsize;
+	private float leftmargin;
+	private float rightmargin;
+	private float measurespace;
 	
 	/**
 	 * Creates properties with default values.
@@ -55,6 +61,9 @@ public class PDFProperties {
 		this.pagesize = DEFAULT_PAGESIZE;
 		this.title_fontsize = DEFAULT_TITLE_FONTSIZE;
 		this.subtitle_fontsize = DEFAULT_SUBTITLE_FONTSIZE;
+		this.leftmargin = DEFAULT_LEFTMARGIN;
+		this.rightmargin = DEFAULT_RIGHTMARGIN;
+		this.measurespace = DEFAULT_MEASURESPACE;
 	}
 	
 	/**
@@ -67,13 +76,10 @@ public class PDFProperties {
 	 * @param pagesize	The size of the PDF document.
 	 */
 	public PDFProperties (String title, String subtitle, float spacing) {
+		this();
 		this.title = title;
 		this.subtitle = subtitle;
 		this.spacing = spacing;
-		this.elementsize = DEFAULT_ELEMENTSIZE;
-		this.pagesize = DEFAULT_PAGESIZE;
-		this.title_fontsize = DEFAULT_TITLE_FONTSIZE;
-		this.subtitle_fontsize = DEFAULT_SUBTITLE_FONTSIZE;
 	}
 	
 	/**
@@ -203,6 +209,30 @@ public class PDFProperties {
 	}
 	
 	/**
+	 * Sets the left margin.
+	 * @param leftmargin
+	 */
+	public void setLeftMargin(float leftmargin) {
+		this.leftmargin = leftmargin;
+	}
+	
+	/**
+	 * Sets the right margin.
+	 * @param rightmargin
+	 */
+	public void setRightMargin(float rightmargin) {
+		this.rightmargin = rightmargin;
+	}
+	
+	/**
+	 * Sets the space between measures.
+	 * @param topmargin
+	 */
+	public void setMeasureSpace(float measurespace) {
+		this.measurespace = measurespace;
+	}
+	
+	/**
 	 * Get the title.
 	 * 
 	 * @return
@@ -257,6 +287,30 @@ public class PDFProperties {
 	 */
 	public int getSubtitleFontSize() {
 		return this.subtitle_fontsize;
+	}
+	
+	/**
+	 * Get left margin.
+	 * @return
+	 */
+	public float getLeftMargin() {
+		return this.leftmargin;
+	}
+	
+	/**
+	 * Get right margin.
+	 * @return
+	 */
+	public float getRightMargin() {
+		return this.rightmargin;
+	}
+	
+	/**
+	 * Get measure space.
+	 * @return
+	 */
+	public float getMeasureSpace() {
+		return this.measurespace;
 	}
 	
 	/**

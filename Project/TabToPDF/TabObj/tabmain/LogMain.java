@@ -14,7 +14,7 @@ import version13.TextToPDFv13;
 public class LogMain {
 	public static void main(String[] args) {
 		
-		try {
+		/*try {
 			TextToPDFv13 convert = new TextToPDFv13("outputfiles/musicPDF.pdf", "inputfiles/try2.txt");
 			convert.WriteToPDF();
 			//System.out.println(convert.getProperties().toString());
@@ -22,7 +22,7 @@ public class LogMain {
 				| EmptyFileException | NoMusicException | LargeNumberException | ConversionException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
-		}
+		}*/
 		
 		/*Pattern music = Pattern.compile("([|][^\\s]+)|([^\\s]+[|])");
 		
@@ -42,15 +42,15 @@ public class LogMain {
 		log.writeNL("new line!");
 		log.close();*/
 		
-		/*TabStaff s = new TabStaff();
+		TabStaff s = new TabStaff();
 		try {
 			s.scanFile(new File("inputfiles/tabtester.txt"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(s.toString());
+		/*s.splitLongMeasures(20);
 		System.out.println(s.toString());*/
-		
 	}
 }

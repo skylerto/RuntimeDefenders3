@@ -14,7 +14,6 @@ import MVC.IncorrectFormattingAlert;
  * scanFile() will only throw a LargeNumberException
  * Added new method getMeasureRepeat()
  * Added 2 methods: removeIncompleteSymbols() and splitLongMeasures()
- * 
  */
 
 /**
@@ -647,15 +646,20 @@ public class TabStaff {
 		
 		/* For each measure in the staff, split it if it's longer than maxlength */
 		for (int i = 0; i < this.size(); i++) {
+			int repeat = this.staff.get(i).getRepeat();	// Save the repeat
 			TabMeasure shortened = this.staff.get(i);
+			shortened.setRepeat(0);	// The split measures shouldn't repeat, only the last measure should
 			TabMeasure split;
+			
 			
 			/* While the split part is still too long, then continue to split it */
 			while ((split = shortened.splitMeasure(maxlength)) != null) {
 				newstaff.add(shortened);	// Add first half of the split
 				shortened = split;			// Set second half of the split to check if it needs to be split
 			}
+			shortened.setRepeat(repeat);	// The last measure gets the original repeat	
 			newstaff.add(shortened);
+			
 		}
 		/* If splits were made then set the new staff list equal to the current staff list */
 		if (!this.staff.equals(newstaff)) {

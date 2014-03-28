@@ -23,6 +23,10 @@ public class TextToPDFv13 {
 	
 	private static final String DEFAULT_INPUTPATH = "inputfiles/try.txt";
 	private static final String DEFAULT_OUTPUTPATH = "outputfiles/musicPDF.pdf";
+	private static final float TOPTITLE_MARGIN = 112;
+	private static final float TOP_MARGIN = 42;
+	private static final float BOT_MARGIN = 120;
+	
 	
 	/* ATTRIBUTES */
 	
@@ -33,6 +37,7 @@ public class TextToPDFv13 {
 
 	/**
 	 * Creates a new convert object with default paths and properties.
+	 * Extracts title, subtitle and spacing from the input file.
 	 * 
 	 * @throws NoFileExistsException
 	 * @throws CannotReadFileException
@@ -62,6 +67,7 @@ public class TextToPDFv13 {
 	
 	/**
 	 * Creates a new conversion object with the given input and output paths.
+	 * Extracts title, subtitle and spacing from the input file.
 	 * 
 	 * @param outputpath
 	 * @param inputpath
@@ -82,6 +88,45 @@ public class TextToPDFv13 {
 		
 		/* Extract properties from the input file */
 		this.properties.extractProperties(new File(this.inputpath));
+		
+		/* Store the tab in a staff and fix errors */
+		try {
+			this.staff.scanFile(new File(this.inputpath));
+		} catch (LargeNumberException e) {
+			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Creates a new conversion object with the given paths, spacing, elementsize, page size and font size.
+	 * 
+	 * @param outputpath
+	 * @param inputpath
+	 * @param spacing
+	 * @param elementsize
+	 * @param pagesize
+	 * @param titlefontsize
+	 * @param subtitlefontsize
+	 * @throws NoFileExistsException
+	 * @throws CannotReadFileException
+	 * @throws EmptyFileException
+	 * @throws NoMusicException
+	 * @throws LargeNumberException
+	 */
+	public TextToPDFv13 (String outputpath, String inputpath, float spacing, int elementsize, Rectangle pagesize,
+				int titlefontsize, int subtitlefontsize) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+		this.inputpath = inputpath;
+		this.outputpath = outputpath;
+		this.properties = new PDFProperties();
+		this.properties.setSpacing(spacing);
+		this.properties.setElementSize(elementsize);
+		this.properties.setPageSize(pagesize);
+		this.properties.setTitleFontSize(titlefontsize);
+		this.properties.setSubtitleFontSize(subtitlefontsize);
+		this.staff = new TabStaff();
+		
+		/* Check input for errors */
+		this.checkInputErrors();
 		
 		/* Store the tab in a staff and fix errors */
 		try {
@@ -124,8 +169,8 @@ public class TextToPDFv13 {
 			writer.open();
 			cb = writer.getDirectContent();
 			
-			float currX = 36.0f;
-			float currY = 680.0f;
+			float currX = this.getLeftMargin();
+			float currY = this.getPageSize().getHeight() - TOPTITLE_MARGIN;
 
 			/* Set the title of the PDF document */
 			BaseFont bf_title = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -143,10 +188,10 @@ public class TextToPDFv13 {
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
 				sp = new MusicNoteProcess(dynamic_array.get(i));
-				if (draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing()) < ((writer.getPageSize().getWidth() - 36f) - currX)) {
+				if (draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing()) < ((writer.getPageSize().getWidth() - this.getRightMargin()) - currX)) {
 					if (i == 0) {
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, 36f, this.getElementSize(), cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb);
 					} else
 						same_line_state = 1;
 
@@ -156,28 +201,28 @@ public class TextToPDFv13 {
 				} else {
 					draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(i - 1)).getSymbolsList(), currX,
 							currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
-					if (currY > 120) {
-						currX = 36.0f;
-						currY = currY - 80;
+					if (currY > BOT_MARGIN) {
+						currX = this.getLeftMargin();
+						currY = currY - this.getMeasureSpace();
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, 36f, this.getElementSize(), cb); // for begining
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
-					} else if (currY <= 120 && i < dynamic_array.size() - 1) {
+					} else if (currY <= BOT_MARGIN && i < dynamic_array.size() - 1) {
 						doc.newPage();
 						same_line_state = 0;
-						currX = 36.0f;
-						currY = 750.0f;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, 36f, this.getElementSize(), cb); // for begining
+						currX = this.getLeftMargin();
+						currY = this.getPageSize().getHeight() - TOP_MARGIN;
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 
-					} else if (currY <= 120 && i == dynamic_array.size() - 1) {
+					} else if (currY <= BOT_MARGIN && i == dynamic_array.size() - 1) {
 						doc.newPage();
 						same_line_state = 0;
-						currX = 36.0f;
-						currY = 750.0f;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, 36f, this.getElementSize(), cb); // for begining
+						currX = this.getLeftMargin();
+						currY = this.getPageSize().getHeight() - TOP_MARGIN;
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 					}
@@ -253,30 +298,74 @@ public class TextToPDFv13 {
 		}
 	}
 
+	/**
+	 * Changes the title and recreates the PDF document.
+	 * @param title
+	 * @throws ConversionException
+	 */
 	public void updateTitle(String title) throws ConversionException {
 		this.properties.setTitle(title);
 		this.WriteToPDF();
 	}
 	
+	/**
+	 * Changes the subtitle and recreates the PDF document.
+	 * @param subtitle
+	 * @throws ConversionException
+	 */
 	public void updateSubtitle(String subtitle) throws ConversionException {
 		this.properties.setSubtitle(subtitle);
 		this.WriteToPDF();
 	}
 	
+	/**
+	 * Changes the spacing and and recreates the PDF document.
+	 * @param spacing
+	 * @throws ConversionException
+	 */
 	public void updateSpacing(float spacing) throws ConversionException {
 		this.properties.setSpacing(spacing);
 		this.WriteToPDF();
 	}
 	
+	/**
+	 * Changes the element size and recreates the PDF document.
+	 * @param elementsize
+	 * @throws ConversionException
+	 */
 	public void updateElementSize(int elementsize) throws ConversionException {
 		this.properties.setElementSize(elementsize);
 		this.WriteToPDF();
 	}
 	
-	public void updatePageSize(String pagesize) throws ConversionException {
-		/*if (pagesize.equals(""));
-		this.properties.setElementSize(pagesize);
-		this.WriteToPDF();*/
+	/**
+	 * Changes the page size and recreates the PDF document.
+	 * @param pagesize
+	 * @throws ConversionException
+	 */
+	public void updatePageSize(Rectangle pagesize) throws ConversionException {
+		this.properties.setPageSize(pagesize);
+		this.WriteToPDF();
+	}
+	
+	/**
+	 * Changes the title font size and recreates the PDF document.
+	 * @param titlesize
+	 * @throws ConversionException
+	 */
+	public void updateTitleSize(int titlesize) throws ConversionException {
+		this.properties.setTitleFontSize(titlesize);
+		this.WriteToPDF();
+	}
+	
+	/**
+	 * Changes the subtitle font size and recreates the PDF document.
+	 * @param subtitlesize
+	 * @throws ConversionException
+	 */
+	public void updateSubtitleSize(int subtitlesize) throws ConversionException {
+		this.properties.setSubtitleFontSize(subtitlesize);
+		this.WriteToPDF();
 	}
 	
 	/**
@@ -360,10 +449,46 @@ public class TextToPDFv13 {
 	}
 	
 	/**
+	 * Gets the left margin.
+	 * @return
+	 */
+	public float getLeftMargin() {
+		return this.properties.getLeftMargin();
+	}
+	
+	/**
+	 * Gets the right margin.
+	 * @return
+	 */
+	public float getRightMargin() {
+		return this.properties.getRightMargin();
+	}
+	
+	/**
+	 * Gets the measure space.
+	 * @return
+	 */
+	public float getMeasureSpace() {
+		return this.properties.getMeasureSpace();
+	}
+	
+	/**
 	 * Gets the output path.
 	 * @return
 	 */
 	public String getOutputPath() {
 		return this.outputpath;
+	}
+	
+	/* 
+	 * 
+	 * FOR TESTING 
+	 * 
+	 * 
+	 * */
+	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
+		TextToPDFv13 conversion = new TextToPDFv13
+				("outputfiles/musicPDF.pdf", "inputfiles/try.txt",5.0f, 10, PageSize.LEDGER, 16, 14);
+		conversion.WriteToPDF();
 	}
 }
