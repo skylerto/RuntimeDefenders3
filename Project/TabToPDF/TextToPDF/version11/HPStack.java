@@ -20,14 +20,14 @@ public class HPStack {
 	
 	/* ATTRIBUTES */
 	
-	private SymbolPoint[] stack;
+	private SymbolPointv11[] stack;
 	private int size;
 	
 	/**
 	 * Creates a new empty stack.
 	 */
 	public HPStack() {
-		this.stack = new SymbolPoint[200];
+		this.stack = new SymbolPointv11[200];
 		this.size = 0;
 	}
 	
@@ -59,7 +59,7 @@ public class HPStack {
 	 * @return true if something was pushed, false otherwise
 	 * @throws InvalidSymbolPosition thrown when a pull/hammer is being pushed onto another pull/hammer
 	 */
-	public boolean push(SymbolPoint point) throws InvalidSymbolPosition {
+	public boolean push(SymbolPointv11 point) throws InvalidSymbolPosition {
 		/* Throw exception if full */
 		if (this.isFull()) throw new StackOverflowError("Pushing to full HPStack.");
 		
@@ -106,9 +106,9 @@ public class HPStack {
 	 * @return the element from the top of the stack
 	 * @return null if the stack is empty
 	 */
-	public SymbolPoint pop() {
+	public SymbolPointv11 pop() {
 		if (this.isEmpty()) return null;
-		SymbolPoint temp = new SymbolPoint(this.stack[size-1]);
+		SymbolPointv11 temp = new SymbolPointv11(this.stack[size-1]);
 		this.stack[size-1] = null;
 		this.size--;
 		return temp;
@@ -159,9 +159,9 @@ public class HPStack {
 	 * 
 	 * @return a copy of the element at the top of the stack
 	 */
-	public SymbolPoint peak() {
+	public SymbolPointv11 peak() {
 		if(this.isEmpty()) return null;
-		else return new SymbolPoint(this.stack[size - 1]);
+		else return new SymbolPointv11(this.stack[size - 1]);
 	}
 	
 	/**

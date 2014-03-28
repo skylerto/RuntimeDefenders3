@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import mvcV2.Model;
-import mvcV3.Controller;
 import tabparts.TabStaff;
 import version12.ReadFromInput;
 
@@ -34,7 +33,7 @@ public class TextToPDFv12 {
 	final String CONTAINS_TITLE = "TITLE";
 	final String CONTAINS_SUBTITLE = "SUBTITLE";
 	final String CONTAINS_SPACING = "SPACING";
-	public static String INPUT_FILENAME = "inputfiles/try.txt";
+	public static String INPUT_FILENAME = "inputfiles/try2.txt";
 	public static String PDF_FILENAME = "outputfiles/musicPDF.pdf";
 	private int same_line_state = 0;
 	/* new */
@@ -105,7 +104,6 @@ public class TextToPDFv12 {
 		}
 
 		outputpath = outputpath + filename;
-		Controller.getModel().setOutputFilename(outputpath);
 
 		draw = new DrawClassv12();
 		doc = new Document(PageSize.LETTER);
@@ -146,8 +144,7 @@ public class TextToPDFv12 {
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
 				sp = new MusicNoteProcess(dynamic_array.get(i));
-				if (draw.getMusicNotelength(sp.getSymbolsList(), LINE_SPACE) < ((writer
-						.getPageSize().getWidth() - 36f) - currX)) {
+				if (draw.getMusicNotelength(sp.getSymbolsList(), LINE_SPACE) < ((writer.getPageSize().getWidth() - 36f) - currX)) {
 					if (i == 0) {
 						same_line_state = 0;
 						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,
@@ -157,62 +154,48 @@ public class TextToPDFv12 {
 
 					draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,
 							LINE_SPACE, FONT_SIZE, same_line_state, cb);
-					currX = currX
-							+ draw.getMusicNotelength(sp.getSymbolsList(),
-									LINE_SPACE);
+					currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 
 				} else {
 					draw.DrawMarginMusicLines(new MusicNoteProcess(
-							dynamic_array.get(i - 1)).getSymbolsList(), currX,
-							currY, writer.getPageSize().getWidth(), FONT_SIZE,
-							cb);
+							dynamic_array.get(i - 1)).getSymbolsList(), currX,currY, writer.getPageSize().getWidth(), FONT_SIZE,cb);
 					if (currY > 120) {
+						
 						currX = 36.0f;
 						currY = currY - 80;
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,
-								currY, 36f, FONT_SIZE, cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
-						currX = currX
-								+ draw.getMusicNotelength(sp.getSymbolsList(),
-										LINE_SPACE);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,currY, 36f, FONT_SIZE, cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
+						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 					} else if (currY <= 120 && i < dynamic_array.size() - 1) {
+						draw.printSymbolList();
+						draw.drawrest(FONT_SIZE, LINE_SPACE, cb);
+						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = 36.0f;
 						currY = 750.0f;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,
-								currY, 36f, FONT_SIZE, cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
-						currX = currX
-								+ draw.getMusicNotelength(sp.getSymbolsList(),
-										LINE_SPACE);
-
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,currY, 36f, FONT_SIZE, cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
+						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 					} else if (currY <= 120 && i == dynamic_array.size() - 1) {
 						doc.newPage();
 						same_line_state = 0;
 						currX = 36.0f;
 						currY = 750.0f;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,
-								currY, 36f, FONT_SIZE, cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,
-								LINE_SPACE, FONT_SIZE, same_line_state, cb);
-						currX = currX
-								+ draw.getMusicNotelength(sp.getSymbolsList(),
-										LINE_SPACE);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0,currY, 36f, FONT_SIZE, cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
+						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 
 					}
 
 				}
 
 			}
-			draw.DrawMarginMusicLines(
-					new MusicNoteProcess(
-							dynamic_array.get(dynamic_array.size() - 1))
-							.getSymbolsList(), currX, currY, writer
-							.getPageSize().getWidth(), FONT_SIZE, cb);
+			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1)).getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), FONT_SIZE, cb);
+			
+			//draw.drawrest(FONT_SIZE, LINE_SPACE, cb);
+			//draw.FlushSymbol();
 			doc.close();
 			writer.close();
 
