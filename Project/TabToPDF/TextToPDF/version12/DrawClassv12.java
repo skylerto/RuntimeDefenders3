@@ -16,7 +16,7 @@ public class DrawClassv12 {
 	static int onebar_before = 0; // check to see if that music note has only 1 bar  before second music note  that begin with two bar on the same line
 	static List<SymbolPointv12> symbolp_list =  new ArrayList<SymbolPointv12>();
 	
-	  private  void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
+	    void InsertText(String text, float x, float y , int Fontsize, PdfContentByte cb) throws DocumentException, IOException {
      	 
      	 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
           cb.saveState();
