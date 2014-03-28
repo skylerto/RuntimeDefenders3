@@ -632,7 +632,7 @@ public class TabString {
 	 */
 	
 	public void checkNumberException() throws LargeNumberException {
-		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have 3 or more consecutive digits on the string: " + this.toString());
+		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have more than 2 consecutive digits in the string: " + this.toString());
 	}
 	
 	/**

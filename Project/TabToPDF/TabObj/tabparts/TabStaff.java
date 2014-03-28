@@ -10,7 +10,10 @@ import MVC.IncorrectFormattingAlert;
 // Still have to account for comments and strings with no empty lines inbetween them
 // Still have to convert comments inside of measures to strings.. maybe..
 
-/* (UPDATE) Added 2 methods: removeIncompleteSymbols() and splitLongMeasures()
+/* (UPDATE) findRepeats() doesn't throw an exception anymore
+ * scanFile() will only throw a LargeNumberException
+ * Added new method getMeasureRepeat()
+ * Added 2 methods: removeIncompleteSymbols() and splitLongMeasures()
  * 
  */
 
@@ -76,9 +79,9 @@ public class TabStaff {
 	 * blah blah
 	 *
 	 * @param file	The file to read the input data from.
-	 * @throws Exception 
+	 * @throws LargeNumberException 
 	 */
-	public void scanFile(File file) throws Exception {
+	public void scanFile(File file) throws LargeNumberException {
 		File input = file;
 		BufferedReader stream;
 		String line;			// A line read from the input file
@@ -96,12 +99,6 @@ public class TabStaff {
 			int maxmeasure = 0;				// The max measure seen in a row of measures
 			int stringnum = 0;			// The string of the current measure
 			
-			/* Stop if file is empty */
-			if (stream.readLine() == null) {
-				new IncorrectFormattingAlert("\nError: The file " + file.getName() + " is empty.\n");
-				stream.close();
-				throw new Exception("\nError: The file " + file.getName() + " is empty.\n");
-			}
 			
 			/* If we not at the end of the file, then read a line and process it */
 			while ((line = stream.readLine()) != null) {
@@ -224,12 +221,7 @@ public class TabStaff {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (LargeNumberException e) {
-			new IncorrectFormattingAlert("\nError in file " + file.getName() + " on line " + linenum + ":\n" + e.getMessage() + "\n");
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 	/**
@@ -303,6 +295,15 @@ public class TabStaff {
 	}
 	
 	/**
+	 * Gets the repeat number for the measure.
+	 * @param index
+	 * @return
+	 */
+	public int getMeasureRepeat(int index) {
+		return this.staff.get(index).getRepeat();
+	}
+	
+	/**
 	 * Adds a measure to the list.
 	 */
 	public void addMeasure() {
@@ -330,7 +331,7 @@ public class TabStaff {
 	 * 
 	 * @throws Exception
 	 */
-	public void fixStaff() throws LargeNumberException, Exception{
+	public void fixStaff() throws LargeNumberException {
 		this.removeEmpty();
 		this.findRepeats();
 		this.fixEnd();
@@ -441,7 +442,7 @@ public class TabStaff {
 	 * 
 	 * @throws Exception	When the repeat number is a character not between 1-9
 	 */
-	public void findRepeats() throws Exception {
+	public void findRepeats() {
 		for (int a = 0; a < this.size(); a++) {	
 			if (!this.staff.get(a).isComment()) {
 				boolean single = true;
@@ -453,8 +454,7 @@ public class TabStaff {
 							if (t >= '1' && t <= '9') {
 								this.staff.get(a).setRepeat(Character.getNumericValue(t));
 								this.staff.get(a).getString(0).replaceChar('|', this.staff.get(a).getString(0).size()-1);
-							} else 
-								throw new Exception("Error: repeat number is invalid " + this.staff.get(a).getString(0).toString());
+							}
 							if (a < this.size() - 1 && this.staff.get(a+1).getString(0).getChar(0) == '|' && this.staff.get(a+1).getString(0).getChar(1) == t) {
 								for (int v = 1; v < TabMeasure.MAX_STRINGS; v++) {
 									if (TabString.VALID_DB_START.matcher(this.staff.get(a+1).getString(v).toString()).find()) {
