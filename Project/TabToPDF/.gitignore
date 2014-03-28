@@ -2,3 +2,4 @@ logFile.txt
 autofixlog.txt
 *.pdf
 musicIMG0.png
+outputfiles/[^.]*
