@@ -161,11 +161,10 @@ public class TextToPDFv12 {
 							LINE_SPACE, FONT_SIZE, same_line_state, cb);
 					currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 					if(enable_repeat)
-						draw.InsertText("Repeat"+staff.getMeasureRepeat(i)+"times", currX-50f, currY+10f, 8, cb);
+						draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-60f, currY+FONT_SIZE*.8f, FONT_SIZE, cb);
 
 				} else {
-					draw.DrawMarginMusicLines(new MusicNoteProcess(
-							dynamic_array.get(i - 1)).getSymbolsList(), currX,currY, writer.getPageSize().getWidth(), FONT_SIZE,cb);
+					draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(i - 1)).getSymbolsList(), currX,currY, writer.getPageSize().getWidth(), FONT_SIZE,cb);
 					if (currY > 120) {
 						
 						currX = 36.0f;
@@ -175,7 +174,7 @@ public class TextToPDFv12 {
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 						if(enable_repeat)
-							draw.InsertText("Repeat"+staff.getMeasureRepeat(i)+"times", currX-50f, currY+10f, 8, cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+FONT_SIZE*.8f, FONT_SIZE, cb);
 					} else if (currY <= 120 && i < dynamic_array.size() - 1) {
 						//draw.printSymbolList();
 						draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
@@ -188,7 +187,7 @@ public class TextToPDFv12 {
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 						if(enable_repeat)
-							draw.InsertText("Repeat"+staff.getMeasureRepeat(i)+"times", currX-50f, currY+10f, 8, cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+FONT_SIZE*.8f, FONT_SIZE, cb);
 					} else if (currY <= 120 && i == dynamic_array.size() - 1) {
 						draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
 						draw.FlushSymbol();
@@ -200,7 +199,7 @@ public class TextToPDFv12 {
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY,LINE_SPACE, FONT_SIZE, same_line_state, cb);
 						currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
 						if(enable_repeat)
-							draw.InsertText("Repeat"+staff.getMeasureRepeat(i)+"times", currX-50f, currY+10f, 8, cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+FONT_SIZE*.8f, FONT_SIZE, cb);
 
 					}
 
@@ -208,7 +207,9 @@ public class TextToPDFv12 {
 
 			}
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1)).getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), FONT_SIZE, cb);
-			
+			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),LINE_SPACE);
+			if (staff.getMeasureRepeat(staff.size()-1) > 1) 	
+			    draw.InsertText("Repeat "+staff.getMeasureRepeat(staff.size()-1)+" times", currX-55f, currY+FONT_SIZE*.8f, FONT_SIZE, cb);
 			draw.drawSymbols(FONT_SIZE, LINE_SPACE, cb);
 			draw.FlushSymbol();
 			doc.close();
