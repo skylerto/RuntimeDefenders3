@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import tabparts.LargeNumberException;
 import tabparts.TabStaff;
+import version13.MusicNoteProcess;
 import version13.DrawClass;
 
 import com.itextpdf.text.*;
@@ -145,7 +146,7 @@ public class TextToPDFv13 {
 
 		PdfWriter writer = null;
 		PdfContentByte cb;
-		MusicNoteProcess sp;
+		MusicNoteProcess sp = null;
 		Document doc = new Document(this.getPageSize());
 		DrawClass draw = new DrawClass();
 		int same_line_state = 0;
@@ -187,7 +188,11 @@ public class TextToPDFv13 {
 			doc.add(subtitle);
 
 			for (int i = 0; i < dynamic_array.size(); i++) {
+				boolean enable_repeat = false;
 				sp = new MusicNoteProcess(dynamic_array.get(i));
+				if (staff.getMeasureRepeat(i) > 1) {
+					enable_repeat = true;
+				}
 				if (draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing()) < ((writer.getPageSize().getWidth() - this.getRightMargin()) - currX)) {
 					if (i == 0) {
 						same_line_state = 0;
@@ -197,7 +202,8 @@ public class TextToPDFv13 {
 
 					draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 					currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
-
+					if(enable_repeat)
+						draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-60f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
 				} else {
 					draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(i - 1)).getSymbolsList(), currX,
 							currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
@@ -208,7 +214,11 @@ public class TextToPDFv13 {
 						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
+						if(enable_repeat)
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
 					} else if (currY <= BOT_MARGIN && i < dynamic_array.size() - 1) {
+						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = this.getLeftMargin();
@@ -216,8 +226,11 @@ public class TextToPDFv13 {
 						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
-
+						if(enable_repeat)
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
 					} else if (currY <= BOT_MARGIN && i == dynamic_array.size() - 1) {
+						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = this.getLeftMargin();
@@ -225,11 +238,18 @@ public class TextToPDFv13 {
 						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
 						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
+						if(enable_repeat)
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
 					}
 				}
 			}
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1))
 							.getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
+			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getElementSize());
+			if (staff.getMeasureRepeat(staff.size()-1) > 1) 	
+			    draw.InsertText("Repeat "+staff.getMeasureRepeat(staff.size()-1)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
+			draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+			draw.FlushSymbol();
 			doc.close();
 			writer.close();
 
@@ -488,7 +508,8 @@ public class TextToPDFv13 {
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
 		TextToPDFv13 conversion = new TextToPDFv13
-				("outputfiles/musicPDF.pdf", "inputfiles/try.txt",5.0f, 10, PageSize.LEDGER, 16, 14);
+				("outputfiles/musicPDF.pdf", "inputfiles/case5.txt", 5.0f, 10, PageSize.LETTER, 16, 14);
 		conversion.WriteToPDF();
+		System.out.println(conversion.staff.toString());
 	}
 }
