@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -42,11 +43,14 @@ public class View
 
 	/* CONSTANTS */
 
-	public static final int SCROLL_WIDTH = 625;
-	public static final int SCROLL_HEIGHT = 550;
+	public static final int PREVIEW_SCROLL_WIDTH = 625;
+	public static final int PREVIEW_SCROLL_HEIGHT = 550;
+
+	public static final int PROPERTIES_SCROLL_WIDTH = 330;
+	public static final int PROPERTIES_SCROLL_HEIGHT = 325;
 
 	public static final int PAGEPROP_WIDTH = 300;
-	public static final int PAGEPROP_HEIGHT = 325;
+	public static final int PAGEPROP_HEIGHT = 450;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 200;
@@ -70,6 +74,7 @@ public class View
 	protected static JPanel autoCorrectionPanel = new JPanel();
 
 	protected static JScrollPane previewPane;
+	protected static JScrollPane propertiesPane;
 
 	// ImageIcons
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
@@ -142,10 +147,28 @@ public class View
 	private static final int subtitleFontSizeMax = 41;
 	private static int subtitleFontSizeCurrent = 1;
 
+	// LEFT MARGIN SPACE SLIDER INFO
+	protected static JSlider leftMarginSpace;
+	private static final int leftMarginSpaceMin = 0;
+	private static final int leftMarginSpaceMax = 20;
+	private static int leftMarginSpaceCurrent = 0;
+
+	// SUBTITLE FONT SIZE SLIDER INFO
+	protected static JSlider rightMarginSpace;
+	private static final int rightMarginSpaceMin = 0;
+	private static final int rightMarginSpaceMax = 20;
+	private static int rightMarginSpaceCurrent = 0;
+
+	// JComboBox
+	protected static JComboBox pageList;
+
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
-	static Dimension scroll = new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT);
+	static Dimension previewScroll = new Dimension(PREVIEW_SCROLL_WIDTH,
+			PREVIEW_SCROLL_HEIGHT);
+	static Dimension propertiesScroll = new Dimension(PROPERTIES_SCROLL_WIDTH,
+			PROPERTIES_SCROLL_HEIGHT);
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
@@ -253,13 +276,6 @@ public class View
 		panel.setOpaque(false);
 		panel.setPreferredSize(new Dimension(PAGEPROP_WIDTH, PAGEPROP_HEIGHT));
 
-		// Set border
-		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
-		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
-				"PDF Properties:");
-		titled.setTitleJustification(TitledBorder.LEFT);
-		panel.setBorder(titled);
-
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -270,14 +286,14 @@ public class View
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0;
-		c.insets = new Insets(0, 5, 5, 0);
+		c.insets = new Insets(10, 5, 5, 0);
 		panel.add(songLabel, c);
 
 		title = new JTextField(20);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 1;
-		c.insets = new Insets(0, 5, 5, 5);
+		c.insets = new Insets(10, 5, 5, 5);
 		panel.add(title, c);
 
 		// Subtitle.
@@ -396,7 +412,7 @@ public class View
 		c.weightx = 0;
 		c.anchor = GridBagConstraints.BASELINE_LEADING;
 		c.insets = new Insets(2, 5, 5, 0);
-		//panel.add(subtitleFontSizeLabel, c);
+		panel.add(subtitleFontSizeLabel, c);
 
 		subtitleFontSize = new JSlider(JSlider.HORIZONTAL, subtitleFontSizeMin,
 				subtitleFontSizeMax, subtitleFontSizeCurrent);
@@ -409,7 +425,71 @@ public class View
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0, 8, 5, 8);
-		//panel.add(subtitleFontSize, c);
+		panel.add(subtitleFontSize, c);
+
+		// Left Margin Space
+		JLabel leftMarginLabel = new JLabel("Left Margin: ");
+		leftMarginLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 7;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(leftMarginLabel, c);
+
+		leftMarginSpace = new JSlider(JSlider.HORIZONTAL, leftMarginSpaceMin,
+				leftMarginSpaceMax, leftMarginSpaceCurrent);
+		leftMarginSpace.setMajorTickSpacing(10);
+		leftMarginSpace.setMinorTickSpacing(1);
+		leftMarginSpace.setPaintTicks(true);
+		leftMarginSpace.setPaintLabels(true);
+		c.gridx = 1;
+		c.gridy = 7;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
+		panel.add(leftMarginSpace, c);
+
+		// Right Margin Space
+		JLabel rightMarginLabel = new JLabel("Right Margin: ");
+		rightMarginLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 8;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(rightMarginLabel, c);
+
+		rightMarginSpace = new JSlider(JSlider.HORIZONTAL, rightMarginSpaceMin,
+				rightMarginSpaceMax, rightMarginSpaceCurrent);
+		rightMarginSpace.setMajorTickSpacing(10);
+		rightMarginSpace.setMinorTickSpacing(1);
+		rightMarginSpace.setPaintTicks(true);
+		rightMarginSpace.setPaintLabels(true);
+		c.gridx = 1;
+		c.gridy = 8;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
+		panel.add(rightMarginSpace, c);
+
+		JLabel pageSizeLabel = new JLabel("Page Size: ");
+		pageSizeLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 9;
+		c.weightx = 0;
+		c.insets = new Insets(0, 5, 10, 0);
+		panel.add(pageSizeLabel, c);
+
+		String[] pageSizes =
+		{ "Letter", "Legal", "Ledger", "A0" };
+		pageList = new JComboBox(pageSizes);
+		pageList.setSelectedIndex(0);
+		c.gridx = 1;
+		c.gridy = 9;
+		c.weightx = 1;
+		c.insets = new Insets(0, 5, 10, 5);
+		panel.add(pageList, c);
 
 		title.setEnabled(false);
 		subtitle.setEnabled(false);
@@ -418,6 +498,9 @@ public class View
 		measureSpace.setEnabled(false);
 		titleFontSize.setEnabled(false);
 		subtitleFontSize.setEnabled(false);
+		leftMarginSpace.setEnabled(false);
+		rightMarginSpace.setEnabled(false);
+		pageList.setEnabled(false);
 		// panel.setEnabled(false);
 
 		return panel;
@@ -501,10 +584,18 @@ public class View
 		c.gridy = 0;
 		c.insets = new Insets(5, 10, 5, 5);
 		leftSide.add(buttonPanel(), c);
+
+		buildPropertiesScrollPane();
+		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
+				"PDF Properties:");
+		titled.setTitleJustification(TitledBorder.LEFT);
+		propertiesPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 10, 5, 5);
-		leftSide.add(pageProperties(), c);
+		leftSide.add(propertiesPane, c);
+
 		c.gridx = 0;
 		c.gridy = 2;
 		c.insets = new Insets(5, 10, 5, 5);
@@ -514,10 +605,25 @@ public class View
 	protected static void buildPreviewScrollPane()
 	{
 		previewPane = new JScrollPane();
-		previewPane.setPreferredSize(scroll);
-		previewPane.setMinimumSize(scroll);
+		previewPane.setPreferredSize(previewScroll);
+		previewPane.setMinimumSize(previewScroll);
+		previewPane.getViewport().setOpaque(false);
+		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+		previewPane.setViewportBorder(border);
+		previewPane.setBorder(border);
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
+	}
+
+	protected static void buildPropertiesScrollPane()
+	{
+		propertiesPane = new JScrollPane(pageProperties());
+		propertiesPane.setPreferredSize(propertiesScroll);
+		propertiesPane.setMinimumSize(propertiesScroll);
+		propertiesPane.getViewport().setOpaque(false);
+		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+		propertiesPane.setViewportBorder(border);
+		propertiesPane.setBorder(border);
 	}
 
 	/**

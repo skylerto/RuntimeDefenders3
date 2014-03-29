@@ -83,7 +83,6 @@ class TitleFocusListener implements FocusListener
 				IMGCreator.createPreview(model);
 
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
@@ -293,25 +292,6 @@ class SaveButtonListener implements ActionListener
 
 }
 
-/**
- * Update the stuffs from the GUI to the conversion code and convert, then
- * redisplay the image.
- * 
- * @author Skyler
- * 
- */
-class ApplyButtonListener implements ActionListener
-{
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-}
-
 class CorrectionButtonListener implements ActionListener
 {
 
@@ -354,6 +334,9 @@ class ConvertButtonListener implements ActionListener
 			View.measureSpace.setEnabled(true);
 			View.titleFontSize.setEnabled(true);
 			View.subtitleFontSize.setEnabled(true);
+			View.leftMarginSpace.setEnabled(true);
+			View.rightMarginSpace.setEnabled(true);
+			View.pageList.setEnabled(true);
 
 			// SET FIELD VALUES
 			View.title.setText(model.getTitle());
@@ -479,22 +462,4 @@ class ElementSizeListener implements ChangeListener
 		}
 
 	}
-}
-
-/**
- * Displays more of the settings for the properties of the pdf.
- * 
- * @author Skyler
- * 
- */
-class SettingsButtonListener implements ActionListener
-{
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 }
