@@ -222,6 +222,7 @@ class SelectButtonListener implements ActionListener
 
 			View.input.setText(filenameWithExtension);
 			View.input.setEnabled(true);
+			View.repaintPreview("");
 			//View.convertButton.setEnabled(true);
 			
 			try
@@ -278,7 +279,7 @@ class SelectButtonListener implements ActionListener
 			}
 		}
 
-		View.repaintPreview("");
+		
 		
 		
 	}
