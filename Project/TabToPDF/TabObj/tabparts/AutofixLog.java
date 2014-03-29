@@ -16,7 +16,7 @@ public class AutofixLog {
 	/* CONSTANTS */
 	
 	public static final String LOG_NAME = "autofixlog.txt"; //also used for testing purposes
-	private static final String LOG_PATH = "outputfiles/" + LOG_NAME;
+	public static final String LOG_PATH = "outputfiles/" + LOG_NAME;
 	
 	/* ATTRIBUTES */
 	
