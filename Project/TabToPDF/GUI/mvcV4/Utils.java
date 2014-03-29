@@ -90,7 +90,6 @@ public class Utils
 	 */
 	static String openAndReadFile(String fileName)
 	{
-
 		String message = "";
 		File userman = new File(fileName);
 		try
@@ -106,8 +105,8 @@ public class Utils
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 		return message;
 	}
 
+	
 }

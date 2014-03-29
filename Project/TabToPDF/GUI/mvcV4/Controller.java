@@ -93,8 +93,6 @@ class TitleFocusListener implements FocusListener
 				View.repaintPreview(image);
 			}
 
-			View.updateCorrection(model.getFilename());
-
 		} catch (ConversionException e1)
 		{
 			// TODO Auto-generated catch block
@@ -124,8 +122,6 @@ class TitleListener implements ActionListener
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-
-			View.updateCorrection(model.getFilename());
 
 		} catch (ConversionException e1)
 		{
@@ -163,8 +159,6 @@ class SubtitleFocusListener implements FocusListener
 				View.repaintPreview(image);
 			}
 
-			View.updateCorrection(model.getFilename());
-
 		} catch (ConversionException e1)
 		{
 			// TODO Auto-generated catch block
@@ -194,8 +188,6 @@ class SubtitleListener implements ActionListener
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-
-			View.updateCorrection(model.getFilename());
 
 		} catch (ConversionException e1)
 		{
@@ -342,7 +334,8 @@ class ConvertButtonListener implements ActionListener
 			View.leftMarginSpace.setEnabled(true);
 			View.rightMarginSpace.setEnabled(true);
 			View.pageList.setEnabled(true);
-
+			View.saveButton.setEnabled(true);
+			
 			// SET FIELD VALUES
 			View.title.setText(model.getTitle());
 			View.subtitle.setText(model.getSubTitle());
@@ -353,7 +346,7 @@ class ConvertButtonListener implements ActionListener
 			View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
 			View.leftMarginSpace.setValue((int) model.getLeftMargin());
 			View.rightMarginSpace.setValue((int) model.getLeftMargin());
-			View.saveButton.setEnabled(true);
+			View.updateCorrection(model.getFilename());
 
 			// ELSE display the error message and don't enable buttons.
 
@@ -415,8 +408,6 @@ class SpacingListener implements ChangeListener
 					View.repaintPreview(image);
 				}
 
-				View.updateCorrection(model.getFilename());
-
 			} catch (ConversionException e1)
 			{
 				// TODO Auto-generated catch block
@@ -459,8 +450,6 @@ class ElementSizeListener implements ChangeListener
 					View.repaintPreview(image);
 				}
 
-				View.updateCorrection(model.getFilename());
-
 			} catch (ConversionException e1)
 			{
 				// TODO Auto-generated catch block
@@ -502,8 +491,6 @@ class MeasureSpaceListener implements ChangeListener
 					String image = IMGCreator.getLastConverted();
 					View.repaintPreview(image);
 				}
-
-				View.updateCorrection(model.getFilename());
 
 			} catch (ConversionException e1)
 			{
@@ -568,8 +555,6 @@ class TitleFontSizeListener implements ChangeListener
 					View.repaintPreview(image);
 				}
 
-				View.updateCorrection(model.getFilename());
-
 			} catch (ConversionException e1)
 			{
 				// TODO Auto-generated catch block
@@ -613,8 +598,6 @@ class SubtitleFontSizeListener implements ChangeListener
 					View.repaintPreview(image);
 				}
 
-				View.updateCorrection(model.getFilename());
-
 			} catch (ConversionException e1)
 			{
 				// TODO Auto-generated catch block
@@ -657,8 +640,6 @@ class LeftMarginListener implements ChangeListener
 					View.repaintPreview(image);
 				}
 
-				View.updateCorrection(model.getFilename());
-
 			} catch (ConversionException e1)
 			{
 				// TODO Auto-generated catch block
@@ -700,8 +681,6 @@ class RightMarginListener implements ChangeListener
 					String image = IMGCreator.getLastConverted();
 					View.repaintPreview(image);
 				}
-
-				View.updateCorrection(model.getFilename());
 
 			} catch (ConversionException e1)
 			{
