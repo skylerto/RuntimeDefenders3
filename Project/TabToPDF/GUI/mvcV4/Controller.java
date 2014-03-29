@@ -19,7 +19,7 @@ import version13.NoFileExistsException;
 import version13.NoMusicException;
 import version13.TextToPDF;
 
-import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.*;
 
 public class Controller
 {
@@ -346,6 +346,7 @@ class ConvertButtonListener implements ActionListener
 			View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
 			View.leftMarginSpace.setValue((int) model.getLeftMargin());
 			View.rightMarginSpace.setValue((int) model.getLeftMargin());
+			
 			View.updateCorrection(model.getFilename());
 
 			// ELSE display the error message and don't enable buttons.
@@ -511,11 +512,16 @@ class PageSizeListener implements ActionListener
 		Model model = Controller.getModel();
 		try
 		{
+			/* Get the corresponding rectangle from the GUI page size */
+			Rectangle pagesize = model.convertPageSizeToRectangle((String) View.pageList.getSelectedItem());
+			String ps = model.convertPageSizeToString(model.getPageSize());
+				
+			System.out.println("model ps: " + ps + " gui ps: " + (String) View.pageList.getSelectedItem());
 			/* If the value didn't change from the current value then do nothing */
-			if (!model.getTitle().equals(View.title.getText()))
+			if (!ps.equals((String) View.pageList.getSelectedItem()))
 			{
-				model.setTitle(View.title.getText());
-				model.converter.updateTitle((View.title.getText()));
+				model.setPageSize(pagesize);
+				model.converter.updatePageSize(pagesize);
 				IMGCreator.createPreview(model);
 
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -530,19 +536,6 @@ class PageSizeListener implements ActionListener
 			e1.printStackTrace();
 		}
 		
-		String selected = (String) View.pageList.getSelectedItem();
-		switch (selected)
-		{// check for a match
-		case "Letter":
-			System.out.println("Letter");
-			break;
-		case "Legal":
-			System.out.println("Legal");
-			break;
-		case "Ledger":
-			System.out.println("Ledger");
-			break;
-		}
 	}
 }
 

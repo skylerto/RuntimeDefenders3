@@ -2,6 +2,7 @@ package mvcV4;
 
 import tabparts.LargeNumberException;
 import version13.*;
+
 import com.itextpdf.text.*;
 
 public class Model
@@ -116,6 +117,30 @@ public class Model
 		this.setLeftMargin(this.converter.getLeftMargin());
 		this.setRightMargin(this.converter.getRightMargin());
 		this.setMeasureSpace(this.converter.getMeasureSpace());
+	}
+	
+	public String convertPageSizeToString(Rectangle pagesize) {
+		String ps = "";
+		if (pagesize.equals(PageSize.LETTER))
+			ps = View.LETTER;
+		else if (pagesize.equals(PageSize.LEGAL))
+			ps = View.LEGAL;
+		else if (pagesize.equals(PageSize.LEGAL))
+			ps = View.LEDGER;
+		else
+			ps = View.LETTER;
+		return ps;
+	}
+	
+	public Rectangle convertPageSizeToRectangle(String pagesize) {
+		Rectangle rec = new Rectangle(0, 0);
+		if (pagesize.equals(View.LETTER))
+			rec = PageSize.LETTER;
+		else if (pagesize.equals(View.LEGAL))
+			rec = PageSize.LEGAL;
+		else if (pagesize.equals(View.LEDGER))
+			rec = PageSize.LEDGER;
+		return rec;
 	}
 
 	public String getTitle()

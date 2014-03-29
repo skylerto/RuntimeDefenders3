@@ -272,6 +272,7 @@ public class TextToPDF {
 			writer.close();
 			
 			System.out.println("Successfully converted the file " + this.getInputPath() + " to PDF: " + this.getOutputPath());
+			System.out.println(this.properties.toString());
 
 		} catch (IOException e) {
 			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
