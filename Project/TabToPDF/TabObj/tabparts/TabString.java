@@ -63,6 +63,12 @@ public class TabString {
 	public static final Pattern VALID_TRIPLE_STRING = Pattern.compile("^\\s*[|]{3}\\s*$");		// A string containing only '|||'
 	public static final Pattern VALID_BARS = Pattern.compile("^\\s*[|]{2,}\\s*$");			// A string that contains at least 2 bars and only bars
 	public static final Pattern EMPTY_BARS = Pattern.compile("^\\s*[|]{1,2}.*[|]{1,2}\\s*$");	// Anything enclosed in bars with no dashes
+	public static final Pattern VALID_START_SP = Pattern.compile("^\\s*[|]\\s*\\S+");	
+	public static final Pattern VALID_END_SP = Pattern.compile("\\S+\\s*[|]\\s*$");	
+	public static final Pattern VALID_DB_START_SP = Pattern.compile("^\\s*[|]{2}\\s*\\S+\\s*");	
+	public static final Pattern VALID_DB_END_SP = Pattern.compile("\\s*\\S+\\s*[|]{2}\\s*$");	
+	public static final Pattern VALID_TB_END_SP = Pattern.compile("\\s*\\S+\\s*[|]{3}\\s*$");	
+	
 	
 	public static final String FULL_MSG = "[cannot add char to full string]";
 	public static final String EMPTY_MSG = "[empty string]";
@@ -423,6 +429,16 @@ public class TabString {
 				this.fixEnd();
 				if (b) return ENDFIX_SPACEFIX_MSG;
 				else return ENDFIX_MSG;
+			} else if (VALID_TB_END_SP.matcher(this.toString()).find()) {
+				this.fixStart();
+			} else if (VALID_DB_END_SP.matcher(this.toString()).find()) {
+				this.fixStart();
+			} else if (VALID_DB_START_SP.matcher(this.toString()).find()) {
+				this.fixEnd();
+			} else if (VALID_START_SP.matcher(this.toString()).find()) {
+				this.fixEnd();
+			} else if (VALID_END_SP.matcher(this.toString()).find()) {
+				this.fixStart();
 			} else {
 				this.fixBoth();
 				if (b) return BOTHFIX_SPACEFIX_MSG;
