@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -55,6 +56,9 @@ public class View
 
 	public static final int PAGEPROP_WIDTH = 300;
 	public static final int PAGEPROP_HEIGHT = 450;
+
+	public static final int CORRLOG_WIDTH = 300;
+	public static final int CORRLOG_HEIGHT = 200;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 200;
@@ -88,9 +92,6 @@ public class View
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
 	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/gui_images/SelectButtonPressed.png");
 	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/gui_images/SelectButtonDisabled.png");
-	protected static ImageIcon ConvertButtonIcon = CreateImageIcon("/gui_images/ConvertButtonDefault.png");
-	protected static ImageIcon ConvertButtonPressedIcon = CreateImageIcon("/gui_images/ConvertButtonPressed.png");
-	protected static ImageIcon ConvertButtonDisabledIcon = CreateImageIcon("/gui_images/ConvertButtonDisabled.png");
 	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/gui_images/SaveButtonDefault.png");
 	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/gui_images/SaveButtonPressed.png");
 	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/gui_images/SaveButtonDisabled.png");
@@ -102,8 +103,6 @@ public class View
 	// Buttons
 	protected static JButton selectButton = CreateButton(SelectButtonIcon,
 			SelectButtonPressedIcon, SelectButtonDisabledIcon);
-	protected static JButton convertButton = CreateButton(ConvertButtonIcon,
-			ConvertButtonPressedIcon, ConvertButtonDisabledIcon);
 	protected static JButton saveButton = CreateButton(SaveButtonIcon,
 			SaveButtonPressedIcon, SaveButtonDisabledIcon);
 	protected static JButton correctionButton = CreateButton(
@@ -304,10 +303,13 @@ public class View
 	private static void buildCorrectionLogDialog()
 	{
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
-		JPanel panel = new JPanel();
+		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
+				CORRLOG_HEIGHT));
 		JTextArea correctionLogText = new JTextArea();
-		panel.add(correctionLogText);
+		JScrollPane correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setEditable(false);
+		correctionLogDialog.add(correctionLogScroller);
+		correctionLogDialog.pack();
 	}
 
 	private static JPanel pageProperties()
@@ -562,13 +564,8 @@ public class View
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(convertButton, c);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.insets = new Insets(5, 5, 5, 5);
 		panel.add(saveButton, c);
 
-		convertButton.setEnabled(false);
 		saveButton.setEnabled(false);
 
 		return panel;
@@ -801,11 +798,6 @@ public class View
 	void addSelectButtonListener(ActionListener listenForSelectButton)
 	{
 		selectButton.addActionListener(listenForSelectButton);
-	}
-
-	void addConvertButtonListener(ActionListener listenForSelectButton)
-	{
-		convertButton.addActionListener(listenForSelectButton);
 	}
 
 	void addCorrectionButtonListener(ActionListener listenForSelectButton)
