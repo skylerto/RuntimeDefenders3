@@ -2,14 +2,11 @@ package version13;
 
 import java.io.*;
 import java.util.List;
-import java.util.regex.Pattern;
-
 import tabparts.LargeNumberException;
 import tabparts.TabStaff;
 import tabparts.TabString;
 import version13.MusicNoteProcess;
 import version13.DrawClass;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 

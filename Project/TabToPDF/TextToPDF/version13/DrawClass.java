@@ -11,7 +11,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 /**
  *  the draw class will draw all music symbols from a list of music symbol 
  *  object by using methods (functions) . Not all music symbols will drawn
- *  immediatly . Symbols like slide , hammer, pull will be stored in array
+ *  immediately . Symbols like slide , hammer, pull will be stored in array
  *  list to later drawn. 
  * @author saad
  *
@@ -530,78 +530,100 @@ public class DrawClass {
         	
         	    	
   }
+  /**
+   * this method will draw hammer,slide , and pull by grabbing 
+   * the previous number and next of the desired symbol./
+   * @param FontSize
+   * @param line_space
+   * @param cb
+   * @throws DocumentException
+   * @throws IOException
+   */
            
   public void drawSymbols(int FontSize,float  line_space,PdfContentByte cb) throws DocumentException, IOException {
-	 	
-      SymbolPoint temp = null;
-      SymbolPoint temp2 = null;
-        	for (int i =0 ; i < symbolp_list.size(); i++) {
-        		if (symbolp_list.get(i).getChar() == 'h') {	
-        			temp = getNumberPrevious(symbolp_list.get(i),i);
-        			temp2= getNumberNext(symbolp_list.get(i),i);
-        			if (temp == null || temp2 == null) {
-
-        				symbolp_list.remove(i);
-        				continue;
-        			}
-        			hammer( temp.getX(),temp.getY(), temp2.getX(),temp2.getY(),FontSize,line_space,cb);		
-        		} else if (symbolp_list.get(i).getChar() == 'p') {
-        			temp = getNumberPrevious(symbolp_list.get(i),i);
-        			temp2= getNumberNext(symbolp_list.get(i),i);
-        			if (temp == null || temp2 == null) {
-        				symbolp_list.remove(i);
-        				continue;
-        			}
-        				
-        			pull( temp.getX(),temp.getY(), temp2.getX(),temp2.getY(),FontSize,line_space,cb);	
-        		}else if (symbolp_list.get(i).getChar() == 's') {
-        			temp = getNumberPrevious(symbolp_list.get(i),i);
-        			temp2= getNumberNext(symbolp_list.get(i),i);
-        			if (temp == null || temp2 == null) {
-        				symbolp_list.remove(i);
-        				continue;
-        			}
-        					
-        			if (temp.getChar() > temp2.getChar()) 
-        				slide(symbolp_list.get(i).getX()+line_space/2f,symbolp_list.get(i).getY(),-1,(FontSize-2),(line_space-1), cb);			
-        			else if (temp.getChar() < temp2.getChar())
-        				slide(symbolp_list.get(i).getX()+line_space/2f,symbolp_list.get(i).getY(),1,(FontSize-2),(line_space-1), cb); 			
-        		}
+	  	
+      SymbolPoint prev_nu = null;
+      SymbolPoint next_nu = null;
+      for (int i =0 ; i < symbolp_list.size(); i++) {  
+          if (symbolp_list.get(i).getChar() == 'h') {
+        	  prev_nu = getNumberPrevious(symbolp_list.get(i),i);
+        	  next_nu= getNumberNext(symbolp_list.get(i),i);
+        	  if (prev_nu == null || next_nu == null) { 
+                  symbolp_list.remove(i);
+        		  continue;
+        	  }
+        	  /* draw hammer by get getting x,y coordinate of previous number to the x,y of the second number*/
+        	  hammer( prev_nu.getX(),prev_nu.getY(), next_nu.getX(),next_nu.getY(),FontSize,line_space,cb);		
+           } else if (symbolp_list.get(i).getChar() == 'p') {
+        	  prev_nu = getNumberPrevious(symbolp_list.get(i),i);
+        	  next_nu= getNumberNext(symbolp_list.get(i),i);
+        	  if (prev_nu == null || next_nu == null){
+        		   symbolp_list.remove(i);
+        		   continue;
+        	   }
+        	  /* draw pull by get getting x,y coordinate of previous number to the x,y of the second number*/		
+        	  pull( prev_nu.getX(),prev_nu.getY(), next_nu.getX(),next_nu.getY(),FontSize,line_space,cb);	
+           } else if (symbolp_list.get(i).getChar() == 's') {
+        	   prev_nu = getNumberPrevious(symbolp_list.get(i),i);
+        	   next_nu= getNumberNext(symbolp_list.get(i),i);
+        	   if (prev_nu == null || next_nu == null) {
+        		   symbolp_list.remove(i);
+        		   continue;
+        	   }			
+        	   if (prev_nu.getChar() > next_nu.getChar())
+        		   /* draw slide down*/
+        		   slide(symbolp_list.get(i).getX()+line_space/2f,symbolp_list.get(i).getY(),-1,(FontSize-2),(line_space-1), cb);			
+        	  else 
+        		  /* draw slide up*/
+        		   slide(symbolp_list.get(i).getX()+line_space/2f,symbolp_list.get(i).getY(),1,(FontSize-2),(line_space-1), cb); 			
         	}
-       	}
+        }
+  }
  
         
-        
-     public void printSymbolList() {
-    		for(SymbolPoint ss : symbolp_list) 
-    			ss.Print();        	
-     }
-     
-     private SymbolPoint getNumberPrevious(SymbolPoint sp , int index) {
-    		for (int i =index ; i >= 0; i--) {
-    			if(sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h' &&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' ) {
-    				return symbolp_list.get(i);
-    			}
-    				
-    			
-    		}
-    		return null;
-     }
-     private SymbolPoint getNumberNext(SymbolPoint sp , int index) {
-    	
- 		for (int i =index ; i < symbolp_list.size(); i++) {
- 			if(sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h'&&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' ) {
- 				return symbolp_list.get(i);
- 			}
- 				
- 			
- 		}
- 		return null;
+  /**
+   * this method will print the symbol point list      
+   */
+  void printSymbolList() { 
+      for(SymbolPoint ss : symbolp_list) 
+    	  ss.Print();        	
   }
+  /**
+   * the method will return the previous number before
+   * h, p, s from same , different music note on the same
+   * line  
+   * @param sp the music symbol
+   * @param index the music symbol location
+   * @return
+   */
+  private SymbolPoint getNumberPrevious(SymbolPoint sp , int index) {  
+      
+	  for (int i =index ; i >= 0; i--)   
+    	  if (sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h' &&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' )
+    		   return symbolp_list.get(i);	 		
+      return null;
+  }
+  /**
+   * the method will return the next number before
+   * h, p, s from same , different music note on the same
+   * @param sp
+   * @param index
+   * @return
+   */
+  private SymbolPoint getNumberNext(SymbolPoint sp , int index) {	
+ 	  
+	  for (int i =index ; i < symbolp_list.size(); i++) 
+ 		   if(sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h'&&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' )
+ 				return symbolp_list.get(i);	
+ 	  return null;
+  }
+  /**
+   * this method will clear the symbol point list
+   */
      
-      void FlushSymbol() {
+  void FlushSymbol() {
     	  symbolp_list.clear();
-     }
+  }
       
 
 }
