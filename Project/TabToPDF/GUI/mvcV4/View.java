@@ -198,6 +198,7 @@ public class View
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
 		iconLabel.setIcon(iconImage);
+		iconLabel.setText("");
 	}
 	
 	protected static void showError(String message) {
@@ -209,6 +210,7 @@ public class View
 	{
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
+		iconLabel.setText("");
 		iconLabel.setIcon(iconImage);
 		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth(),
 				(int) pageSize.getHeight()));
