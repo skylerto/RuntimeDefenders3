@@ -1,8 +1,11 @@
 package version13;
 
 /**
- * the class is using enums in order to create music symbol
- * object such it it will contain the enums and the value of the enum.
+ * the class is using enums class embedded inside
+ *  in order to create music symbol
+ * object such it it will contain the enum for desired music
+ *  and the value of the that music symbol. this class is used in 
+ *  MusicNoteprocess class to process a music notes in form of string. 
  * Example:
  * suppose we want to create  dash music symbol. we will pass
  * the enum (dash) and the number of dashes we seen as value(num).

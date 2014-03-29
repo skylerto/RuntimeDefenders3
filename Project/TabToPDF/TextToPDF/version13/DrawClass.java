@@ -9,10 +9,11 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 
 /**
- *  the draw class will draw all music symbols from a list of music symbol 
- *  object by using methods (functions) . Not all music symbols will drawn
- *  immediately . Symbols like slide , hammer, pull will be stored in array
- *  list to later drawn. 
+ *  the draw class will draw in PDF MusicSymbol object from a list that 
+ *  contain  MusicSymbol objects from MusicNoteProcess .
+ *  . Not all music symbols will drawn in PDF 
+ *  immediately . Symbols slide , hammer, pull will be stored in list
+ *  list to later drawn in TextToPDF. 
  * @author saad
  *
  */
