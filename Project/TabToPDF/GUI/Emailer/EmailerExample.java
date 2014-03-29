@@ -1,5 +1,7 @@
 package Emailer;
 
+import mvcV4.Emailer;
+
 public class EmailerExample {
 	public static void main(String[] args){
 		Emailer sendMusicEmail = new Emailer();

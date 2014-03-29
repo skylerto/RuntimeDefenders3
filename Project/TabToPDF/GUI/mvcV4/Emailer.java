@@ -1,4 +1,4 @@
-package Emailer;
+package mvcV4;
 import java.util.Properties;
 
 import javax.activation.*;

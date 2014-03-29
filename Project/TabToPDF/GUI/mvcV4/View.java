@@ -37,6 +37,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.itextpdf.text.Rectangle;
+
 import print.printPDF;
 import tabparts.AutofixLog;
 
@@ -166,7 +168,7 @@ public class View
 	private static int rightMarginSpaceCurrent = 10;
 
 	// JComboBox
-	protected static JComboBox pageList;
+	protected static JComboBox<String> pageList;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
@@ -178,7 +180,6 @@ public class View
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
-	protected static ImageIcon ic;
 	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
@@ -193,11 +194,19 @@ public class View
 
 	protected static void repaintPreview(String image)
 	{
-		ic = new ImageIcon(image);
-		ic.getImage().flush();
-		iconLabel.setIcon(ic);
-		previewPane.revalidate();
-		previewPane.repaint();
+		ImageIcon iconImage = new ImageIcon(image);
+		iconImage.getImage().flush();
+		iconLabel.setIcon(iconImage);
+	}
+
+	protected static void repaintPreview(String image, Rectangle pageSize)
+	{
+		ImageIcon iconImage = new ImageIcon(image);
+		iconImage.getImage().flush();
+		iconLabel.setIcon(iconImage);
+		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth(),
+				(int) pageSize.getHeight()));
+		iconLabel.revalidate();
 	}
 
 	// NOTE! Might want to combine this with repaintPreview into updateView

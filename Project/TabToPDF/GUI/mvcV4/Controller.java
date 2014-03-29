@@ -317,9 +317,11 @@ class ConvertButtonListener implements ActionListener
 			IMGCreator.createPreview(model);
 
 			// CHECK IF CONVERSION WAS DONE PROPERLY.
-
 			String image2 = IMGCreator.getLastConverted();
-			View.repaintPreview(image2);
+			Rectangle pagesize = model
+					.convertPageSizeToRectangle((String) View.pageList
+							.getSelectedItem());
+			View.repaintPreview(image2, pagesize);
 			// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
 
 			// GET CONVERTED FIELD VALUES.
@@ -335,7 +337,7 @@ class ConvertButtonListener implements ActionListener
 			View.rightMarginSpace.setEnabled(true);
 			View.pageList.setEnabled(true);
 			View.saveButton.setEnabled(true);
-			
+
 			// SET FIELD VALUES
 			View.title.setText(model.getTitle());
 			View.subtitle.setText(model.getSubTitle());
@@ -346,7 +348,8 @@ class ConvertButtonListener implements ActionListener
 			View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
 			View.leftMarginSpace.setValue((int) model.getLeftMargin());
 			View.rightMarginSpace.setValue((int) model.getLeftMargin());
-			
+			View.pageList.setSelectedIndex(0);
+
 			View.updateCorrection(model.getFilename());
 
 			// ELSE display the error message and don't enable buttons.
@@ -513,10 +516,13 @@ class PageSizeListener implements ActionListener
 		try
 		{
 			/* Get the corresponding rectangle from the GUI page size */
-			Rectangle pagesize = model.convertPageSizeToRectangle((String) View.pageList.getSelectedItem());
+			Rectangle pagesize = model
+					.convertPageSizeToRectangle((String) View.pageList
+							.getSelectedItem());
 			String ps = model.convertPageSizeToString(model.getPageSize());
-				
-			System.out.println("model ps: " + ps + " gui ps: " + (String) View.pageList.getSelectedItem());
+
+			System.out.println("model ps: " + ps + " gui ps: "
+					+ (String) View.pageList.getSelectedItem());
 			/* If the value didn't change from the current value then do nothing */
 			if (!ps.equals((String) View.pageList.getSelectedItem()))
 			{
@@ -527,7 +533,7 @@ class PageSizeListener implements ActionListener
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
 
 				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image);
+				View.repaintPreview(image, pagesize);
 			}
 
 		} catch (ConversionException e1)
@@ -535,7 +541,7 @@ class PageSizeListener implements ActionListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 	}
 }
 
