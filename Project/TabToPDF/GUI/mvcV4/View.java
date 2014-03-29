@@ -63,6 +63,10 @@ public class View
 
 	public static final int RIGHTPANEL_WIDTH = 650;
 	public static final int RIGHTPANEL_HEIGHT = 500;
+	
+	public static final String LETTER = "Letter";
+	public static final String LEGAL = "Legal";
+	public static final String LEDGER = "Ledger";
 
 	/* ATTRIBUTES */
 
@@ -482,7 +486,7 @@ public class View
 		panel.add(pageSizeLabel, c);
 
 		String[] pageSizes =
-		{ "Letter", "Legal", "Ledger" };
+		{ LETTER, LEGAL, LEDGER };
 		pageList = new JComboBox<String>(pageSizes);
 		pageList.setSelectedIndex(0);
 		c.gridx = 1;

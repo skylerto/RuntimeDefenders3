@@ -521,6 +521,28 @@ class PageSizeListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		Model model = Controller.getModel();
+		try
+		{
+			/* If the value didn't change from the current value then do nothing */
+			if (!model.getTitle().equals(View.title.getText()))
+			{
+				model.setTitle(View.title.getText());
+				model.converter.updateTitle((View.title.getText()));
+				IMGCreator.createPreview(model);
+
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image);
+			}
+
+		} catch (ConversionException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		String selected = (String) View.pageList.getSelectedItem();
 		switch (selected)
 		{// check for a match

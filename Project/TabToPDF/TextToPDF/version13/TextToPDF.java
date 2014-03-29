@@ -272,7 +272,6 @@ public class TextToPDF {
 			writer.close();
 			
 			System.out.println("Successfully converted the file " + this.getInputPath() + " to PDF: " + this.getOutputPath());
-			System.out.println(this.getMeasureSpace());
 
 		} catch (IOException e) {
 			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
@@ -566,11 +565,11 @@ public class TextToPDF {
 	 * 
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
-		/*TextToPDFv13 conversion = new TextToPDFv13
-				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 5.0f, 10, PageSize.LETTER, 16, 14);*/
-		
 		TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");
+				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 90.0f, 10, PageSize.LETTER, 16, 14);
+		
+		/*TextToPDF conversion = new TextToPDF
+				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");*/
 		//conversion.updateLeftMargin(100f);
 		conversion.WriteToPDF();
 		System.out.println(conversion.getProperties().toString());

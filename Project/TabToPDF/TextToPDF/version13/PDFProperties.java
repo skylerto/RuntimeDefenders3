@@ -33,6 +33,9 @@ public class PDFProperties {
 	public static final float DEFAULT_RIGHTMARGIN = 36f;
 	public static final float DEFAULT_MEASURESPACE = 80f;
 	
+	public static final float MAX_SPACING = 90f;
+	public static final float MIN_SPACING = 1f;
+	
 	public static final int VALUE_POSITION = 3;		// The position in the patterns where information is extracted from
 	public static final Pattern TITLE_PATTERN = Pattern.compile("(%\\s*TITLE\\s*=)(\\s*)([\\w+\\s*]+)(\\s*%)", Pattern.CASE_INSENSITIVE);		// Extracts the title after the equal sign of "Title="
 	public static final Pattern SUBTITLE_PATTERN = Pattern.compile("(%\\s*SUBTITLE\\s*=)(\\s*)([\\w+\\s*]+)(\\s*%)", Pattern.CASE_INSENSITIVE);	// Extracts the subtitle after the equal sign of "Subtitle="
@@ -170,12 +173,17 @@ public class PDFProperties {
 	}
 	
 	/**
-	 * Set the staff spacing.
+	 * Set the staff spacing. Keeps the spacing within bounds.
 	 * 
 	 * @param spacing
 	 */
 	public void setSpacing(float spacing) {
-		this.spacing = spacing;
+		if (spacing > MAX_SPACING) 
+			this.spacing = MAX_SPACING;
+		else if (spacing < MIN_SPACING)
+			this.spacing = MIN_SPACING;
+		else
+			this.spacing = spacing;
 	}
 	
 	/**
