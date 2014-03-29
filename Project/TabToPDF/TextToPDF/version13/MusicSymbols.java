@@ -1,7 +1,16 @@
 package version13;
 
-public class MusicSymbols {
-	public enum Symbols {
+/**
+ * the class is using enums in order to create music symbol
+ * object such it it will contain the enums and the value of the enum.
+ * Example:
+ * suppose we want to create  dash music symbol. we will pass
+ * the enum (dash) and the number of dashes we seen as value(num).
+ * @author saad
+ *
+ */
+ class MusicSymbols {
+     enum Symbols {	 
 	   OneBar_begin,OneBar_end,
 	   OneBar_begin_lastline,OneBar_end_lastline,
 	   Two_Bar_begin,Two_Bar_end,
@@ -16,19 +25,34 @@ public class MusicSymbols {
 	private Symbols ch_type;
 	private int number;
 	
-	
-	public MusicSymbols (Symbols ct , int num) {
+	/**
+	 * create object that has enum , and its value.
+	 * @param ct
+	 * @param num
+	 */
+	MusicSymbols (Symbols ct , int num) {
 		ch_type = ct;
 		number = num;
 	}
-	public MusicSymbols (Symbols ct) {
+	/**
+	 * create object that has enum with its value 1.
+	 * @param ct
+	 */
+	MusicSymbols (Symbols ct) {
 		this(ct,1);
 	}
-	public int getValue() {
+	/**
+	 * return the value of this enum.
+	 * @return
+	 */
+	 int getValue() {
 		return number;
 	}
-	
-	public Symbols getchartype() {
+	/**
+	 * return the enum of this MusicSymbol object.
+	 * @return
+	 */
+	Symbols getchartype() {
 		return ch_type;
 	}
 
