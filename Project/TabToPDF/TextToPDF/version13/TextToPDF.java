@@ -264,8 +264,6 @@ public class TextToPDF {
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1))
 							.getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
 			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getElementSize());
-			if (staff.getMeasureRepeat(staff.size()-1) > 1) 	
-			    draw.InsertText("Repeat "+staff.getMeasureRepeat(staff.size()-1)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
 			draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
 			draw.FlushSymbol();
 			doc.close();
@@ -567,7 +565,7 @@ public class TextToPDF {
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
 		TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 90.0f, 10, PageSize.LETTER, 16, 14);
+				("outputfiles/musicPDF.pdf", "inputfiles/try.txt", 12.0f, 10, PageSize.LETTER, 16, 14);
 		
 		/*TextToPDF conversion = new TextToPDF
 				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");*/
