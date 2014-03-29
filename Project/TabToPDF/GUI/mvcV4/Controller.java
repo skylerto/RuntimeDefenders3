@@ -41,6 +41,11 @@ public class Controller
 		this.view.titleFocusListener(new TitleFocusListener());
 		this.view.subtitleFocusListener(new SubtitleFocusListener());
 		this.view.elementSizeListener(new ElementSizeListener());
+		this.view.measureSpaceListener(new MeasureSpaceListener());
+		this.view.titleFontSizeListener(new TitleFontSizeListener());
+		this.view.subtitleFontSizeListener(new SubtitleFontSizeListener());
+		this.view.leftMarginListener(new LeftMarginListener());
+		this.view.rightMarginListener(new RightMarginListener());
 	}
 
 	/*
@@ -343,6 +348,11 @@ class ConvertButtonListener implements ActionListener
 			View.subtitle.setText(model.getSubTitle());
 			View.staffSpacing.setValue((int) model.getSpacing());
 			View.elementSize.setValue(model.getElementSize());
+			View.measureSpace.setValue((int)model.getMeasureSpace());
+			View.titleFontSize.setValue((int)model.getTitleFontSize());
+			View.subtitleFontSize.setValue((int)model.getSubTitleFontSize());
+			View.leftMarginSpace.setValue((int)model.getLeftMargin());
+			View.rightMarginSpace.setValue((int)model.getLeftMargin());
 			View.saveButton.setEnabled(true);
 
 			// ELSE display the error message and don't enable buttons.
@@ -443,6 +453,223 @@ class ElementSizeListener implements ChangeListener
 					model.setElementSize(View.elementSize.getValue());
 					model.converter.updateElementSize((View.elementSize
 							.getValue()));
+					IMGCreator.createPreview(model);
+
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+class MeasureSpaceListener implements ChangeListener
+{
+
+	public void stateChanged(ChangeEvent e)
+	{
+
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getMeasureSpace() != View.measureSpace.getValue())
+				{
+					model.setMeasureSpace(View.measureSpace.getValue());
+					model.converter.updateMeasureSpace((View.measureSpace
+							.getValue()));
+					IMGCreator.createPreview(model);
+
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+class TitleFontSizeListener implements ChangeListener
+{
+
+	public void stateChanged(ChangeEvent e)
+	{
+
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getTitleFontSize() != View.titleFontSize.getValue())
+				{
+					model.setTitleFontSize(View.titleFontSize.getValue());
+					model.converter.updateTitleSize((View.titleFontSize.getValue()));
+					IMGCreator.createPreview(model);
+
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+class SubtitleFontSizeListener implements ChangeListener
+{
+
+	public void stateChanged(ChangeEvent e)
+	{
+
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getSubTitleFontSize() != View.subtitleFontSize.getValue())
+				{
+					model.setSubTitleFontSize(View.subtitleFontSize.getValue());
+					model.converter.updateSubtitleSize((View.subtitleFontSize.getValue()));
+					IMGCreator.createPreview(model);
+
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+class LeftMarginListener implements ChangeListener
+{
+
+	public void stateChanged(ChangeEvent e)
+	{
+
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getLeftMargin() != View.leftMarginSpace.getValue())
+				{
+					model.setLeftMargin(View.leftMarginSpace.getValue());
+					model.converter.updateLeftMargin((View.leftMarginSpace.getValue()));
+					IMGCreator.createPreview(model);
+
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+
+class RightMarginListener implements ChangeListener
+{
+
+	public void stateChanged(ChangeEvent e)
+	{
+
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getRightMargin() != View.rightMarginSpace.getValue())
+				{
+					model.setRightMargin(View.rightMarginSpace.getValue());
+					model.converter.updateRightMargin((View.rightMarginSpace.getValue()));
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.

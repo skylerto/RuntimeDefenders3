@@ -43,7 +43,7 @@ public class View
 
 	/* CONSTANTS */
 
-	public static final int PREVIEW_SCROLL_WIDTH = 625;
+	public static final int PREVIEW_SCROLL_WIDTH = 640;
 	public static final int PREVIEW_SCROLL_HEIGHT = 550;
 
 	public static final int PROPERTIES_SCROLL_WIDTH = 330;
@@ -120,7 +120,7 @@ public class View
 	// MEASURE SLIDER INFO
 	protected static JSlider elementSize;
 	private static final int elementSizeMin = 1;
-	private static final int elementSizeMax = 41;
+	private static final int elementSizeMax = 21;
 	private static int elementSizeCurrent = 1;
 
 	// SPACING SLIDER INFO
@@ -131,33 +131,33 @@ public class View
 
 	// MEASURE SLIDER INFO
 	protected static JSlider measureSpace;
-	private static final int measureSizeMin = 1;
-	private static final int measureSizeMax = 41;
-	private static int measureSizeCurrent = 1;
+	private static final int measureSizeMin = 50;
+	private static final int measureSizeMax = 200;
+	private static int measureSizeCurrent = 50;
 
 	// TITLE FONT SIZE SLIDER INFO
 	protected static JSlider titleFontSize;
 	private static final int titleFontSizeMin = 1;
-	private static final int titleFontSizeMax = 41;
+	private static final int titleFontSizeMax = 26;
 	private static int titleFontSizeCurrent = 1;
 
 	// SUBTITLE FONT SIZE SLIDER INFO
 	protected static JSlider subtitleFontSize;
 	private static final int subtitleFontSizeMin = 1;
-	private static final int subtitleFontSizeMax = 41;
+	private static final int subtitleFontSizeMax = 26;
 	private static int subtitleFontSizeCurrent = 1;
 
 	// LEFT MARGIN SPACE SLIDER INFO
 	protected static JSlider leftMarginSpace;
-	private static final int leftMarginSpaceMin = 0;
-	private static final int leftMarginSpaceMax = 20;
-	private static int leftMarginSpaceCurrent = 0;
+	private static final int leftMarginSpaceMin = 10;
+	private static final int leftMarginSpaceMax = 210;
+	private static int leftMarginSpaceCurrent = 10;
 
 	// SUBTITLE FONT SIZE SLIDER INFO
 	protected static JSlider rightMarginSpace;
-	private static final int rightMarginSpaceMin = 0;
-	private static final int rightMarginSpaceMax = 20;
-	private static int rightMarginSpaceCurrent = 0;
+	private static final int rightMarginSpaceMin = 10;
+	private static final int rightMarginSpaceMax = 210;
+	private static int rightMarginSpaceCurrent = 10;
 
 	// JComboBox
 	protected static JComboBox pageList;
@@ -336,7 +336,7 @@ public class View
 		panel.add(staffSpacing, c);
 
 		// Measure Element size.
-		JLabel measureElementLabel = new JLabel("Element Size: ");
+		JLabel measureElementLabel = new JLabel("Staff Size: ");
 		measureElementLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 3;
@@ -347,7 +347,7 @@ public class View
 
 		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
 				elementSizeMax, elementSizeCurrent);
-		elementSize.setMajorTickSpacing(10);
+		elementSize.setMajorTickSpacing(5);
 		elementSize.setMinorTickSpacing(1);
 		elementSize.setPaintTicks(true);
 		elementSize.setPaintLabels(true);
@@ -370,8 +370,8 @@ public class View
 
 		measureSpace = new JSlider(JSlider.HORIZONTAL, measureSizeMin,
 				measureSizeMax, measureSizeCurrent);
-		measureSpace.setMajorTickSpacing(10);
-		measureSpace.setMinorTickSpacing(1);
+		measureSpace.setMajorTickSpacing(50);
+		measureSpace.setMinorTickSpacing(10);
 		measureSpace.setPaintTicks(true);
 		measureSpace.setPaintLabels(true);
 		c.gridx = 1;
@@ -393,7 +393,7 @@ public class View
 
 		titleFontSize = new JSlider(JSlider.HORIZONTAL, titleFontSizeMin,
 				titleFontSizeMax, titleFontSizeCurrent);
-		titleFontSize.setMajorTickSpacing(10);
+		titleFontSize.setMajorTickSpacing(5);
 		titleFontSize.setMinorTickSpacing(1);
 		titleFontSize.setPaintTicks(true);
 		titleFontSize.setPaintLabels(true);
@@ -416,7 +416,7 @@ public class View
 
 		subtitleFontSize = new JSlider(JSlider.HORIZONTAL, subtitleFontSizeMin,
 				subtitleFontSizeMax, subtitleFontSizeCurrent);
-		subtitleFontSize.setMajorTickSpacing(10);
+		subtitleFontSize.setMajorTickSpacing(5);
 		subtitleFontSize.setMinorTickSpacing(1);
 		subtitleFontSize.setPaintTicks(true);
 		subtitleFontSize.setPaintLabels(true);
@@ -439,8 +439,8 @@ public class View
 
 		leftMarginSpace = new JSlider(JSlider.HORIZONTAL, leftMarginSpaceMin,
 				leftMarginSpaceMax, leftMarginSpaceCurrent);
-		leftMarginSpace.setMajorTickSpacing(10);
-		leftMarginSpace.setMinorTickSpacing(1);
+		leftMarginSpace.setMajorTickSpacing(50);
+		leftMarginSpace.setMinorTickSpacing(10);
 		leftMarginSpace.setPaintTicks(true);
 		leftMarginSpace.setPaintLabels(true);
 		c.gridx = 1;
@@ -462,8 +462,8 @@ public class View
 
 		rightMarginSpace = new JSlider(JSlider.HORIZONTAL, rightMarginSpaceMin,
 				rightMarginSpaceMax, rightMarginSpaceCurrent);
-		rightMarginSpace.setMajorTickSpacing(10);
-		rightMarginSpace.setMinorTickSpacing(1);
+		rightMarginSpace.setMajorTickSpacing(50);
+		rightMarginSpace.setMinorTickSpacing(10);
 		rightMarginSpace.setPaintTicks(true);
 		rightMarginSpace.setPaintLabels(true);
 		c.gridx = 1;
@@ -482,7 +482,7 @@ public class View
 		panel.add(pageSizeLabel, c);
 
 		String[] pageSizes =
-		{ "Letter", "Legal", "Ledger", "A0" };
+		{ "Letter", "Legal", "Ledger" };
 		pageList = new JComboBox(pageSizes);
 		pageList.setSelectedIndex(0);
 		c.gridx = 1;
@@ -812,5 +812,31 @@ public class View
 	{
 		subtitle.addFocusListener(subtitleFocusListener);
 	}
+	
+	void measureSpaceListener(ChangeListener measureSpaceListener)
+	{
+		measureSpace.addChangeListener(measureSpaceListener);
+	}
+	
+	void titleFontSizeListener(ChangeListener titleFontSizeListener)
+	{
+		titleFontSize.addChangeListener(titleFontSizeListener);
+	}
+	
+	void subtitleFontSizeListener(ChangeListener subtitleFontSizeListener)
+	{
+		subtitleFontSize.addChangeListener(subtitleFontSizeListener);
+	}
+	
+	void leftMarginListener(ChangeListener leftMarginListener)
+	{
+		leftMarginSpace.addChangeListener(leftMarginListener);
+	}
+	
+	void rightMarginListener(ChangeListener rightMarginListener)
+	{
+		rightMarginSpace.addChangeListener(rightMarginListener);
+	}
+	
 
 }

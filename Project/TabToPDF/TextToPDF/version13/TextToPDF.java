@@ -22,7 +22,7 @@ public class TextToPDF {
 	
 	public static final String DEFAULT_INPUTPATH = "inputfiles/try.txt";
 	public static final String DEFAULT_OUTPUTPATH = "outputfiles/musicPDF.pdf";
-	private static final float TOPTITLE_MARGIN = 112;
+	private static final float TOPTITLE_MARGIN = 135;
 	private static final float TOP_MARGIN = 42;
 	private static final float BOT_MARGIN = 80;
 	
@@ -272,6 +272,7 @@ public class TextToPDF {
 			writer.close();
 			
 			System.out.println("Successfully converted the file " + this.getInputPath() + " to PDF: " + this.getOutputPath());
+			System.out.println(this.getMeasureSpace());
 
 		} catch (IOException e) {
 			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
@@ -344,7 +345,6 @@ public class TextToPDF {
 		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
 		int maxchars = (int) (innerwidth/this.getSpacing());
 		this.staff.splitLongMeasures(maxchars);
-		System.out.println(maxchars);
 	}
 	
 	/**
