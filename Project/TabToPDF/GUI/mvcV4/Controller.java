@@ -46,6 +46,7 @@ public class Controller
 		this.view.subtitleFontSizeListener(new SubtitleFontSizeListener());
 		this.view.leftMarginListener(new LeftMarginListener());
 		this.view.rightMarginListener(new RightMarginListener());
+		this.view.pageSizeListener(new PageSizeListener());
 	}
 
 	/*
@@ -294,7 +295,6 @@ class SaveButtonListener implements ActionListener
 			}
 		}
 	}
-
 }
 
 class CorrectionButtonListener implements ActionListener
@@ -348,11 +348,11 @@ class ConvertButtonListener implements ActionListener
 			View.subtitle.setText(model.getSubTitle());
 			View.staffSpacing.setValue((int) model.getSpacing());
 			View.elementSize.setValue(model.getElementSize());
-			View.measureSpace.setValue((int)model.getMeasureSpace());
-			View.titleFontSize.setValue((int)model.getTitleFontSize());
-			View.subtitleFontSize.setValue((int)model.getSubTitleFontSize());
-			View.leftMarginSpace.setValue((int)model.getLeftMargin());
-			View.rightMarginSpace.setValue((int)model.getLeftMargin());
+			View.measureSpace.setValue((int) model.getMeasureSpace());
+			View.titleFontSize.setValue((int) model.getTitleFontSize());
+			View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
+			View.leftMarginSpace.setValue((int) model.getLeftMargin());
+			View.rightMarginSpace.setValue((int) model.getLeftMargin());
 			View.saveButton.setEnabled(true);
 
 			// ELSE display the error message and don't enable buttons.
@@ -388,10 +388,8 @@ class ConvertButtonListener implements ActionListener
 
 class SpacingListener implements ChangeListener
 {
-
 	public void stateChanged(ChangeEvent e)
 	{
-
 		JSlider source = (JSlider) e.getSource();
 
 		if (!source.getValueIsAdjusting())
@@ -518,6 +516,27 @@ class MeasureSpaceListener implements ChangeListener
 	}
 }
 
+class PageSizeListener implements ActionListener
+{
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		String selected = (String) View.pageList.getSelectedItem();
+		switch (selected)
+		{// check for a match
+		case "Letter":
+			System.out.println("Letter");
+			break;
+		case "Legal":
+			System.out.println("Legal");
+			break;
+		case "Ledger":
+			System.out.println("Ledger");
+			break;
+		}
+	}
+}
+
 class TitleFontSizeListener implements ChangeListener
 {
 
@@ -539,7 +558,8 @@ class TitleFontSizeListener implements ChangeListener
 				if (model.getTitleFontSize() != View.titleFontSize.getValue())
 				{
 					model.setTitleFontSize(View.titleFontSize.getValue());
-					model.converter.updateTitleSize((View.titleFontSize.getValue()));
+					model.converter.updateTitleSize((View.titleFontSize
+							.getValue()));
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -579,10 +599,12 @@ class SubtitleFontSizeListener implements ChangeListener
 				 * If the slider value didn't change from the current value then
 				 * do nothing
 				 */
-				if (model.getSubTitleFontSize() != View.subtitleFontSize.getValue())
+				if (model.getSubTitleFontSize() != View.subtitleFontSize
+						.getValue())
 				{
 					model.setSubTitleFontSize(View.subtitleFontSize.getValue());
-					model.converter.updateSubtitleSize((View.subtitleFontSize.getValue()));
+					model.converter.updateSubtitleSize((View.subtitleFontSize
+							.getValue()));
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -625,7 +647,8 @@ class LeftMarginListener implements ChangeListener
 				if (model.getLeftMargin() != View.leftMarginSpace.getValue())
 				{
 					model.setLeftMargin(View.leftMarginSpace.getValue());
-					model.converter.updateLeftMargin((View.leftMarginSpace.getValue()));
+					model.converter.updateLeftMargin((View.leftMarginSpace
+							.getValue()));
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -646,7 +669,6 @@ class LeftMarginListener implements ChangeListener
 
 	}
 }
-
 
 class RightMarginListener implements ChangeListener
 {
@@ -669,7 +691,8 @@ class RightMarginListener implements ChangeListener
 				if (model.getRightMargin() != View.rightMarginSpace.getValue())
 				{
 					model.setRightMargin(View.rightMarginSpace.getValue());
-					model.converter.updateRightMargin((View.rightMarginSpace.getValue()));
+					model.converter.updateRightMargin((View.rightMarginSpace
+							.getValue()));
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.

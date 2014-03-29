@@ -483,7 +483,7 @@ public class View
 
 		String[] pageSizes =
 		{ "Letter", "Legal", "Ledger" };
-		pageList = new JComboBox(pageSizes);
+		pageList = new JComboBox<String>(pageSizes);
 		pageList.setSelectedIndex(0);
 		c.gridx = 1;
 		c.gridy = 9;
@@ -753,44 +753,22 @@ public class View
 
 	void addSaveButtonListener(ActionListener listenForSelectButton)
 	{
-
 		saveButton.addActionListener(listenForSelectButton);
-
 	}
 
 	void addSelectButtonListener(ActionListener listenForSelectButton)
 	{
-
 		selectButton.addActionListener(listenForSelectButton);
-
 	}
 
 	void addConvertButtonListener(ActionListener listenForSelectButton)
 	{
-
 		convertButton.addActionListener(listenForSelectButton);
-
 	}
 
 	void addCorrectionButtonListener(ActionListener listenForSelectButton)
 	{
-
 		correctionButton.addActionListener(listenForSelectButton);
-
-	}
-
-	void spacingListener(ChangeListener spacingListener)
-	{
-
-		staffSpacing.addChangeListener(spacingListener);
-
-	}
-
-	void elementSizeListener(ChangeListener elementSizeListener)
-	{
-
-		elementSize.addChangeListener(elementSizeListener);
-
 	}
 
 	void titleListener(ActionListener titleListener)
@@ -812,31 +790,45 @@ public class View
 	{
 		subtitle.addFocusListener(subtitleFocusListener);
 	}
-	
+
 	void measureSpaceListener(ChangeListener measureSpaceListener)
 	{
 		measureSpace.addChangeListener(measureSpaceListener);
 	}
-	
+
 	void titleFontSizeListener(ChangeListener titleFontSizeListener)
 	{
 		titleFontSize.addChangeListener(titleFontSizeListener);
 	}
-	
+
 	void subtitleFontSizeListener(ChangeListener subtitleFontSizeListener)
 	{
 		subtitleFontSize.addChangeListener(subtitleFontSizeListener);
 	}
-	
+
 	void leftMarginListener(ChangeListener leftMarginListener)
 	{
 		leftMarginSpace.addChangeListener(leftMarginListener);
 	}
-	
+
 	void rightMarginListener(ChangeListener rightMarginListener)
 	{
 		rightMarginSpace.addChangeListener(rightMarginListener);
 	}
-	
 
+	void spacingListener(ChangeListener spacingListener)
+	{
+
+		staffSpacing.addChangeListener(spacingListener);
+	}
+
+	void elementSizeListener(ChangeListener elementSizeListener)
+	{
+		elementSize.addChangeListener(elementSizeListener);
+	}
+
+	void pageSizeListener(ActionListener pageSizeListener)
+	{
+		pageList.addActionListener(pageSizeListener);
+	}
 }
