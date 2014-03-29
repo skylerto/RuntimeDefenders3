@@ -223,62 +223,64 @@ class SelectButtonListener implements ActionListener
 			View.input.setText(filenameWithExtension);
 			View.input.setEnabled(true);
 			//View.convertButton.setEnabled(true);
+			
+			try
+			{
+				model.initializeConverter();
+				model.runConverter();
+
+				IMGCreator.createPreview(model);
+
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				String image2 = IMGCreator.getLastConverted();
+				Rectangle pagesize = model
+						.convertPageSizeToRectangle((String) View.pageList
+								.getSelectedItem());
+				View.repaintPreview(image2, pagesize);
+				// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
+
+				// GET CONVERTED FIELD VALUES.
+				// ENABLE FIELDS
+				View.title.setEnabled(true);
+				View.subtitle.setEnabled(true);
+				View.staffSpacing.setEnabled(true);
+				View.elementSize.setEnabled(true);
+				View.measureSpace.setEnabled(true);
+				View.titleFontSize.setEnabled(true);
+				View.subtitleFontSize.setEnabled(true);
+				View.leftMarginSpace.setEnabled(true);
+				View.rightMarginSpace.setEnabled(true);
+				View.pageList.setEnabled(true);
+				View.saveButton.setEnabled(true);
+
+				// SET FIELD VALUES
+				View.title.setText(model.getTitle());
+				View.subtitle.setText(model.getSubTitle());
+				View.staffSpacing.setValue((int) model.getSpacing());
+				View.elementSize.setValue(model.getElementSize());
+				View.measureSpace.setValue((int) model.getMeasureSpace());
+				View.titleFontSize.setValue((int) model.getTitleFontSize());
+				View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
+				View.leftMarginSpace.setValue((int) model.getLeftMargin());
+				View.rightMarginSpace.setValue((int) model.getLeftMargin());
+				View.pageList.setSelectedIndex(0);
+				View.propertiesPane.getVerticalScrollBar().setValue(0);
+
+				View.updateCorrection(model.getFilename());
+
+				// ELSE display the error message and don't enable buttons.
+
+			} catch (NoFileExistsException | CannotReadFileException
+					| EmptyFileException | NoMusicException | LargeNumberException
+					| ConversionException e1)
+			{
+				Controller.displayError(e1.getMessage());
+			}
 		}
 
 		View.repaintPreview("");
 		
-		try
-		{
-			model.initializeConverter();
-			model.runConverter();
-
-			IMGCreator.createPreview(model);
-
-			// CHECK IF CONVERSION WAS DONE PROPERLY.
-			String image2 = IMGCreator.getLastConverted();
-			Rectangle pagesize = model
-					.convertPageSizeToRectangle((String) View.pageList
-							.getSelectedItem());
-			View.repaintPreview(image2, pagesize);
-			// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
-
-			// GET CONVERTED FIELD VALUES.
-			// ENABLE FIELDS
-			View.title.setEnabled(true);
-			View.subtitle.setEnabled(true);
-			View.staffSpacing.setEnabled(true);
-			View.elementSize.setEnabled(true);
-			View.measureSpace.setEnabled(true);
-			View.titleFontSize.setEnabled(true);
-			View.subtitleFontSize.setEnabled(true);
-			View.leftMarginSpace.setEnabled(true);
-			View.rightMarginSpace.setEnabled(true);
-			View.pageList.setEnabled(true);
-			View.saveButton.setEnabled(true);
-
-			// SET FIELD VALUES
-			View.title.setText(model.getTitle());
-			View.subtitle.setText(model.getSubTitle());
-			View.staffSpacing.setValue((int) model.getSpacing());
-			View.elementSize.setValue(model.getElementSize());
-			View.measureSpace.setValue((int) model.getMeasureSpace());
-			View.titleFontSize.setValue((int) model.getTitleFontSize());
-			View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
-			View.leftMarginSpace.setValue((int) model.getLeftMargin());
-			View.rightMarginSpace.setValue((int) model.getLeftMargin());
-			View.pageList.setSelectedIndex(0);
-			View.propertiesPane.getVerticalScrollBar().setValue(0);
-
-			View.updateCorrection(model.getFilename());
-
-			// ELSE display the error message and don't enable buttons.
-
-		} catch (NoFileExistsException | CannotReadFileException
-				| EmptyFileException | NoMusicException | LargeNumberException
-				| ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+		
 	}
 }
 
