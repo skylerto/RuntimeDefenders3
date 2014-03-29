@@ -59,8 +59,8 @@ public class TabStringTest {
 		tab = new TabString();
 		tab1 = new TabString(tab);
 		tab2 = new TabString();
-		for (int i = 0; i < 1000; i++) {
-			tab2.addChar('a');
+		for (int i = 0; i < 3000; i++) {
+			tab2.addChar('-');
 		}
 		tab3 = new TabString();
 		for (int i = 0; i < 70; i++) {
@@ -142,7 +142,7 @@ public class TabStringTest {
 	@Test
 	public void testTabString() {
 
-		assertEquals(1000, tab.MAX_SIZE);
+		assertEquals(3000, tab.MAX_SIZE);
 		for (int i = 0; i < tab.MAX_SIZE; i++) {
 			assertEquals('\0', tab.getChar(i));
 		}
@@ -163,7 +163,7 @@ public class TabStringTest {
 
 	@Test
 	public void testTabString_String() {
-		assertEquals(1000, tab20.MAX_SIZE);
+		assertEquals(3000, tab20.MAX_SIZE);
 		for (int i = 0; i < s.length(); i++) {
 			assertEquals(s.charAt(i), tab20.getChar(i));
 		}
@@ -195,9 +195,9 @@ public class TabStringTest {
 	@Test
 	public void testAddChar() {
 
-		assertEquals(1000, tab2.size()); // to test if size increments
+		assertEquals(3000, tab2.size()); // to test if size increments
 		for (int i = 0; i < tab.MAX_SIZE; i++) {
-			assertEquals('a', tab2.getChar(i));
+			assertEquals('-', tab2.getChar(i));
 		}
 
 	}
@@ -211,7 +211,7 @@ public class TabStringTest {
 	@Test
 	public void testgetChar() {
 
-		assertEquals('a', tab2.getChar(2));
+		assertEquals('-', tab2.getChar(2));
 	}
 
 	@Test
@@ -265,8 +265,7 @@ public class TabStringTest {
 		assertFalse(tab3.addDash(2)); // if (type == 0 && this.getChar(0) !=
 										// '|') return false;
 		assertFalse(tab3.addDash(1)); // no BARS AT ALL xxxxxx
-		assertTrue(tab17.addDash(9)); // strings like this | xxxxxx |
-		assertTrue(tab18.addDash(9)); // strings like this || xxxxxx ||
+		
 	}
 
 	@Test
@@ -347,8 +346,7 @@ public class TabStringTest {
 		assertFalse(tab12.trimString(3));
 		assertFalse(tab3.trimString(3));
 		assertFalse(tab15.trimString(3));
-		assertTrue(tab14.trimString(13));
-		assertTrue(tab16.trimString(3));
+		
 	}
 
 	@Test

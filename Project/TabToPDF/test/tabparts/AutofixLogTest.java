@@ -28,7 +28,7 @@ public class AutofixLogTest {
 
 	@Test
 	public void Test_defaultConstructor() {
-	    String expected_path = "outputfiles/autofixlog.txt";
+	    String expected_path = "outputfiles\\autofixlog.txt";
 	    String expected_name = "autofixlog.txt";
 		assertEquals(expected_path,a1.log.getPath().toString());
 		assertEquals(expected_name,a1.log.getName());
