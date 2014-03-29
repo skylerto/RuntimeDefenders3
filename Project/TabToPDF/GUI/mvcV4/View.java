@@ -33,7 +33,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import print.printPDF;
 import tabparts.AutofixLog;
 import MVC.PrinterInterface;
@@ -42,28 +41,27 @@ public class View
 {
 
 	/* CONSTANTS */
-	
+
 	public static final int SCROLL_WIDTH = 625;
 	public static final int SCROLL_HEIGHT = 550;
-	
+
 	public static final int PAGEPROP_WIDTH = 300;
 	public static final int PAGEPROP_HEIGHT = 325;
-	
+
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 200;
-	
+
 	public static final int AUTOCORR_WIDTH = 270;
 	public static final int AUTOCORR_HEIGHT = 75;
-	
+
 	public static final int LEFTPANEL_WIDTH = 400;
 	public static final int LEFTPANEL_HEIGHT = 500;
-	
+
 	public static final int RIGHTPANEL_WIDTH = 650;
 	public static final int RIGHTPANEL_HEIGHT = 500;
-	
-	
+
 	/* ATTRIBUTES */
-	
+
 	protected static JFrame frame;
 
 	// Panels to add to frame.
@@ -118,13 +116,31 @@ public class View
 	protected static JSlider elementSize;
 	private static final int elementSizeMin = 1;
 	private static final int elementSizeMax = 41;
-	private static int measureSizeCurrent = 1;
+	private static int elementSizeCurrent = 1;
 
 	// SPACING SLIDER INFO
 	protected static JSlider staffSpacing;
 	private static final int staffSpacingMin = 1;
 	private static final int staffSpacingMax = 21;
 	private static int staffSpacingCurrent = 1;
+
+	// MEASURE SLIDER INFO
+	protected static JSlider measureSpace;
+	private static final int measureSizeMin = 1;
+	private static final int measureSizeMax = 41;
+	private static int measureSizeCurrent = 1;
+
+	// TITLE FONT SIZE SLIDER INFO
+	protected static JSlider titleFontSize;
+	private static final int titleFontSizeMin = 1;
+	private static final int titleFontSizeMax = 41;
+	private static int titleFontSizeCurrent = 1;
+
+	// SUBTITLE FONT SIZE SLIDER INFO
+	protected static JSlider subtitleFontSize;
+	private static final int subtitleFontSizeMin = 1;
+	private static final int subtitleFontSizeMax = 41;
+	private static int subtitleFontSizeCurrent = 1;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
@@ -251,18 +267,17 @@ public class View
 		// Song Title.
 		JLabel songLabel = new JLabel("Title: ");
 		songLabel.setFont(labelFont);
-
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		// c.insets = new Insets(5, 5, 5, 5);
-
+		c.weightx = 0;
+		c.insets = new Insets(0, 5, 5, 0);
 		panel.add(songLabel, c);
 
 		title = new JTextField(20);
 		c.gridx = 1;
 		c.gridy = 0;
-		// c.insets = new Insets(5, 5, 5, 5);
+		c.weightx = 1;
+		c.insets = new Insets(0, 5, 5, 5);
 		panel.add(title, c);
 
 		// Subtitle.
@@ -270,56 +285,140 @@ public class View
 		subLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 1;
+		c.weightx = 0;
+		c.insets = new Insets(0, 5, 10, 0);
 		panel.add(subLabel, c);
 
 		subtitle = new JTextField(20);
 		c.gridx = 1;
 		c.gridy = 1;
-		//c.insets = new Insets(5, 5, 5, 5);
+		c.weightx = 1;
+		c.insets = new Insets(0, 5, 10, 5);
 		panel.add(subtitle, c);
 
 		// Staff spacing.
-		JLabel spacingLabel = new JLabel("Spacing: ");
+		JLabel spacingLabel = new JLabel("Staff Space: ");
 		spacingLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(spacingLabel, c);
+
 		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
 				staffSpacingMax, staffSpacingCurrent);
-		staffSpacing.setMajorTickSpacing(2);
+		staffSpacing.setMajorTickSpacing(5);
 		staffSpacing.setMinorTickSpacing(1);
 		staffSpacing.setPaintTicks(true);
 		staffSpacing.setPaintLabels(true);
-
-		c.gridx = 0;
-		c.gridy = 2;
-		panel.add(spacingLabel, c);
-
 		c.gridx = 1;
 		c.gridy = 2;
-		c.insets = new Insets(5, 5, 5, 5);
-
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
 		panel.add(staffSpacing, c);
 
-		// Measure Font size.
-		JLabel measureFontLabel = new JLabel("Font: ");
-		measureFontLabel.setFont(labelFont);
+		// Measure Element size.
+		JLabel measureElementLabel = new JLabel("Element Size: ");
+		measureElementLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(measureElementLabel, c);
+
 		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
-				elementSizeMax, measureSizeCurrent);
-		elementSize.setMajorTickSpacing(5);
+				elementSizeMax, elementSizeCurrent);
+		elementSize.setMajorTickSpacing(10);
 		elementSize.setMinorTickSpacing(1);
 		elementSize.setPaintTicks(true);
 		elementSize.setPaintLabels(true);
-		c.gridx = 0;
-		c.gridy = 3;
-		panel.add(measureFontLabel, c);
-
 		c.gridx = 1;
 		c.gridy = 3;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
 		panel.add(elementSize, c);
+
+		// Measure Spacing
+		JLabel measureSpaceLabel = new JLabel("Measure Space: ");
+		measureSpaceLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(measureSpaceLabel, c);
+
+		measureSpace = new JSlider(JSlider.HORIZONTAL, measureSizeMin,
+				measureSizeMax, measureSizeCurrent);
+		measureSpace.setMajorTickSpacing(10);
+		measureSpace.setMinorTickSpacing(1);
+		measureSpace.setPaintTicks(true);
+		measureSpace.setPaintLabels(true);
+		c.gridx = 1;
+		c.gridy = 4;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
+		panel.add(measureSpace, c);
+
+		// Title Font Size
+		JLabel titleFontSizeLabel = new JLabel("Title Font Size: ");
+		titleFontSizeLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 5;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		panel.add(titleFontSizeLabel, c);
+
+		titleFontSize = new JSlider(JSlider.HORIZONTAL, titleFontSizeMin,
+				titleFontSizeMax, titleFontSizeCurrent);
+		titleFontSize.setMajorTickSpacing(10);
+		titleFontSize.setMinorTickSpacing(1);
+		titleFontSize.setPaintTicks(true);
+		titleFontSize.setPaintLabels(true);
+		c.gridx = 1;
+		c.gridy = 5;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
+		panel.add(titleFontSize, c);
+
+		// Subtitle Font Size
+		JLabel subtitleFontSizeLabel = new JLabel("Subtitle Font Size: ");
+		subtitleFontSizeLabel.setFont(labelFont);
+		c.gridx = 0;
+		c.gridy = 6;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.BASELINE_LEADING;
+		c.insets = new Insets(2, 5, 5, 0);
+		//panel.add(subtitleFontSizeLabel, c);
+
+		subtitleFontSize = new JSlider(JSlider.HORIZONTAL, subtitleFontSizeMin,
+				subtitleFontSizeMax, subtitleFontSizeCurrent);
+		subtitleFontSize.setMajorTickSpacing(10);
+		subtitleFontSize.setMinorTickSpacing(1);
+		subtitleFontSize.setPaintTicks(true);
+		subtitleFontSize.setPaintLabels(true);
+		c.gridx = 1;
+		c.gridy = 6;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 8, 5, 8);
+		//panel.add(subtitleFontSize, c);
 
 		title.setEnabled(false);
 		subtitle.setEnabled(false);
 		staffSpacing.setEnabled(false);
 		elementSize.setEnabled(false);
-		panel.setEnabled(false);
+		measureSpace.setEnabled(false);
+		titleFontSize.setEnabled(false);
+		subtitleFontSize.setEnabled(false);
+		// panel.setEnabled(false);
 
 		return panel;
 	}
@@ -356,9 +455,12 @@ public class View
 	{
 		JPanel autoCorrectionPanel = new JPanel();
 		autoCorrectionPanel.setOpaque(false);
-		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
+		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
+				AUTOCORR_HEIGHT));
+		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH,
+				AUTOCORR_HEIGHT));
+		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
+				AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setVisible(true);
 		autoCorrectionPanel.setEnabled(false);
 
@@ -392,7 +494,8 @@ public class View
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH, LEFTPANEL_HEIGHT));
+		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH,
+				LEFTPANEL_HEIGHT));
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -427,7 +530,8 @@ public class View
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(RIGHTPANEL_WIDTH, RIGHTPANEL_HEIGHT));
+		rightSide.setPreferredSize(new Dimension(RIGHTPANEL_WIDTH,
+				RIGHTPANEL_HEIGHT));
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
@@ -480,7 +584,6 @@ public class View
 		setLookAndFeel();
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationByPlatform(true);
 		frame.setResizable(false);
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -576,7 +679,7 @@ public class View
 		staffSpacing.addChangeListener(spacingListener);
 
 	}
-	
+
 	void elementSizeListener(ChangeListener elementSizeListener)
 	{
 
@@ -593,12 +696,12 @@ public class View
 	{
 		title.addFocusListener(titleFocusListener);
 	}
-		
+
 	void subtitleListener(ActionListener subtitleListener)
 	{
 		subtitle.addActionListener(subtitleListener);
 	}
-	
+
 	void subtitleFocusListener(FocusListener subtitleFocusListener)
 	{
 		subtitle.addFocusListener(subtitleFocusListener);

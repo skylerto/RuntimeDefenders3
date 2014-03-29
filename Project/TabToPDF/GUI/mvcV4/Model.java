@@ -4,21 +4,22 @@ import tabparts.LargeNumberException;
 import version13.*;
 import com.itextpdf.text.*;
 
-public class Model {
-	
+public class Model
+{
+
 	/* CONSTANTS */
-	
+
 	public static final String DEFAULT_OUTPUTPATH = TextToPDF.DEFAULT_OUTPUTPATH;
-	
+
 	/* ATTRIBUTES */
-	
+
 	protected TextToPDF converter;
-	
+
 	protected String filename;
 	protected String filenameWithExtention;
 	protected String outputpath;
 	protected String previewImage; // Holds the pathname of previewImage
-	
+
 	protected String title; // Holds the value of the title.
 	protected String subTitle; // Holds the value of the subTitle
 	protected float spacing;
@@ -28,12 +29,13 @@ public class Model {
 	protected Rectangle pageSize;
 	protected float leftMargin;
 	protected float rightMargin;
-	protected float measureSpace;	// The space between two rows of measures
+	protected float measureSpace; // The space between two rows of measures
 
 	/**
 	 * Deafault constructor, initializes strings to be empty integers to be 0.
 	 */
-	public Model() {
+	public Model()
+	{
 
 		this.title = "";
 		this.subTitle = "";
@@ -46,7 +48,7 @@ public class Model {
 		this.leftMargin = 0;
 		this.rightMargin = 0;
 		this.measureSpace = 0;
-		
+
 		this.filename = "";
 		this.filenameWithExtention = "";
 		this.outputpath = DEFAULT_OUTPUTPATH;
@@ -73,7 +75,8 @@ public class Model {
 	 */
 	public Model(String title, String subTitle, String previewImage,
 			String filename, String filenameWithExtension, int titleFontSize,
-			int subTitleFontSize, int measureFontSize, float spacing) {
+			int subTitleFontSize, int measureFontSize, float spacing)
+	{
 		this();
 		this.title = title;
 		this.filename = filename;
@@ -86,16 +89,22 @@ public class Model {
 		this.spacing = spacing;
 	}
 
-	public void initializeConverter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
-		this.converter = new TextToPDF(this.getOutputFilename(), this.getFilenameWithExtension());
+	public void initializeConverter() throws NoFileExistsException,
+			CannotReadFileException, EmptyFileException, NoMusicException,
+			LargeNumberException
+	{
+		this.converter = new TextToPDF(this.getOutputFilename(),
+				this.getFilenameWithExtension());
 		this.getConverterProperties();
 	}
-	
-	public void runConverter() throws ConversionException {
+
+	public void runConverter() throws ConversionException
+	{
 		this.converter.WriteToPDF();
 	}
-	
-	public void getConverterProperties() {
+
+	public void getConverterProperties()
+	{
 
 		this.setTitle(this.converter.getTitle());
 		this.setSubTitle(this.converter.getSubtitle());
@@ -108,116 +117,144 @@ public class Model {
 		this.setRightMargin(this.converter.getRightMargin());
 		this.setMeasureSpace(this.converter.getMeasureSpace());
 	}
-	
-	public String getTitle() {
+
+	public String getTitle()
+	{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 
-	public String getFilename() {
+	public String getFilename()
+	{
 		return filename;
 	}
 
-	public void setFilename(String filename) {
+	public void setFilename(String filename)
+	{
 		this.filename = filename;
 	}
 
-	public String getFilenameWithExtension() {
+	public String getFilenameWithExtension()
+	{
 		return filenameWithExtention;
 	}
 
-	public void setFilenameWithExtention(String filenameWithExtention) {
+	public void setFilenameWithExtention(String filenameWithExtention)
+	{
 		this.filenameWithExtention = filenameWithExtention;
 	}
 
-	public String getSubTitle() {
+	public String getSubTitle()
+	{
 		return subTitle;
 	}
 
-	public void setSubTitle(String subTitle) {
+	public void setSubTitle(String subTitle)
+	{
 		this.subTitle = subTitle;
 	}
 
-	public String getPreviewImage() {
+	public String getPreviewImage()
+	{
 		return previewImage;
 	}
 
-	public void setPreviewImage(String previewImage) {
+	public void setPreviewImage(String previewImage)
+	{
 		this.previewImage = previewImage;
 	}
 
-	public int getTitleFontSize() {
+	public int getTitleFontSize()
+	{
 		return titleFontSize;
 	}
 
-	public void setTitleFontSize(int titleFontSize) {
+	public void setTitleFontSize(int titleFontSize)
+	{
 		this.titleFontSize = titleFontSize;
 	}
 
-	public int getSubTitleFontSize() {
+	public int getSubTitleFontSize()
+	{
 		return subTitleFontSize;
 	}
 
-	public void setSubTitleFontSize(int subTitleFontSize) {
+	public void setSubTitleFontSize(int subTitleFontSize)
+	{
 		this.subTitleFontSize = subTitleFontSize;
 	}
 
-	public int getElementSize() {
+	public int getElementSize()
+	{
 		return elementSize;
 	}
 
-	public void setElementSize(int measureFontSize) {
+	public void setElementSize(int measureFontSize)
+	{
 		this.elementSize = measureFontSize;
 	}
 
-	public float getSpacing() {
+	public float getSpacing()
+	{
 		return spacing;
 	}
 
-	public void setSpacing(float spacing) {
+	public void setSpacing(float spacing)
+	{
 		this.spacing = spacing;
 	}
 
-	public void setOutputFilename(String outputpath) {
+	public void setOutputFilename(String outputpath)
+	{
 		this.outputpath = outputpath;
 	}
 
-	public String getOutputFilename() {
+	public String getOutputFilename()
+	{
 		return this.outputpath;
 	}
-	
-	public void setPageSize(Rectangle pagesize) {
+
+	public void setPageSize(Rectangle pagesize)
+	{
 		this.pageSize = pagesize;
 	}
-	
-	public Rectangle getPageSize() {
+
+	public Rectangle getPageSize()
+	{
 		return this.pageSize;
 	}
-	
-	public void setLeftMargin(float leftmargin) {
+
+	public void setLeftMargin(float leftmargin)
+	{
 		this.leftMargin = leftmargin;
 	}
-	
-	public float getLeftMargin() {
+
+	public float getLeftMargin()
+	{
 		return this.leftMargin;
 	}
-	
-	public void setRightMargin(float rightmargin) {
+
+	public void setRightMargin(float rightmargin)
+	{
 		this.rightMargin = rightmargin;
 	}
-	
-	public float getRightMargin() {
+
+	public float getRightMargin()
+	{
 		return this.rightMargin;
 	}
-	
-	public void setMeasureSpace(float measurespace) {
+
+	public void setMeasureSpace(float measurespace)
+	{
 		this.measureSpace = measurespace;
 	}
-	
-	public float getMeasureSpace() {
+
+	public float getMeasureSpace()
+	{
 		return this.measureSpace;
 	}
 

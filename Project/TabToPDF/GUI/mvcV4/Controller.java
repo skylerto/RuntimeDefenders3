@@ -23,7 +23,7 @@ import com.itextpdf.text.DocumentException;
 
 public class Controller
 {
-	
+
 	private static Model model;
 	private View view;
 
@@ -43,15 +43,11 @@ public class Controller
 		this.view.elementSizeListener(new ElementSizeListener());
 	}
 
-	/*protected static void setWriter(TextToPDF test2)
-	{
-		test = test2;
-	}
-
-	protected static TextToPDF getWriter()
-	{
-		return test;
-	}*/
+	/*
+	 * protected static void setWriter(TextToPDF test2) { test = test2; }
+	 * 
+	 * protected static TextToPDF getWriter() { return test; }
+	 */
 
 	protected static void setModel(Model model2)
 	{
@@ -77,22 +73,25 @@ class TitleFocusListener implements FocusListener
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		try {
+		try
+		{
 			/* If the value didn't change from the current value then do nothing */
-			if (!model.getTitle().equals(View.title.getText())) {
+			if (!model.getTitle().equals(View.title.getText()))
+			{
 				model.setTitle(View.title.getText());
 				model.converter.updateTitle((View.title.getText()));
 				IMGCreator.createPreview(model);
-				
+
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				
+
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-			
+
 			View.updateCorrection(model.getFilename());
 
-		} catch (ConversionException e1) {
+		} catch (ConversionException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -106,22 +105,25 @@ class TitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		try {
+		try
+		{
 			/* If the value didn't change from the current value then do nothing */
-			if (!model.getTitle().equals(View.title.getText())) {
+			if (!model.getTitle().equals(View.title.getText()))
+			{
 				model.setTitle(View.title.getText());
 				model.converter.updateTitle((View.title.getText()));
 				IMGCreator.createPreview(model);
-				
+
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				
+
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-			
+
 			View.updateCorrection(model.getFilename());
 
-		} catch (ConversionException e1) {
+		} catch (ConversionException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -141,22 +143,25 @@ class SubtitleFocusListener implements FocusListener
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		try {
+		try
+		{
 			/* If the value didn't change from the current value then do nothing */
-			if (!model.getSubTitle().equals(View.subtitle.getText())) {
+			if (!model.getSubTitle().equals(View.subtitle.getText()))
+			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
 				IMGCreator.createPreview(model);
-				
+
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				
+
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-			
+
 			View.updateCorrection(model.getFilename());
 
-		} catch (ConversionException e1) {
+		} catch (ConversionException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -170,22 +175,25 @@ class SubtitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		try {
+		try
+		{
 			/* If the value didn't change from the current value then do nothing */
-			if (!model.getSubTitle().equals(View.subtitle.getText())) {
+			if (!model.getSubTitle().equals(View.subtitle.getText()))
+			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
 				IMGCreator.createPreview(model);
-				
+
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				
+
 				String image = IMGCreator.getLastConverted();
 				View.repaintPreview(image);
 			}
-			
+
 			View.updateCorrection(model.getFilename());
 
-		} catch (ConversionException e1) {
+		} catch (ConversionException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -210,7 +218,7 @@ class SelectButtonListener implements ActionListener
 		{
 
 			String filenameWithExtension = chooser.getSelectedFile().toString();
-			
+
 			model.setFilenameWithExtention(filenameWithExtension);
 			model.setFilename(Utils.removeFileExtension(filenameWithExtension));
 
@@ -255,22 +263,28 @@ class SaveButtonListener implements ActionListener
 				test = new TextToPDF(outputFilename, input);
 				test.WriteToPDF();
 
-			} catch (NoFileExistsException e1) {
+			} catch (NoFileExistsException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (CannotReadFileException e1) {
+			} catch (CannotReadFileException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (EmptyFileException e1) {
+			} catch (EmptyFileException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (NoMusicException e1) {
+			} catch (NoMusicException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (LargeNumberException e1) {
+			} catch (LargeNumberException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (ConversionException e1) {
+			} catch (ConversionException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -317,11 +331,12 @@ class ConvertButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		
-		try {
+
+		try
+		{
 			model.initializeConverter();
 			model.runConverter();
-			
+
 			IMGCreator.createPreview(model);
 
 			// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -336,7 +351,10 @@ class ConvertButtonListener implements ActionListener
 			View.subtitle.setEnabled(true);
 			View.staffSpacing.setEnabled(true);
 			View.elementSize.setEnabled(true);
-			
+			View.measureSpace.setEnabled(true);
+			View.titleFontSize.setEnabled(true);
+			View.subtitleFontSize.setEnabled(true);
+
 			// SET FIELD VALUES
 			View.title.setText(model.getTitle());
 			View.subtitle.setText(model.getSubTitle());
@@ -346,22 +364,28 @@ class ConvertButtonListener implements ActionListener
 
 			// ELSE display the error message and don't enable buttons.
 
-		} catch (NoFileExistsException e1) {
+		} catch (NoFileExistsException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (CannotReadFileException e1) {
+		} catch (CannotReadFileException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (EmptyFileException e1) {
+		} catch (EmptyFileException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (NoMusicException e1) {
+		} catch (NoMusicException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (LargeNumberException e1) {
+		} catch (LargeNumberException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (ConversionException e1) {
+		} catch (ConversionException e1)
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -381,22 +405,29 @@ class SpacingListener implements ChangeListener
 		{
 			// TODO Auto-generated method stub
 			Model model = Controller.getModel();
-			try {
-				/* If the slider value didn't change from the current value then do nothing */
-				if (model.getSpacing() != View.staffSpacing.getValue()) {
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getSpacing() != View.staffSpacing.getValue())
+				{
 					model.setSpacing(View.staffSpacing.getValue());
-					model.converter.updateSpacing((View.staffSpacing.getValue()));
+					model.converter
+							.updateSpacing((View.staffSpacing.getValue()));
 					IMGCreator.createPreview(model);
-					
+
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
-					
+
 					String image = IMGCreator.getLastConverted();
 					View.repaintPreview(image);
 				}
-				
+
 				View.updateCorrection(model.getFilename());
 
-			} catch (ConversionException e1) {
+			} catch (ConversionException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -418,22 +449,29 @@ class ElementSizeListener implements ChangeListener
 		{
 			// TODO Auto-generated method stub
 			Model model = Controller.getModel();
-			try {
-				/* If the slider value didn't change from the current value then do nothing */
-				if (model.getElementSize() != View.elementSize.getValue()) {
+			try
+			{
+				/*
+				 * If the slider value didn't change from the current value then
+				 * do nothing
+				 */
+				if (model.getElementSize() != View.elementSize.getValue())
+				{
 					model.setElementSize(View.elementSize.getValue());
-					model.converter.updateElementSize((View.elementSize.getValue()));
+					model.converter.updateElementSize((View.elementSize
+							.getValue()));
 					IMGCreator.createPreview(model);
-					
+
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
-					
+
 					String image = IMGCreator.getLastConverted();
 					View.repaintPreview(image);
 				}
-				
+
 				View.updateCorrection(model.getFilename());
 
-			} catch (ConversionException e1) {
+			} catch (ConversionException e1)
+			{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
