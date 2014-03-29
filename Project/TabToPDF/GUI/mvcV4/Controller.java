@@ -330,6 +330,7 @@ class CorrectionButtonListener implements ActionListener
 		String correctionLogPath = AutofixLog.LOG_PATH;
 		View.correctionLogText
 				.setText(Utils.openAndReadFile(correctionLogPath));
+		View.correctionLogDialog.setLocationRelativeTo(View.frame);
 		View.correctionLogDialog.setVisible(true);
 	}
 }
