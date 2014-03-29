@@ -46,7 +46,7 @@ public class View
 	public static final int SCROLL_WIDTH = 625;
 	public static final int SCROLL_HEIGHT = 550;
 	
-	public static final int PAGEPROP_WIDTH = 325;
+	public static final int PAGEPROP_WIDTH = 300;
 	public static final int PAGEPROP_HEIGHT = 325;
 	
 	public static final int BUTTON_WIDTH = 270;
@@ -253,18 +253,15 @@ public class View
 		songLabel.setFont(labelFont);
 
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 2;
-		c.anchor = c.BASELINE_TRAILING;
 		// c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(songLabel, c);
 
 		title = new JTextField(20);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.gridwidth = 2;
+		c.gridx = 1;
+		c.gridy = 0;
 		// c.insets = new Insets(5, 5, 5, 5);
 		panel.add(title, c);
 
@@ -272,20 +269,17 @@ public class View
 		JLabel subLabel = new JLabel("Subtitle: ");
 		subLabel.setFont(labelFont);
 		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
-		c.anchor = c.BASELINE_TRAILING;
+		c.gridy = 1;
 		panel.add(subLabel, c);
 
 		subtitle = new JTextField(20);
-		c.gridx = 0;
-		c.gridy = 4;
-		c.gridwidth = 2;
-		// c.insets = new Insets(5, 5, 5, 5);
+		c.gridx = 1;
+		c.gridy = 1;
+		//c.insets = new Insets(5, 5, 5, 5);
 		panel.add(subtitle, c);
 
 		// Staff spacing.
-		JLabel spacingLabel = new JLabel("Staff Spacing: ");
+		JLabel spacingLabel = new JLabel("Spacing: ");
 		spacingLabel.setFont(labelFont);
 		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
 				staffSpacingMax, staffSpacingCurrent);
@@ -295,19 +289,17 @@ public class View
 		staffSpacing.setPaintLabels(true);
 
 		c.gridx = 0;
-		c.gridy = 6;
-		c.gridwidth = 2;
+		c.gridy = 2;
 		panel.add(spacingLabel, c);
 
-		c.gridx = 0;
-		c.gridy = 7;
-		c.gridwidth = 2;
+		c.gridx = 1;
+		c.gridy = 2;
 		c.insets = new Insets(5, 5, 5, 5);
 
 		panel.add(staffSpacing, c);
 
 		// Measure Font size.
-		JLabel measureFontLabel = new JLabel("Note Font Size: ");
+		JLabel measureFontLabel = new JLabel("Font: ");
 		measureFontLabel.setFont(labelFont);
 		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
 				elementSizeMax, measureSizeCurrent);
@@ -316,20 +308,18 @@ public class View
 		elementSize.setPaintTicks(true);
 		elementSize.setPaintLabels(true);
 		c.gridx = 0;
-		c.gridy = 8;
-		c.gridwidth = 2;
+		c.gridy = 3;
 		panel.add(measureFontLabel, c);
 
-		c.gridx = 0;
-		c.gridy = 9;
-		c.gridwidth = 2;
+		c.gridx = 1;
+		c.gridy = 3;
 		panel.add(elementSize, c);
 
 		title.setEnabled(false);
 		subtitle.setEnabled(false);
 		staffSpacing.setEnabled(false);
 		elementSize.setEnabled(false);
-		// panel.setEnabled(false);
+		panel.setEnabled(false);
 
 		return panel;
 	}
@@ -441,6 +431,7 @@ public class View
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
+		input.setEditable(false);
 		JLabel previewLabel = new JLabel();
 		c.gridx = 0;
 		c.gridy = 1;
