@@ -41,6 +41,29 @@ import MVC.PrinterInterface;
 public class View
 {
 
+	/* CONSTANTS */
+	
+	public static final int SCROLL_WIDTH = 625;
+	public static final int SCROLL_HEIGHT = 550;
+	
+	public static final int PAGEPROP_WIDTH = 325;
+	public static final int PAGEPROP_HEIGHT = 325;
+	
+	public static final int BUTTON_WIDTH = 270;
+	public static final int BUTTON_HEIGHT = 200;
+	
+	public static final int AUTOCORR_WIDTH = 270;
+	public static final int AUTOCORR_HEIGHT = 75;
+	
+	public static final int LEFTPANEL_WIDTH = 400;
+	public static final int LEFTPANEL_HEIGHT = 500;
+	
+	public static final int RIGHTPANEL_WIDTH = 650;
+	public static final int RIGHTPANEL_HEIGHT = 500;
+	
+	
+	/* ATTRIBUTES */
+	
 	protected static JFrame frame;
 
 	// Panels to add to frame.
@@ -106,8 +129,7 @@ public class View
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
-	protected static Dimension frameSize = new Dimension(950, 650);
-	static Dimension scroll = new Dimension(625, 600);
+	static Dimension scroll = new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT);
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
@@ -212,7 +234,7 @@ public class View
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 300));
+		panel.setPreferredSize(new Dimension(PAGEPROP_WIDTH, PAGEPROP_HEIGHT));
 
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
@@ -314,7 +336,7 @@ public class View
 	protected static JPanel buttonPanel()
 	{
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 225));
+		panel.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		GridBagConstraints c = new GridBagConstraints();
 		panel.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -341,9 +363,9 @@ public class View
 	protected static JPanel autoCorrections()
 	{
 		JPanel autoCorrectionPanel = new JPanel();
-		autoCorrectionPanel.setPreferredSize(new Dimension(270, 100));
-		autoCorrectionPanel.setMaximumSize(new Dimension(270, 100));
-		autoCorrectionPanel.setMinimumSize(new Dimension(270, 100));
+		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
+		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
+		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setVisible(true);
 		autoCorrectionPanel.setEnabled(false);
 
@@ -377,7 +399,7 @@ public class View
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(300, 450));
+		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH, LEFTPANEL_HEIGHT));
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -412,7 +434,7 @@ public class View
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(650, 500));
+		rightSide.setPreferredSize(new Dimension(RIGHTPANEL_WIDTH, RIGHTPANEL_HEIGHT));
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
