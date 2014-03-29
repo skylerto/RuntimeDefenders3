@@ -125,7 +125,7 @@ public class Model
 			ps = View.LETTER;
 		else if (pagesize.equals(PageSize.LEGAL))
 			ps = View.LEGAL;
-		else if (pagesize.equals(PageSize.LEGAL))
+		else if (pagesize.equals(PageSize.LEDGER))
 			ps = View.LEDGER;
 		else
 			ps = View.LETTER;
