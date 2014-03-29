@@ -11,6 +11,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import tabparts.AutofixLog;
 import tabparts.LargeNumberException;
 import version13.CannotReadFileException;
 import version13.ConversionException;
@@ -326,9 +327,9 @@ class CorrectionButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Model model = Controller.getModel();
-		String input = model.getFilenameWithExtension();
-		View.correctionLogText.setText(Utils.openAndReadFile(input));
+		String correctionLogPath = AutofixLog.LOG_PATH;
+		View.correctionLogText
+				.setText(Utils.openAndReadFile(correctionLogPath));
 		View.correctionLogDialog.setVisible(true);
 	}
 }

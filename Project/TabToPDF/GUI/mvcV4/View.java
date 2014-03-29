@@ -57,8 +57,8 @@ public class View
 	public static final int PAGEPROP_WIDTH = 300;
 	public static final int PAGEPROP_HEIGHT = 450;
 
-	public static final int CORRLOG_WIDTH = 300;
-	public static final int CORRLOG_HEIGHT = 200;
+	public static final int CORRLOG_WIDTH = 560;
+	public static final int CORRLOG_HEIGHT = 500;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 200;
