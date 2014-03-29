@@ -61,7 +61,8 @@ public class IMGCreator {
 			decode_pdf.openPdfFile(INPUT_PDFFILE); // Location of PDF file
 
 			decode_pdf.setExtractionMode(0, 1f);
-			BufferedImage img = decode_pdf.getPageAsImage(1); // Page to convert
+			decode_pdf.useHiResScreenDisplay(true);
+			BufferedImage img = decode_pdf.getPageAsImage(1);// Page to convert
 
 			try {
 				ImageIO.write(img, "png", outputfile); // Saving the image to

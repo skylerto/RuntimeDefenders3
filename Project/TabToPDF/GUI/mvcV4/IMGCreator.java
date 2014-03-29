@@ -6,6 +6,8 @@
 
 package mvcV4;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class IMGCreator {
 				+ ".png"); // Location of
 		// Image
 		// file
-		System.out.println(INPUT_PDFFILE + " " + outputfile);
+		//System.out.println(INPUT_PDFFILE + " " + outputfile);
 
 		/** instance of PdfDecoder to convert PDF into image */
 		PdfDecoder decode_pdf = new PdfDecoder(true);
@@ -60,9 +62,21 @@ public class IMGCreator {
 
 			decode_pdf.setExtractionMode(0, 1f);
 			BufferedImage img = decode_pdf.getPageAsImage(1); // Page to convert
+			
+			/* Rescale image */
+			int w = img.getWidth();
+			int h = img.getHeight();
+			
+			BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			AffineTransform at = new AffineTransform();
+			at.scale(2, 2);
+			AffineTransformOp scaleOp = 
+			   new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+			after = scaleOp.filter(img, after);
 
+			
 			try {
-				ImageIO.write(img, "png", outputfile); // Saving the image to
+				ImageIO.write(after, "png", outputfile); // Saving the image to
 														// png
 			} catch (IOException exception) {
 			}

@@ -33,15 +33,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import mvcV2.Model;
-
-import com.itextpdf.text.DocumentException;
-
-import creator.IMGCreator;
 
 import print.printPDF;
 import tabparts.AutofixLog;
-import version12.TextToPDFv12;
 import MVC.PrinterInterface;
 
 public class View
@@ -98,22 +92,22 @@ public class View
 
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
-	protected static JSlider measureFontSize;
-	private static final int measureFontMin = 0;
-	private static final int measureFontMax = 40;
-	private static int measureSized;
+	protected static JSlider elementSize;
+	private static final int elementSizeMin = 1;
+	private static final int elementSizeMax = 41;
+	private static int measureSizeCurrent = 1;
 
 	// SPACING SLIDER INFO
 	protected static JSlider staffSpacing;
-	private static final int staffSpacingMin = 0;
-	private static final int staffSpacingMax = 12;
-	private static int staffSpacingCurrent;
+	private static final int staffSpacingMin = 1;
+	private static final int staffSpacingMax = 21;
+	private static int staffSpacingCurrent = 1;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
 	protected static Dimension frameSize = new Dimension(950, 650);
-	static Dimension scroll = new Dimension(615, 575);
+	static Dimension scroll = new Dimension(825, 675);
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
@@ -218,7 +212,7 @@ public class View
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 300));
+		panel.setPreferredSize(new Dimension(270, 400));
 
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
@@ -292,12 +286,12 @@ public class View
 		// Measure Font size.
 		JLabel measureFontLabel = new JLabel("Note Font Size: ");
 		measureFontLabel.setFont(labelFont);
-		measureFontSize = new JSlider(JSlider.HORIZONTAL, measureFontMin,
-				measureFontMax, measureSized);
-		measureFontSize.setMajorTickSpacing(10);
-		measureFontSize.setMinorTickSpacing(1);
-		measureFontSize.setPaintTicks(true);
-		measureFontSize.setPaintLabels(true);
+		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
+				elementSizeMax, measureSizeCurrent);
+		elementSize.setMajorTickSpacing(5);
+		elementSize.setMinorTickSpacing(1);
+		elementSize.setPaintTicks(true);
+		elementSize.setPaintLabels(true);
 		c.gridx = 0;
 		c.gridy = 8;
 		c.gridwidth = 2;
@@ -306,12 +300,12 @@ public class View
 		c.gridx = 0;
 		c.gridy = 9;
 		c.gridwidth = 2;
-		panel.add(measureFontSize, c);
+		panel.add(elementSize, c);
 
 		title.setEnabled(false);
 		subtitle.setEnabled(false);
 		staffSpacing.setEnabled(false);
-		measureFontSize.setEnabled(false);
+		elementSize.setEnabled(false);
 		// panel.setEnabled(false);
 
 		return panel;
@@ -418,7 +412,7 @@ public class View
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(650, 660));
+		rightSide.setPreferredSize(new Dimension(900, 660));
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
@@ -563,6 +557,13 @@ public class View
 	{
 
 		staffSpacing.addChangeListener(spacingListener);
+
+	}
+	
+	void elementSizeListener(ChangeListener elementSizeListener)
+	{
+
+		elementSize.addChangeListener(elementSizeListener);
 
 	}
 

@@ -23,12 +23,9 @@ import com.itextpdf.text.DocumentException;
 
 public class Controller
 {
-
 	
-	
-	static Model model;
-	View view;
-	static TextToPDF test;
+	private static Model model;
+	private View view;
 
 	public Controller(View view)
 	{
@@ -43,9 +40,10 @@ public class Controller
 		this.view.subtitleListener(new SubtitleListener());
 		this.view.titleFocusListener(new TitleFocusListener());
 		this.view.subtitleFocusListener(new SubtitleFocusListener());
+		this.view.elementSizeListener(new ElementSizeListener());
 	}
 
-	protected static void setWriter(TextToPDF test2)
+	/*protected static void setWriter(TextToPDF test2)
 	{
 		test = test2;
 	}
@@ -53,7 +51,7 @@ public class Controller
 	protected static TextToPDF getWriter()
 	{
 		return test;
-	}
+	}*/
 
 	protected static void setModel(Model model2)
 	{
@@ -79,36 +77,21 @@ class TitleFocusListener implements FocusListener
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		String newTitle = View.title.getText();
-		model.setFilename(newTitle);
+		try {
+			/* If the value didn't change from the current value then do nothing */
+			if (!model.getTitle().equals(View.title.getText())) {
+				model.setTitle(View.title.getText());
+				model.converter.updateTitle((View.title.getText()));
+				IMGCreator.createPreview(model);
+				
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image);
+			}
+			
+			View.updateCorrection(model.getFilename());
 
-		try
-		{
-			String input = model.getFilenameWithExtension();
-			String output = "outputfiles/";
-			TextToPDF test = new TextToPDF(output, input);
-			test.updateTitle(newTitle);
-			IMGCreator.createPreview(model);
-
-			// CHECK IF CONVERTION WAS DONE PROPTERLY.
-			String image = model.getPreviewImage();
-			View.repaintPreview(image);
-
-		} catch (NoFileExistsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CannotReadFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (EmptyFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoMusicException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (LargeNumberException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		} catch (ConversionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -123,36 +106,21 @@ class TitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		String newTitle = View.title.getText();
-		model.setFilename(newTitle);
+		try {
+			/* If the value didn't change from the current value then do nothing */
+			if (!model.getTitle().equals(View.title.getText())) {
+				model.setTitle(View.title.getText());
+				model.converter.updateTitle((View.title.getText()));
+				IMGCreator.createPreview(model);
+				
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image);
+			}
+			
+			View.updateCorrection(model.getFilename());
 
-		try
-		{
-			String input = model.getFilenameWithExtension();
-			String output = "outputfiles/";
-			TextToPDF test = new TextToPDF(output, input);
-			test.updateTitle(newTitle);
-			IMGCreator.createPreview(model);
-
-			// CHECK IF CONVERTION WAS DONE PROPTERLY.
-			String image = model.getPreviewImage();
-			View.repaintPreview(image);
-
-		} catch (NoFileExistsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CannotReadFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (EmptyFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoMusicException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (LargeNumberException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		} catch (ConversionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -172,38 +140,22 @@ class SubtitleFocusListener implements FocusListener
 	@Override
 	public void focusLost(FocusEvent e)
 	{
-		System.out.println("Lost title");
 		Model model = Controller.getModel();
-		String newTitle = View.subtitle.getText();
-		model.setFilename(newTitle);
+		try {
+			/* If the value didn't change from the current value then do nothing */
+			if (!model.getSubTitle().equals(View.subtitle.getText())) {
+				model.setSubTitle(View.subtitle.getText());
+				model.converter.updateSubtitle((View.subtitle.getText()));
+				IMGCreator.createPreview(model);
+				
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image);
+			}
+			
+			View.updateCorrection(model.getFilename());
 
-		try
-		{
-			String input = model.getFilenameWithExtension();
-			String output = "outputfiles/";
-			TextToPDF test = new TextToPDF(output, input);
-			test.updateSubtitle(newTitle);
-			IMGCreator.createPreview(model);
-
-			// CHECK IF CONVERTION WAS DONE PROPTERLY.
-			String image = model.getPreviewImage();
-			View.repaintPreview(image);
-
-		} catch (NoFileExistsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CannotReadFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (EmptyFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoMusicException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (LargeNumberException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		} catch (ConversionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -218,36 +170,21 @@ class SubtitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		String newTitle = View.subtitle.getText();
-		model.setFilename(newTitle);
+		try {
+			/* If the value didn't change from the current value then do nothing */
+			if (!model.getSubTitle().equals(View.subtitle.getText())) {
+				model.setSubTitle(View.subtitle.getText());
+				model.converter.updateSubtitle((View.subtitle.getText()));
+				IMGCreator.createPreview(model);
+				
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image);
+			}
+			
+			View.updateCorrection(model.getFilename());
 
-		try
-		{
-			String input = model.getFilenameWithExtension();
-			String output = "outputfiles/";
-			TextToPDF test = new TextToPDF(output, input);
-			test.updateSubtitle(newTitle);
-			IMGCreator.createPreview(model);
-
-			// CHECK IF CONVERTION WAS DONE PROPTERLY.
-			String image = model.getPreviewImage();
-			View.repaintPreview(image);
-
-		} catch (NoFileExistsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CannotReadFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (EmptyFileException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoMusicException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (LargeNumberException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		} catch (ConversionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -266,7 +203,7 @@ class SelectButtonListener implements ActionListener
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
-		chooser.setDialogTitle("Select File");
+		chooser.setDialogTitle("Select Text File");
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
@@ -379,21 +316,12 @@ class ConvertButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		//System.out.println(" ghfjgf");
-
 		Model model = Controller.getModel();
-
-		String input = model.getFilenameWithExtension();
-		model.setOutputFilename(TextToPDF.DEFAULT_OUTPUTPATH);
-		String output = model.getOutputFilename();
-		try
-		{
-			TextToPDF test = new TextToPDF(output, input);
-			Controller.setWriter(test);
-			test.WriteToPDF();
-			model.setSpacing(test.getSpacing());
-			model.setTitle(test.getTitle());
-			model.setSubTitle(test.getSubtitle());
+		
+		try {
+			model.initializeConverter();
+			model.runConverter();
+			
 			IMGCreator.createPreview(model);
 
 			// CHECK IF CONVERSION WAS DONE PROPERLY.
@@ -407,13 +335,13 @@ class ConvertButtonListener implements ActionListener
 			View.title.setEnabled(true);
 			View.subtitle.setEnabled(true);
 			View.staffSpacing.setEnabled(true);
-			View.measureFontSize.setEnabled(true);
-
+			View.elementSize.setEnabled(true);
+			
 			// SET FIELD VALUES
-			View.subtitle.setText(model.getSubTitle());
 			View.title.setText(model.getTitle());
+			View.subtitle.setText(model.getSubTitle());
 			View.staffSpacing.setValue((int) model.getSpacing());
-			View.measureFontSize.setValue(model.getMeasureFontSize());
+			View.elementSize.setValue(model.getElementSize());
 			View.saveButton.setEnabled(true);
 
 			// ELSE display the error message and don't enable buttons.
@@ -444,9 +372,42 @@ class ConvertButtonListener implements ActionListener
 class SpacingListener implements ChangeListener
 {
 
-	Model model = Controller.getModel();
+	public void stateChanged(ChangeEvent e)
+	{
 
-	// TextToPDFv12 test = Controller.getWriter();
+		JSlider source = (JSlider) e.getSource();
+
+		if (!source.getValueIsAdjusting())
+		{
+			// TODO Auto-generated method stub
+			Model model = Controller.getModel();
+			try {
+				/* If the slider value didn't change from the current value then do nothing */
+				if (model.getSpacing() != View.staffSpacing.getValue()) {
+					model.setSpacing(View.staffSpacing.getValue());
+					model.converter.updateSpacing((View.staffSpacing.getValue()));
+					IMGCreator.createPreview(model);
+					
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+					
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+				
+				View.updateCorrection(model.getFilename());
+
+			} catch (ConversionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
+
+class ElementSizeListener implements ChangeListener
+{
 
 	public void stateChanged(ChangeEvent e)
 	{
@@ -457,39 +418,21 @@ class SpacingListener implements ChangeListener
 		{
 			// TODO Auto-generated method stub
 			Model model = Controller.getModel();
-			String input = model.getFilenameWithExtension();
-			String output = "outputfiles/";
-			try
-			{
-
-				TextToPDF test = new TextToPDF(output, input);
-				test.updateSpacing((View.staffSpacing.getValue()));
-				// test.setLineSpacing(View.staffSpacing.getValue());
-				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				model.setSpacing(View.staffSpacing.getValue());
-				View.staffSpacing.setValue((int) model.getSpacing());
-				String image = IMGCreator.getLastConverted();
-
-				View.repaintPreview(image);
+			try {
+				/* If the slider value didn't change from the current value then do nothing */
+				if (model.getElementSize() != View.elementSize.getValue()) {
+					model.setElementSize(View.elementSize.getValue());
+					model.converter.updateElementSize((View.elementSize.getValue()));
+					IMGCreator.createPreview(model);
+					
+					// CHECK IF CONVERSION WAS DONE PROPERLY.
+					
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				}
+				
 				View.updateCorrection(model.getFilename());
 
-			} catch (NoFileExistsException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (CannotReadFileException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (EmptyFileException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (NoMusicException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (LargeNumberException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			} catch (ConversionException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
