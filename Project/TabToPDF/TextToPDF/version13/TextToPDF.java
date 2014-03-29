@@ -569,7 +569,7 @@ public class TextToPDF {
 				("outputfiles/musicPDF.pdf", "inputfiles/tabtester.txt", 5.0f, 10, PageSize.LETTER, 16, 14);*/
 		
 		TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/try3.txt");
+				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");
 		//conversion.updateLeftMargin(100f);
 		conversion.WriteToPDF();
 		System.out.println(conversion.getProperties().toString());

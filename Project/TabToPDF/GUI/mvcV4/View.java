@@ -107,7 +107,7 @@ public class View
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
 	protected static Dimension frameSize = new Dimension(950, 650);
-	static Dimension scroll = new Dimension(825, 675);
+	static Dimension scroll = new Dimension(625, 600);
 
 	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
 
@@ -212,7 +212,7 @@ public class View
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 400));
+		panel.setPreferredSize(new Dimension(270, 350));
 
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
@@ -412,7 +412,7 @@ public class View
 		GridBagConstraints c = new GridBagConstraints();
 		rightSide.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(900, 660));
+		rightSide.setPreferredSize(new Dimension(650, 500));
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);

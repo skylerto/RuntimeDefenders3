@@ -69,7 +69,7 @@ public class IMGCreator {
 			
 			BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			AffineTransform at = new AffineTransform();
-			at.scale(2, 2);
+			at.scale(1, 1);
 			AffineTransformOp scaleOp = 
 			   new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 			after = scaleOp.filter(img, after);
