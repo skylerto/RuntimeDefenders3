@@ -234,6 +234,7 @@ public class View
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		panel.setPreferredSize(new Dimension(PAGEPROP_WIDTH, PAGEPROP_HEIGHT));
 
 		// Set border
@@ -336,6 +337,7 @@ public class View
 	protected static JPanel buttonPanel()
 	{
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		panel.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		GridBagConstraints c = new GridBagConstraints();
 		panel.setLayout(new GridBagLayout());
@@ -363,6 +365,7 @@ public class View
 	protected static JPanel autoCorrections()
 	{
 		JPanel autoCorrectionPanel = new JPanel();
+		autoCorrectionPanel.setOpaque(false);
 		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH, AUTOCORR_HEIGHT));
@@ -486,6 +489,7 @@ public class View
 		setLookAndFeel();
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationByPlatform(true);
 		frame.setResizable(false);
 
 		GridBagConstraints c = new GridBagConstraints();
