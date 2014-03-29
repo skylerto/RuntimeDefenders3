@@ -212,7 +212,7 @@ public class View
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 350));
+		panel.setPreferredSize(new Dimension(270, 300));
 
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
@@ -377,7 +377,7 @@ public class View
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(300, 650));
+		rightSide.setPreferredSize(new Dimension(300, 450));
 
 		c.gridx = 0;
 		c.gridy = 0;
