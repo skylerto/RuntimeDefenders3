@@ -344,6 +344,7 @@ public class TextToPDF {
 		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
 		int maxchars = (int) (innerwidth/this.getSpacing());
 		this.staff.splitLongMeasures(maxchars);
+		System.out.println(maxchars);
 	}
 	
 	/**

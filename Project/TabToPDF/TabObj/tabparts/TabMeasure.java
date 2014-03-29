@@ -201,7 +201,7 @@ public class TabMeasure {
 			}
 			
 			/* If the shortened or cut part contains only bars then disregard the split and return null */
-			if (bars.matcher(mshort.getStringText(0)).find() || bars.matcher(mleftover.getStringText(0)).find()) {
+			if (bars.matcher(mshort.getStringText(2)).find() || bars.matcher(mleftover.getStringText(2)).find()) {
 				return null;
 			} else {
 				this.copyMeasure(mshort); // Make the original measure the shortened measure
