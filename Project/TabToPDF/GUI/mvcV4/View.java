@@ -199,11 +199,16 @@ public class View
 		iconImage.getImage().flush();
 		iconLabel.setIcon(iconImage);
 		iconLabel.setText("");
+		previewPane.getVerticalScrollBar().setValue(0);
+		previewPane.getHorizontalScrollBar().setValue(0);
 	}
-	
-	protected static void showError(String message) {
-		iconLabel.setText(message);
+
+	protected static void showError(String message)
+	{
+		iconLabel.setText("<html>" + message + "<html>");
 		iconLabel.setIcon(ErrorIcon);
+		iconLabel.setPreferredSize(new Dimension(PROPERTIES_SCROLL_WIDTH,
+				PROPERTIES_SCROLL_HEIGHT));
 	}
 
 	protected static void repaintPreview(String image, Rectangle pageSize)

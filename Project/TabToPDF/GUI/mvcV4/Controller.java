@@ -48,8 +48,9 @@ public class Controller
 		this.view.rightMarginListener(new RightMarginListener());
 		this.view.pageSizeListener(new PageSizeListener());
 	}
-	
-	public static void displayError(String error) {
+
+	public static void displayError(String error)
+	{
 		View.showError(error);
 	}
 
@@ -260,8 +261,10 @@ class SaveButtonListener implements ActionListener
 				test = new TextToPDF(outputFilename, input);
 				test.WriteToPDF();
 
-			} catch (NoFileExistsException | CannotReadFileException | EmptyFileException |
-					NoMusicException | LargeNumberException | ConversionException e1) {
+			} catch (NoFileExistsException | CannotReadFileException
+					| EmptyFileException | NoMusicException
+					| LargeNumberException | ConversionException e1)
+			{
 				Controller.displayError(e1.getMessage());
 			}
 		}
@@ -328,13 +331,16 @@ class ConvertButtonListener implements ActionListener
 			View.leftMarginSpace.setValue((int) model.getLeftMargin());
 			View.rightMarginSpace.setValue((int) model.getLeftMargin());
 			View.pageList.setSelectedIndex(0);
+			View.propertiesPane.getVerticalScrollBar().setValue(0);
 
 			View.updateCorrection(model.getFilename());
 
 			// ELSE display the error message and don't enable buttons.
 
-		} catch (NoFileExistsException | CannotReadFileException | EmptyFileException |
-				NoMusicException | LargeNumberException | ConversionException e1) {
+		} catch (NoFileExistsException | CannotReadFileException
+				| EmptyFileException | NoMusicException | LargeNumberException
+				| ConversionException e1)
+		{
 			Controller.displayError(e1.getMessage());
 		}
 	}
@@ -349,7 +355,7 @@ class SpacingListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -390,7 +396,7 @@ class ElementSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -431,7 +437,7 @@ class MeasureSpaceListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -507,7 +513,7 @@ class TitleFontSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -548,7 +554,7 @@ class SubtitleFontSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -590,7 +596,7 @@ class LeftMarginListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
@@ -631,7 +637,7 @@ class RightMarginListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			
+
 			Model model = Controller.getModel();
 			try
 			{
