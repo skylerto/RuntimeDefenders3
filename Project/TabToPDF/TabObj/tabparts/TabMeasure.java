@@ -178,7 +178,7 @@ public class TabMeasure {
 		
 		/* If the length of the measure is greater than max, split it */
 		if (this.length() > maxlength) {
-			Pattern bars = Pattern.compile("^[|]*$");	// A string of only bars
+			Pattern bars = Pattern.compile("(^[|]*$)|(^[*][|][|]$)");	// A string of only bars or repeat bars
 			mleftover = new TabMeasure();
 			mshort = new TabMeasure();
 			

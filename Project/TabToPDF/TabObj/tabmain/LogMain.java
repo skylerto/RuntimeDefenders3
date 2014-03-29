@@ -24,9 +24,9 @@ public class LogMain {
 			System.err.println(e.getMessage());
 		}*/
 		
-		/*Pattern music = Pattern.compile("[-]+");
+		/*Pattern music = Pattern.compile("^[*][|][|]$");
 		
-		System.out.println(String.valueOf((music.matcher("| dawd-|")).find()));*/
+		System.out.println(String.valueOf((music.matcher("| dawd-*||")).find()));*/
 		
 		/*PDFProperties prop = new PDFProperties();
 		
@@ -44,13 +44,13 @@ public class LogMain {
 		
 		TabStaff s = new TabStaff();
 		try {
-			s.scanFile(new File("inputfiles/case1.txt"));
+			s.scanFile(new File("inputfiles/tabtester.txt"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(s.toString());
-		s.splitLongMeasures(38);
+		s.splitLongMeasures(12);
 		System.out.println(s.toString());
 	}
 }

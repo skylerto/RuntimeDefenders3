@@ -2,4 +2,4 @@ TITLE=El Negrito
 SUBTITLE=Antonio Lauro
 SPACING=5.0
 
-|------------------1------|adwads|---dw|
+|-2---*||
