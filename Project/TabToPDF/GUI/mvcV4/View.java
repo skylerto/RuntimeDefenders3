@@ -170,6 +170,11 @@ public class View
 	// JComboBox
 	protected static JComboBox<String> pageList;
 
+	// Auto Correction Panel
+	protected static JLabel correctionLabel;
+	protected static JDialog correctionLogDialog;
+	protected static JTextArea correctionLogText;
+
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
@@ -183,9 +188,6 @@ public class View
 	protected static JLabel iconLabel;
 	protected static JTextPane topBox;
 	protected static JScrollPane imgScrollPane;
-	protected static JLabel correctionLabel;
-
-	protected static JDialog correctionLogDialog;
 
 	public View()
 	{
@@ -305,7 +307,7 @@ public class View
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
-		JTextArea correctionLogText = new JTextArea();
+		correctionLogText = new JTextArea();
 		JScrollPane correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setEditable(false);
 		correctionLogDialog.add(correctionLogScroller);
@@ -736,6 +738,7 @@ public class View
 
 		populateLeftPanel(); // Adds all the elements to the left panel.
 		populateRightPanel(); // Adds all the elements to the right panel.
+		buildCorrectionLogDialog();
 
 		// Add panels.
 		c.gridx = 0;
@@ -747,10 +750,6 @@ public class View
 		frame.add(rightSide, c);
 		frame.pack();
 		frame.setVisible(true);
-
-		buildCorrectionLogDialog();
-		correctionLogDialog.setVisible(true);
-
 	}
 
 	/** Returns a JButton with the given default, pressed, and disabled icons */

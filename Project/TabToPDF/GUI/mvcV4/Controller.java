@@ -328,7 +328,8 @@ class CorrectionButtonListener implements ActionListener
 	{
 		Model model = Controller.getModel();
 		String input = model.getFilenameWithExtension();
-		Utils.openAndReadFile(input);
+		View.correctionLogText.setText(Utils.openAndReadFile(input));
+		View.correctionLogDialog.setVisible(true);
 	}
 }
 
