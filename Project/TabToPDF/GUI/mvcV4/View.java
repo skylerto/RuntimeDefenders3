@@ -97,6 +97,7 @@ public class View
 	protected static ImageIcon CorrectionButtonIcon = CreateImageIcon("/gui_images/CorrectionButtonDefault.png");
 	protected static ImageIcon CorrectionButtonPressedIcon = CreateImageIcon("/gui_images/CorrectionButtonPressed.png");
 	protected static ImageIcon CorrectionButtonDisabledIcon = CreateImageIcon("/gui_images/CorrectionButtonDisabled.png");
+	protected static ImageIcon ErrorIcon = CreateImageIcon("/gui_images/ErrorImage.png");
 
 	// Buttons
 	protected static JButton selectButton = CreateButton(SelectButtonIcon,
@@ -197,6 +198,11 @@ public class View
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
 		iconLabel.setIcon(iconImage);
+	}
+	
+	protected static void showError(String message) {
+		iconLabel.setText(message);
+		iconLabel.setIcon(ErrorIcon);
 	}
 
 	protected static void repaintPreview(String image, Rectangle pageSize)

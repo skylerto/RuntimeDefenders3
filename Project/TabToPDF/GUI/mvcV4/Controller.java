@@ -48,6 +48,10 @@ public class Controller
 		this.view.rightMarginListener(new RightMarginListener());
 		this.view.pageSizeListener(new PageSizeListener());
 	}
+	
+	public static void displayError(String error) {
+		View.showError(error);
+	}
 
 	/*
 	 * protected static void setWriter(TextToPDF test2) { test = test2; }
@@ -95,8 +99,7 @@ class TitleFocusListener implements FocusListener
 
 		} catch (ConversionException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Controller.displayError(e1.getMessage());
 		}
 	}
 }
@@ -125,8 +128,7 @@ class TitleListener implements ActionListener
 
 		} catch (ConversionException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Controller.displayError(e1.getMessage());
 		}
 	}
 }
@@ -161,8 +163,7 @@ class SubtitleFocusListener implements FocusListener
 
 		} catch (ConversionException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Controller.displayError(e1.getMessage());
 		}
 	}
 }
@@ -191,8 +192,7 @@ class SubtitleListener implements ActionListener
 
 		} catch (ConversionException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Controller.displayError(e1.getMessage());
 		}
 	}
 }
@@ -260,30 +260,9 @@ class SaveButtonListener implements ActionListener
 				test = new TextToPDF(outputFilename, input);
 				test.WriteToPDF();
 
-			} catch (NoFileExistsException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (CannotReadFileException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (EmptyFileException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (NoMusicException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (LargeNumberException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ConversionException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (NoFileExistsException | CannotReadFileException | EmptyFileException |
+					NoMusicException | LargeNumberException | ConversionException e1) {
+				Controller.displayError(e1.getMessage());
 			}
 		}
 	}
@@ -354,30 +333,9 @@ class ConvertButtonListener implements ActionListener
 
 			// ELSE display the error message and don't enable buttons.
 
-		} catch (NoFileExistsException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CannotReadFileException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (EmptyFileException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoMusicException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (LargeNumberException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ConversionException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (NoFileExistsException | CannotReadFileException | EmptyFileException |
+				NoMusicException | LargeNumberException | ConversionException e1) {
+			Controller.displayError(e1.getMessage());
 		}
 	}
 
@@ -391,7 +349,7 @@ class SpacingListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -414,8 +372,7 @@ class SpacingListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -433,7 +390,7 @@ class ElementSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -456,8 +413,7 @@ class ElementSizeListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -475,7 +431,7 @@ class MeasureSpaceListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -498,8 +454,7 @@ class MeasureSpaceListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -521,8 +476,6 @@ class PageSizeListener implements ActionListener
 							.getSelectedItem());
 			String ps = model.convertPageSizeToString(model.getPageSize());
 
-			System.out.println("model ps: " + ps + " gui ps: "
-					+ (String) View.pageList.getSelectedItem());
 			/* If the value didn't change from the current value then do nothing */
 			if (!ps.equals((String) View.pageList.getSelectedItem()))
 			{
@@ -538,8 +491,7 @@ class PageSizeListener implements ActionListener
 
 		} catch (ConversionException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Controller.displayError(e1.getMessage());
 		}
 
 	}
@@ -555,7 +507,7 @@ class TitleFontSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -578,8 +530,7 @@ class TitleFontSizeListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -597,7 +548,7 @@ class SubtitleFontSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -621,8 +572,7 @@ class SubtitleFontSizeListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -640,7 +590,7 @@ class LeftMarginListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -663,8 +613,7 @@ class LeftMarginListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
@@ -682,7 +631,7 @@ class RightMarginListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-			// TODO Auto-generated method stub
+			
 			Model model = Controller.getModel();
 			try
 			{
@@ -705,8 +654,7 @@ class RightMarginListener implements ChangeListener
 
 			} catch (ConversionException e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Controller.displayError(e1.getMessage());
 			}
 
 		}
