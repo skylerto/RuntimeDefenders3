@@ -1,11 +1,11 @@
 package exe;
 
-import MVC.runGUI;
+import mvcV4.Run;
 
 public class TabToPDF {
 	
 	public static void main (String[] args) {
-		runGUI run = new runGUI();
+		Run run = new Run();
 		run.main(args);
 	}
 	

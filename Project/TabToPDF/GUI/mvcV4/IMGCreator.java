@@ -18,8 +18,6 @@ import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.fonts.FontMappings;
 
-import version11.TextToPDFv11;
-
 /**
  * Sample image creator - converts the first page of a pdf into png NOTE: Code
  * only for testing basic jpedal functions

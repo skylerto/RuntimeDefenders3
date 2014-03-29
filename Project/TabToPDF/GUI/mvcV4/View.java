@@ -39,7 +39,6 @@ import javax.swing.event.ChangeListener;
 
 import print.printPDF;
 import tabparts.AutofixLog;
-import MVC.PrinterInterface;
 
 public class View
 {
