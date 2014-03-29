@@ -11,12 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
@@ -63,7 +66,7 @@ public class View
 
 	public static final int RIGHTPANEL_WIDTH = 650;
 	public static final int RIGHTPANEL_HEIGHT = 500;
-	
+
 	public static final String LETTER = "Letter";
 	public static final String LEGAL = "Legal";
 	public static final String LEDGER = "Ledger";
@@ -182,6 +185,8 @@ public class View
 	protected static JScrollPane imgScrollPane;
 	protected static JLabel correctionLabel;
 
+	protected static JDialog correctionLogDialog;
+
 	public View()
 	{
 		CreateAndShowGUI();
@@ -189,10 +194,11 @@ public class View
 
 	protected static void repaintPreview(String image)
 	{
-
 		ic = new ImageIcon(image);
 		ic.getImage().flush();
 		iconLabel.setIcon(ic);
+		previewPane.revalidate();
+		previewPane.repaint();
 	}
 
 	// NOTE! Might want to combine this with repaintPreview into updateView
@@ -272,6 +278,15 @@ public class View
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 		return panel;
+	}
+
+	private static void buildCorrectionLogDialog()
+	{
+		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
+		JPanel panel = new JPanel();
+		JTextArea correctionLogText = new JTextArea();
+		panel.add(correctionLogText);
+		correctionLogText.setEditable(false);
 	}
 
 	private static JPanel pageProperties()
@@ -712,9 +727,11 @@ public class View
 		c.gridx = 1;
 		c.gridy = 0;
 		frame.add(rightSide, c);
-
 		frame.pack();
 		frame.setVisible(true);
+
+		buildCorrectionLogDialog();
+		correctionLogDialog.setVisible(true);
 
 	}
 

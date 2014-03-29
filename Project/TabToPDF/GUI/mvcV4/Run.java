@@ -6,5 +6,4 @@ public class Run {
 		View view = new View();
 		Controller controller = new Controller(view);
 	}
-
 }
