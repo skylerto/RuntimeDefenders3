@@ -217,8 +217,7 @@ class SelectButtonListener implements ActionListener
 		chooser.setFileFilter(text_filter);
 		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
-		int status = chooser.showOpenDialog(chooser);
-		if (status == JFileChooser.APPROVE_OPTION)
+		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
 
 			String filenameWithExtension = chooser.getSelectedFile().toString();
@@ -291,15 +290,20 @@ class SaveButtonListener implements ActionListener
 	{
 		Model model = Controller.getModel();
 		JFileChooser chooser = new JFileChooser();
+		FileTypeFilter pdf_filter = new FileTypeFilter("Portable Document Format *.pdf",new String[] {".pdf"});
+		chooser.addChoosableFileFilter(pdf_filter);
+		chooser.setFileFilter(pdf_filter);
 		chooser.setCurrentDirectory(new java.io.File("."));
 		chooser.setDialogTitle("Select PDF Destination");
-		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
 
 		String input = model.getFilenameWithExtension();
-		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+		if (chooser.showSaveDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
 			String outputFilename = chooser.getSelectedFile().toString();
+			if(!outputFilename.matches("(.*)(\\.pdf){1}"))
+				outputFilename+=".pdf";
 			TextToPDF test;
 			try
 			{
