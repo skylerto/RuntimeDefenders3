@@ -174,6 +174,7 @@ public class View
 	protected static JLabel correctionLabel;
 	protected static JDialog correctionLogDialog;
 	protected static JTextArea correctionLogText;
+	protected static JScrollPane correctionLogScroller;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
@@ -214,6 +215,7 @@ public class View
 
 	protected static void setComponentsEnabled(boolean value)
 	{
+		saveButton.setEnabled(value);
 		title.setEnabled(value);
 		subtitle.setEnabled(value);
 		staffSpacing.setEnabled(value);
@@ -224,6 +226,14 @@ public class View
 		leftMarginSpace.setEnabled(value);
 		rightMarginSpace.setEnabled(value);
 		pageList.setEnabled(value);
+	}
+
+	protected static void resetView()
+	{
+		title.setText("");
+		subtitle.setText("");
+		pageList.setSelectedIndex(0);
+		propertiesPane.getVerticalScrollBar().setValue(0);
 	}
 
 	protected static void repaintPreview(String image, Rectangle pageSize)
@@ -249,6 +259,10 @@ public class View
 			correctionLabel.setText("Errors were found in " + filename);
 			correctionLabel.setVisible(true);
 			correctionButton.setVisible(true);
+
+			// writes Autofix Log
+			String correctionLogPath = AutofixLog.LOG_PATH;
+			correctionLogText.setText(Utils.openAndReadFile(correctionLogPath));
 		}
 	}
 
@@ -316,13 +330,13 @@ public class View
 		return panel;
 	}
 
-	private static void buildCorrectionLogDialog()
+	protected static void buildCorrectionLogDialog()
 	{
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
 		correctionLogText = new JTextArea();
-		JScrollPane correctionLogScroller = new JScrollPane(correctionLogText);
+		correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		correctionLogText.setEditable(false);
 		correctionLogDialog.add(correctionLogScroller);

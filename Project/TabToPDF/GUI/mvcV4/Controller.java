@@ -27,6 +27,7 @@ public class Controller
 
 	private static Model model;
 	private View view;
+	private static boolean active = true;
 
 	public Controller(View view)
 	{
@@ -215,14 +216,14 @@ class SelectButtonListener implements ActionListener
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 		{
-
 			String filenameWithExtension = chooser.getSelectedFile().toString();
 
 			model.setFilenameWithExtention(filenameWithExtension);
 			model.setFilename(Utils.removeFileExtension(filenameWithExtension));
 
 			View.input.setText(filenameWithExtension);
-			View.input.setEnabled(true);
+			View.setComponentsEnabled(false);
+			View.resetView();
 			View.repaintPreview("");
 			// View.convertButton.setEnabled(true);
 
@@ -241,17 +242,7 @@ class SelectButtonListener implements ActionListener
 
 				// GET CONVERTED FIELD VALUES.
 				// ENABLE FIELDS
-				View.title.setEnabled(true);
-				View.subtitle.setEnabled(true);
-				View.staffSpacing.setEnabled(true);
-				View.elementSize.setEnabled(true);
-				View.measureSpace.setEnabled(true);
-				View.titleFontSize.setEnabled(true);
-				View.subtitleFontSize.setEnabled(true);
-				View.leftMarginSpace.setEnabled(true);
-				View.rightMarginSpace.setEnabled(true);
-				View.pageList.setEnabled(true);
-				View.saveButton.setEnabled(true);
+				View.setComponentsEnabled(true);
 
 				// SET FIELD VALUES
 				View.title.setText(model.getTitle());
@@ -327,10 +318,9 @@ class CorrectionButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		String correctionLogPath = AutofixLog.LOG_PATH;
-		View.correctionLogText
-				.setText(Utils.openAndReadFile(correctionLogPath));
 		View.correctionLogDialog.setLocationRelativeTo(View.frame);
+		View.correctionLogScroller.getVerticalScrollBar().setValue(0);
+		View.correctionLogScroller.getHorizontalScrollBar().setValue(0);
 		View.correctionLogDialog.setVisible(true);
 	}
 }
@@ -700,4 +690,5 @@ class RightMarginListener implements ChangeListener
 		}
 
 	}
+
 }
