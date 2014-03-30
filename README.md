@@ -2,7 +2,6 @@ THINGS THAT NEED TO BE DONE FOR PRESENTATION
 ===========================
 
 - Have a "Converting. Please wait..." message in the preview panel when a file is imported from the button or input path listeners. Don't do a progress bar, it's too much work.
-- Print should be greyed out if an input file isn't selected (disable it inside the reset method)
 - Print should display a message inside of its window if no printers are found. Right now if it can't find printers it stalls.
 - Emailer window should have a minumum height and width when first opened so parts aren't cut off. The user should not be able to shrink the window size past this point otherwise the fields get messed up. This goes for all of its windows.
 - Emailer. If I cancel the email window and repopen the emailer, the login window and the email window get displayed ontop of each other. It should either only display the login again or remember the previously used login information.
