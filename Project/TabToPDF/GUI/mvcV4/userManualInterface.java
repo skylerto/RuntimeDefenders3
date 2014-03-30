@@ -49,7 +49,6 @@ public class userManualInterface extends JFrame{
 	private static JLabel editPicture;
 	private static JLabel savePicture;
 	private static JLabel gettingStartedStep1_0;
-	private static JLabel gettingStartedStep1_1;
 	private static JLabel gettingStartedStep2_0;
 	private static JLabel gettingStartedStep3_0;
 	private static JLabel gettingStartedStep4_0;
@@ -138,34 +137,6 @@ public class userManualInterface extends JFrame{
 		
 		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
 			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				step1Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				step2Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				step3Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				step4Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
 				print1Pressed(evt);
 			}
 		}
@@ -219,12 +190,6 @@ public class userManualInterface extends JFrame{
 		c.gridy = 0;
 		thePanel.add(scrollBox, c);
 		
-		
-		
-		
-		
-		
-		
 		ImageIcon Icon = new ImageIcon("res/userManualImages/UM.jpg");
 		File imageFile = new File("res/userManualImages/UM.jpg");
 		
@@ -266,9 +231,21 @@ public class userManualInterface extends JFrame{
 	}
 	private void gettingStartedClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Getting Started") ) {
+	    if( node.equals("Getting Started") || node.equals("Step 1 - Selecting a File") || node.equals("Step 2 - Convert File") || node.equals("Step 3 - Editing File") || node.equals("Step 4 - Saving File")) {
+	    	int scrollAmount = 0;
+	    	
+	    	if(node.equals("Step 2 - Convert File")){
+	    		scrollAmount = 320;
+	    	}
+	    	else if(node.equals("Step 3 - Editing File")){
+	    		scrollAmount = 630;
+	    	}
+	    	else if(node.equals("Step 4 - Saving File")){
+	    		scrollAmount = 970;
+	    	}
 	    	informationPanel.removeAll();
-	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
+	    	System.out.println(scrollAmount);
+	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
 	        ImageIcon Icon = new ImageIcon("res/userManualImages/browseUM.jpg");
 			File imageFile = new File("res/userManualImages/browseUM.jpg");
 			BufferedImage image;
@@ -376,9 +353,13 @@ public class userManualInterface extends JFrame{
 	
 	private void howToPrintClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Printer") ) {
+	    if( node.equals("Printer") || node.equals("How to Print: Step 1") || node.equals("How to Print: Step 2")) {
+	    	int scrollAmount = 0;
+	    	if(node.equals("How to Print: Step 2")){
+	    		scrollAmount = 970;
+	    	}
 	    	informationPanel.removeAll();
-	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
+	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
 	        ImageIcon Icon = new ImageIcon("res/userManualImages/print1UM.jpg");
 			File imageFile = new File("res/userManualImages/print1UM.jpg");
 			BufferedImage image;
@@ -436,9 +417,19 @@ public class userManualInterface extends JFrame{
 	
 	private void howToEmailClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Email") ) {
+	    if( node.equals("Email") || node.equals("Step 1 - Click Email") || node.equals("Step 2 - Login") || node.equals("Step 3 - Fill in Fields") || node.equals("Step 4 (optional) - Add Emails from Addrss Book")) {
+	    	int scrollAmount = 0;
+	    	if(node.equals("Step 2 - Login")){
+	    		scrollAmount = 340;
+	    	}
+	    	else if(node.equals("Step 3 - Fill in Fields")){
+	    		scrollAmount = 670;
+	    	}
+	    	else if(node.equals("Step 4 (optional) - Add Emails from Addrss Book")){
+	    		scrollAmount = 1070;
+	    	}
 	    	informationPanel.removeAll();
-	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
+	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
 	        ImageIcon Icon = new ImageIcon("res/userManualImages/email0UM.jpg");
 			File imageFile = new File("res/userManualImages/email0UM.jpg");
 			BufferedImage image;
