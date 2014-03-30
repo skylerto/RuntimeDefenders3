@@ -267,17 +267,11 @@ public class TabStaffTest {
 		
 		File f = new File(
 				"inputfiles/case9.txt");
-		File g = new File(
-				"inputfiles/refer.txt");
+	
 		tabs1.scanFile(f);
-		tabs8.scanFile(g); //expected
-		tabs1.splitLongMeasures(20);
-		String out = tabs1.toString();
-		//System.out.println(out);
-		tabs8.getMeasure(2).setRepeat(0);
-		String expt = tabs8.toString();
-		//System.out.println(expt);
-		//assertEquals(expt,out);
+		
+		assertTrue(tabs1.splitLongMeasures(20));
+		assertFalse(tabs8.splitLongMeasures(20));
 		
 	
 	}
