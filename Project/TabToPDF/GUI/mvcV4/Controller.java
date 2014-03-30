@@ -217,8 +217,10 @@ class SelectButtonListener implements ActionListener
 		chooser.setFileFilter(text_filter);
 		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+		int status = chooser.showOpenDialog(chooser);
+		if (status == JFileChooser.APPROVE_OPTION)
 		{
+
 			String filenameWithExtension = chooser.getSelectedFile().toString();
 
 			model.setFilenameWithExtention(filenameWithExtension);
