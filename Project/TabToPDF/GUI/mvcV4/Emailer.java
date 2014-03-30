@@ -1,4 +1,5 @@
 package mvcV4;
+
 import java.util.Properties;
 
 import javax.activation.*;
@@ -10,10 +11,17 @@ import javax.mail.internet.MimeMultipart;
 
 public class Emailer {
 	Session session;
-	public Emailer(){
-		final String username = "cse2311@gmail.com";
-	    final String password = "cse2311pw";
-
+	public Emailer(String usernameInput, String passwordInput){
+		final String username;
+		final String password;
+		if(usernameInput.equals("") && passwordInput.equals("")){
+			username = "cse2311@gmail.com";
+		    password = "cse2311pw";
+		}
+		else{
+			username = usernameInput;
+			password = passwordInput;
+		}
 	    Properties props = new Properties();
 	    props.put("mail.smtp.auth", true);
 	    props.put("mail.smtp.starttls.enable", true);
@@ -26,12 +34,12 @@ public class Emailer {
 	                    return new PasswordAuthentication(username, password);
 	                }
 	            });
+	    
 	}
-	//Returns true if email is sent, otherwise returns false.
-	public boolean sendEmail(String fileDirectory, String newFileName, String emailToSendTo, String emailSubject){
+	
+	public boolean sendEmail(String fileDirectory, String newFileName, String emailToSendTo, String emailSubject, String emailBody){
 		try {
-
-	        Message message = new MimeMessage(session);
+			Message message = new MimeMessage(session);
 	        message.setFrom(new InternetAddress("cse2311@gmail.com"));
 	        message.setRecipients(Message.RecipientType.TO,
 	                InternetAddress.parse(emailToSendTo));
@@ -47,6 +55,7 @@ public class Emailer {
 	        DataSource source = new FileDataSource(fileDirectory);
 	        messageBodyPart.setDataHandler(new DataHandler(source));
 	        messageBodyPart.setFileName(newFileName);
+	        //messageBodyPart.setText(emailBody);
 	        multipart.addBodyPart(messageBodyPart);
 	        message.setContent(multipart);
 	        Transport.send(message);
@@ -56,4 +65,7 @@ public class Emailer {
 	    }
 		return false;
 	}
+	
 }
+
+
