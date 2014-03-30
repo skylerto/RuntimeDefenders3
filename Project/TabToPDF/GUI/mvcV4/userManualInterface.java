@@ -135,48 +135,6 @@ public class userManualInterface extends JFrame{
 		}
 		);
 		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				print1Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				print2Pressed(evt);
-			}
-		}
-		);
-	
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				email1Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				email2Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				email3Pressed(evt);
-			}
-		}
-		);
-		
-		theTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener(){
-			public void valueChanged(javax.swing.event.TreeSelectionEvent evt){
-				email4Pressed(evt);
-			}
-		}
-		);
-		
 		JScrollPane scrollBox = new JScrollPane(theTree);
 		// Set the size for the JScrollPane so that everything fits
 		
@@ -417,7 +375,7 @@ public class userManualInterface extends JFrame{
 	
 	private void howToEmailClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Email") || node.equals("Step 1 - Click Email") || node.equals("Step 2 - Login") || node.equals("Step 3 - Fill in Fields") || node.equals("Step 4 (optional) - Add Emails from Addrss Book")) {
+	    if( node.equals("Email") || node.equals("Step 1 - Click Email") || node.equals("Step 2 - Login") || node.equals("Step 3 - Fill in Fields") || node.equals("Step 4 (optional) - Add Emails from Address Book")) {
 	    	int scrollAmount = 0;
 	    	if(node.equals("Step 2 - Login")){
 	    		scrollAmount = 340;
@@ -425,7 +383,7 @@ public class userManualInterface extends JFrame{
 	    	else if(node.equals("Step 3 - Fill in Fields")){
 	    		scrollAmount = 670;
 	    	}
-	    	else if(node.equals("Step 4 (optional) - Add Emails from Addrss Book")){
+	    	else if(node.equals("Step 4 (optional) - Add Emails from Address Book")){
 	    		scrollAmount = 1070;
 	    	}
 	    	informationPanel.removeAll();
@@ -533,76 +491,6 @@ public class userManualInterface extends JFrame{
 			frame.getContentPane().repaint();
 	    }
 		
-	}
-	
-	private void step1Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 1 - Selecting a File") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	    }
-	}
-	
-	private void step2Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 2 - Convert File") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,320));
-	    }
-	}
-	
-	private void step3Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 3 - Editing File") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,630));
-	    }
-	}
-	
-	private void step4Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 4 - Saving File") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,970));
-	    }
-	}
-	
-	private void print1Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("How to Print: Step 1") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	    }
-	}
-	
-	private void print2Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("How to Print: Step 2") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,970));
-	    }
-	}
-	
-	private void email1Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 1 - Click Email") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	    }
-	}
-	
-	private void email2Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 2 - Login") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,340));
-	    }
-	}
-	
-	private void email3Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 3 - Fill in Fields") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,670));
-	    }
-	}
-	
-	private void email4Pressed(TreeSelectionEvent evt) {
-		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Step 4 (optional) - Add Emails from Address Book") ) {
-	        scrollBox2.getViewport().setViewPosition(new Point(0,1070));
-	    }
 	}
 	
 	public static BufferedImage resize(BufferedImage image, int width, int height) {
