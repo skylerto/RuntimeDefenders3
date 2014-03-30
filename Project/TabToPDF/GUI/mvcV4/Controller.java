@@ -318,7 +318,7 @@ class CorrectionButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		View.correctionLogDialog.setLocationRelativeTo(View.frame);
+		View.correctionLogDialog.setLocationRelativeTo(View.previewPane.getVerticalScrollBar());
 		View.correctionLogScroller.getVerticalScrollBar().setValue(0);
 		View.correctionLogScroller.getHorizontalScrollBar().setValue(0);
 		View.correctionLogDialog.setVisible(true);

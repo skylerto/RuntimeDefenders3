@@ -758,6 +758,7 @@ public class View
 		c.gridy = 0;
 		frame.add(rightSide, c);
 		frame.pack();
+		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
 
