@@ -89,7 +89,7 @@ public class PDFPropertiesTest {
 		alpha.setSpacing(7.2f);
 		assertEquals((int)7.2f,(int)alpha.getSpacing());
 		alpha.setSpacing(100.0f);
-		assertEquals((int)90.0f,(int)alpha.getSpacing());
+		assertEquals((int)25.0f,(int)alpha.getSpacing());
 		alpha.setSpacing(0.5f);
 		assertEquals((int)1.0f,(int)alpha.getSpacing());
 	}
