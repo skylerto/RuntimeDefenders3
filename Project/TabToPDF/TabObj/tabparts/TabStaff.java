@@ -6,10 +6,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 
-/* (UPDATE) findRepeats() doesn't throw an exception anymore
- * scanFile() will only throw a LargeNumberException
- * Added new method getMeasureRepeat()
- * Added 2 methods: removeIncompleteSymbols() and splitLongMeasures()
+/* (UPDATE) Added getStaff and copyStaff. Splitlongstaff return value is boolean and no longer subtracts 4 from the maxchar
  */
 
 /**
@@ -232,6 +229,18 @@ public class TabStaff {
 			e.printStackTrace();
 		} 
 	}
+	
+	public List<TabMeasure> getStaff() {
+		return this.staff;
+	}
+	
+	public void copyStaff(TabStaff staff) {
+		this.staff.clear();
+		for (int i = 0; i < staff.size(); i++) {
+			this.staff.add(new TabMeasure(staff.getStaff().get(i)));
+		}
+	}
+
 	
 	/**
 	 * Returns a 2-dimensional array list of strings. The outer list is the collection
@@ -651,11 +660,11 @@ public class TabStaff {
 	 * 
 	 * @param maxlength The max number of characters a measure can have in a string.
 	 */
-	public void splitLongMeasures(int maxlength) {
+	public boolean splitLongMeasures(int maxlength) {
 		List<TabMeasure> newstaff = new ArrayList<TabMeasure>();	// The new staff with the split measures
 		
-		maxlength = maxlength - 4;
-		
+		//maxlength = maxlength - 4;
+		boolean wassplit = false;
 		/* For each measure in the staff, split it if it's longer than maxlength */
 		for (int i = 0; i < this.size(); i++) {
 			int repeat = this.staff.get(i).getRepeat();	// Save the repeat
@@ -675,10 +684,12 @@ public class TabStaff {
 		}
 		/* If splits were made then set the new staff list equal to the current staff list */
 		if (!this.staff.equals(newstaff)) {
+			wassplit = true;
 			this.staff.clear();
 			for (int i = 0; i < newstaff.size(); i++)
 				this.staff.add(newstaff.get(i));
 		}
+		return wassplit;
 	}
 	
 	/**

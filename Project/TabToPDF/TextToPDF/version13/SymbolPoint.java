@@ -49,18 +49,6 @@ public class SymbolPoint {
 	}
 	
 	/**
-	 * Copy constructor.
-	 * 
-	 * @param other the other object to copy from
-	 */
-	public SymbolPoint(SymbolPoint other) {
-		this.symbol = other.getSymbol();
-		this.setX(other.getX());
-		this.setY(other.getY());
-		this.doubledigit = other.doubledigit;
-	}
-	
-	/**
 	 * Checks whether the symbol is a double digit or not.
 	 * @return
 	 */

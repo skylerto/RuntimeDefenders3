@@ -10,6 +10,8 @@ import version13.DrawClass;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
+/* UPDATE: Added a split stack attribute */
+
 /**
  * Takes an input text file resembling a guitar tab and converts it into a PDF file in the 
  * designated location. 
@@ -33,41 +35,8 @@ public class TextToPDF {
 	private String outputpath;
 	private PDFProperties properties;
 	private TabStaff staff;
+	private SplitStack splitstack;	// Used for merging back split measures
 
-	/**
-	 * Creates a new convert object with default paths and properties.
-	 * Extracts title, subtitle and spacing from the input file.
-	 * 
-	 * @throws NoFileExistsException
-	 * @throws CannotReadFileException
-	 * @throws EmptyFileException
-	 * @throws NoMusicException
-	 * @throws LargeNumberException
-	 */
-	public TextToPDF () throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
-		this.inputpath = DEFAULT_INPUTPATH;
-		this.outputpath = DEFAULT_OUTPUTPATH;
-		this.properties = new PDFProperties();
-		this.staff = new TabStaff();
-		
-		/* Check input for errors */
-		this.checkInputErrors();
-		
-		/* Extract properties from the input file */
-		this.properties.extractProperties(new File(this.inputpath));
-		
-		/* Store the tab in a staff and fix errors */
-		try {
-			this.staff.scanFile(new File(this.inputpath));		
-		} catch (LargeNumberException e) {
-			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
-		}
-		
-		/* Checks if staff has music */
-		if (this.staff.size() == 0) {
-			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
-		}
-	}
 	
 	/**
 	 * Creates a new conversion object with the given input and output paths.
@@ -86,6 +55,7 @@ public class TextToPDF {
 		this.outputpath = outputpath;
 		this.properties = new PDFProperties();
 		this.staff = new TabStaff();
+		this.splitstack = new SplitStack();
 		
 		/* Check input for errors */
 		this.checkInputErrors();
@@ -107,50 +77,6 @@ public class TextToPDF {
 	}
 	
 	/**
-	 * Creates a new conversion object with the given paths, spacing, elementsize, page size and font size.
-	 * 
-	 * @param outputpath
-	 * @param inputpath
-	 * @param spacing
-	 * @param elementsize
-	 * @param pagesize
-	 * @param titlefontsize
-	 * @param subtitlefontsize
-	 * @throws NoFileExistsException
-	 * @throws CannotReadFileException
-	 * @throws EmptyFileException
-	 * @throws NoMusicException
-	 * @throws LargeNumberException
-	 */
-	public TextToPDF (String outputpath, String inputpath, float spacing, int elementsize, Rectangle pagesize,
-				int titlefontsize, int subtitlefontsize) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
-		this.inputpath = inputpath;
-		this.outputpath = outputpath;
-		this.properties = new PDFProperties();
-		this.properties.setSpacing(spacing);
-		this.properties.setElementSize(elementsize);
-		this.properties.setPageSize(pagesize);
-		this.properties.setTitleFontSize(titlefontsize);
-		this.properties.setSubtitleFontSize(subtitlefontsize);
-		this.staff = new TabStaff();
-		
-		/* Check input for errors */
-		this.checkInputErrors();
-		
-		/* Store the tab in a staff and fix errors */
-		try {
-			this.staff.scanFile(new File(this.inputpath));
-		} catch (LargeNumberException e) {
-			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
-		}
-		
-		/* Checks if staff has music */
-		if (this.staff.size() == 0) {
-			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
-		}
-	}
-
-	/**
 	 * Draws the tab staff into a PDF document.
 	 * 
 	 * @throws ConversionException
@@ -164,6 +90,7 @@ public class TextToPDF {
 		DrawClass draw = new DrawClass();
 		int same_line_state = 0;
 		
+		this.restoreStaff(); // Restores split measures
 		this.splitStaff();	// Splits the measures in the staff if they are too long to fit onto the page
 		
 		List<List<String>> dynamic_array = staff.getList();
@@ -338,11 +265,43 @@ public class TextToPDF {
 
 	/**
 	 * Splits each measure in the staff that is too long to fit in the page width.
+	 * Remembers the current state of the staff before splitting so it can revert the change.
+	 * @throws ConversionException 
 	 */
-	public void splitStaff() {
+	public void splitStaff() throws ConversionException {
 		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
-		int maxchars = (int) (innerwidth/this.getSpacing());
-		this.staff.splitLongMeasures(maxchars);
+		int maxchars = (int) (innerwidth/this.getSpacing()) - 4;
+		SplitMarker mark = new SplitMarker(this.staff, maxchars);	// Remember current staff
+		//System.out.println("marking " + maxchars);
+		if (this.staff.splitLongMeasures(maxchars)) {
+
+			this.splitstack.push(mark);
+
+		}
+		
+	}
+	
+	/**
+	 * Restores a previous state of the staff if the spacing decreases past a point
+	 * when it was previously split.
+	 * @throws ConversionException
+	 */
+	public boolean restoreStaff() throws ConversionException {
+		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
+		int maxchars = (int) (innerwidth/this.getSpacing()) - 4;
+		boolean restored = false;
+		if (this.splitstack.size != 0) {
+			int size = this.splitstack.size;
+			for (int i = 0; i < size; i++) {
+				if (this.splitstack.peak().maxchars < maxchars) {
+					SplitMarker a = this.splitstack.pop();
+					
+					this.staff.copyStaff(a.staff);
+					restored = true;
+				} else break;
+			}
+		}
+		return restored;
 	}
 	
 	/**
@@ -564,11 +523,10 @@ public class TextToPDF {
 	 * 
 	 * */
 	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
-		TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/try.txt", 12.0f, 10, PageSize.LETTER, 16, 14);
+
 		
-		/*TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");*/
+		TextToPDF conversion = new TextToPDF
+				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");
 		//conversion.updateLeftMargin(100f);
 		conversion.WriteToPDF();
 		System.out.println(conversion.getProperties().toString());
