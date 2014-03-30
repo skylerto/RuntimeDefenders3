@@ -60,6 +60,8 @@ public class View
 
 	public static final int CORRLOG_WIDTH = 760;
 	public static final int CORRLOG_HEIGHT = 500;
+	public static final int CORRLOG_WIDTH_MIN = 300;
+	public static final int CORRLOG_HEIGHT_MIN = 220;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 125;
@@ -356,6 +358,8 @@ public class View
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
+		correctionLogDialog.setMinimumSize(new Dimension(CORRLOG_WIDTH_MIN,
+				CORRLOG_HEIGHT_MIN));
 		correctionLogText = new JTextArea();
 		correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
@@ -608,8 +612,6 @@ public class View
 		JPanel autoCorrectionPanel = new JPanel();
 		autoCorrectionPanel.setOpaque(false);
 		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
-				AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
