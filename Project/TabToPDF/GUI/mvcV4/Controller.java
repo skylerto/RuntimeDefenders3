@@ -30,13 +30,11 @@ public class Controller
 	private static Model model;
 	private View view;
 	private static boolean active = true;
-	
 
 	public Controller(View view)
 	{
 		this.view = view;
 
-		// this.view.addConvertButtonListener(new ConvertButtonListener());
 		this.view.addSelectButtonListener(new SelectButtonListener());
 		this.view.addSaveButtonListener(new SaveButtonListener());
 		this.view.addCorrectionButtonListener(new CorrectionButtonListener());
@@ -56,6 +54,11 @@ public class Controller
 		this.view.inputPathFocusListener(new InputPathFocusListener());
 	}
 
+	/**
+	 * Displays the passed error.
+	 * 
+	 * @param error
+	 */
 	public static void displayError(String error)
 	{
 		View.showError(error);
@@ -72,12 +75,20 @@ public class Controller
 		model = model2;
 	}
 
+	/**
+	 * Returns the model.
+	 * 
+	 * @return the model
+	 */
 	public static Model getModel()
 	{
 		return model;
 	}
 }
 
+/**
+ * Updates the preview when the title is edited (when focus is lost).
+ */
 class TitleFocusListener implements FocusListener
 {
 	Model model = Controller.getModel();
@@ -112,6 +123,9 @@ class TitleFocusListener implements FocusListener
 	}
 }
 
+/**
+ * Updates the preview when the title is edited (when "enter" is pressed).
+ */
 class TitleListener implements ActionListener
 {
 
@@ -141,6 +155,9 @@ class TitleListener implements ActionListener
 	}
 }
 
+/**
+ * Updates the preview when the subtitle is edited (when focus is lost).
+ */
 class SubtitleFocusListener implements FocusListener
 {
 	Model model = Controller.getModel();
@@ -176,6 +193,9 @@ class SubtitleFocusListener implements FocusListener
 	}
 }
 
+/**
+ * Updates the preview when the subtitle is edited (when "enter" is pressed).
+ */
 class SubtitleListener implements ActionListener
 {
 
@@ -205,9 +225,13 @@ class SubtitleListener implements ActionListener
 	}
 }
 
+/**
+ * Updates the view when a different path is chosen.
+ */
 class SelectButtonListener implements ActionListener
 {
-	private  File inputfile = new File(".");
+	private File inputfile = new File(".");
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -216,10 +240,12 @@ class SelectButtonListener implements ActionListener
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(inputfile);
-		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",new String[] {".txt"});
+		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",
+				new String[]
+				{ ".txt" });
 		chooser.addChoosableFileFilter(text_filter);
 		chooser.setFileFilter(text_filter);
-		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		// chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
@@ -280,7 +306,9 @@ class SelectButtonListener implements ActionListener
 	}
 }
 
-
+/**
+ * Shows and hides the "Enter to apply prompt."
+ */
 class InputPathFocusListener implements FocusListener
 {
 	Model model = Controller.getModel();
@@ -289,21 +317,24 @@ class InputPathFocusListener implements FocusListener
 	public void focusGained(FocusEvent e)
 	{
 		View.inputPrompt.setVisible(true);
-		
 	}
 
 	@Override
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		
-		if (!model.getFilenameWithExtension().equals(View.input.getText())) {
+
+		if (!model.getFilenameWithExtension().equals(View.input.getText()))
+		{
 			View.input.setText(model.getFilenameWithExtension());
 		}
 		View.inputPrompt.setVisible(false);
 	}
 }
 
+/**
+ * Updates the view when a different path is entered.
+ */
 class InputPathListener implements ActionListener
 {
 
@@ -313,7 +344,8 @@ class InputPathListener implements ActionListener
 		Model model = new Model();
 		Controller.setModel(model);
 
-		if (!model.getFilenameWithExtension().equals(View.input.getText())) {
+		if (!model.getFilenameWithExtension().equals(View.input.getText()))
+		{
 
 			model.setFilenameWithExtention(View.input.getText());
 			model.setFilename(Utils.removeFileExtension(View.input.getText()));
@@ -354,8 +386,6 @@ class InputPathListener implements ActionListener
 				View.propertiesPane.getVerticalScrollBar().setValue(0);
 
 				View.updateCorrection(model.getFilename());
-				
-				
 
 				// ELSE display the error message and don't enable buttons.
 
@@ -366,30 +396,30 @@ class InputPathListener implements ActionListener
 				Controller.displayError(e1.getMessage());
 			}
 		}
-		
+
 	}
 }
 
 /**
  * Saves the file in the desired location with the desired name.
- * 
- * @author Skyler
- * 
  */
 class SaveButtonListener implements ActionListener
 {
-	private  File outputfile = new File(".");
+	private File outputfile = new File(".");
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
 		JFileChooser chooser = new JFileChooser();
-		FileTypeFilter pdf_filter = new FileTypeFilter("Portable Document Format *.pdf",new String[] {".pdf"});
+		FileTypeFilter pdf_filter = new FileTypeFilter(
+				"Portable Document Format *.pdf", new String[]
+				{ ".pdf" });
 		chooser.addChoosableFileFilter(pdf_filter);
 		chooser.setFileFilter(pdf_filter);
 		chooser.setCurrentDirectory(outputfile);
 		chooser.setDialogTitle("Select PDF Destination");
-		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		// chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
 
 		String input = model.getFilenameWithExtension();
@@ -397,25 +427,25 @@ class SaveButtonListener implements ActionListener
 		{
 			outputfile = chooser.getCurrentDirectory();
 			String outputFilename = chooser.getSelectedFile().toString();
-			if(!outputFilename.matches("(.*)(\\.pdf){1}"))
-				outputFilename+=".pdf";
+			if (!outputFilename.matches("(.*)(\\.pdf){1}"))
+				outputFilename += ".pdf";
 			FileUtils.copyFile("./outputfiles/musicPDF.pdf", outputFilename);
-			/*TextToPDF test;
-			try
-			{
-				test = new TextToPDF(outputFilename, input);
-				test.WriteToPDF();
-
-			} catch (NoFileExistsException | CannotReadFileException
-					| EmptyFileException | NoMusicException
-					| LargeNumberException | ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
-			}*/
+			/*
+			 * TextToPDF test; try { test = new TextToPDF(outputFilename,
+			 * input); test.WriteToPDF();
+			 * 
+			 * } catch (NoFileExistsException | CannotReadFileException |
+			 * EmptyFileException | NoMusicException | LargeNumberException |
+			 * ConversionException e1) {
+			 * Controller.displayError(e1.getMessage()); }
+			 */
 		}
 	}
 }
 
+/**
+ * Opens the correction log JDialog.
+ */
 class CorrectionButtonListener implements ActionListener
 {
 
@@ -430,52 +460,9 @@ class CorrectionButtonListener implements ActionListener
 	}
 }
 
-/*
- * class ConvertButtonListener implements ActionListener {
- * 
- * @Override public void actionPerformed(ActionEvent e) { Model model =
- * Controller.getModel();
- * 
- * try { model.initializeConverter(); model.runConverter();
- * 
- * IMGCreator.createPreview(model);
- * 
- * // CHECK IF CONVERSION WAS DONE PROPERLY. String image2 =
- * IMGCreator.getLastConverted(); Rectangle pagesize = model
- * .convertPageSizeToRectangle((String) View.pageList .getSelectedItem());
- * View.repaintPreview(image2, pagesize); // IF IT WAS, ENABLE ALL BUTTONS and
- * populate the fields.
- * 
- * // GET CONVERTED FIELD VALUES. // ENABLE FIELDS View.title.setEnabled(true);
- * View.subtitle.setEnabled(true); View.staffSpacing.setEnabled(true);
- * View.elementSize.setEnabled(true); View.measureSpace.setEnabled(true);
- * View.titleFontSize.setEnabled(true); View.subtitleFontSize.setEnabled(true);
- * View.leftMarginSpace.setEnabled(true);
- * View.rightMarginSpace.setEnabled(true); View.pageList.setEnabled(true);
- * View.saveButton.setEnabled(true);
- * 
- * // SET FIELD VALUES View.title.setText(model.getTitle());
- * View.subtitle.setText(model.getSubTitle()); View.staffSpacing.setValue((int)
- * model.getSpacing()); View.elementSize.setValue(model.getElementSize());
- * View.measureSpace.setValue((int) model.getMeasureSpace());
- * View.titleFontSize.setValue((int) model.getTitleFontSize());
- * View.subtitleFontSize.setValue((int) model.getSubTitleFontSize());
- * View.leftMarginSpace.setValue((int) model.getLeftMargin());
- * View.rightMarginSpace.setValue((int) model.getLeftMargin());
- * View.pageList.setSelectedIndex(0);
- * View.propertiesPane.getVerticalScrollBar().setValue(0);
- * 
- * View.updateCorrection(model.getFilename());
- * 
- * // ELSE display the error message and don't enable buttons.
- * 
- * } catch (NoFileExistsException | CannotReadFileException | EmptyFileException
- * | NoMusicException | LargeNumberException | ConversionException e1) {
- * Controller.displayError(e1.getMessage()); } }
- * 
- * }
+/**
+ * Updates the preview when the staff spacing slider is moved.
  */
-
 class SpacingListener implements ChangeListener
 {
 	public void stateChanged(ChangeEvent e)
@@ -504,7 +491,6 @@ class SpacingListener implements ChangeListener
 					IMGCreator.createPreview(model);
 
 					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
 					String image = IMGCreator.getLastConverted();
 					View.repaintPreview(image);
 				}
@@ -513,12 +499,13 @@ class SpacingListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
+/**
+ * Updates the preview when the element size slider is moved.
+ */
 class ElementSizeListener implements ChangeListener
 {
 
@@ -554,12 +541,13 @@ class ElementSizeListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
+/**
+ * Updates the preview when the measure space slider is moved.
+ */
 class MeasureSpaceListener implements ChangeListener
 {
 
@@ -595,47 +583,13 @@ class MeasureSpaceListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
-class PageSizeListener implements ActionListener
-{
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		Model model = Controller.getModel();
-		try
-		{
-			/* Get the corresponding rectangle from the GUI page size */
-			Rectangle pagesize = model
-					.convertPageSizeToRectangle((String) View.pageList
-							.getSelectedItem());
-			String ps = model.convertPageSizeToString(model.getPageSize());
-
-			/* If the value didn't change from the current value then do nothing */
-			if (!ps.equals((String) View.pageList.getSelectedItem()))
-			{
-				model.setPageSize(pagesize);
-				model.converter.updatePageSize(pagesize);
-				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image, pagesize);
-			}
-
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
-
-	}
-}
-
+/**
+ * Updates the preview when the title font size slider is moved.
+ */
 class TitleFontSizeListener implements ChangeListener
 {
 
@@ -671,12 +625,13 @@ class TitleFontSizeListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
+/**
+ * Updates the preview when the subtitle font size slider is moved.
+ */
 class SubtitleFontSizeListener implements ChangeListener
 {
 
@@ -713,12 +668,13 @@ class SubtitleFontSizeListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
+/**
+ * Updates the preview when the left margin space slider is moved.
+ */
 class LeftMarginListener implements ChangeListener
 {
 
@@ -754,12 +710,13 @@ class LeftMarginListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
 }
 
+/**
+ * Updates the preview when the right margin space slider is moved.
+ */
 class RightMarginListener implements ChangeListener
 {
 
@@ -795,9 +752,43 @@ class RightMarginListener implements ChangeListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
-
 		}
-
 	}
+}
 
+/**
+ * Updates the preview when the page size is changed.
+ */
+class PageSizeListener implements ActionListener
+{
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Model model = Controller.getModel();
+		try
+		{
+			/* Get the corresponding rectangle from the GUI page size */
+			Rectangle pagesize = model
+					.convertPageSizeToRectangle((String) View.pageList
+							.getSelectedItem());
+			String ps = model.convertPageSizeToString(model.getPageSize());
+
+			/* If the value didn't change from the current value then do nothing */
+			if (!ps.equals((String) View.pageList.getSelectedItem()))
+			{
+				model.setPageSize(pagesize);
+				model.converter.updatePageSize(pagesize);
+				IMGCreator.createPreview(model);
+
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+
+				String image = IMGCreator.getLastConverted();
+				View.repaintPreview(image, pagesize);
+			}
+
+		} catch (ConversionException e1)
+		{
+			Controller.displayError(e1.getMessage());
+		}
+	}
 }

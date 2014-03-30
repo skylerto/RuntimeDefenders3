@@ -94,6 +94,13 @@ public class View
 	protected static JScrollPane previewPane;
 	protected static JScrollPane propertiesPane;
 
+	// Preview Panel
+	static Dimension previewScroll = new Dimension(PREVIEW_SCROLL_WIDTH,
+			PREVIEW_SCROLL_HEIGHT);
+	static Dimension propertiesScroll = new Dimension(PROPERTIES_SCROLL_WIDTH,
+			PROPERTIES_SCROLL_HEIGHT);
+	protected static JLabel iconLabel;
+
 	// ImageIcons
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
 	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/gui_images/SelectButtonPressed.png");
@@ -120,7 +127,6 @@ public class View
 	protected static JMenuItem autoCorrection = new JMenuItem(
 			"Auto-Corrections");
 	protected static JMenuItem usermanMenuItem = new JMenuItem("User Manual");
-
 	protected static JMenuItem emailTab;
 	protected static JMenuItem helpTab;
 
@@ -188,32 +194,19 @@ public class View
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
-	static Dimension previewScroll = new Dimension(PREVIEW_SCROLL_WIDTH,
-			PREVIEW_SCROLL_HEIGHT);
-	static Dimension propertiesScroll = new Dimension(PROPERTIES_SCROLL_WIDTH,
-			PROPERTIES_SCROLL_HEIGHT);
-
-	protected static String previewImage = "C:/Users/Skyler/git/RuntimeDefenders3/Project/TabToPDF/outputfiles/musicIMG0.png";
-
-	protected static JLabel iconLabel;
-	protected static JTextPane topBox;
-	protected static JScrollPane imgScrollPane;
-
+	/**
+	 * Constructs a new view.
+	 */
 	public View()
 	{
 		CreateAndShowGUI();
 	}
 
-	protected static void repaintPreview(String image)
-	{
-		ImageIcon iconImage = new ImageIcon(image);
-		iconImage.getImage().flush();
-		iconLabel.setIcon(iconImage);
-		iconLabel.setText("");
-		previewPane.getVerticalScrollBar().setValue(0);
-		previewPane.getHorizontalScrollBar().setValue(0);
-	}
-
+	/**
+	 * Shows the passed error message on the preview panel.
+	 * 
+	 * @param message
+	 */
 	protected static void showError(String message)
 	{
 		iconLabel.setText("<html>" + message + "<html>");
@@ -223,6 +216,12 @@ public class View
 		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH, ERROR_HEIGHT));
 	}
 
+	/**
+	 * Enables or disables the editable or clickable components, depending on
+	 * the value of the parameter value.
+	 * 
+	 * @param value
+	 */
 	protected static void setComponentsEnabled(boolean value)
 	{
 		saveButton.setEnabled(value);
@@ -238,6 +237,9 @@ public class View
 		pageList.setEnabled(value);
 	}
 
+	/**
+	 * Resets the page properties and auto correction panel.
+	 */
 	protected static void resetView()
 	{
 		title.setText("");
@@ -248,45 +250,49 @@ public class View
 		correctionButton.setVisible(false);
 	}
 
+	/**
+	 * Sets the preview to the passed image.
+	 * 
+	 * @param image
+	 */
+	protected static void repaintPreview(String image)
+	{
+		ImageIcon iconImage = new ImageIcon(image);
+		iconImage.getImage().flush();
+		iconLabel.setIcon(iconImage);
+		iconLabel.setText("");
+		previewPane.getVerticalScrollBar().setValue(0);
+		previewPane.getHorizontalScrollBar().setValue(0);
+	}
+
+	/**
+	 * Sets the preview to the passed image and pageSize.
+	 * 
+	 * @param image
+	 * @param pageSize
+	 */
 	protected static void repaintPreview(String image, Rectangle pageSize)
 	{
 		ImageIcon iconImage = new ImageIcon(image);
-		
 		iconImage.getImage().flush();
 		iconLabel.setText("");
-		//iconLabel.setIcon(iconImage);
 		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth(),
 				(int) pageSize.getHeight()));
 		iconLabel.revalidate();
-		
+
 		ImageIcon iconImage2 = new ImageIcon(image);
 		iconImage2.getImage().flush();
 		iconLabel.setIcon(iconImage2);
 	}
 
-	// NOTE! Might want to combine this with repaintPreview into updateView
-	protected static void updateCorrection(String filename)
-	{
-		if (AutofixLog.isEmpty())
-		{
-			correctionLabel.setVisible(false);
-			correctionButton.setVisible(false);
-		} else
-		{
-			correctionLabel.setText("Errors were corrected in " + filename);
-			correctionLabel.setVisible(true);
-			correctionButton.setVisible(true);
-
-			// writes Autofix Log
-			String correctionLogPath = AutofixLog.LOG_PATH;
-			correctionLogText.setText(Utils.openAndReadFile(correctionLogPath));
-		}
-	}
-
+	/**
+	 * Returns the menu bar.
+	 * 
+	 * @return the menu bar
+	 */
 	public static JMenuBar createMenuBar()
 	{
 		JMenuBar menuBar;
-		JMenu menu;
 		menuBar = new JMenuBar();
 		FlowLayout layout = new FlowLayout();
 		layout.setAlignment(FlowLayout.LEFT);
@@ -348,24 +354,19 @@ public class View
 		return menuBar;
 	}
 
-	public static JPanel titles()
-	{
-
-		JPanel panel = new JPanel();
-		GridBagConstraints c = new GridBagConstraints();
-		panel.setLayout(new GridBagLayout());
-		c.fill = GridBagConstraints.HORIZONTAL;
-
-		return panel;
-	}
-
+	/**
+	 * Creates the auto correction JDialog.
+	 */
 	protected static void buildCorrectionLogDialog()
 	{
+		// Sets parent frame and dimensions
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
 		correctionLogDialog.setMinimumSize(new Dimension(CORRLOG_WIDTH_MIN,
 				CORRLOG_HEIGHT_MIN));
+
+		// Create text area inside scroll pane
 		correctionLogText = new JTextArea();
 		correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
@@ -374,6 +375,40 @@ public class View
 		correctionLogDialog.pack();
 	}
 
+	/**
+	 * Returns the button panel.
+	 * 
+	 * @return the button panel
+	 */
+	protected static JPanel buttonPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setOpaque(false);
+		panel.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+		GridBagConstraints c = new GridBagConstraints();
+		panel.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.HORIZONTAL;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(selectButton, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(saveButton, c);
+
+		saveButton.setEnabled(false);
+		return panel;
+	}
+
+	/**
+	 * Sets the major and minor tick space of the passed slider.
+	 * 
+	 * @param slider
+	 * @param majorTickSpace
+	 * @param minorTickSpace
+	 */
 	private static void setSliderTicks(JSlider slider, int majorTickSpace,
 			int minorTickSpace)
 	{
@@ -383,6 +418,11 @@ public class View
 		slider.setMinorTickSpacing(minorTickSpace);
 	}
 
+	/**
+	 * Returns the page properties panel.
+	 * 
+	 * @return the page properties panel
+	 */
 	private static JPanel pageProperties()
 	{
 		JPanel panel = new JPanel();
@@ -566,6 +606,7 @@ public class View
 		c.insets = new Insets(0, 8, 5, 8);
 		panel.add(rightMarginSpace, c);
 
+		// Page Sizes
 		JLabel pageSizeLabel = new JLabel("Page Size: ");
 		pageSizeLabel.setFont(labelFont);
 		c.gridx = 0;
@@ -585,34 +626,35 @@ public class View
 		panel.add(pageList, c);
 
 		setComponentsEnabled(false);
-		// panel.setEnabled(false);
-
 		return panel;
 	}
 
-	protected static JPanel buttonPanel()
+	/**
+	 * Creates the scroll pane for the page properties panel.
+	 */
+	protected static void buildPropertiesScrollPane()
 	{
-		JPanel panel = new JPanel();
-		panel.setOpaque(false);
-		panel.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-		GridBagConstraints c = new GridBagConstraints();
-		panel.setLayout(new GridBagLayout());
-		c.fill = GridBagConstraints.HORIZONTAL;
+		// Initializing and setting size
+		propertiesPane = new JScrollPane(pageProperties());
+		propertiesPane.setPreferredSize(propertiesScroll);
+		propertiesPane.setMinimumSize(propertiesScroll);
 
-		c.gridx = 0;
-		c.gridy = 0;
-		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(selectButton, c);
-		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(saveButton, c);
+		propertiesPane.getViewport().setOpaque(false);
 
-		saveButton.setEnabled(false);
+		// Increasing scrolling speed
+		propertiesPane.getVerticalScrollBar().setUnitIncrement(10);
 
-		return panel;
+		// Removing borders
+		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+		propertiesPane.setViewportBorder(border);
+		propertiesPane.setBorder(border);
 	}
 
+	/**
+	 * Returns the auto correction panel.
+	 * 
+	 * @return the auto correction panel
+	 */
 	protected static JPanel autoCorrections()
 	{
 		JPanel autoCorrectionPanel = new JPanel();
@@ -650,7 +692,33 @@ public class View
 
 		return autoCorrectionPanel;
 	}
+	
+	/**
+	 * Updates the auto correction panel with the given filename.
+	 * 
+	 * @param filename
+	 */
+	protected static void updateCorrection(String filename)
+	{
+		if (AutofixLog.isEmpty())
+		{
+			correctionLabel.setVisible(false);
+			correctionButton.setVisible(false);
+		} else
+		{
+			correctionLabel.setText("Errors were corrected in " + filename);
+			correctionLabel.setVisible(true);
+			correctionButton.setVisible(true);
 
+			// writes Autofix Log
+			String correctionLogPath = AutofixLog.LOG_PATH;
+			correctionLogText.setText(Utils.openAndReadFile(correctionLogPath));
+		}
+	}
+	
+	/**
+	 * Adds all the components to the left panel.
+	 */
 	protected static void populateLeftPanel()
 	{
 		GridBagConstraints c = new GridBagConstraints();
@@ -685,64 +753,60 @@ public class View
 		leftSide.add(autoCorrections(), c);
 	}
 
+	/**
+	 * Creates the scroll pane for the preview panel.
+	 */
 	protected static void buildPreviewScrollPane()
 	{
+		// Initializing and setting size
 		previewPane = new JScrollPane();
 		previewPane.setPreferredSize(previewScroll);
 		previewPane.setMinimumSize(previewScroll);
 		previewPane.getViewport().setOpaque(false);
-		previewPane.getViewport().setViewPosition(new Point(0, 0));
+
+		// Increasing scrolling speed
+		previewPane.getVerticalScrollBar().setUnitIncrement(10);
+
+		// Removing borders
 		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
+
+		// Setting label as ViewportView
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
-
 	}
 
-	protected static void buildPropertiesScrollPane()
-	{
-		propertiesPane = new JScrollPane(pageProperties());
-		propertiesPane.setPreferredSize(propertiesScroll);
-		propertiesPane.setMinimumSize(propertiesScroll);
-		propertiesPane.getViewport().setOpaque(false);
-		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-		propertiesPane.setViewportBorder(border);
-		propertiesPane.setBorder(border);
-	}
-	
 	/**
 	 * Adds all the components to the right panel.
-	 * 
-	 * 
 	 */
 	protected static void populateRightPanel()
 	{
-		GridBagConstraints c = new GridBagConstraints();
-		rightSide.setLayout(new GridBagLayout());
-		c.fill = GridBagConstraints.HORIZONTAL;
 		rightSide.setPreferredSize(new Dimension(RIGHTPANEL_WIDTH,
 				RIGHTPANEL_HEIGHT));
 
-		// Initiates the input label and adds to the right side panel.
+		GridBagConstraints c = new GridBagConstraints();
+		rightSide.setLayout(new GridBagLayout());
+		c.fill = GridBagConstraints.HORIZONTAL;
+
+		// Initializes the input label and adds to the right side panel.
 		input = new JTextField(1);
-		JLabel inputLabel = new JLabel("Input Path: ");
-		inputLabel.setFont(labelFont);
 		input.setEditable(true);
-		//input.setVisible(false);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weighty = 1;
 		c.insets = new Insets(0, 0, 0, 5);
 		rightSide.add(input, c);
+
+		JLabel inputLabel = new JLabel("Input Path: ");
+		inputLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weighty = 1;
 		c.insets = new Insets(0, 5, 45, 5);
 		rightSide.add(inputLabel, c);
-		
-		inputPrompt = new JLabel();
-		inputPrompt.setText("[Press Enter to Apply]");
+
+		inputPrompt = new JLabel("[Press Enter to Apply]");
 		inputPrompt.setVisible(false);
 		c.gridx = 0;
 		c.gridy = 0;
@@ -751,8 +815,8 @@ public class View
 		c.insets = new Insets(40, 515, 0, 0);
 		rightSide.add(inputPrompt, c);
 
+		// Create preview pane
 		buildPreviewScrollPane();
-		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
 				"PDF Preview of First Page:");
@@ -764,6 +828,36 @@ public class View
 		c.insets = new Insets(0, 0, 5, 5);
 		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
+	}
+
+	/**
+	 * Returns a JButton with the given default, pressed, and disabled icons
+	 */
+	public static JButton CreateButton(ImageIcon defaultIcon,
+			ImageIcon pressedIcon, ImageIcon disabledIcon)
+	{
+		JButton button = new JButton(defaultIcon);
+		button.setPressedIcon(pressedIcon);
+		button.setDisabledIcon(disabledIcon);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setContentAreaFilled(false);
+		return button;
+	}
+
+	/**
+	 * Returns an ImageIcon if the path is valid, otherwise null.
+	 */
+	protected static ImageIcon CreateImageIcon(String path)
+	{
+		java.net.URL imgURL = View.class.getResource(path);
+		if (imgURL != null)
+		{
+			return new ImageIcon(imgURL);
+		} else
+		{
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 
 	/**
@@ -815,32 +909,6 @@ public class View
 		frame.setVisible(true);
 	}
 
-	/** Returns a JButton with the given default, pressed, and disabled icons */
-	public static JButton CreateButton(ImageIcon defaultIcon,
-			ImageIcon pressedIcon, ImageIcon disabledIcon)
-	{
-		JButton button = new JButton(defaultIcon);
-		button.setPressedIcon(pressedIcon);
-		button.setDisabledIcon(disabledIcon);
-		button.setBorder(BorderFactory.createEmptyBorder());
-		button.setContentAreaFilled(false);
-		return button;
-	}
-
-	/** Returns an ImageIcon if the path is valid, otherwise null. */
-	protected static ImageIcon CreateImageIcon(String path)
-	{
-		java.net.URL imgURL = View.class.getResource(path);
-		if (imgURL != null)
-		{
-			return new ImageIcon(imgURL);
-		} else
-		{
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
-
 	public static void main(String[] args)
 	{
 		javax.swing.SwingUtilities.invokeLater(new Runnable()
@@ -852,9 +920,9 @@ public class View
 		});
 	}
 
-	void addSaveButtonListener(ActionListener listenForSelectButton)
+	void addSaveButtonListener(ActionListener listenForSaveButton)
 	{
-		saveButton.addActionListener(listenForSelectButton);
+		saveButton.addActionListener(listenForSaveButton);
 	}
 
 	void addSelectButtonListener(ActionListener listenForSelectButton)
@@ -927,7 +995,7 @@ public class View
 	{
 		pageList.addActionListener(pageSizeListener);
 	}
-	
+
 	void inputPathListener(ActionListener inputPathListener)
 	{
 		input.addActionListener(inputPathListener);
