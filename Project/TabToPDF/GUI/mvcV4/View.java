@@ -67,7 +67,7 @@ public class View
 	public static final int BUTTON_HEIGHT = 125;
 
 	public static final int AUTOCORR_WIDTH = 270;
-	public static final int AUTOCORR_HEIGHT = 75;
+	public static final int AUTOCORR_HEIGHT = 90;
 
 	public static final int ERROR_WIDTH = 330;
 	public static final int ERROR_HEIGHT = 325;
@@ -273,7 +273,7 @@ public class View
 			correctionButton.setVisible(false);
 		} else
 		{
-			correctionLabel.setText("Errors were found in " + filename);
+			correctionLabel.setText("Errors were corrected in " + filename);
 			correctionLabel.setVisible(true);
 			correctionButton.setVisible(true);
 
@@ -641,7 +641,7 @@ public class View
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
-		c.insets = new Insets(0, 0, 7, 0);
+		c.insets = new Insets(0, 0, 20, 0);
 		autoCorrectionPanel.add(correctionButton, c);
 
 		// hiding button and label
