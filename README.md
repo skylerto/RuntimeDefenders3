@@ -5,7 +5,7 @@ THINGS THAT NEED TO BE DONE FOR PRESENTATION
 - Print should display a message inside of its window if no printers are found. Right now if it can't find printers it stalls.
 - Emailer window should have a minumum height and width when first opened so parts aren't cut off. The user should not be able to shrink the window size past this point otherwise the fields get messed up. This goes for all of its windows.
 - Emailer. If I cancel the email window and repopen the emailer, the login window and the email window get displayed ontop of each other. It should either only display the login again or remember the previously used login information.
-- Help. We should remove Log and Auto-Correction Log from the list. Since the user manual is the only thing in the list, just rename "Help" to "User Manual".
+- Should emailer be disabled?
 - User Manual needs to have updated pictures of the current GUI.
 - User Manual should explain what the different PDF properties do. (Staff Space, Staff Size, etc.)
 - Ant. Everything needs to be compiled into an executable file.  
