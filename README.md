@@ -14,7 +14,6 @@ THINGS THAT NEED TO BE DONE FOR PRESENTATION
 - The Khurram and Bilal have to have their test cases ready to be presented to the proff. Including coverage. You have to show him the most important test cases and show that you covered all important cases.
 - We have to finish the coding TODAY. Figure out what we want to talk about for the presentation and tell me TODAY. Start doing practice presentations TOMORROW AND TUESDAY. I will try to have the powerpoint ready for TOMORROW.
 - EVERYONE NEEDS TO BE THERE AT 11:30 (at the latest) IN THE LAB TOMORROW.
-- 
 NEWS
 =================
 
