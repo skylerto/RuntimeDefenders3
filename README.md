@@ -7,6 +7,8 @@ THINGS THAT NEED TO BE DONE FOR PRESENTATION
 - Emailer window should have a minumum height and width when first opened so parts aren't cut off. The user should not be able to shrink the window size past this point otherwise the fields get messed up. This goes for all of its windows.
 - Emailer. If I cancel the email window and repopen the emailer, the login window and the email window get displayed ontop of each other. It should either only display the login again or remember the previously used login information.
 - Help. We should remove Log and Auto-Correction Log from the list. Since the user manual is the only thing in the list, just rename "Help" to "User Manual".
+- User Manual needs to have updated pictures of the current GUI.
+- User Manual should explain what the different PDF properties do. (Staff Space, Staff Size, etc.)
 - Ant. Everything needs to be compiled into an executable file.  
 
 - Everyone needs to think about what they will be talking about for their 2 minute personal presentation with the proff and let me know what it is.
