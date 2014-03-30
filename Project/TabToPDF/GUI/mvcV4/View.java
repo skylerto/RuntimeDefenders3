@@ -126,10 +126,7 @@ public class View
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
 			"Auto-Corrections");
-	protected static JMenuItem usermanMenuItem = new JMenuItem("User Manual");
 	protected static JMenuItem printMenuItem;;
-	protected static JMenuItem emailTab;
-	protected static JMenuItem helpTab;
 
 	// Text fields for input and destination folders.
 	protected static JTextField input;
@@ -299,8 +296,10 @@ public class View
 		layout.setAlignment(FlowLayout.LEFT);
 		menuBar.setLayout(layout);
 
-		// Print function for "File" tab section.
+		// Print menu item
 		printMenuItem = new JMenuItem("Print");
+		JMenu printSize = new JMenu("Print");
+		printMenuItem.setPreferredSize(printSize.getPreferredSize());
 		printMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
@@ -314,10 +313,10 @@ public class View
 			}
 		});
 
-		// Build second menu in the menu bar.
+		// Email menu item
 		JMenuItem emailMenuItem = new JMenuItem("Email");
-		// menu.getAccessibleContext().setAccessibleDescription(
-		// "Contain elements to help the user");
+		JMenu emailSize = new JMenu("Email");
+		emailMenuItem.setPreferredSize(emailSize.getPreferredSize());
 		emailMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
@@ -327,13 +326,11 @@ public class View
 			}
 		});
 
-		// Build third menu in the menu bar.
-		JMenu helpMenu = new JMenu("Help");
-
-		// Adding menu items to third JMenu
-		// menu.getAccessibleContext().setAccessibleDescription(
-		// "Contain elements to help the user");
-		usermanMenuItem.addActionListener(new ActionListener()
+		// User manual menu item
+		JMenuItem helpMenuItem = new JMenuItem("User Manual");
+		JMenu helpSize = new JMenu("User Manual");
+		helpMenuItem.setPreferredSize(helpSize.getPreferredSize());
+		helpMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -341,13 +338,10 @@ public class View
 				userManualInterface umUI = new userManualInterface();
 			}
 		});
-		helpMenu.add(usermanMenuItem);
-		helpMenu.add(log);
-		helpMenu.add(autoCorrection);
 
 		menuBar.add(printMenuItem);
 		menuBar.add(emailMenuItem);
-		menuBar.add(helpMenu);
+		menuBar.add(helpMenuItem);
 
 		return menuBar;
 	}
