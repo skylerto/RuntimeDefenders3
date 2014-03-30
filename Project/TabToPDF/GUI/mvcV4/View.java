@@ -50,19 +50,19 @@ public class View
 	/* CONSTANTS */
 
 	public static final int PREVIEW_SCROLL_WIDTH = 640;
-	public static final int PREVIEW_SCROLL_HEIGHT = 550;
+	public static final int PREVIEW_SCROLL_HEIGHT = 570;
 
 	public static final int PROPERTIES_SCROLL_WIDTH = 330;
-	public static final int PROPERTIES_SCROLL_HEIGHT = 325;
+	public static final int PROPERTIES_SCROLL_HEIGHT = 430;
 
 	public static final int PAGEPROP_WIDTH = 300;
-	public static final int PAGEPROP_HEIGHT = 450;
+	public static final int PAGEPROP_HEIGHT = 455;
 
 	public static final int CORRLOG_WIDTH = 760;
 	public static final int CORRLOG_HEIGHT = 500;
 
 	public static final int BUTTON_WIDTH = 270;
-	public static final int BUTTON_HEIGHT = 200;
+	public static final int BUTTON_HEIGHT = 125;
 
 	public static final int AUTOCORR_WIDTH = 270;
 	public static final int AUTOCORR_HEIGHT = 75;
@@ -71,10 +71,10 @@ public class View
 	public static final int ERROR_HEIGHT = 325;
 
 	public static final int LEFTPANEL_WIDTH = 400;
-	public static final int LEFTPANEL_HEIGHT = 500;
+	public static final int LEFTPANEL_HEIGHT = 650;
 
 	public static final int RIGHTPANEL_WIDTH = 650;
-	public static final int RIGHTPANEL_HEIGHT = 500;
+	public static final int RIGHTPANEL_HEIGHT = 650;
 
 	public static final String LETTER = "Letter";
 	public static final String LEGAL = "Legal";
@@ -620,14 +620,17 @@ public class View
 
 		// Adding label and button
 		correctionLabel = new JLabel("");
+		correctionLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 0;
-		c.insets = new Insets(5, 10, 5, 5);
+		c.weighty = 1;
+		c.insets = new Insets(0, 0, 5, 0);
 		autoCorrectionPanel.add(correctionLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 10, 5, 5);
+		c.weighty = 0;
+		c.insets = new Insets(0, 0, 5, 0);
 		autoCorrectionPanel.add(correctionButton, c);
 
 		// hiding button and label
@@ -648,7 +651,8 @@ public class View
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.insets = new Insets(5, 10, 5, 5);
+		c.weighty = 1;
+		c.insets = new Insets(5, 5, 0, 5);
 		leftSide.add(buttonPanel(), c);
 
 		buildPropertiesScrollPane();
@@ -659,12 +663,14 @@ public class View
 		propertiesPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.insets = new Insets(5, 10, 5, 5);
+		c.weighty = 0;
+		c.insets = new Insets(0, 5, 0, 5);
 		leftSide.add(propertiesPane, c);
 
 		c.gridx = 0;
 		c.gridy = 2;
-		c.insets = new Insets(5, 10, 5, 5);
+		c.weighty = 0;
+		c.insets = new Insets(0, 5, 0, 5);
 		leftSide.add(autoCorrections(), c);
 	}
 
@@ -710,15 +716,11 @@ public class View
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
 		input.setEditable(false);
-		JLabel previewLabel = new JLabel();
 		c.gridx = 0;
-		c.gridy = 1;
-		c.insets = new Insets(5, 5, 5, 10);
+		c.gridy = 0;
+		c.weighty = 1;
+		c.insets = new Insets(0, 0, 0, 5);
 		rightSide.add(input, c);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.insets = new Insets(1, 1, 1, 10);
-		rightSide.add(previewLabel, c); // Label naming the display pane.
 
 		buildPreviewScrollPane();
 		// Set border
@@ -728,9 +730,9 @@ public class View
 		titled.setTitleJustification(TitledBorder.LEFT);
 		previewPane.setBorder(titled);
 		c.gridx = 0;
-		c.gridy = 3;
-		c.insets = new Insets(1, 1, 1, 10);
-
+		c.gridy = 1;
+		c.weighty = 0;
+		c.insets = new Insets(0, 0, 0, 5);
 		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
 	}
@@ -762,7 +764,6 @@ public class View
 
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout(new GridBagLayout());
-		c.fill = GridBagConstraints.HORIZONTAL;
 		frame.setJMenuBar(createMenuBar());
 
 		populateLeftPanel(); // Adds all the elements to the left panel.
@@ -774,9 +775,12 @@ public class View
 		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
 		frame.add(leftSide, c);
+
 		c.gridx = 1;
 		c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
 		frame.add(rightSide, c);
+
 		frame.pack();
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
