@@ -213,7 +213,6 @@ class SelectButtonListener implements ActionListener
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(inputfile);
-		System.out.println(inputfile.toString());
 		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",new String[] {".txt"});
 		chooser.addChoosableFileFilter(text_filter);
 		chooser.setFileFilter(text_filter);
