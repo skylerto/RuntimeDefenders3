@@ -50,7 +50,7 @@ public class View
 	/* CONSTANTS */
 
 	public static final int PREVIEW_SCROLL_WIDTH = 640;
-	public static final int PREVIEW_SCROLL_HEIGHT = 570;
+	public static final int PREVIEW_SCROLL_HEIGHT = 560;
 
 	public static final int PROPERTIES_SCROLL_WIDTH = 330;
 	public static final int PROPERTIES_SCROLL_HEIGHT = 430;
@@ -239,6 +239,8 @@ public class View
 		subtitle.setText("");
 		pageList.setSelectedIndex(0);
 		propertiesPane.getVerticalScrollBar().setValue(0);
+		correctionLabel.setVisible(false);
+		correctionButton.setVisible(false);
 	}
 
 	protected static void repaintPreview(String image, Rectangle pageSize)
@@ -624,13 +626,13 @@ public class View
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weighty = 1;
-		c.insets = new Insets(0, 0, 5, 0);
+		c.insets = new Insets(0, 0, 0, 0);
 		autoCorrectionPanel.add(correctionLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
-		c.insets = new Insets(0, 0, 5, 0);
+		c.insets = new Insets(0, 0, 7, 0);
 		autoCorrectionPanel.add(correctionButton, c);
 
 		// hiding button and label
@@ -732,7 +734,7 @@ public class View
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
-		c.insets = new Insets(0, 0, 0, 5);
+		c.insets = new Insets(0, 0, 5, 5);
 		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
 	}
