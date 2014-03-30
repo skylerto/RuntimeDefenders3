@@ -36,7 +36,6 @@ public class EmailerInterface extends JFrame{
 		
 		frame.setSize(500, 250);
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
 		c.insets = new Insets(10,0,10,10);

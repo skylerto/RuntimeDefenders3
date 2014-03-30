@@ -232,7 +232,7 @@ public class userManualInterface extends JFrame{
 		BufferedImage resizedImage = null;
 		try {
 			image = ImageIO.read(imageFile);
-			resizedImage = resize(image, 360,340);
+			resizedImage = resize(image, 260,240);
 			Icon = new ImageIcon(resizedImage);
 		} catch (IOException e) {
 			e.printStackTrace();

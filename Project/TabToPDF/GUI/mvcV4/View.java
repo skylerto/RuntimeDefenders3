@@ -312,11 +312,7 @@ public class View
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				// logString += "Opening Printer Interface...\n";
-				// updateLog();
-				PrinterInterface printWindow = new PrinterInterface();
-				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
-				printWindow.Scroller2(test);
+				EmailerInterface emailerInterfaceView = new EmailerInterface();
 			}
 		});
 		menuBar.add(emailMenuItem);
