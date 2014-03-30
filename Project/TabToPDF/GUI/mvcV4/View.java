@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -65,6 +66,9 @@ public class View
 
 	public static final int AUTOCORR_WIDTH = 270;
 	public static final int AUTOCORR_HEIGHT = 75;
+	
+	public static final int ERROR_WIDTH = 330;
+	public static final int ERROR_HEIGHT = 325;
 
 	public static final int LEFTPANEL_WIDTH = 400;
 	public static final int LEFTPANEL_HEIGHT = 500;
@@ -208,9 +212,11 @@ public class View
 	protected static void showError(String message)
 	{
 		iconLabel.setText("<html>" + message + "<html>");
+		iconLabel.setFont(labelFont);
+		iconLabel.setForeground(Color.RED);
 		iconLabel.setIcon(ErrorIcon);
-		iconLabel.setPreferredSize(new Dimension(PROPERTIES_SCROLL_WIDTH,
-				PROPERTIES_SCROLL_HEIGHT));
+		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH,
+				ERROR_HEIGHT));
 	}
 
 	protected static void setComponentsEnabled(boolean value)
@@ -656,11 +662,13 @@ public class View
 		previewPane.setPreferredSize(previewScroll);
 		previewPane.setMinimumSize(previewScroll);
 		previewPane.getViewport().setOpaque(false);
+		previewPane.getViewport().setViewPosition(new Point(0, 0));
 		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
+		
 	}
 
 	protected static void buildPropertiesScrollPane()

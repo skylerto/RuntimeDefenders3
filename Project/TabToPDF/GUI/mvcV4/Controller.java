@@ -269,7 +269,6 @@ class SelectButtonListener implements ActionListener
 				Controller.displayError(e1.getMessage());
 			}
 		}
-
 	}
 }
 
@@ -318,7 +317,8 @@ class CorrectionButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		View.correctionLogDialog.setLocationRelativeTo(View.previewPane.getVerticalScrollBar());
+		View.correctionLogDialog.setLocationRelativeTo(View.previewPane
+				.getVerticalScrollBar());
 		View.correctionLogScroller.getVerticalScrollBar().setValue(0);
 		View.correctionLogScroller.getHorizontalScrollBar().setValue(0);
 		View.correctionLogDialog.setVisible(true);
