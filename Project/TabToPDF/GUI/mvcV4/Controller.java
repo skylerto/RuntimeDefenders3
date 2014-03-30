@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -28,6 +29,7 @@ public class Controller
 	private static Model model;
 	private View view;
 	private static boolean active = true;
+	
 
 	public Controller(View view)
 	{
@@ -202,7 +204,7 @@ class SubtitleListener implements ActionListener
 
 class SelectButtonListener implements ActionListener
 {
-
+	private  File inputfile = new File(".");
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -210,8 +212,8 @@ class SelectButtonListener implements ActionListener
 		Controller.setModel(model);
 
 		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new java.io.File("."));
-		chooser.setDialogTitle("Select Text File");
+		chooser.setCurrentDirectory(inputfile);
+		System.out.println(inputfile.toString());
 		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",new String[] {".txt"});
 		chooser.addChoosableFileFilter(text_filter);
 		chooser.setFileFilter(text_filter);
@@ -219,7 +221,7 @@ class SelectButtonListener implements ActionListener
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
-
+			inputfile = chooser.getCurrentDirectory();
 			String filenameWithExtension = chooser.getSelectedFile().toString();
 
 			model.setFilenameWithExtention(filenameWithExtension);
@@ -284,7 +286,7 @@ class SelectButtonListener implements ActionListener
  */
 class SaveButtonListener implements ActionListener
 {
-
+	private  File outputfile = new File(".");
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -293,7 +295,7 @@ class SaveButtonListener implements ActionListener
 		FileTypeFilter pdf_filter = new FileTypeFilter("Portable Document Format *.pdf",new String[] {".pdf"});
 		chooser.addChoosableFileFilter(pdf_filter);
 		chooser.setFileFilter(pdf_filter);
-		chooser.setCurrentDirectory(new java.io.File("."));
+		chooser.setCurrentDirectory(outputfile);
 		chooser.setDialogTitle("Select PDF Destination");
 		//chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
@@ -301,6 +303,7 @@ class SaveButtonListener implements ActionListener
 		String input = model.getFilenameWithExtension();
 		if (chooser.showSaveDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
+			outputfile = chooser.getCurrentDirectory();
 			String outputFilename = chooser.getSelectedFile().toString();
 			if(!outputFilename.matches("(.*)(\\.pdf){1}"))
 				outputFilename+=".pdf";
