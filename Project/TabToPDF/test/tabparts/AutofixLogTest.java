@@ -18,12 +18,6 @@ public class AutofixLogTest {
 	@Before
 	public void setUp() throws Exception {
 		a1 = new AutofixLog();
-		a1.write("writing to log with write() method");
-		//a1.writeNL("writing to log with writeNL() method");
-		//String h = "hello\nworld";
-		
-		
-		
 	}
 
 	@Test
@@ -38,7 +32,7 @@ public class AutofixLogTest {
 	
 	@Test
 	public void Test_write() throws IOException {
-		
+		a1.write("writing to log with write() method");
 		FileReader in = new FileReader(a1.log);
 	    BufferedReader br = new BufferedReader(in);
         String line;
@@ -54,10 +48,30 @@ public class AutofixLogTest {
 	    
 	}
 	
-	//@Test
-	//public void Test_writeNL() throws IOException {
-		//fail();
-	//}
+	@Test
+	public void Test_writeNL() throws IOException {
+		a1.writeNL("writing to log with writeNL() method");
+		a1.writeNL("LINE2");
+		FileReader in = new FileReader(a1.log);
+	    BufferedReader br = new BufferedReader(in);
+        String line;
+	    while ((line = br.readLine()) != null) {
+	       output += line;
+	       output += "\n";
+	    }
+	    in.close();
+	    assertFalse(a1.isEmpty());
+	    
+	   assertEquals("nullwriting to log with writeNL() method\nLINE2\n",output);
+	   
+	    
+	    output = ""; //resetting
+	}
+	
+	@Test
+	public void Test_isEmpty() throws IOException {
+		assertTrue(a1.isEmpty());
+	}
 	
 	
 
