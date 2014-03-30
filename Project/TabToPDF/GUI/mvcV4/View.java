@@ -60,6 +60,8 @@ public class View
 
 	public static final int CORRLOG_WIDTH = 760;
 	public static final int CORRLOG_HEIGHT = 500;
+	public static final int CORRLOG_WIDTH_MIN = 300;
+	public static final int CORRLOG_HEIGHT_MIN = 220;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 125;
@@ -117,6 +119,8 @@ public class View
 	protected static JMenuItem log = new JMenuItem("Log");
 	protected static JMenuItem autoCorrection = new JMenuItem(
 			"Auto-Corrections");
+	protected static JMenuItem usermanMenuItem = new JMenuItem("User Manual");
+
 	protected static JMenuItem emailTab;
 	protected static JMenuItem helpTab;
 
@@ -283,10 +287,6 @@ public class View
 		menuBar.setLayout(layout);
 
 		// Build the first menu.
-		menu = new JMenu("View");
-		menu.setMnemonic(KeyEvent.VK_A);
-		menu.getAccessibleContext().setAccessibleDescription("The first menu");
-		menuBar.add(menu);
 
 		// Print function for "File" tab section.
 		JMenuItem printMenuItem = new JMenuItem("Print");
@@ -305,7 +305,7 @@ public class View
 		});
 		menuBar.add(printMenuItem);
 
-		// Build third menu in the menu bar.
+		// Build second menu in the menu bar.
 		JMenuItem emailMenuItem = new JMenuItem("Email");
 		// menu.getAccessibleContext().setAccessibleDescription(
 		// "Contain elements to help the user");
@@ -319,11 +319,13 @@ public class View
 		});
 		menuBar.add(emailMenuItem);
 
-		// Build fourth menu in the menu bar.
-		JMenuItem helpMenuItem = new JMenuItem("Help");
+		// Build third menu in the menu bar.
+		JMenu helpMenu = new JMenu("Help");
+
+		// Adding menu items to third JMenu
 		// menu.getAccessibleContext().setAccessibleDescription(
 		// "Contain elements to help the user");
-		helpMenuItem.addActionListener(new ActionListener()
+		usermanMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -331,10 +333,11 @@ public class View
 				userManualInterface umUI = new userManualInterface();
 			}
 		});
-		menuBar.add(helpMenuItem);
+		helpMenu.add(usermanMenuItem);
+		helpMenu.add(log);
+		helpMenu.add(autoCorrection);
 
-		menu.add(log);
-		menu.add(autoCorrection);
+		menuBar.add(helpMenu);
 
 		return menuBar;
 	}
@@ -355,6 +358,8 @@ public class View
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
+		correctionLogDialog.setMinimumSize(new Dimension(CORRLOG_WIDTH_MIN,
+				CORRLOG_HEIGHT_MIN));
 		correctionLogText = new JTextArea();
 		correctionLogScroller = new JScrollPane(correctionLogText);
 		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
@@ -607,8 +612,6 @@ public class View
 		JPanel autoCorrectionPanel = new JPanel();
 		autoCorrectionPanel.setOpaque(false);
 		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
-				AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setMaximumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
