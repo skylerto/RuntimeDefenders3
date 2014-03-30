@@ -182,9 +182,9 @@ public class TabStaff {
 						for (int p = 0; p < line.length(); currentmeasure++) {
 							s = new TabString();
 							p = s.scanLine(line, p, stringnum == 0, linenum);	// Stores the string in 's' and 'p' is the char index where it left off in the line
-							System.out.println("scanned " + s.toString());
+
 							if (!NO_DASH.matcher(s.toString()).find()) {
-								System.out.println("adding " + s.toString());
+
 								this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
 	
 								/* Break from the loop if a double barred end is detected */
