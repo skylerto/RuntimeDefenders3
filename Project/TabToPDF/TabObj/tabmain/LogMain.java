@@ -24,9 +24,9 @@ public class LogMain {
 			System.err.println(e.getMessage());
 		}*/
 		
-		/*Pattern music = Pattern.compile("^[*][|][|]$");
+		/*Pattern music = Pattern.compile("^[|][^-]+[|]$");
 		
-		System.out.println(String.valueOf((music.matcher("| dawd-*||")).find()));*/
+		System.out.println(String.valueOf((music.matcher("|33||")).find()));*/
 		
 		/*PDFProperties prop = new PDFProperties();
 		
@@ -50,7 +50,7 @@ public class LogMain {
 			e.printStackTrace();
 		}
 		System.out.println(s.toString());
-		s.splitLongMeasures(12);
-		System.out.println(s.toString());
+		/*s.splitLongMeasures(12);
+		System.out.println(s.toString());*/
 	}
 }

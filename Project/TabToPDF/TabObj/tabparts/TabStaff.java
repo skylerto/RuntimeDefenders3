@@ -27,7 +27,7 @@ public class TabStaff {
 	public static final int MAX_SIZE = 1000;
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
 	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*.*-.*[|][1-9]\\s*$");	// The string that has a repeat number at the end
-	public static final Pattern NO_DASH = Pattern.compile("[|][^-]+[|]");
+	public static final Pattern NO_DASH = Pattern.compile("^[|][^-]+[|]$");
 	
 	/* ATTRIBUTES */
 	
@@ -182,8 +182,9 @@ public class TabStaff {
 						for (int p = 0; p < line.length(); currentmeasure++) {
 							s = new TabString();
 							p = s.scanLine(line, p, stringnum == 0, linenum);	// Stores the string in 's' and 'p' is the char index where it left off in the line
-							
+							System.out.println("scanned " + s.toString());
 							if (!NO_DASH.matcher(s.toString()).find()) {
+								System.out.println("adding " + s.toString());
 								this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
 	
 								/* Break from the loop if a double barred end is detected */
