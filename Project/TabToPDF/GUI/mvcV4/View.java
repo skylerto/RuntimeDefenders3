@@ -250,12 +250,17 @@ public class View
 	protected static void repaintPreview(String image, Rectangle pageSize)
 	{
 		ImageIcon iconImage = new ImageIcon(image);
+		
 		iconImage.getImage().flush();
 		iconLabel.setText("");
-		iconLabel.setIcon(iconImage);
+		//iconLabel.setIcon(iconImage);
 		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth(),
 				(int) pageSize.getHeight()));
 		iconLabel.revalidate();
+		
+		ImageIcon iconImage2 = new ImageIcon(image);
+		iconImage2.getImage().flush();
+		iconLabel.setIcon(iconImage2);
 	}
 
 	// NOTE! Might want to combine this with repaintPreview into updateView
@@ -731,7 +736,7 @@ public class View
 		// Set border
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
-				"PDF Preview:");
+				"PDF Preview of First Page:");
 		titled.setTitleJustification(TitledBorder.LEFT);
 		previewPane.setBorder(titled);
 		c.gridx = 0;

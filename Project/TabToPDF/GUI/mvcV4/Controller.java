@@ -396,6 +396,10 @@ class SpacingListener implements ChangeListener
 			Model model = Controller.getModel();
 			try
 			{
+				if (model.getSpacing() < View.staffSpacing.getMinimum())
+					model.setSpacing(View.staffSpacing.getMinimum());
+				else if (model.getSpacing() > View.staffSpacing.getMaximum())
+					model.setSpacing(View.staffSpacing.getMaximum());
 				/*
 				 * If the slider value didn't change from the current value then
 				 * do nothing

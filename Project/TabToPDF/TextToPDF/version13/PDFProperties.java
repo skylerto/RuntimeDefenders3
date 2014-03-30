@@ -33,7 +33,7 @@ public class PDFProperties {
 	public static final float DEFAULT_RIGHTMARGIN = 36f;
 	public static final float DEFAULT_MEASURESPACE = 80f;
 	
-	public static final float MAX_SPACING = 90f;
+	public static final float MAX_SPACING = 25f;
 	public static final float MIN_SPACING = 1f;
 	
 	public static final int VALUE_POSITION = 3;		// The position in the patterns where information is extracted from
