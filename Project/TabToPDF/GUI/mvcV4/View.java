@@ -127,6 +127,7 @@ public class View
 	protected static JMenuItem autoCorrection = new JMenuItem(
 			"Auto-Corrections");
 	protected static JMenuItem usermanMenuItem = new JMenuItem("User Manual");
+	protected static JMenuItem printMenuItem;;
 	protected static JMenuItem emailTab;
 	protected static JMenuItem helpTab;
 
@@ -224,6 +225,7 @@ public class View
 	 */
 	protected static void setComponentsEnabled(boolean value)
 	{
+		printMenuItem.setEnabled(value);
 		saveButton.setEnabled(value);
 		title.setEnabled(value);
 		subtitle.setEnabled(value);
@@ -292,16 +294,13 @@ public class View
 	 */
 	public static JMenuBar createMenuBar()
 	{
-		JMenuBar menuBar;
-		menuBar = new JMenuBar();
+		JMenuBar menuBar = new JMenuBar();
 		FlowLayout layout = new FlowLayout();
 		layout.setAlignment(FlowLayout.LEFT);
 		menuBar.setLayout(layout);
 
-		// Build the first menu.
-
 		// Print function for "File" tab section.
-		JMenuItem printMenuItem = new JMenuItem("Print");
+		printMenuItem = new JMenuItem("Print");
 		printMenuItem.addActionListener(new ActionListener()
 		{
 			@Override
@@ -313,9 +312,7 @@ public class View
 				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
 				printWindow.Scroller2(test);
 			}
-
 		});
-		menuBar.add(printMenuItem);
 
 		// Build second menu in the menu bar.
 		JMenuItem emailMenuItem = new JMenuItem("Email");
@@ -329,7 +326,6 @@ public class View
 				EmailerInterface emailerInterfaceView = new EmailerInterface();
 			}
 		});
-		menuBar.add(emailMenuItem);
 
 		// Build third menu in the menu bar.
 		JMenu helpMenu = new JMenu("Help");
@@ -349,6 +345,8 @@ public class View
 		helpMenu.add(log);
 		helpMenu.add(autoCorrection);
 
+		menuBar.add(printMenuItem);
+		menuBar.add(emailMenuItem);
 		menuBar.add(helpMenu);
 
 		return menuBar;
@@ -692,7 +690,7 @@ public class View
 
 		return autoCorrectionPanel;
 	}
-	
+
 	/**
 	 * Updates the auto correction panel with the given filename.
 	 * 
@@ -715,7 +713,7 @@ public class View
 			correctionLogText.setText(Utils.openAndReadFile(correctionLogPath));
 		}
 	}
-	
+
 	/**
 	 * Adds all the components to the left panel.
 	 */
