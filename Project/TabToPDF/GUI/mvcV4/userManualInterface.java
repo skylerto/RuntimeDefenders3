@@ -67,7 +67,6 @@ public class userManualInterface extends JFrame{
 		
 		frame.setLocationRelativeTo(null);
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 		
@@ -226,13 +225,14 @@ public class userManualInterface extends JFrame{
 		
 		
 		
-		ImageIcon Icon = new ImageIcon("/userManualImages/UM.jpg");
-		File imageFile = new File("/userManualImages/UM.jpg");
+		ImageIcon Icon = new ImageIcon("res/userManualImages/UM.jpg");
+		File imageFile = new File("res/userManualImages/UM.jpg");
+		
 		BufferedImage image;
 		BufferedImage resizedImage = null;
 		try {
 			image = ImageIO.read(imageFile);
-			resizedImage = resize(image, 380,340);
+			resizedImage = resize(image, 360,340);
 			Icon = new ImageIcon(resizedImage);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -269,8 +269,8 @@ public class userManualInterface extends JFrame{
 	    if( node.equals("Getting Started") ) {
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	        ImageIcon Icon = new ImageIcon("/userManualImages/browseUM.jpg");
-			File imageFile = new File("/userManualImages/browseUM.jpg");
+	        ImageIcon Icon = new ImageIcon("res/userManualImages/browseUM.jpg");
+			File imageFile = new File("res/userManualImages/browseUM.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -299,8 +299,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(gettingStartedStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("/userManualImages/convertUM.jpg");
-			File imageFile2 = new File("/userManualImages/convertUM.jpg");
+			ImageIcon Icon2 = new ImageIcon("res/userManualImages/convertUM.jpg");
+			File imageFile2 = new File("res/userManualImages/convertUM.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -324,8 +324,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(gettingStartedStep3_0, c);
 			
 			//Adding in the edit picture.
-			ImageIcon Icon3 = new ImageIcon("/userManualImages/editUM.jpg");
-			File imageFile3 = new File("/userManualImages/editUM.jpg");
+			ImageIcon Icon3 = new ImageIcon("res/userManualImages/editUM.jpg");
+			File imageFile3 = new File("res/userManualImages/editUM.jpg");
 			BufferedImage image3;
 			BufferedImage resizedImage3 = null;
 			try {
@@ -349,8 +349,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(gettingStartedStep4_0, c);
 			
 			//Adding in the save picture.
-			ImageIcon Icon4 = new ImageIcon("/userManualImages/saveUM.jpg");
-			File imageFile4 = new File("/userManualImages/saveUM.jpg");
+			ImageIcon Icon4 = new ImageIcon("res/userManualImages/saveUM.jpg");
+			File imageFile4 = new File("res/userManualImages/saveUM.jpg");
 			BufferedImage image4;
 			BufferedImage resizedImage4 = null;
 			try {
@@ -379,8 +379,8 @@ public class userManualInterface extends JFrame{
 	    if( node.equals("Printer") ) {
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	        ImageIcon Icon = new ImageIcon("/userManualImages/print1UM.jpg");
-			File imageFile = new File("/userManualImages/print1UM.jpg");
+	        ImageIcon Icon = new ImageIcon("res/userManualImages/print1UM.jpg");
+			File imageFile = new File("res/userManualImages/print1UM.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -409,8 +409,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(printStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("/userManualImages/print2UM.jpg");
-			File imageFile2 = new File("/userManualImages/print2UM.jpg");
+			ImageIcon Icon2 = new ImageIcon("res/userManualImages/print2UM.jpg");
+			File imageFile2 = new File("res/userManualImages/print2UM.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -439,8 +439,8 @@ public class userManualInterface extends JFrame{
 	    if( node.equals("Email") ) {
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0,0));
-	        ImageIcon Icon = new ImageIcon("/userManualImages/email0UM.jpg");
-			File imageFile = new File("/userManualImages/email0UM.jpg");
+	        ImageIcon Icon = new ImageIcon("res/userManualImages/email0UM.jpg");
+			File imageFile = new File("res/userManualImages/email0UM.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -469,8 +469,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("/userManualImages/email1UM.jpg");
-			File imageFile2 = new File("/userManualImages/email1UM.jpg");
+			ImageIcon Icon2 = new ImageIcon("res/userManualImages/email1UM.jpg");
+			File imageFile2 = new File("res/userManualImages/email1UM.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -494,8 +494,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep3_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon3 = new ImageIcon("/userManualImages/email2UM.jpg");
-			File imageFile3 = new File("/userManualImages/email2UM.jpg");
+			ImageIcon Icon3 = new ImageIcon("res/userManualImages/email2UM.jpg");
+			File imageFile3 = new File("res/userManualImages/email2UM.jpg");
 			BufferedImage image3;
 			BufferedImage resizedImage3 = null;
 			try {
@@ -519,8 +519,8 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep4_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon4 = new ImageIcon("/userManualImages/email3UM.jpg");
-			File imageFile4 = new File("/userManualImages/email3UM.jpg");
+			ImageIcon Icon4 = new ImageIcon("res/userManualImages/email3UM.jpg");
+			File imageFile4 = new File("res/userManualImages/email3UM.jpg");
 			BufferedImage image4;
 			BufferedImage resizedImage4 = null;
 			try {
