@@ -57,8 +57,8 @@ public class View
 	public static final int PAGEPROP_WIDTH = 300;
 	public static final int PAGEPROP_HEIGHT = 450;
 
-	public static final int CORRLOG_WIDTH = 300;
-	public static final int CORRLOG_HEIGHT = 200;
+	public static final int CORRLOG_WIDTH = 760;
+	public static final int CORRLOG_HEIGHT = 500;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 200;
@@ -174,6 +174,7 @@ public class View
 	protected static JLabel correctionLabel;
 	protected static JDialog correctionLogDialog;
 	protected static JTextArea correctionLogText;
+	protected static JScrollPane correctionLogScroller;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
@@ -212,6 +213,29 @@ public class View
 				PROPERTIES_SCROLL_HEIGHT));
 	}
 
+	protected static void setComponentsEnabled(boolean value)
+	{
+		saveButton.setEnabled(value);
+		title.setEnabled(value);
+		subtitle.setEnabled(value);
+		staffSpacing.setEnabled(value);
+		elementSize.setEnabled(value);
+		measureSpace.setEnabled(value);
+		titleFontSize.setEnabled(value);
+		subtitleFontSize.setEnabled(value);
+		leftMarginSpace.setEnabled(value);
+		rightMarginSpace.setEnabled(value);
+		pageList.setEnabled(value);
+	}
+
+	protected static void resetView()
+	{
+		title.setText("");
+		subtitle.setText("");
+		pageList.setSelectedIndex(0);
+		propertiesPane.getVerticalScrollBar().setValue(0);
+	}
+
 	protected static void repaintPreview(String image, Rectangle pageSize)
 	{
 		ImageIcon iconImage = new ImageIcon(image);
@@ -235,6 +259,10 @@ public class View
 			correctionLabel.setText("Errors were found in " + filename);
 			correctionLabel.setVisible(true);
 			correctionButton.setVisible(true);
+
+			// writes Autofix Log
+			String correctionLogPath = AutofixLog.LOG_PATH;
+			correctionLogText.setText(Utils.openAndReadFile(correctionLogPath));
 		}
 	}
 
@@ -302,16 +330,26 @@ public class View
 		return panel;
 	}
 
-	private static void buildCorrectionLogDialog()
+	protected static void buildCorrectionLogDialog()
 	{
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
 				CORRLOG_HEIGHT));
 		correctionLogText = new JTextArea();
-		JScrollPane correctionLogScroller = new JScrollPane(correctionLogText);
+		correctionLogScroller = new JScrollPane(correctionLogText);
+		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		correctionLogText.setEditable(false);
 		correctionLogDialog.add(correctionLogScroller);
 		correctionLogDialog.pack();
+	}
+
+	private static void setSliderTicks(JSlider slider, int majorTickSpace,
+			int minorTickSpace)
+	{
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setMajorTickSpacing(majorTickSpace);
+		slider.setMinorTickSpacing(minorTickSpace);
 	}
 
 	private static JPanel pageProperties()
@@ -368,10 +406,8 @@ public class View
 
 		staffSpacing = new JSlider(JSlider.HORIZONTAL, staffSpacingMin,
 				staffSpacingMax, staffSpacingCurrent);
-		staffSpacing.setMajorTickSpacing(5);
-		staffSpacing.setMinorTickSpacing(1);
-		staffSpacing.setPaintTicks(true);
-		staffSpacing.setPaintLabels(true);
+		setSliderTicks(staffSpacing, 5, 1);
+
 		c.gridx = 1;
 		c.gridy = 2;
 		c.weightx = 1;
@@ -391,10 +427,7 @@ public class View
 
 		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
 				elementSizeMax, elementSizeCurrent);
-		elementSize.setMajorTickSpacing(5);
-		elementSize.setMinorTickSpacing(1);
-		elementSize.setPaintTicks(true);
-		elementSize.setPaintLabels(true);
+		setSliderTicks(elementSize, 5, 1);
 		c.gridx = 1;
 		c.gridy = 3;
 		c.weightx = 1;
@@ -414,10 +447,7 @@ public class View
 
 		measureSpace = new JSlider(JSlider.HORIZONTAL, measureSizeMin,
 				measureSizeMax, measureSizeCurrent);
-		measureSpace.setMajorTickSpacing(50);
-		measureSpace.setMinorTickSpacing(10);
-		measureSpace.setPaintTicks(true);
-		measureSpace.setPaintLabels(true);
+		setSliderTicks(measureSpace, 50, 10);
 		c.gridx = 1;
 		c.gridy = 4;
 		c.weightx = 1;
@@ -437,10 +467,7 @@ public class View
 
 		titleFontSize = new JSlider(JSlider.HORIZONTAL, titleFontSizeMin,
 				titleFontSizeMax, titleFontSizeCurrent);
-		titleFontSize.setMajorTickSpacing(5);
-		titleFontSize.setMinorTickSpacing(1);
-		titleFontSize.setPaintTicks(true);
-		titleFontSize.setPaintLabels(true);
+		setSliderTicks(titleFontSize, 5, 1);
 		c.gridx = 1;
 		c.gridy = 5;
 		c.weightx = 1;
@@ -460,10 +487,7 @@ public class View
 
 		subtitleFontSize = new JSlider(JSlider.HORIZONTAL, subtitleFontSizeMin,
 				subtitleFontSizeMax, subtitleFontSizeCurrent);
-		subtitleFontSize.setMajorTickSpacing(5);
-		subtitleFontSize.setMinorTickSpacing(1);
-		subtitleFontSize.setPaintTicks(true);
-		subtitleFontSize.setPaintLabels(true);
+		setSliderTicks(subtitleFontSize, 5, 1);
 		c.gridx = 1;
 		c.gridy = 6;
 		c.weightx = 1;
@@ -483,10 +507,7 @@ public class View
 
 		leftMarginSpace = new JSlider(JSlider.HORIZONTAL, leftMarginSpaceMin,
 				leftMarginSpaceMax, leftMarginSpaceCurrent);
-		leftMarginSpace.setMajorTickSpacing(50);
-		leftMarginSpace.setMinorTickSpacing(10);
-		leftMarginSpace.setPaintTicks(true);
-		leftMarginSpace.setPaintLabels(true);
+		setSliderTicks(leftMarginSpace, 50, 10);
 		c.gridx = 1;
 		c.gridy = 7;
 		c.weightx = 1;
@@ -506,10 +527,7 @@ public class View
 
 		rightMarginSpace = new JSlider(JSlider.HORIZONTAL, rightMarginSpaceMin,
 				rightMarginSpaceMax, rightMarginSpaceCurrent);
-		rightMarginSpace.setMajorTickSpacing(50);
-		rightMarginSpace.setMinorTickSpacing(10);
-		rightMarginSpace.setPaintTicks(true);
-		rightMarginSpace.setPaintLabels(true);
+		setSliderTicks(rightMarginSpace, 50, 10);
 		c.gridx = 1;
 		c.gridy = 8;
 		c.weightx = 1;
@@ -535,16 +553,7 @@ public class View
 		c.insets = new Insets(0, 5, 10, 5);
 		panel.add(pageList, c);
 
-		title.setEnabled(false);
-		subtitle.setEnabled(false);
-		staffSpacing.setEnabled(false);
-		elementSize.setEnabled(false);
-		measureSpace.setEnabled(false);
-		titleFontSize.setEnabled(false);
-		subtitleFontSize.setEnabled(false);
-		leftMarginSpace.setEnabled(false);
-		rightMarginSpace.setEnabled(false);
-		pageList.setEnabled(false);
+		setComponentsEnabled(false);
 		// panel.setEnabled(false);
 
 		return panel;
@@ -749,6 +758,7 @@ public class View
 		c.gridy = 0;
 		frame.add(rightSide, c);
 		frame.pack();
+		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
 
