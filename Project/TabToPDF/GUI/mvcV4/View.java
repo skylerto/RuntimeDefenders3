@@ -309,7 +309,6 @@ public class View
 		// "Contain elements to help the user");
 		emailMenuItem.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -322,11 +321,23 @@ public class View
 		});
 		menuBar.add(emailMenuItem);
 
-		menu = new JMenu("Help");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"Contain elements to help the user");
-		menuBar.add(menu);
+		// Build fourth menu in the menu bar.
+		JMenuItem helpMenuItem = new JMenuItem("Help");
+		// menu.getAccessibleContext().setAccessibleDescription(
+		// "Contain elements to help the user");
+		helpMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// logString += "Opening Printer Interface...\n";
+				// updateLog();
+				PrinterInterface printWindow = new PrinterInterface();
+				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
+				printWindow.Scroller2(test);
+			}
+		});
+		menuBar.add(helpMenuItem);
 
 		menu.add(log);
 		menu.add(autoCorrection);
