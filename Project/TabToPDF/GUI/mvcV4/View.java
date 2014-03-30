@@ -126,6 +126,7 @@ public class View
 
 	// Text fields for input and destination folders.
 	protected static JTextField input;
+	protected static JLabel inputPrompt;
 	protected static JTextField destination;
 
 	// TITLES
@@ -709,7 +710,7 @@ public class View
 		propertiesPane.setViewportBorder(border);
 		propertiesPane.setBorder(border);
 	}
-
+	
 	/**
 	 * Adds all the components to the right panel.
 	 * 
@@ -725,12 +726,30 @@ public class View
 
 		// Initiates the input label and adds to the right side panel.
 		input = new JTextField(1);
-		input.setEditable(false);
+		JLabel inputLabel = new JLabel("Input Path: ");
+		inputLabel.setFont(labelFont);
+		input.setEditable(true);
+		//input.setVisible(false);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weighty = 1;
 		c.insets = new Insets(0, 0, 0, 5);
 		rightSide.add(input, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 1;
+		c.insets = new Insets(0, 5, 45, 5);
+		rightSide.add(inputLabel, c);
+		
+		inputPrompt = new JLabel();
+		inputPrompt.setText("[Press Enter to Apply]");
+		inputPrompt.setVisible(false);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 1;
+		c.weightx = 0;
+		c.insets = new Insets(40, 515, 0, 0);
+		rightSide.add(inputPrompt, c);
 
 		buildPreviewScrollPane();
 		// Set border
@@ -907,5 +926,15 @@ public class View
 	void pageSizeListener(ActionListener pageSizeListener)
 	{
 		pageList.addActionListener(pageSizeListener);
+	}
+	
+	void inputPathListener(ActionListener inputPathListener)
+	{
+		input.addActionListener(inputPathListener);
+	}
+
+	void inputPathFocusListener(FocusListener inputPathFocusListener)
+	{
+		input.addFocusListener(inputPathFocusListener);
 	}
 }

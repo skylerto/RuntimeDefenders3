@@ -52,6 +52,8 @@ public class Controller
 		this.view.leftMarginListener(new LeftMarginListener());
 		this.view.rightMarginListener(new RightMarginListener());
 		this.view.pageSizeListener(new PageSizeListener());
+		this.view.inputPathListener(new InputPathListener());
+		this.view.inputPathFocusListener(new InputPathFocusListener());
 	}
 
 	public static void displayError(String error)
@@ -275,6 +277,96 @@ class SelectButtonListener implements ActionListener
 				Controller.displayError(e1.getMessage());
 			}
 		}
+	}
+}
+
+
+class InputPathFocusListener implements FocusListener
+{
+	Model model = Controller.getModel();
+
+	@Override
+	public void focusGained(FocusEvent e)
+	{
+		View.inputPrompt.setVisible(true);
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent e)
+	{
+		Model model = Controller.getModel();
+		
+		if (!model.getFilenameWithExtension().equals(View.input.getText())) {
+			View.input.setText(model.getFilenameWithExtension());
+		}
+		View.inputPrompt.setVisible(false);
+	}
+}
+
+class InputPathListener implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Model model = new Model();
+		Controller.setModel(model);
+
+		if (!model.getFilenameWithExtension().equals(View.input.getText())) {
+
+			model.setFilenameWithExtention(View.input.getText());
+			model.setFilename(Utils.removeFileExtension(View.input.getText()));
+
+			View.setComponentsEnabled(false);
+			View.resetView();
+			View.repaintPreview("");
+
+			try
+			{
+				model.initializeConverter();
+				model.runConverter();
+
+				IMGCreator.createPreview(model);
+
+				// CHECK IF CONVERSION WAS DONE PROPERLY.
+				String image2 = IMGCreator.getLastConverted();
+				Rectangle pagesize = model.getPageSize();
+				View.repaintPreview(image2, pagesize);
+				// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
+
+				// GET CONVERTED FIELD VALUES.
+				// ENABLE FIELDS
+				View.setComponentsEnabled(true);
+
+				// SET FIELD VALUES
+				View.title.setText(model.getTitle());
+				View.subtitle.setText(model.getSubTitle());
+				View.staffSpacing.setValue((int) model.getSpacing());
+				View.elementSize.setValue(model.getElementSize());
+				View.measureSpace.setValue((int) model.getMeasureSpace());
+				View.titleFontSize.setValue((int) model.getTitleFontSize());
+				View.subtitleFontSize.setValue((int) model
+						.getSubTitleFontSize());
+				View.leftMarginSpace.setValue((int) model.getLeftMargin());
+				View.rightMarginSpace.setValue((int) model.getLeftMargin());
+				View.pageList.setSelectedIndex(0);
+				View.propertiesPane.getVerticalScrollBar().setValue(0);
+
+				View.updateCorrection(model.getFilename());
+				
+				
+
+				// ELSE display the error message and don't enable buttons.
+
+			} catch (NoFileExistsException | CannotReadFileException
+					| EmptyFileException | NoMusicException
+					| LargeNumberException | ConversionException e1)
+			{
+				Controller.displayError(e1.getMessage());
+			}
+		}
+		
 	}
 }
 
