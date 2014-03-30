@@ -1,3 +1,20 @@
+THINGS THAT NEED TO BE DONE FOR PRESENTATION
+===========================
+
+- Have a "Converting. Please wait..." message in the preview panel when a file is imported from the button or input path listeners. Don't do a progress bar, it's too much work.
+- Print should be greyed out if an input file isn't selected (disable it inside the reset method)
+- Print should display a message inside of its window if no printers are found. Right now if it can't find printers it stalls.
+- Emailer window should have a minumum height and width when first opened so parts aren't cut off. The user should not be able to shrink the window size past this point otherwise the fields get messed up. This goes for all of its windows.
+- Emailer. If I cancel the email window and repopen the emailer, the login window and the email window get displayed ontop of each other. It should either only display the login again or remember the previously used login information.
+- Help. We should remove Log and Auto-Correction Log from the list. Since the user manual is the only thing in the list, just rename "Help" to "User Manual".
+- Ant. Everything needs to be compiled into an executable file.  
+
+- Everyone needs to think about what they will be talking about for their 2 minute personal presentation with the proff and let me know what it is.
+- I need Skyler and Saad to tell me the most import classes and methods they are going to talk about in the presentation so I can add it to the power point slides.
+- The Khurram and Bilal have to have their test cases ready to be presented to the proff. Including coverage. You have to show him the most important test cases and show that you covered all important cases.
+- We have to finish the coding TODAY. Figure out what we want to talk about for the presentation and tell me TODAY. Start doing practice presentations TOMORROW AND TUESDAY. I will try to have the powerpoint ready for TOMORROW.
+- EVERYONE NEEDS TO BE THERE AT 11:30 (at the latest) IN THE LAB TOMORROW.
+- 
 NEWS
 =================
 
