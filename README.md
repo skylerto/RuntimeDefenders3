@@ -13,7 +13,7 @@ THINGS THAT NEED TO BE DONE FOR PRESENTATION
 
 - Everyone needs to think about what they will be talking about for their 2 minute personal presentation with the proff and let me know what it is.
 - I need Skyler and Saad to tell me the most import classes and methods they are going to talk about in the presentation so I can add it to the power point slides.
-- The Khurram and Bilal have to have their test cases ready to be presented to the proff. Including coverage. You have to show him the most important test cases and show that you covered all important cases.
+- Khurram and Bilal have to have their test cases ready to be presented to the proff. Including coverage. You have to show him the most important test cases and show that you covered all important cases.
 - We have to finish the coding TODAY. Figure out what we want to talk about for the presentation and tell me TODAY. Start doing practice presentations TOMORROW AND TUESDAY. I will try to have the powerpoint ready for TOMORROW.
 - EVERYONE NEEDS TO BE THERE AT 11:30 (at the latest) IN THE LAB TOMORROW.
 NEWS
