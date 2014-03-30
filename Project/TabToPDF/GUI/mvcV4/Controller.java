@@ -21,6 +21,7 @@ import version13.NoFileExistsException;
 import version13.NoMusicException;
 import version13.TextToPDF;
 
+import com.alee.utils.FileUtils;
 import com.itextpdf.text.*;
 
 public class Controller
@@ -306,7 +307,8 @@ class SaveButtonListener implements ActionListener
 			String outputFilename = chooser.getSelectedFile().toString();
 			if(!outputFilename.matches("(.*)(\\.pdf){1}"))
 				outputFilename+=".pdf";
-			TextToPDF test;
+			FileUtils.copyFile("./outputfiles/musicPDF.pdf", outputFilename);
+			/*TextToPDF test;
 			try
 			{
 				test = new TextToPDF(outputFilename, input);
@@ -317,7 +319,7 @@ class SaveButtonListener implements ActionListener
 					| LargeNumberException | ConversionException e1)
 			{
 				Controller.displayError(e1.getMessage());
-			}
+			}*/
 		}
 	}
 }
