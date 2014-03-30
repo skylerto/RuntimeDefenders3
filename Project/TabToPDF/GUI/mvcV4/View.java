@@ -66,7 +66,7 @@ public class View
 
 	public static final int AUTOCORR_WIDTH = 270;
 	public static final int AUTOCORR_HEIGHT = 75;
-	
+
 	public static final int ERROR_WIDTH = 330;
 	public static final int ERROR_HEIGHT = 325;
 
@@ -215,8 +215,7 @@ public class View
 		iconLabel.setFont(labelFont);
 		iconLabel.setForeground(Color.RED);
 		iconLabel.setIcon(ErrorIcon);
-		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH,
-				ERROR_HEIGHT));
+		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH, ERROR_HEIGHT));
 	}
 
 	protected static void setComponentsEnabled(boolean value)
@@ -288,10 +287,9 @@ public class View
 		menuBar.add(menu);
 
 		// Print function for "File" tab section.
-		JMenuItem menu2 = new JMenuItem("Print");
-		menu2.addActionListener(new ActionListener()
+		JMenuItem printMenuItem = new JMenuItem("Print");
+		printMenuItem.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -303,15 +301,26 @@ public class View
 			}
 
 		});
-
-		menuBar.add(menu2);
+		menuBar.add(printMenuItem);
 
 		// Build third menu in the menu bar.
-		menu = new JMenu("Email");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"Contain elements to help the user");
-		menuBar.add(menu);
+		JMenuItem emailMenuItem = new JMenuItem("Email");
+		// menu.getAccessibleContext().setAccessibleDescription(
+		// "Contain elements to help the user");
+		emailMenuItem.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// logString += "Opening Printer Interface...\n";
+				// updateLog();
+				PrinterInterface printWindow = new PrinterInterface();
+				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
+				printWindow.Scroller2(test);
+			}
+		});
+		menuBar.add(emailMenuItem);
 
 		menu = new JMenu("Help");
 		menu.setMnemonic(KeyEvent.VK_N);
@@ -668,7 +677,7 @@ public class View
 		previewPane.setBorder(border);
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
-		
+
 	}
 
 	protected static void buildPropertiesScrollPane()
