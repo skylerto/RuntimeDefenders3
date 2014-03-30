@@ -33,6 +33,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -713,12 +715,13 @@ public class View
 	 */
 	protected static void populateLeftPanel()
 	{
+		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH,
+				LEFTPANEL_HEIGHT));
+
 		GridBagConstraints c = new GridBagConstraints();
 		leftSide.setLayout(new GridBagLayout());
 		// c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH,
-				LEFTPANEL_HEIGHT));
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -729,13 +732,14 @@ public class View
 		buildPropertiesScrollPane();
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
-				"PDF Properties:");
-		titled.setTitleJustification(TitledBorder.LEFT);
+				"PDF Properties");
+		titled.setTitlePosition(TitledBorder.TOP);
+		titled.setTitleJustification(TitledBorder.CENTER);
 		propertiesPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
-		c.insets = new Insets(0, 5, 0, 5);
+		c.insets = new Insets(5, 5, 0, 5);
 		leftSide.add(propertiesPane, c);
 
 		c.gridx = 0;
@@ -811,8 +815,9 @@ public class View
 		buildPreviewScrollPane();
 		Border blackline = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
 		TitledBorder titled = BorderFactory.createTitledBorder(blackline,
-				"PDF Preview of First Page:");
-		titled.setTitleJustification(TitledBorder.LEFT);
+				"PDF Preview (First Page)");
+		titled.setTitlePosition(TitledBorder.TOP);
+		titled.setTitleJustification(TitledBorder.CENTER);
 		previewPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 1;
