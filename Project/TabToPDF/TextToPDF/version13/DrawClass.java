@@ -299,18 +299,18 @@ public class DrawClass {
      while (list.get(i).getchartype() != Symbols.End_music_line) { // stop when it reaches end of music note
     		   switch(list.get(i).getchartype()) {
     		   
-    		   case Dash: case Slide: case Pull: case Hammer: case Left_Half_Diamond: case Right_half_Diamond: case Star_Begin: case Star_End:	 
+    		   case Dash: case Slide: case Pull: case Hammer: case Left_Half_Diamond: case Right_half_Diamond: case Star_End: case Star_Begin:	 
     			   total+=(line_space*list.get(i).getValue());
     			   break;
     		   case OneBar_begin: case OneBar_end: case OneBar_begin_lastline: case OneBar_end_lastline:
-    			   total+=(line_space*0.5f);
+    			   total+=(5*0.5f);
     			   break;
     		   case Two_Bar_begin :case Two_Bar_begin_lastline: 
-    			   total+=(line_space*1.0f);
+    			   total+=(10);
     			   break;
-    		   case Two_Bar_end: case Two_Bar_end_lastline:
-    			   total+=(line_space*1.0f);
-    			   break;
+    		   case Two_Bar_end: case Two_Bar_end_lastline: 
+    			   total+=(10);
+    			   break;	  	   
     		   case Three_Bar_End :
     			   total+=(line_space*2.5f);
     			   break;
@@ -341,25 +341,26 @@ public class DrawClass {
     int count_music_lines = 0; // give the current music line
     int is_second_beginstar = 0; // tell whether the beginning of the star is first one or second one
     int is_second_endnstar = 0; // tell whether the beginning of the star is first one or second one
+    int star_end_enable = 0;
         	for (int i = 0 ; i < list.size() ; i++) {
         		switch (list.get(i).getchartype()) {
         		
         		case OneBar_begin:
         			drawLine(x,y,x,y-(FontSize*0.9f),0.5f,0, cb); // draw vertical line that has length of  dependent on fontsize
-        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);// draw horizontal  line that has length line dependsnce on line space 
-        			x+=(line_space*0.5f); // move and update my x-coordinate
+        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);// draw horizontal  line that has length line dependsnce on line space 
+        			x+=(5*0.5f); // move and update my x-coordinate
         			break;
         		case OneBar_end:
         			/*draw line between last music symbol detected and vertical line at the end*/
-        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);
-        			x+=(line_space*0.5f);// move and update my x-coordinate
+        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);
+        			x+=(5*0.5f);// move and update my x-coordinate
         			drawLine(x,y,x,y-(FontSize*0.9f),0.5f,0, cb);// draw vertical line that has length of  dependent on fontsize
         			break;
         		case OneBar_begin_lastline: case OneBar_end_lastline :
         			/* don't draw vertical line for the last lines of the music note.
         			 * but draw line between last music symbol detected and vertical line at the end */
-        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);
-        			x+=(line_space*0.5f);// move and update my x-coordinate
+        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);
+        			x+=(5*0.5f);// move and update my x-coordinate
         			break;
         		case Two_Bar_begin :
         			switch (same_line) { // if there was music note before this music note on same line
@@ -367,25 +368,27 @@ public class DrawClass {
         				 /* draw thick vertical line length of  dependance on fontsize*/
         				 drawLine(x-0.5f, y, x-0.5f, y-(FontSize*0.9f),2.8f, 0, cb); 
         				 /*draw line between last music symbol detected and vertical line at the end*/
-        				 drawLine(x,y,x+(line_space*1.2f),y,0.5f,0, cb);
-         				 x+=(line_space*1.0f); // move and update my x-coordinate
+        				 drawLine(x,y,x+(10),y,0.5f,0, cb);
+         				 x+=(10); // move and update my x-coordinate
+             			
          				 break;
         			case 1: // true 
         				switch (onebar_before) { // if the previous note had one bar
         				case 0 : //false, so its two bar
         					 /*this will not draw thick bar for this note because 
        				         a thick bar was already drawn for the previous note.*/
-        					 drawLine(x,y,x+(line_space*1.0f),y,0.5f,0, cb); // draw horizital for filling gap
-             				 x+=(line_space*1.0f);// move and update my x-coordinate
+        					 drawLine(x,y,x+(10),y,0.5f,0, cb); // draw horizital for filling gap
+             				 x+=(10);// move and update my x-coordinate
              				 break;
-        				case 1 : 
+        				case 1 : 	
         					 /*this will a draw thick bar for this note because 
       				         a one vertical  bar was already drawn for the previous note.*/
         					 /* draw thick vertical line length of  dependance on fontsize*/
         					 drawLine(x-0.5f, y, x-0.5f, y-(FontSize*0.9f),2.8f, 0, cb); 
         					 /*draw line between last music symbol detected and vertical line at the end*/
-             				 drawLine(x,y,x+(line_space*1.2f),y,0.5f,0, cb);
-             				 x+=(line_space*1.0f);// move and update my x-coordinate
+             				 drawLine(x,y,x+(10),y,0.5f,0, cb);
+             				 x+=(10);// move and update my x-coordinate
+             				
              				 break;
         				default:break; 
         				}		
@@ -395,19 +398,34 @@ public class DrawClass {
         			break;
         			
         		case Two_Bar_end:
-        			 drawLine(x,y,x+(line_space),y,0.5f,0, cb); // draw horizontal  line that has length line dependsnce on line space 
-        			 /*this will a draw thick bar for this note because 
-				     a one vertical  bar was already drawn for the previous note.*/
-        			 drawLine(x+(line_space)-0.5f, y, x+(line_space)-0.5f, y-(FontSize*0.9f),2.8f, 0, cb);
-    				 x+=(line_space*1.0f);  // move and update my x-coordinate
-        			 break;	
+        			if (star_end_enable == 1) {		
+        			    DrawCircle(x+2,y,(FontSize/1.3f)-(FontSize*0.6f),cb);
+      				    if (is_second_endnstar == 0) {
+      				    	/* draw vertical line upward from the star till first line */
+        				    drawLine(x+5,y,x+5,y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
+        				    is_second_endnstar = 1;
+        			    } else {
+        			    	/* draw vertical line upward from the second star to first star*/
+        				    drawLine(x+5,y,x+5,y+(FontSize*0.9f),0.5f,0, cb);
+        				    /* draw vertical line upward from the second star till last line */
+        				    drawLine(x+5,y,x+5,y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
+        				    is_second_endnstar = 0;		
+        			     }
+        			}
+        			star_end_enable = 0;
+        			drawLine(x,y,x+(10),y,0.5f,0, cb); // draw horizontal  line that has length line dependsnce on line space 
+        			  /*this will a draw thick bar for this note because 
+				      a one vertical  bar was already drawn for the previous note.*/
+        			  drawLine(x+(5*2f)-0.5f, y, x+(5*2f)-0.5f, y-(FontSize*0.9f),2.8f, 0, cb);
+    				x+=(10);  // move and update my x-coordinate
+        			break;	
         		case Two_Bar_begin_lastline : // a thick bar will not be drawn for the last line
-        			drawLine(x,y,x+(line_space*1.0f),y,0.5f,0, cb);// draw horizontal  line that has length line dependance on line space 
-    				x+=(line_space);// move and update  x-coordinate
+        			drawLine(x,y,x+(10),y,0.5f,0, cb);// draw horizontal  line that has length line dependance on line space 
+    				x+=(5*2f);// move and update  x-coordinate
     				break;
         		case Two_Bar_end_lastline:// a thick bar will not be drawn for the last line
-        			drawLine(x,y,x+(line_space*1.0f),y,0.5f,0, cb);// draw horizontal  line that has length line dependance on line space 
-    				x+=(line_space);// move and update  x-coordinate		
+        			drawLine(x,y,x+(10),y,0.5f,0, cb);// draw horizontal  line that has length line dependance on line space 
+    				x+=(5*2f);// move and update  x-coordinate		
     				break;
         		case Three_Bar_End :
         			if(list.get(i+1).getValue() < list.get(list.size()-2).getValue()) { 
@@ -474,38 +492,25 @@ public class DrawClass {
         		case Star_Begin:
         			if (is_second_beginstar == 0) {
         				/* draw vertical line upward from the star till first line */
-        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
+        				drawLine(x-(6),y,x-(6),y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
         				is_second_beginstar = 1;
         			} else {
         				/* draw vertical line upward from the second star to first star*/
-        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y+(FontSize*0.9f),0.5f,0, cb);
-        				/* draw vertical line upward from the second star till last line */
-        				drawLine(x-((line_space)/2.0f),y,x-((line_space)/2.0f),y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
+        				drawLine(x-(6),y,x-(6),y+(FontSize*0.9f),0.5f,0, cb);
+        				/* draw vertical line downward from the second star till last line */
+        				drawLine(x-(6),y,x-(6),y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
         				is_second_beginstar = 0;
         				
-        			}
-        			
-        			DrawCircle(x+(line_space*0.1f),y,(FontSize/1.3f)-(FontSize*0.6f),cb);
-      				/* draw horizontal line for circle*/
+        			}		
+        			DrawCircle((x-3)+(5*0.1f),y,(FontSize/1.3f)-(FontSize*0.6f),cb);
         			drawLine(x,y,x+line_space,y,0.5f,0, cb);
-      				x+=line_space;// move and update  x-coordinate
+      				x+=line_space;	;// move and update  x-coordinate
+      				
       				break;
         		case Star_End:
-        			DrawCircle(x+(line_space*0.75f),y,(FontSize/1.3f)-(FontSize*0.6f),cb);
-        			/* draw horizontal line for circle*/
-      				drawLine(x,y,x+line_space,y,0.5f,0, cb);
-      				x+=line_space;// move and update  x-coordinate
-      				if (is_second_endnstar == 0) {
-      					/* draw vertical line upward from the star till first line */
-        				drawLine(x+(line_space*.3f),y,x+(line_space*.3f),y+((FontSize*0.9f)*(count_music_lines)),0.5f,0, cb);
-        				is_second_endnstar = 1;
-        			} else {
-        				/* draw vertical line upward from the second star to first star*/
-        				drawLine(x+(line_space*.3f),y,x+(line_space*.3f),y+(FontSize*0.9f),0.5f,0, cb);
-        				/* draw vertical line upward from the second star till last line */
-        				drawLine(x+(line_space*.3f),y,x+(line_space*.3f),y-((FontSize*0.9f)*(list.get(list.size()-2).getValue()-count_music_lines-1)),0.5f,0, cb);
-        				is_second_endnstar = 0;		
-        			}
+        			star_end_enable = 1;
+        			drawLine(x,y,x+line_space,y,0.5f,0, cb);
+      				x+=line_space;
       				break;
         		case Right_half_Diamond:
         			/* draw horizontal line for right half diamond*/
