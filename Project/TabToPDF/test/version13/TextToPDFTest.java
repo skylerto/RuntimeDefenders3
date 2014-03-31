@@ -28,6 +28,26 @@ public class TextToPDFTest {
 	public void setUp() throws Exception {
 		
 	}
+	
+     
+	@Test(expected = EmptyFileException.class)
+	public void test_Constructor_case0() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+		String a = "";
+		String b = "inputfiles/case0.txt";
+		tp1 = new TextToPDF(a,b);	
+		PDFProperties properties = new PDFProperties();
+		properties.extractProperties(new File(b));
+		SplitStack stack = new SplitStack();
+		TabStaff ts = new TabStaff();
+		ts.scanFile(new File(b));
+		
+		assertEquals(b,tp1.getInputPath()); 
+		assertEquals(a,tp1.getOutputPath()); 
+        assertTrue(properties.equals(tp1.getProperties()));
+		assertEquals(properties.getElementSize(),tp1.getStaffSize());
+
+		
+	}
 
 	@Test
 	public void test_Constructor_case1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
@@ -42,17 +62,7 @@ public class TextToPDFTest {
 		
 		assertEquals(b,tp1.getInputPath()); 
 		assertEquals(a,tp1.getOutputPath()); 
-		/*assertEquals(properties.getTitle(),tp1.getTitle());
-		assertEquals(properties.getSubtitle(),tp1.getSubtitle());
-		assertEquals(properties.getElementSize(),tp1.getProperties().getElementSize());
-		assertEquals((int)properties.getSpacing(),(int)tp1.getSpacing());
-		assertEquals(properties.getPageSize(),tp1.getPageSize());
-		assertEquals(properties.getTitleFontSize(),tp1.getTitleFontSize());
-		assertEquals(properties.getSubtitleFontSize(),tp1.getSubtitleFontSize());
-		assertEquals((int)properties.getLeftMargin(),(int)tp1.getLeftMargin());
-		assertEquals((int)properties.getRightMargin(),(int)tp1.getRightMargin());
-		assertEquals((int)properties.getMeasureSpace(),(int)tp1.getMeasureSpace());*/
-		assertTrue(properties.equals(tp1.getProperties()));
+	     assertTrue(properties.equals(tp1.getProperties()));
 		assertEquals(properties.getElementSize(),tp1.getStaffSize());
 
 		
