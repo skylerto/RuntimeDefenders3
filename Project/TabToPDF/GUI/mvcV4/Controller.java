@@ -64,6 +64,19 @@ public class Controller
 		View.showError(error);
 	}
 
+	/**
+	 * Deletes all temporary files when the program closes
+	 */
+	protected static void deleteFilesOnExit()
+	{
+		File temp_image = new File(model.getPreviewImage());
+		temp_image.deleteOnExit();
+		File temp_pdf = new File(TextToPDF.DEFAULT_OUTPUTPATH);
+		temp_pdf.deleteOnExit();
+		File temp_log = new File(AutofixLog.LOG_PATH);
+		temp_log.deleteOnExit();
+	}
+
 	/*
 	 * protected static void setWriter(TextToPDF test2) { test = test2; }
 	 * 
@@ -267,11 +280,12 @@ class SelectButtonListener implements ActionListener
 				model.runConverter();
 
 				IMGCreator.createPreview(model);
-
+				Controller.deleteFilesOnExit();
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
 				String image2 = IMGCreator.getLastConverted();
 				Rectangle pagesize = model.getPageSize();
 				View.repaintPreview(image2, pagesize);
+
 				// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
 
 				// GET CONVERTED FIELD VALUES.
@@ -346,7 +360,6 @@ class InputPathListener implements ActionListener
 
 		if (!model.getFilenameWithExtension().equals(View.input.getText()))
 		{
-
 			model.setFilenameWithExtention(View.input.getText());
 			model.setFilename(Utils.removeFileExtension(View.input.getText()));
 
@@ -360,7 +373,7 @@ class InputPathListener implements ActionListener
 				model.runConverter();
 
 				IMGCreator.createPreview(model);
-
+				Controller.deleteFilesOnExit();
 				// CHECK IF CONVERSION WAS DONE PROPERLY.
 				String image2 = IMGCreator.getLastConverted();
 				Rectangle pagesize = model.getPageSize();

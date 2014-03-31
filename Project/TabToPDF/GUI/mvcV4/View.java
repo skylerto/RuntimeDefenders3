@@ -45,6 +45,7 @@ import com.itextpdf.text.Rectangle;
 
 import print.printPDF;
 import tabparts.AutofixLog;
+import version13.TextToPDF;
 
 public class View
 {
@@ -102,6 +103,7 @@ public class View
 	static Dimension propertiesScroll = new Dimension(PROPERTIES_SCROLL_WIDTH,
 			PROPERTIES_SCROLL_HEIGHT);
 	protected static JLabel iconLabel;
+	protected static JLabel loadingLabel;
 
 	// ImageIcons
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
@@ -142,9 +144,9 @@ public class View
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
 	protected static JSlider elementSize;
-	private static final int elementSizeMin = 1;
-	private static final int elementSizeMax = 21;
-	private static int elementSizeCurrent = 1;
+	private static final int elementSizeMin = 2;
+	private static final int elementSizeMax = 22;
+	private static int elementSizeCurrent = 2;
 
 	// SPACING SLIDER INFO
 	protected static JSlider staffSpacing;
@@ -262,8 +264,6 @@ public class View
 		iconImage.getImage().flush();
 		iconLabel.setIcon(iconImage);
 		iconLabel.setText("");
-		previewPane.getVerticalScrollBar().setValue(0);
-		previewPane.getHorizontalScrollBar().setValue(0);
 	}
 
 	/**
@@ -768,6 +768,12 @@ public class View
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
 
+		// Adding loading label into preview panel
+		loadingLabel = new JLabel("Converting. Please Wait...");
+		loadingLabel.setFont(labelFont);
+		JPanel panel = new JPanel();
+		panel.add(loadingLabel);
+		previewPane.add(panel);
 		// Setting label as ViewportView
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
