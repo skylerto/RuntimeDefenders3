@@ -141,57 +141,57 @@ public class TextToPDF {
 				if (draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing()) < ((writer.getPageSize().getWidth() - this.getRightMargin()) - currX)) {
 					if (i == 0) {
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getStaffSize(), cb);
 					} else
 						same_line_state = 1;
 
-					draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
+					draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getStaffSize(), same_line_state, cb);
 					currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 					if(enable_repeat)
-						draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-60f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
+						draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-60f, currY+this.getStaffSize()*.8f, this.getStaffSize(), cb);
 				} else {
 					draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(i - 1)).getSymbolsList(), currX,
-							currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
+							currY, writer.getPageSize().getWidth(), this.getStaffSize(), cb);
 					if (currY - this.getMeasureSpace() > BOT_MARGIN ) {
 						currX = this.getLeftMargin();
 						currY = currY - this.getMeasureSpace();
 						same_line_state = 0;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getStaffSize(), cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getStaffSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 						if(enable_repeat)
-							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getStaffSize()*.8f, this.getStaffSize(), cb);
 					} else if (currY - this.getMeasureSpace() <= BOT_MARGIN && i < dynamic_array.size() - 1) {
-						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+						draw.drawSymbols(this.getStaffSize(), this.getSpacing(), cb);
 						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = this.getLeftMargin();
 						currY = this.getPageSize().getHeight() - TOP_MARGIN;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getStaffSize(), cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getStaffSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 						if(enable_repeat)
-							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getStaffSize()*.8f, this.getStaffSize(), cb);
 					} else if (currY - this.getMeasureSpace() <= BOT_MARGIN && i == dynamic_array.size() - 1) {
-						draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+						draw.drawSymbols(this.getStaffSize(), this.getSpacing(), cb);
 						draw.FlushSymbol();
 						doc.newPage();
 						same_line_state = 0;
 						currX = this.getLeftMargin();
 						currY = this.getPageSize().getHeight() - TOP_MARGIN;
-						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getElementSize(), cb); // for begining
-						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getElementSize(), same_line_state, cb);
+						draw.DrawMarginMusicLines(sp.getSymbolsList(), 0, currY, this.getLeftMargin(), this.getStaffSize(), cb); // for begining
+						draw.DrawMusicNote(sp.getSymbolsList(), currX, currY, this.getSpacing(), this.getStaffSize(), same_line_state, cb);
 						currX = currX + draw.getMusicNotelength(sp.getSymbolsList(), this.getSpacing());
 						if(enable_repeat)
-							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getElementSize()*.8f, this.getElementSize(), cb);
+							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getStaffSize()*.8f, this.getStaffSize(), cb);
 					}
 				}
 			}
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1))
-							.getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), this.getElementSize(), cb);
-			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getElementSize());
-			draw.drawSymbols(this.getElementSize(), this.getSpacing(), cb);
+							.getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), this.getStaffSize(), cb);
+			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getStaffSize());
+			draw.drawSymbols(this.getStaffSize(), this.getSpacing(), cb);
 			draw.FlushSymbol();
 			doc.close();
 			writer.close();
@@ -448,7 +448,7 @@ public class TextToPDF {
 	 * Get the element size.
 	 * @return
 	 */
-	public int getElementSize() {
+	public int getStaffSize() {
 		return this.properties.getElementSize();
 	}
 	
