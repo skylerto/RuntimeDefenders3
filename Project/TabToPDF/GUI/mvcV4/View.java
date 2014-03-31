@@ -828,7 +828,7 @@ public class View
 		c.gridy = 0;
 		c.weighty = 1;
 		c.weightx = 0;
-		c.insets = new Insets(40, 515, 0, 0);
+		c.insets = new Insets(40, 500, 0, 0);
 		rightSide.add(inputPrompt, c);
 
 		// Create preview pane
