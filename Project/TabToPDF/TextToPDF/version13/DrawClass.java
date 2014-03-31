@@ -209,7 +209,7 @@ public class DrawClass {
           cb.saveState();
        	  /* move before  the digit of the second music note */
        	  cb.moveTo(tox+(font_size/1.8f)/2f,toy+font_size*0.4f);	 
-          cb.curveTo( tox+(font_size/1.8f)/2f-(line_space/2f)+2.2f, toy+font_size*0.48f+(line_space*0.26f),tox-2.2f , toy+font_size*0.45f+(line_space*0.26f),  tox-(line_space/2f),toy+font_size*0.7f );
+          cb.curveTo( tox+(font_size/1.8f)/2f-1f, toy+font_size*0.45f+(line_space*0.26f),tox+(font_size/1.8f)-(line_space/2f)-1.5f , toy+font_size*0.48f+(line_space*0.26f),  tox-(line_space/2f)+0.5f,toy+font_size*0.7f );
           cb.stroke();
           cb.restoreState();
           cb.saveState();
