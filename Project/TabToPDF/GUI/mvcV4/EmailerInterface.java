@@ -9,33 +9,34 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class EmailerInterface extends JFrame{
-	private static JTextField userEmail = new JTextField(20);
-	private static JPasswordField userPassword = new JPasswordField(20);
-	private static JTextField emailToSendTo = new JTextField(20);
-	private static JTextField emailSubject = new JTextField(20);
-	private static JTextField browsePath = new JTextField(20);
-	private static JTextArea message = new JTextArea(15, 20);
-	private static JPanel panel = new JPanel(new GridBagLayout());
-	private static JFrame frame = new JFrame("Send PDF - Login");
-	private static JFrame contactsFrame = new JFrame("Send PDF - Login");
-	private static JFrame frameBrowse = new JFrame("Browse File");
-	private static JPanel panelBrowse = new JPanel(new GridBagLayout());
-	private static JLabel validating = new JLabel("Validating...");
-	private static JCheckBox useDefaultEmail;
-	private static boolean isBoxChecked = false;
-	private static JLabel invalid1 = new JLabel("Invalid"), invalid2 = new JLabel("Invalid");
-	private static GridBagConstraints c = new GridBagConstraints();
-	private static getSentMessages getMessages;
-	private static ArrayList<String> emailsToSendTo = new ArrayList<String>();
-	private static ArrayList<String> emailsToSendToOld = new ArrayList<String>();
-	private static String username, password;
-	private static boolean check;
+	private  JTextField userEmail = new JTextField(20);
+	private  JPasswordField userPassword = new JPasswordField(20);
+	private  JTextField emailToSendTo = new JTextField(20);
+	private  JTextField emailSubject = new JTextField(20);
+	private  JTextField browsePath = new JTextField(20);
+	private  JTextArea message = new JTextArea(15, 20);
+	private  JPanel panel = new JPanel(new GridBagLayout());
+	private  JFrame frame = new JFrame("Send PDF - Login");
+	private  JFrame contactsFrame = new JFrame("Send PDF - Login");
+	private  JFrame frameBrowse = new JFrame("Browse File");
+	private  JPanel panelBrowse = new JPanel(new GridBagLayout());
+	private  JLabel validating = new JLabel("Validating...");
+	private  JCheckBox useDefaultEmail;
+	private  boolean isBoxChecked = false;
+	private  JLabel invalid1 = new JLabel("Invalid"), invalid2 = new JLabel("Invalid");
+	private  GridBagConstraints c = new GridBagConstraints();
+	private  getSentMessages getMessages;
+	private  ArrayList<String> emailsToSendTo = new ArrayList<String>();
+	private  ArrayList<String> emailsToSendToOld = new ArrayList<String>();
+	private  String username, password;
+	private  boolean check;
 	public EmailerInterface(){
 		
 		frame.setSize(500, 250);
-		
+		frame.setResizable(false);
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
 		c.insets = new Insets(10,0,10,10);
@@ -124,13 +125,13 @@ public class EmailerInterface extends JFrame{
 		frame.setVisible(true);
 	}
 	
-	static class cancelButton implements ActionListener{
+	public class cancelButton implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			frame.dispose();
 		}
 	}
 	
-	static class createScreen2 implements ActionListener{
+	public class createScreen2 implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			
 			invalid1.setVisible(false);
@@ -156,7 +157,7 @@ public class EmailerInterface extends JFrame{
 				}
 				username = userEmail.getText();
 				password = userPassword.getText();
-				frame.setSize(500,500);
+				frame.setSize(500,550);
 				panel.removeAll();
 				
 				c.insets = new Insets(10,0,10,10);
@@ -242,7 +243,7 @@ public class EmailerInterface extends JFrame{
 			
 		}
 		
-		static class createScreen3 implements ActionListener{
+		public class createScreen3 implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				
 				JFileChooser chooseFile = new JFileChooser();
@@ -259,7 +260,7 @@ public class EmailerInterface extends JFrame{
 			}
 		}
 		
-		static class saveButton implements ActionListener{
+		public class saveButton implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				if(emailToSendTo.getText().equals("") || check){
 					emailToSendTo.setText(emailsToSendTo.toString().substring(1, emailsToSendTo.toString().length() - 1));
@@ -271,7 +272,7 @@ public class EmailerInterface extends JFrame{
 			
 			}
 		}
-		static class sendButton implements ActionListener{
+		public class sendButton implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				String[] arrayOfEmails = emailToSendTo.getText().split(", ");
 				Emailer sendEmail = new Emailer(username, password);
@@ -283,7 +284,7 @@ public class EmailerInterface extends JFrame{
 			}
 		}
 		
-		static class openContacts implements ActionListener{
+		public class openContacts implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				if(emailsToSendTo.toString().substring(1, emailsToSendTo.toString().length() - 1).equals(emailToSendTo.getText())){
 					check = true;
