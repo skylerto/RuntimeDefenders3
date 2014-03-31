@@ -359,7 +359,7 @@ public class userManualInterface extends JFrame{
 	    		scrollAmount = 340;
 	    	}
 	    	else if(node.equals("Step 3 - Fill in Fields")){
-	    		scrollAmount = 670;
+	    		scrollAmount = 620;
 	    	}
 	    	else if(node.equals("Step 4 (optional) - Add Emails from Address Book")){
 	    		scrollAmount = 1070;
@@ -402,7 +402,7 @@ public class userManualInterface extends JFrame{
 			BufferedImage resizedImage2 = null;
 			try {
 				image2 = ImageIO.read(imageFile2);
-				resizedImage2 = resize(image2, 300,250);
+				resizedImage2 = resize(image2, 350,190);
 				Icon2 = new ImageIcon(resizedImage2);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -427,7 +427,7 @@ public class userManualInterface extends JFrame{
 			BufferedImage resizedImage3 = null;
 			try {
 				image3 = ImageIO.read(imageFile3);
-				resizedImage3 = resize(image3, 250,250);
+				resizedImage3 = resize(image3, 350,300);
 				Icon3 = new ImageIcon(resizedImage3);
 			} catch (IOException e) {
 				e.printStackTrace();
