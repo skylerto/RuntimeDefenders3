@@ -19,7 +19,7 @@ import javax.print.attribute.standard.Sides;
 public class printPDF {
 	String directory;
 	PrintService[] ps;
-	ArrayList<String> listOfPrinters;
+	ArrayList<String> listOfPrinters = new ArrayList<String>();
 	String setPrinter;
 	PrintService myService;
 	public printPDF(String directory){
@@ -30,10 +30,9 @@ public class printPDF {
 	    this.ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
 	    if (ps.length != 0) {
 	    	this.myService = null;
-			this.listOfPrinters = new ArrayList<String>();
-			    for (PrintService printService : this.ps) {
-			    	this.listOfPrinters.add(printService.getName());
-			    }
+			for (PrintService printService : this.ps) {
+			    this.listOfPrinters.add(printService.getName());
+			}
 	    }
 	    
 		  
