@@ -273,7 +273,8 @@ class SelectButtonListener implements ActionListener
 			View.setComponentsEnabled(false);
 			View.resetView();
 			View.repaintPreview("");
-			
+
+			View.makeThread(View.progressBar);
 			try
 			{
 				model.initializeConverter();

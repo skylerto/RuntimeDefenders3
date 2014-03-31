@@ -197,6 +197,8 @@ public class View
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
+	static JProgressBar progressBar;
+	
 	/**
 	 * Constructs a new view.
 	 */
@@ -834,11 +836,9 @@ public class View
 		// image.
 
 		JPanel panel = new JPanel();
-		JProgressBar progressBar = new JProgressBar(0, 100);
+		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
-		ProgressBarUpdator updator = new ProgressBarUpdator(progressBar);
-		new java.lang.Thread(updator).start();
 		progressBar.setPreferredSize(new Dimension(500, 20));
 		panel.add(progressBar);
 		c.gridx = 0;
@@ -846,6 +846,13 @@ public class View
 		rightSide.add(panel, c);
 	}
 
+	public static ProgressBarUpdator makeThread(JProgressBar progressBar)
+	{
+		ProgressBarUpdator updator = new ProgressBarUpdator(View.progressBar);
+		new java.lang.Thread(updator).start();
+		return updator;
+	}
+	
 	/**
 	 * Returns a JButton with the given default, pressed, and disabled icons
 	 */
