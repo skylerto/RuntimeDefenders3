@@ -325,6 +325,26 @@ public class PDFProperties {
 		return this.measurespace;
 	}
 	
+	@Override
+	
+	public boolean equals(Object other) {
+		if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof PDFProperties))return false;
+	    PDFProperties otherProp = (PDFProperties)other;
+	   	if (!this.getTitle().equals(otherProp.getTitle())) return false;
+	   	if (!this.getSubtitle().equals(otherProp.getSubtitle())) return false;
+	   	if (this.getSpacing() != otherProp.getSpacing()) return false;
+	   	if (this.getElementSize() != otherProp.getElementSize()) return false;
+	   	if (!this.getPageSize().equals(otherProp.getPageSize())) return false;
+	   	if (this.getTitleFontSize() != otherProp.getTitleFontSize()) return false;
+	   	if (this.getSubtitleFontSize() != otherProp.getSubtitleFontSize()) return false;
+	   	if (this.getLeftMargin() != otherProp.getLeftMargin()) return false;
+	   	if (this.getRightMargin() != otherProp.getRightMargin()) return false;
+	   	if (this.getMeasureSpace() != otherProp.getMeasureSpace()) return false;
+	   	return true;
+	}
+	
 	/**
 	 * Returns string representation:
 	 * 
