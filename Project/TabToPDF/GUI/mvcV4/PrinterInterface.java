@@ -25,12 +25,14 @@ public class PrinterInterface extends JFrame {
     	final JFrame frame = new JFrame("Choose a printer to print to:");
         final JPanel panel = new JPanel(new GridBagLayout());
         frame.getContentPane().add(panel, BorderLayout.NORTH);
+        frame.setResizable(false);
 		GridBagConstraints c = new GridBagConstraints();
 		ArrayList<JButton> printerButtons= new ArrayList<JButton>();
 		if(numOfPrinters == 0){
 			JLabel noPrintersFound = new JLabel("No Printers Found");
 			c.gridx = 0;
 			c.gridy = -1;
+			c.insets = new Insets(0,0,100,0);
 			panel.add(noPrintersFound,c);
 		}
 		for(int x = 0; x < numOfPrinters; x++){
