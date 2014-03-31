@@ -24,7 +24,7 @@ public class Model
 	protected String title; // Holds the value of the title.
 	protected String subTitle; // Holds the value of the subTitle
 	protected float spacing;
-	protected int elementSize;
+	protected int staffSize;
 	protected int titleFontSize;
 	protected int subTitleFontSize;
 	protected Rectangle pageSize;
@@ -43,7 +43,7 @@ public class Model
 		this.previewImage = "";
 		this.titleFontSize = 0;
 		this.subTitleFontSize = 0;
-		this.elementSize = 0;
+		this.staffSize = 0;
 		this.spacing = 0;
 		this.pageSize = new Rectangle(0f, 0f);
 		this.leftMargin = 0;
@@ -86,7 +86,7 @@ public class Model
 		this.previewImage = previewImage;
 		this.titleFontSize = titleFontSize;
 		this.subTitleFontSize = subTitleFontSize;
-		this.elementSize = measureFontSize;
+		this.staffSize = measureFontSize;
 		this.spacing = spacing;
 	}
 
@@ -110,7 +110,7 @@ public class Model
 		this.setTitle(this.converter.getTitle());
 		this.setSubTitle(this.converter.getSubtitle());
 		this.setSpacing(this.converter.getSpacing());
-		this.setElementSize(this.converter.getElementSize());
+		this.setStaffSize(this.converter.getStaffSize());
 		this.setTitleFontSize(this.converter.getTitleFontSize());
 		this.setSubTitleFontSize(this.converter.getSubtitleFontSize());
 		this.setPageSize(this.converter.getPageSize());
@@ -213,14 +213,14 @@ public class Model
 		this.subTitleFontSize = subTitleFontSize;
 	}
 
-	public int getElementSize()
+	public int getStaffSize()
 	{
-		return elementSize;
+		return staffSize;
 	}
 
-	public void setElementSize(int measureFontSize)
+	public void setStaffSize(int measureFontSize)
 	{
-		this.elementSize = measureFontSize;
+		this.staffSize = measureFontSize;
 	}
 
 	public float getSpacing()

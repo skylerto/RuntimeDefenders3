@@ -48,7 +48,7 @@ public class Controller
 		this.view.subtitleListener(new SubtitleListener());
 		this.view.titleFocusListener(new TitleFocusListener());
 		this.view.subtitleFocusListener(new SubtitleFocusListener());
-		this.view.elementSizeListener(new ElementSizeListener());
+		this.view.staffSizeListener(new StaffSizeListener());
 		this.view.measureSpaceListener(new MeasureSpaceListener());
 		this.view.titleFontSizeListener(new TitleFontSizeListener());
 		this.view.subtitleFontSizeListener(new SubtitleFontSizeListener());
@@ -349,7 +349,7 @@ class InputPathListener implements ActionListener
 					View.title.setText(model.getTitle());
 					View.subtitle.setText(model.getSubTitle());
 					View.staffSpacing.setValue((int) model.getSpacing());
-					View.elementSize.setValue(model.getElementSize());
+					View.staffSize.setValue(model.getStaffSize());
 					View.measureSpace.setValue((int) model.getMeasureSpace());
 					View.titleFontSize.setValue((int) model.getTitleFontSize());
 					View.subtitleFontSize.setValue((int) model
@@ -367,7 +367,7 @@ class InputPathListener implements ActionListener
 					View.progressBar.setIndeterminate(false);
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-					View.cl.show(View.statusPanel, "autoCorrect");
+					View.cl.show(View.statusPanel, "correctPanel");
 					Controller.displayError(e1.getMessage());
 				}
 			}
@@ -470,7 +470,7 @@ class SelectButtonListener implements ActionListener
 					View.title.setText(model.getTitle());
 					View.subtitle.setText(model.getSubTitle());
 					View.staffSpacing.setValue((int) model.getSpacing());
-					View.elementSize.setValue(model.getElementSize());
+					View.staffSize.setValue(model.getStaffSize());
 					View.measureSpace.setValue((int) model.getMeasureSpace());
 					View.titleFontSize.setValue((int) model.getTitleFontSize());
 					View.subtitleFontSize.setValue((int) model
@@ -488,7 +488,7 @@ class SelectButtonListener implements ActionListener
 					View.progressBar.setIndeterminate(false);
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-					View.cl.show(View.statusPanel, "autoCorrect");
+					View.cl.show(View.statusPanel, "correctPanel");
 					Controller.displayError(e1.getMessage());
 				}
 			}
@@ -601,9 +601,9 @@ class SpacingListener implements ChangeListener
 }
 
 /**
- * Updates the preview when the element size slider is moved.
+ * Updates the preview when the staff size slider is moved.
  */
-class ElementSizeListener implements ChangeListener
+class StaffSizeListener implements ChangeListener
 {
 
 	public void stateChanged(ChangeEvent e)
@@ -621,10 +621,10 @@ class ElementSizeListener implements ChangeListener
 				 * If the slider value didn't change from the current value then
 				 * do nothing
 				 */
-				if (model.getElementSize() != View.elementSize.getValue())
+				if (model.getStaffSize() != View.staffSize.getValue())
 				{
-					model.setElementSize(View.elementSize.getValue());
-					model.converter.updateElementSize((View.elementSize
+					model.setStaffSize(View.staffSize.getValue());
+					model.converter.updateElementSize((View.staffSize
 							.getValue()));
 					IMGCreator.createPreview(model);
 

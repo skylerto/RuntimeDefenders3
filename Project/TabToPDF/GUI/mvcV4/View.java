@@ -146,10 +146,10 @@ public class View
 
 	// SLIDER INFO
 	// MEASURE SLIDER INFO
-	protected static JSlider elementSize;
-	private static final int elementSizeMin = 2;
-	private static final int elementSizeMax = 22;
-	private static int elementSizeCurrent = 2;
+	protected static JSlider staffSize;
+	private static final int staffSizeMin = 2;
+	private static final int staffSizeMax = 22;
+	private static int staffSizeCurrent = 2;
 
 	// SPACING SLIDER INFO
 	protected static JSlider staffSpacing;
@@ -242,7 +242,7 @@ public class View
 		title.setEnabled(value);
 		subtitle.setEnabled(value);
 		staffSpacing.setEnabled(value);
-		elementSize.setEnabled(value);
+		staffSize.setEnabled(value);
 		measureSpace.setEnabled(value);
 		titleFontSize.setEnabled(value);
 		subtitleFontSize.setEnabled(value);
@@ -500,15 +500,15 @@ public class View
 		c.insets = new Insets(2, 5, 5, 0);
 		panel.add(measureElementLabel, c);
 
-		elementSize = new JSlider(JSlider.HORIZONTAL, elementSizeMin,
-				elementSizeMax, elementSizeCurrent);
-		setSliderTicks(elementSize, 5, 1);
+		staffSize = new JSlider(JSlider.HORIZONTAL, staffSizeMin, staffSizeMax,
+				staffSizeCurrent);
+		setSliderTicks(staffSize, 5, 1);
 		c.gridx = 1;
 		c.gridy = 3;
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0, 8, 5, 8);
-		panel.add(elementSize, c);
+		panel.add(staffSize, c);
 
 		// Measure Spacing
 		JLabel measureSpaceLabel = new JLabel("Measure Space: ");
@@ -663,10 +663,9 @@ public class View
 	{
 		statusPanel = new JPanel(new CardLayout());
 		statusPanel.setOpaque(false);
-		statusPanel.setPreferredSize(new Dimension(STATUS_WIDTH,
-				STATUS_HEIGHT));
-		statusPanel.setMinimumSize(new Dimension(STATUS_WIDTH,
-				STATUS_HEIGHT));
+		statusPanel
+				.setPreferredSize(new Dimension(STATUS_WIDTH, STATUS_HEIGHT));
+		statusPanel.setMinimumSize(new Dimension(STATUS_WIDTH, STATUS_HEIGHT));
 		;
 
 		// Setting up GridbagLayout
@@ -1014,9 +1013,9 @@ public class View
 		staffSpacing.addChangeListener(spacingListener);
 	}
 
-	void elementSizeListener(ChangeListener elementSizeListener)
+	void staffSizeListener(ChangeListener elementSizeListener)
 	{
-		elementSize.addChangeListener(elementSizeListener);
+		staffSize.addChangeListener(elementSizeListener);
 	}
 
 	void pageSizeListener(ActionListener pageSizeListener)
