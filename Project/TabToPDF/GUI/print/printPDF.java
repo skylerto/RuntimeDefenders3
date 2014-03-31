@@ -51,10 +51,10 @@ public class printPDF {
 	            break;
 	        }
 	    }
-
-	    /*if (this.myService == null) {
-	        throw new IllegalStateException("Printer not found");
-	    }*/
+	    if (this.myService == null) {
+	    	return;
+	        //throw new IllegalStateException("Printer not found");
+	    }
 
 	    FileInputStream fis = new FileInputStream(this.directory);
 	    Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
