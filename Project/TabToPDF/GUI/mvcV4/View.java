@@ -826,6 +826,8 @@ public class View
 		c.weightx = 0;
 		c.insets = new Insets(40, 515, 0, 0);
 		rightSide.add(inputPrompt, c);
+		
+		JPanel panel = new JPanel();
 
 		// Create preview pane
 		buildPreviewScrollPane();

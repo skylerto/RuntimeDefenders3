@@ -260,6 +260,7 @@ class SelectButtonListener implements ActionListener
 		chooser.setFileFilter(text_filter);
 		// chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
+
 		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
 		{
 			inputfile = chooser.getCurrentDirectory();
@@ -272,8 +273,7 @@ class SelectButtonListener implements ActionListener
 			View.setComponentsEnabled(false);
 			View.resetView();
 			View.repaintPreview("");
-			// View.convertButton.setEnabled(true);
-
+			
 			try
 			{
 				model.initializeConverter();
@@ -316,6 +316,7 @@ class SelectButtonListener implements ActionListener
 			{
 				Controller.displayError(e1.getMessage());
 			}
+
 		}
 	}
 }
