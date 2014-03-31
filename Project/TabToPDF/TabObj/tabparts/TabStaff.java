@@ -204,7 +204,7 @@ public class TabStaff {
 									break;
 								}
 							} else {
-								if (p == line.length() - 1)
+								if (p >= line.length() - 2)
 									break;
 							}
 						}
