@@ -76,6 +76,7 @@ public class AutofixLog {
 			if (br.readLine() == null) {
 			    return true;
 			}
+			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
