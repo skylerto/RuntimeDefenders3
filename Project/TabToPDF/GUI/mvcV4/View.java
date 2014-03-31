@@ -74,8 +74,8 @@ public class View
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 125;
 
-	public static final int AUTOCORR_WIDTH = 270;
-	public static final int AUTOCORR_HEIGHT = 90;
+	public static final int STATUS_WIDTH = 270;
+	public static final int STATUS_HEIGHT = 90;
 
 	public static final int ERROR_WIDTH = 330;
 	public static final int ERROR_HEIGHT = 325;
@@ -659,21 +659,21 @@ public class View
 	 * 
 	 * @return the auto correction panel
 	 */
-	protected static JPanel autoCorrections()
+	protected static JPanel statusPanel()
 	{
 		statusPanel = new JPanel(new CardLayout());
 		statusPanel.setOpaque(false);
-		statusPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
-				AUTOCORR_HEIGHT));
-		statusPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
-				AUTOCORR_HEIGHT));
+		statusPanel.setPreferredSize(new Dimension(STATUS_WIDTH,
+				STATUS_HEIGHT));
+		statusPanel.setMinimumSize(new Dimension(STATUS_WIDTH,
+				STATUS_HEIGHT));
 		;
 
 		// Setting up GridbagLayout
-		JPanel autoCorrect = new JPanel();
-		autoCorrect.setOpaque(false);
+		JPanel correctPanel = new JPanel();
+		correctPanel.setOpaque(false);
 		GridBagConstraints c = new GridBagConstraints();
-		autoCorrect.setLayout(new GridBagLayout());
+		correctPanel.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.NONE;
 
 		// Adding label and button
@@ -683,13 +683,13 @@ public class View
 		c.gridy = 0;
 		c.weighty = 1;
 		c.insets = new Insets(0, 0, 0, 0);
-		autoCorrect.add(correctionLabel, c);
+		correctPanel.add(correctionLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 20, 0);
-		autoCorrect.add(correctionButton, c);
+		correctPanel.add(correctionButton, c);
 
 		// hiding button and label
 		correctionLabel.setVisible(false);
@@ -700,7 +700,7 @@ public class View
 		progressPanel.setOpaque(false);
 		progressPanel.add(progressBar);
 
-		statusPanel.add(autoCorrect, "autoCorrect");
+		statusPanel.add(correctPanel, "correctPanel");
 		statusPanel.add(progressPanel, "progressPanel");
 
 		cl = (CardLayout) (statusPanel.getLayout());
@@ -714,7 +714,7 @@ public class View
 	 */
 	protected static void updateCorrection(String filename)
 	{
-		cl.show(statusPanel, "autoCorrect");
+		cl.show(statusPanel, "correctPanel");
 		if (AutofixLog.isEmpty())
 		{
 			correctionLabel.setVisible(false);
@@ -767,7 +767,7 @@ public class View
 		c.gridy = 2;
 		c.weighty = 0;
 		c.insets = new Insets(0, 5, 0, 5);
-		leftSide.add(autoCorrections(), c);
+		leftSide.add(statusPanel(), c);
 	}
 
 	/**
