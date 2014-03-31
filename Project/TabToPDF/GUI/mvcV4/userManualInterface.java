@@ -43,27 +43,27 @@ public class userManualInterface extends JFrame{
 	DefaultMutableTreeNode gettingStarted, print, email, emails;
 	
 	DefaultMutableTreeNode fileSystem = new DefaultMutableTreeNode("User Manual");
-	private static JFrame frame = new JFrame("My Own Tree V2");
-	private static JLabel browsePicture;
-	private static JLabel convertPicture;
-	private static JLabel editPicture;
-	private static JLabel savePicture;
-	private static JLabel gettingStartedStep1_0;
-	private static JLabel gettingStartedStep2_0;
-	private static JLabel gettingStartedStep3_0;
-	private static JLabel gettingStartedStep4_0;
-	private static JLabel printStep1_0;
-	private static JLabel printStep2_0;
-	private static JLabel emailStep1_0;
-	private static JLabel emailStep2_0;
-	private static JLabel emailStep3_0;
-	private static JLabel emailStep4_0;
-	private static JPanel informationPanel;
-	private static JScrollPane scrollBox2;
-	private static GridBagConstraints c = new GridBagConstraints();
+	private  JFrame frame = new JFrame("My Own Tree V2");
+	private  JLabel browsePicture;
+	private  JLabel convertPicture;
+	private  JLabel editPicture;
+	private  JLabel savePicture;
+	private  JLabel gettingStartedStep1_0;
+	private  JLabel gettingStartedStep2_0;
+	private  JLabel gettingStartedStep3_0;
+	private  JLabel gettingStartedStep4_0;
+	private  JLabel printStep1_0;
+	private  JLabel printStep2_0;
+	private  JLabel emailStep1_0;
+	private  JLabel emailStep2_0;
+	private  JLabel emailStep3_0;
+	private  JLabel emailStep4_0;
+	private  JPanel informationPanel;
+	private  JScrollPane scrollBox2;
+	private  GridBagConstraints c = new GridBagConstraints();
 	public userManualInterface(){
 		frame.setSize(700,500);
-		
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		
 		JPanel container = new JPanel();
