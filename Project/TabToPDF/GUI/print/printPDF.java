@@ -28,14 +28,14 @@ public class printPDF {
 	    PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
 	    patts.add(Sides.DUPLEX);
 	    this.ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
-	    if (ps.length == 0) {
-	        throw new IllegalStateException("No Printer found");
+	    if (ps.length != 0) {
+	    	this.myService = null;
+			this.listOfPrinters = new ArrayList<String>();
+			    for (PrintService printService : this.ps) {
+			    	this.listOfPrinters.add(printService.getName());
+			    }
 	    }
-	    this.myService = null;
-		this.listOfPrinters = new ArrayList<String>();
-		    for (PrintService printService : this.ps) {
-		    	this.listOfPrinters.add(printService.getName());
-		    }
+	    
 		  
 	}
 	public ArrayList<String> getPrinters(){
