@@ -43,7 +43,7 @@ public class userManualInterface extends JFrame{
 	DefaultMutableTreeNode gettingStarted, print, email, emails;
 	
 	DefaultMutableTreeNode fileSystem = new DefaultMutableTreeNode("User Manual");
-	private  JFrame frame = new JFrame("My Own Tree V2");
+	private  JFrame frame = new JFrame("User Manual");
 	private  JLabel browsePicture;
 	private  JLabel convertPicture;
 	private  JLabel editPicture;
