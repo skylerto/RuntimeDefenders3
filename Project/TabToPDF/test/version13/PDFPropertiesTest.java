@@ -20,6 +20,7 @@ public class PDFPropertiesTest {
 	
 		alpha = new PDFProperties();
 		bravo = new PDFProperties("This is Bravo","subtitle",3.5f);
+		charlie = new PDFProperties("This is Bravo","subtitle",3.5f);
 		
 	
 	}
@@ -203,4 +204,19 @@ public class PDFPropertiesTest {
 		String expt = "[This is Bravo, subtitle, 3.5, 8, (612.0,792.0), 16, 14]";
 		assertTrue(expt.equals(bravo.toString()));
 		}
+	
+	@Test
+	public void test_Equals() {
+		assertEquals(charlie.getTitle(),bravo.getTitle());
+		assertEquals(charlie.getSubtitle(),bravo.getSubtitle());
+		assertEquals(charlie.getElementSize(),bravo.getElementSize());
+		assertEquals((int)charlie.getSpacing(),(int)bravo.getSpacing());
+		assertEquals(charlie.getPageSize(),bravo.getPageSize());
+		assertEquals(charlie.getTitleFontSize(),bravo.getTitleFontSize());
+		assertEquals(charlie.getSubtitleFontSize(),bravo.getSubtitleFontSize());
+		assertEquals((int)charlie.getLeftMargin(),(int)bravo.getLeftMargin());
+		assertEquals((int)charlie.getRightMargin(),(int)bravo.getRightMargin());
+		assertEquals((int)charlie.getMeasureSpace(),(int)bravo.getMeasureSpace());
+		
+	}
 }
