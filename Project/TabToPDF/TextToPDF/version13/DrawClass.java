@@ -452,13 +452,13 @@ public class DrawClass {
     				break;
         		case Two_digit:
         			/* draw small white line before the two digit*/
-        			drawLine(x-(line_space*0.2f), y, x, y, 0.5f,1, cb);
+        			drawLine(x-(line_space*0.3f), y, x-(line_space*0.2f), y, 0.5f,1, cb);
         			/* insert the first digit*/
-    				InsertText(Integer.toString(list.get(i).getValue()).charAt(0)+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+    				InsertText(Integer.toString(list.get(i).getValue()).charAt(0)+"",x-(line_space*0.2f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
     				/* insert the second digit*/
-    				InsertText( Integer.toString(list.get(i).getValue()).charAt(1)+"",x-(line_space*0.3f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
+    				InsertText( Integer.toString(list.get(i).getValue()).charAt(1)+"",x-(line_space*0.2f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
     				/* draw line after the two digit has been inserted*/
-    				drawLine(x-(line_space*0.3f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,0, cb);
+    				drawLine(x-(line_space*0.2f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,0, cb);
     				/* store the two digits in array list*/
     				symbolp_list.add(new SymbolPoint(list.get(i).getValue(),x,y,count_music_lines+1));
         			x+=(line_space*2.0f); // move and update  x-coordinate
