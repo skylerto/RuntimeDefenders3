@@ -1,5 +1,6 @@
 package mvcV4;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,6 +35,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
@@ -42,6 +45,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.alee.extended.layout.StackLayout;
 import com.itextpdf.text.Rectangle;
 
 import print.printPDF;
@@ -66,6 +70,9 @@ public class View
 	public static final int CORRLOG_HEIGHT = 500;
 	public static final int CORRLOG_WIDTH_MIN = 300;
 	public static final int CORRLOG_HEIGHT_MIN = 220;
+
+	// public static final int PROGRESS_WIDTH = 100;
+	// public static final int PROGRESS_HEIGHT = 20;
 
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 125;
@@ -129,8 +136,6 @@ public class View
 
 	// Menu bar items
 	protected static JMenuItem log = new JMenuItem("Log");
-	protected static JMenuItem autoCorrection = new JMenuItem(
-			"Auto-Corrections");
 	protected static JMenuItem printMenuItem;;
 
 	// Text fields for input and destination folders.
@@ -193,12 +198,13 @@ public class View
 	protected static JDialog correctionLogDialog;
 	protected static JTextArea correctionLogText;
 	protected static JScrollPane correctionLogScroller;
+	protected static JProgressBar progressBar;
+	protected static JPanel progressPanel;
+	protected static CardLayout cl;
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
 
-	static JProgressBar progressBar;
-	
 	/**
 	 * Constructs a new view.
 	 */
@@ -219,6 +225,11 @@ public class View
 		iconLabel.setForeground(Color.RED);
 		iconLabel.setIcon(ErrorIcon);
 		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH, ERROR_HEIGHT));
+	}
+
+	public static void showLoading()
+	{
+		cl.show(autoCorrectionPanel, "progressPanel");
 	}
 
 	/**
@@ -362,7 +373,6 @@ public class View
 				CORRLOG_HEIGHT));
 		correctionLogDialog.setMinimumSize(new Dimension(CORRLOG_WIDTH_MIN,
 				CORRLOG_HEIGHT_MIN));
-
 		// Create text area inside scroll pane
 		correctionLogText = new JTextArea();
 		correctionLogScroller = new JScrollPane(correctionLogText);
@@ -654,18 +664,19 @@ public class View
 	 */
 	protected static JPanel autoCorrections()
 	{
-		JPanel autoCorrectionPanel = new JPanel();
+		autoCorrectionPanel = new JPanel(new CardLayout());
 		autoCorrectionPanel.setOpaque(false);
 		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
 		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setVisible(true);
-		autoCorrectionPanel.setEnabled(false);
+		;
 
 		// Setting up GridbagLayout
+		JPanel autoCorrect = new JPanel();
+		autoCorrect.setOpaque(false);
 		GridBagConstraints c = new GridBagConstraints();
-		autoCorrectionPanel.setLayout(new GridBagLayout());
+		autoCorrect.setLayout(new GridBagLayout());
 		c.fill = GridBagConstraints.NONE;
 
 		// Adding label and button
@@ -675,18 +686,27 @@ public class View
 		c.gridy = 0;
 		c.weighty = 1;
 		c.insets = new Insets(0, 0, 0, 0);
-		autoCorrectionPanel.add(correctionLabel, c);
+		autoCorrect.add(correctionLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 20, 0);
-		autoCorrectionPanel.add(correctionButton, c);
+		autoCorrect.add(correctionButton, c);
 
 		// hiding button and label
 		correctionLabel.setVisible(false);
 		correctionButton.setVisible(false);
 
+		buildProgressBar();
+		progressPanel = new JPanel(new GridBagLayout());
+		progressPanel.setOpaque(false);
+		progressPanel.add(progressBar);
+
+		autoCorrectionPanel.add(autoCorrect, "autoCorrect");
+		autoCorrectionPanel.add(progressPanel, "progressPanel");
+
+		cl = (CardLayout) (autoCorrectionPanel.getLayout());
 		return autoCorrectionPanel;
 	}
 
@@ -697,6 +717,7 @@ public class View
 	 */
 	protected static void updateCorrection(String filename)
 	{
+		cl.show(autoCorrectionPanel, "autoCorrect");
 		if (AutofixLog.isEmpty())
 		{
 			correctionLabel.setVisible(false);
@@ -771,12 +792,6 @@ public class View
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
 
-		// Adding loading label into preview panel
-		loadingLabel = new JLabel("Converting. Please Wait...");
-		loadingLabel.setFont(labelFont);
-		JPanel panel = new JPanel();
-		panel.add(loadingLabel);
-		previewPane.add(panel);
 		// Setting label as ViewportView
 		iconLabel = new JLabel();
 		previewPane.setViewportView(iconLabel);
@@ -827,6 +842,7 @@ public class View
 				"PDF Preview (First Page)");
 		titled.setTitlePosition(TitledBorder.TOP);
 		titled.setTitleJustification(TitledBorder.CENTER);
+
 		previewPane.setBorder(titled);
 		c.gridx = 0;
 		c.gridy = 1;
@@ -834,25 +850,8 @@ public class View
 		c.insets = new Insets(0, 0, 5, 5);
 		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
-
-		JPanel panel = new JPanel();
-		progressBar = new JProgressBar(0, 100);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		progressBar.setPreferredSize(new Dimension(500, 20));
-		panel.add(progressBar);
-		c.gridx = 0;
-		c.gridy = 2;
-		rightSide.add(panel, c);
 	}
 
-	public static ProgressBarUpdator makeThread(JProgressBar progressBar)
-	{
-		ProgressBarUpdator updator = new ProgressBarUpdator(View.progressBar);
-		new java.lang.Thread(updator).start();
-		return updator;
-	}
-	
 	/**
 	 * Returns a JButton with the given default, pressed, and disabled icons
 	 */
@@ -896,6 +895,15 @@ public class View
 		{
 
 		}
+	}
+
+	public static void buildProgressBar()
+	{
+		progressBar = new JProgressBar(0, 100);
+		progressBar.setValue(0);
+		progressBar.setStringPainted(false);
+		progressBar.setBounds(20, 20, 20, 20);
+		progressBar.setPreferredSize(new Dimension(320, 25));
 	}
 
 	/**

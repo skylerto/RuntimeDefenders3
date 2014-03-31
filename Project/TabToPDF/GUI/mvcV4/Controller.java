@@ -1,14 +1,19 @@
 package mvcV4;
 
+import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -239,90 +244,6 @@ class SubtitleListener implements ActionListener
 }
 
 /**
- * Updates the view when a different path is chosen.
- */
-class SelectButtonListener implements ActionListener
-{
-	private File inputfile = new File(".");
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		Model model = new Model();
-		Controller.setModel(model);
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(inputfile);
-		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",
-				new String[]
-				{ ".txt" });
-		chooser.addChoosableFileFilter(text_filter);
-		chooser.setFileFilter(text_filter);
-		// chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		chooser.setAcceptAllFileFilterUsed(false);
-
-		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
-		{
-			inputfile = chooser.getCurrentDirectory();
-			String filenameWithExtension = chooser.getSelectedFile().toString();
-
-			model.setFilenameWithExtention(filenameWithExtension);
-			model.setFilename(Utils.removeFileExtension(filenameWithExtension));
-
-			View.input.setText(filenameWithExtension);
-			View.setComponentsEnabled(false);
-			View.resetView();
-			View.repaintPreview("");
-
-			View.makeThread(View.progressBar);
-			try
-			{
-				model.initializeConverter();
-				model.runConverter();
-
-				IMGCreator.createPreview(model);
-				Controller.deleteFilesOnExit();
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				String image2 = IMGCreator.getLastConverted();
-				Rectangle pagesize = model.getPageSize();
-				View.repaintPreview(image2, pagesize);
-
-				// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
-
-				// GET CONVERTED FIELD VALUES.
-				// ENABLE FIELDS
-				View.setComponentsEnabled(true);
-
-				// SET FIELD VALUES
-				View.title.setText(model.getTitle());
-				View.subtitle.setText(model.getSubTitle());
-				View.staffSpacing.setValue((int) model.getSpacing());
-				View.elementSize.setValue(model.getElementSize());
-				View.measureSpace.setValue((int) model.getMeasureSpace());
-				View.titleFontSize.setValue((int) model.getTitleFontSize());
-				View.subtitleFontSize.setValue((int) model
-						.getSubTitleFontSize());
-				View.leftMarginSpace.setValue((int) model.getLeftMargin());
-				View.rightMarginSpace.setValue((int) model.getLeftMargin());
-				View.pageList.setSelectedIndex(0);
-				View.propertiesPane.getVerticalScrollBar().setValue(0);
-
-				View.updateCorrection(model.getFilename());
-
-				// ELSE display the error message and don't enable buttons.
-
-			} catch (NoFileExistsException | CannotReadFileException
-					| EmptyFileException | NoMusicException
-					| LargeNumberException | ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
-			}
-
-		}
-	}
-}
-
-/**
  * Shows and hides the "Enter to apply prompt."
  */
 class InputPathFocusListener implements FocusListener
@@ -353,11 +274,13 @@ class InputPathFocusListener implements FocusListener
  */
 class InputPathListener implements ActionListener
 {
+	Model model = new Model();
+	String image;
+	Rectangle pagesize;
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Model model = new Model();
 		Controller.setModel(model);
 
 		if (!model.getFilenameWithExtension().equals(View.input.getText()))
@@ -369,49 +292,208 @@ class InputPathListener implements ActionListener
 			View.resetView();
 			View.repaintPreview("");
 
-			try
+			convert();
+			View.showLoading();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
+				publish(1);
 				model.initializeConverter();
 				model.runConverter();
-
 				IMGCreator.createPreview(model);
 				Controller.deleteFilesOnExit();
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				String image2 = IMGCreator.getLastConverted();
-				Rectangle pagesize = model.getPageSize();
-				View.repaintPreview(image2, pagesize);
-				// IF IT WAS, ENABLE ALL BUTTONS and populate the fields.
-
-				// GET CONVERTED FIELD VALUES.
-				// ENABLE FIELDS
-				View.setComponentsEnabled(true);
-
-				// SET FIELD VALUES
-				View.title.setText(model.getTitle());
-				View.subtitle.setText(model.getSubTitle());
-				View.staffSpacing.setValue((int) model.getSpacing());
-				View.elementSize.setValue(model.getElementSize());
-				View.measureSpace.setValue((int) model.getMeasureSpace());
-				View.titleFontSize.setValue((int) model.getTitleFontSize());
-				View.subtitleFontSize.setValue((int) model
-						.getSubTitleFontSize());
-				View.leftMarginSpace.setValue((int) model.getLeftMargin());
-				View.rightMarginSpace.setValue((int) model.getLeftMargin());
-				View.pageList.setSelectedIndex(0);
-				View.propertiesPane.getVerticalScrollBar().setValue(0);
-
-				View.updateCorrection(model.getFilename());
-
-				// ELSE display the error message and don't enable buttons.
-
-			} catch (NoFileExistsException | CannotReadFileException
-					| EmptyFileException | NoMusicException
-					| LargeNumberException | ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				image = IMGCreator.getLastConverted();
+				pagesize = model.getPageSize();
+				return null;
 			}
-		}
 
+			@Override
+			protected void process(List<Integer> chunks)
+			{
+				if (chunks.get(0) == 1)
+				{
+					View.progressBar.setIndeterminate(true);
+				}
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					View.repaintPreview(image, pagesize);
+					// IF CONVERTED PROPERLY, ENABLE ALL BUTTONS and populate
+					// the fields.
+
+					// GET CONVERTED FIELD VALUES.
+					// ENABLE FIELDS
+					View.setComponentsEnabled(true);
+
+					// SET FIELD VALUES
+					View.title.setText(model.getTitle());
+					View.subtitle.setText(model.getSubTitle());
+					View.staffSpacing.setValue((int) model.getSpacing());
+					View.elementSize.setValue(model.getElementSize());
+					View.measureSpace.setValue((int) model.getMeasureSpace());
+					View.titleFontSize.setValue((int) model.getTitleFontSize());
+					View.subtitleFontSize.setValue((int) model
+							.getSubTitleFontSize());
+					View.leftMarginSpace.setValue((int) model.getLeftMargin());
+					View.rightMarginSpace.setValue((int) model.getLeftMargin());
+					View.pageList.setSelectedIndex(0);
+					View.propertiesPane.getVerticalScrollBar().setValue(0);
+
+					View.updateCorrection(model.getFilename());
+
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					View.cl.show(View.autoCorrectionPanel, "autoCorrect");
+					Controller.displayError(e1.getMessage());
+				}
+			}
+		};
+		ConvertTask.execute();
+	}
+}
+
+/**
+ * Updates the view when a different path is chosen.
+ */
+class SelectButtonListener implements ActionListener
+{
+	private File inputfile = new File(".");
+	Model model = new Model();
+	String image;
+	Rectangle pagesize;
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Controller.setModel(model);
+
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(inputfile);
+		FileTypeFilter text_filter = new FileTypeFilter("Text File *.txt",
+				new String[]
+				{ ".txt" });
+		chooser.addChoosableFileFilter(text_filter);
+		chooser.setFileFilter(text_filter);
+		chooser.setAcceptAllFileFilterUsed(false);
+
+		if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
+		{
+			inputfile = chooser.getCurrentDirectory();
+			String filenameWithExtension = chooser.getSelectedFile().toString();
+
+			model.setFilenameWithExtention(filenameWithExtension);
+			model.setFilename(Utils.removeFileExtension(filenameWithExtension));
+
+			View.input.setText(filenameWithExtension);
+			View.setComponentsEnabled(false);
+			View.resetView();
+			View.repaintPreview("");
+
+			convert();
+			View.showLoading();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				publish(1);
+				model.initializeConverter();
+				model.runConverter();
+				IMGCreator.createPreview(model);
+				Controller.deleteFilesOnExit();
+				image = IMGCreator.getLastConverted();
+				pagesize = model.getPageSize();
+				return null;
+			}
+
+			@Override
+			protected void process(List<Integer> chunks)
+			{
+				if (chunks.get(0) == 1)
+				{
+					View.progressBar.setIndeterminate(true);
+				}
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					View.repaintPreview(image, pagesize);
+					// IF CONVERTED PROPERLY, ENABLE ALL BUTTONS and populate
+					// the fields.
+
+					// GET CONVERTED FIELD VALUES.
+					// ENABLE FIELDS
+					View.setComponentsEnabled(true);
+
+					// SET FIELD VALUES
+					View.title.setText(model.getTitle());
+					View.subtitle.setText(model.getSubTitle());
+					View.staffSpacing.setValue((int) model.getSpacing());
+					View.elementSize.setValue(model.getElementSize());
+					View.measureSpace.setValue((int) model.getMeasureSpace());
+					View.titleFontSize.setValue((int) model.getTitleFontSize());
+					View.subtitleFontSize.setValue((int) model
+							.getSubTitleFontSize());
+					View.leftMarginSpace.setValue((int) model.getLeftMargin());
+					View.rightMarginSpace.setValue((int) model.getLeftMargin());
+					View.pageList.setSelectedIndex(0);
+					View.propertiesPane.getVerticalScrollBar().setValue(0);
+
+					View.updateCorrection(model.getFilename());
+
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					View.cl.show(View.autoCorrectionPanel, "autoCorrect");
+					Controller.displayError(e1.getMessage());
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
