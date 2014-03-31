@@ -34,9 +34,13 @@ public class TabMeasureTest {
     TabMeasure tabm13;
     TabMeasure tabm14;
     TabMeasure tabm15;
+    TabMeasure tabf;
     TabString temp9;
     TabString temp10;
     TabString temp11;
+    TabString tabs;
+    TabMeasure tabf1;
+    TabString tabs1;
     
 
     @Before
@@ -110,6 +114,8 @@ public class TabMeasureTest {
         temp6.addChar(bar);
         tabm12.setString(temp6, 5);
         tabm12.fixStartBar();
+        
+        
         tabm13 = new TabMeasure(tabm10);
         
        
@@ -121,7 +127,7 @@ public class TabMeasureTest {
         temp7.addChar(bar);
         tabm13.setString(temp7, 5);
         tabm13.fixEndBar();
-
+        
 
         char s = '2';
         temp9 = new TabString();
@@ -152,6 +158,32 @@ public class TabMeasureTest {
 
          }
         
+        tabs = new TabString();
+        tabf = new TabMeasure();
+        
+        tabs.addChar('|');
+        tabs.addChar('-');
+        tabs.addChar('-');
+        tabs.addChar('|');
+        
+        for (int i = 0; i < 5; i++) {
+            
+            tabf.setString(tabs, i);
+
+        }
+        tabf1 = new TabMeasure(tabf);
+        
+        tabs.addChar('|');
+        tabf.setString(tabs, 5);
+        
+        tabs1 = new TabString();
+        tabs1.addChar('|');
+        tabs1.addChar('|');
+        tabs1.addChar('-');
+        tabs1.addChar('-');
+        tabs1.addChar('|');
+        
+        tabf1.setString(tabs1, 5);
         
         
 }
@@ -276,47 +308,49 @@ public class TabMeasureTest {
     @Test
     public void TestFixStartBar(){
     	/*
-    	 * tabm12 contains
-    	 * |a
-    	 * |a
-    	 * |a
-    	 * |a
-    	 * |a
-    	 * ||c|
+    	 * tabmf1 contains
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * ||--|
     	 * after calling the method it should return
-    	 * ||a
-    	 * ||a
-    	 * ||a
-    	 * ||a
-    	 * ||a
-    	 * ||c|
+    	 * ||--|
+    	 * ||--|
+    	 * ||--|
+    	 * ||--|
+    	 * ||--|
+    	 * ||--|
     	 */
-    	String expect_4 = "||a\n||a\n||a\n||a\n||a\n||c|";
-    	tabm12.fixStartBar();
-    	assertEquals(expect_4,tabm12.toString());
+    	String expect_4 = "||--|\n||--|\n||--|\n||--|\n||--|\n||--|";
+    	tabf1.fixStartBar();
+    	assertEquals(expect_4,tabf1.toString());
+    	
     }
     
     @Test
     public void TestFixEndBar(){
     	/*
-    	 * tabm13 contains
-    	 * a|
-    	 * a|
-    	 * a|
-    	 * a|
-    	 * a|
-    	 * |cd||
+    	 * tabf contains
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * |--|
+    	 * |--||
     	 * after calling the method it should return
-    	 * a||
-    	 * a||
-    	 * a||
-    	 * a||
-    	 * a||
-    	 * |cd||
+    	 * |--||
+    	 * |--||
+    	 * |--||
+    	 * |--||
+    	 * |--||
+    	 * |--||
     	 */
-    	String expect_5 = "a||\na||\na||\na||\na||\n|cd||";
-    	tabm13.fixEndBar();
-    	assertEquals(expect_5,tabm13.toString());
+    	String expect_5 = "|--||\n|--||\n|--||\n|--||\n|--||\n|--||";
+    	tabf.fixEndBar();
+    	
+    	assertEquals(expect_5,tabf.toString());
     	
     }
 
@@ -381,34 +415,32 @@ public class TabMeasureTest {
     
     @Test
     public void testEqualizeStrings() throws Exception { 
-        //setting up tab14
-        tabm14.fixMeasure();
-        tabm14.setString(temp10, 5);
+        
        
         
         /*
-         * Tab10 contains
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1|
+         * Tabf1 contains
+         * |--|
+         * |--|
+         * |--|
+         * |--|
+         * |--|
+         * ||--|
          * 
          * after calling the method it should return
          * 
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1-2|
-         * |1--|
+         * |---|
+         * |---|
+         * |---|
+         * |---|
+         * |---|
+         * ||--|
          * 
          */
-        
-       String expect_5 = "|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1-2|\n|1--|";
-        tabm14.equalizeStrings();
-        assertEquals(expect_5,tabm14.toString());
+       String expect_5 = "|---|\n|---|\n|---|\n|---|\n|---|\n||--|";
+        tabf1.equalizeStrings();
+       
+        assertEquals(expect_5,tabf1.toString());
         
      
        
