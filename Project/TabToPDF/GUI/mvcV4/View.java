@@ -769,15 +769,6 @@ public class View
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
 
-		// Adding JProgressBar
-		JProgressBar progressBar = new JProgressBar(0, 100);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		ProgressBarUpdator updator = new ProgressBarUpdator(progressBar);
-		new java.lang.Thread(updator).start();
-		progressBar.setPreferredSize(new Dimension(20, 100));
-		previewPane.add(progressBar);
-
 		// Adding loading label into preview panel
 		loadingLabel = new JLabel("Converting. Please Wait...");
 		loadingLabel.setFont(labelFont);
@@ -826,8 +817,6 @@ public class View
 		c.weightx = 0;
 		c.insets = new Insets(40, 515, 0, 0);
 		rightSide.add(inputPrompt, c);
-		
-		JPanel panel = new JPanel();
 
 		// Create preview pane
 		buildPreviewScrollPane();
@@ -843,6 +832,18 @@ public class View
 		c.insets = new Insets(0, 0, 5, 5);
 		rightSide.add(previewPane, c); // Display a scrollPane of the
 		// image.
+
+		JPanel panel = new JPanel();
+		JProgressBar progressBar = new JProgressBar(0, 100);
+		progressBar.setValue(0);
+		progressBar.setStringPainted(true);
+		ProgressBarUpdator updator = new ProgressBarUpdator(progressBar);
+		new java.lang.Thread(updator).start();
+		progressBar.setPreferredSize(new Dimension(500, 20));
+		panel.add(progressBar);
+		c.gridx = 0;
+		c.gridy = 2;
+		rightSide.add(panel, c);
 	}
 
 	/**
