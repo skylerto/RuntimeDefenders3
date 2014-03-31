@@ -51,16 +51,17 @@ public class printPDF {
 	            break;
 	        }
 	    }
-	    if (this.myService == null) {
-	    	return;
+	    if (this.myService != null) {
+	    	
 	        //throw new IllegalStateException("Printer not found");
+	    	FileInputStream fis = new FileInputStream(this.directory);
+		    Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
+		    DocPrintJob printJob = myService.createPrintJob();
+		    printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
+		    fis.close(); 
 	    }
 
-	    FileInputStream fis = new FileInputStream(this.directory);
-	    Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
-	    DocPrintJob printJob = myService.createPrintJob();
-	    printJob.print(pdfDoc, new HashPrintRequestAttributeSet());
-	    fis.close();     
+	        
 	}
 	
 }
