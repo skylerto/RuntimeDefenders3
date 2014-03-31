@@ -24,9 +24,9 @@ public class LogMain {
 			System.err.println(e.getMessage());
 		}*/
 		
-		/*Pattern music = Pattern.compile("^[|][^-]+[|]$");
+		/*Pattern music = Pattern.compile("^[\\|](?=[^-]+)");
 		
-		System.out.println(String.valueOf((music.matcher("|33||")).find()));*/
+		System.out.println(String.valueOf((music.matcher("|")).find()));*/
 		
 		/*PDFProperties prop = new PDFProperties();
 		

@@ -23,8 +23,8 @@ public class TabStaff {
 	
 	public static final int MAX_SIZE = 1000;
 	public static final Pattern REPEAT_START = Pattern.compile("^\\s*[|][1-9]\\s*$");	// The pattern of a string that has the repeat number at the start
-	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*.*-.*[|][1-9]\\s*$");	// The string that has a repeat number at the end
-	public static final Pattern NO_DASH = Pattern.compile("^[|][^-]+[|]$");
+	public static final Pattern REPEAT_END = Pattern.compile("^\\s*\\S+\\s*.*-.*[|][1-9]\\s*$");	
+	public static final Pattern NO_DASH = Pattern.compile("^[|][^-]+[|][0-9]?$"); // The string that has a repeat number at the end
 	
 	/* ATTRIBUTES */
 	
@@ -181,16 +181,15 @@ public class TabStaff {
 							p = s.scanLine(line, p, stringnum == 0, linenum);	// Stores the string in 's' and 'p' is the char index where it left off in the line
 
 							if (!NO_DASH.matcher(s.toString()).find()) {
-
 								this.staff.get(currentmeasure).setString(s, stringnum);	// Stores the string in the staff's measure
-	
+
 								/* Break from the loop if a double barred end is detected */
 								if (p == line.length() - 2 && this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 1) == '|'
 										&& this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 2) == '|') {
 									//TabString.VALID_DB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
 									currentmeasure++;
 									break;
-	
+
 									/* Break from the loop if a triple barred end is detected */
 								} else if (p == line.length() - 3 && this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 1) == '|'
 										&& this.getStringText(currentmeasure, stringnum).charAt(this.getStringText(currentmeasure, stringnum).length() - 2) == '|'
@@ -198,12 +197,15 @@ public class TabStaff {
 									//TabString.VALID_TB_END.matcher(this.staff.get(currentmeasure).getString(stringnum).toString()).find()) {
 									currentmeasure++;
 									break;
-	
+
 									/* Break from the loop if at the end of the line */
 								} else if (p == line.length() - 1) { 
 									currentmeasure++;
 									break;
 								}
+							} else {
+								if (p == line.length() - 1)
+									break;
 							}
 						}
 						/* Increases maxmeasure when more measures are detected in the row */
