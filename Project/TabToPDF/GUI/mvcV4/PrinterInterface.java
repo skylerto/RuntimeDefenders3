@@ -64,6 +64,7 @@ public class PrinterInterface extends JFrame {
 		JButton cancel = new JButton("Cancel");
 		c.gridx = 0;
 		c.gridy = numOfPrinters;
+		c.insets = new Insets(0,0,0,0);
 		cancel.setPreferredSize(new Dimension(250, 30));
 		
 		cancel.addActionListener(new ActionListener() {
