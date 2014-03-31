@@ -93,9 +93,8 @@ public class userManualInterface extends JFrame{
 		// Now we add children nodes to the documents parent node
 		
 		addAFile("Step 1 - Selecting a File", gettingStarted);
-		addAFile("Step 2 - Convert File", gettingStarted);
-		addAFile("Step 3 - Editing File", gettingStarted);
-		addAFile("Step 4 - Saving File", gettingStarted);
+		addAFile("Step 2 - Editing File", gettingStarted);
+		addAFile("Step 3 - Saving File", gettingStarted);
 		
 		
 		// Create the work node and its children
@@ -189,23 +188,20 @@ public class userManualInterface extends JFrame{
 	}
 	private void gettingStartedClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
-	    if( node.equals("Getting Started") || node.equals("Step 1 - Selecting a File") || node.equals("Step 2 - Convert File") || node.equals("Step 3 - Editing File") || node.equals("Step 4 - Saving File")) {
+	    if( node.equals("Getting Started") || node.equals("Step 1 - Selecting a File") || node.equals("Step 2 - Editing File") || node.equals("Step 3 - Saving File")) {
 	    	int scrollAmount = 0;
 	    	
-	    	if(node.equals("Step 2 - Convert File")){
-	    		scrollAmount = 320;
+	    	if(node.equals("Step 2 - Editing File")){
+	    		scrollAmount = 310;
 	    	}
-	    	else if(node.equals("Step 3 - Editing File")){
-	    		scrollAmount = 630;
-	    	}
-	    	else if(node.equals("Step 4 - Saving File")){
+	    	else if(node.equals("Step 3 - Saving File")){
 	    		scrollAmount = 970;
 	    	}
 	    	informationPanel.removeAll();
 	    	System.out.println(scrollAmount);
 	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
-	        ImageIcon Icon = new ImageIcon("res/userManualImages/browseUM.jpg");
-			File imageFile = new File("res/userManualImages/browseUM.jpg");
+	        ImageIcon Icon = new ImageIcon("res/userManualImages/gettingStarted1.jpg");
+			File imageFile = new File("res/userManualImages/gettingStarted1.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -221,26 +217,26 @@ public class userManualInterface extends JFrame{
 			c.insets = new Insets(0,0,60,0);
 			informationPanel.add(browsePicture, c);
 			
-			gettingStartedStep1_0 = new JLabel("<html>Step 1:<br>Select a file by clicking the \"Browse Computer\" button<br>located at the top left corner of the program.<html>");
+			gettingStartedStep1_0 = new JLabel("<html>Step 1:<br>Select a file by clicking the \"Select Input File\" button<br>located at the top left corner of the program.<html>");
 			c.insets = new Insets(10,10,10,10);
 			c.gridx = 1;
 			c.gridy = 0;
 			informationPanel.add(gettingStartedStep1_0, c);
 			
-			gettingStartedStep2_0 = new JLabel("<html>Step 2:<br>Convert the file by clicking the \"Convert\" button.<html>");
+			gettingStartedStep2_0 = new JLabel("<html>Step 2:<br>Edit certain fields such as the title or spacing<br>by clicking the edit button or moving the slider.<html>");
 			c.gridx = 1;
 			c.gridy = 2;
 			c.insets = new Insets(-60,10,10,50);
 			informationPanel.add(gettingStartedStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("res/userManualImages/convertUM.jpg");
-			File imageFile2 = new File("res/userManualImages/convertUM.jpg");
+			ImageIcon Icon2 = new ImageIcon("res/userManualImages/gettingStarted2.jpg");
+			File imageFile2 = new File("res/userManualImages/gettingStarted2.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
 				image2 = ImageIO.read(imageFile2);
-				resizedImage2 = resize(image2, 250,250);
+				resizedImage2 = resize(image2, 250,300);
 				Icon2 = new ImageIcon(resizedImage2);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -252,15 +248,22 @@ public class userManualInterface extends JFrame{
 			c.insets = new Insets(0,0,0,0);
 			informationPanel.add(convertPicture, c);
 			
-			gettingStartedStep3_0 = new JLabel("<html>Step 3:<br>Edit certain fields such as the title or spacing<br>by clicking the edit button or moving the slider.<html>");
+			gettingStartedStep4_0 = new JLabel("<html>-The title field will change the title of the PDF.<br>-The subtitle field will change the subtitle of<br> the PDF.<br>-The staff space slider will change the<br>spacing of the staffs.<br>-The staff size slider will change the size of the<br>staffs.<br>The measure space slider will change the<br>spacing between each row of staffs.<br>-The title font size slider will change the font<br>size of the PDF title.<br>-The subtitle font size slider will change the<br>font size of the PDF subtitle.<br>-The left/right margin sliders create a left/right<br>margin.<br>-The page size option changes the type of<br>page size for the PDF.<html>");
 			c.gridx = 1;
 			c.gridy = 4;
+			c.insets = new Insets(10,10,10,10);
+			informationPanel.add(gettingStartedStep4_0, c);
+			
+			
+			gettingStartedStep3_0 = new JLabel("<html>Step 3:<br>Save the file by clicking the \"Save As\" button.<html>");
+			c.gridx = 1;
+			c.gridy = 5;
 			c.insets = new Insets(10,10,10,50);
 			informationPanel.add(gettingStartedStep3_0, c);
 			
 			//Adding in the edit picture.
-			ImageIcon Icon3 = new ImageIcon("res/userManualImages/editUM.jpg");
-			File imageFile3 = new File("res/userManualImages/editUM.jpg");
+			ImageIcon Icon3 = new ImageIcon("res/userManualImages/gettingStarted3.jpg");
+			File imageFile3 = new File("res/userManualImages/gettingStarted3.jpg");
 			BufferedImage image3;
 			BufferedImage resizedImage3 = null;
 			try {
@@ -273,34 +276,9 @@ public class userManualInterface extends JFrame{
 			editPicture = new JLabel();
 			editPicture.setIcon(Icon3);
 			c.gridx = 1;
-			c.gridy = 5;
+			c.gridy = 6;
 			c.insets = new Insets(0,0,100,0);
 			informationPanel.add(editPicture, c);
-			
-			gettingStartedStep4_0 = new JLabel("<html>Step 4:<br>Save the file by clicking the \"Save As\" button.<html>");
-			c.gridx = 1;
-			c.gridy = 5;
-			c.insets = new Insets(210,10,10,50);
-			informationPanel.add(gettingStartedStep4_0, c);
-			
-			//Adding in the save picture.
-			ImageIcon Icon4 = new ImageIcon("res/userManualImages/saveUM.jpg");
-			File imageFile4 = new File("res/userManualImages/saveUM.jpg");
-			BufferedImage image4;
-			BufferedImage resizedImage4 = null;
-			try {
-				image4 = ImageIO.read(imageFile4);
-				resizedImage4 = resize(image4, 250,250);
-				Icon4 = new ImageIcon(resizedImage4);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			savePicture = new JLabel();
-			savePicture.setIcon(Icon4);
-			c.gridx = 1;
-			c.gridy = 7;
-			c.insets = new Insets(-50,0,20,0);
-			informationPanel.add(savePicture, c);
 			
 			scrollBox2.revalidate();
 			frame.revalidate();
