@@ -27,6 +27,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -767,6 +768,15 @@ public class View
 		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		previewPane.setViewportBorder(border);
 		previewPane.setBorder(border);
+
+		// Adding JProgressBar
+		JProgressBar progressBar = new JProgressBar(0, 100);
+		progressBar.setValue(0);
+		progressBar.setStringPainted(true);
+		ProgressBarUpdator updator = new ProgressBarUpdator(progressBar);
+		new java.lang.Thread(updator).start();
+		progressBar.setPreferredSize(new Dimension(20, 100));
+		previewPane.add(progressBar);
 
 		// Adding loading label into preview panel
 		loadingLabel = new JLabel("Converting. Please Wait...");
