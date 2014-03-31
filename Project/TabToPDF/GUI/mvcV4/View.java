@@ -71,9 +71,6 @@ public class View
 	public static final int CORRLOG_WIDTH_MIN = 300;
 	public static final int CORRLOG_HEIGHT_MIN = 220;
 
-	// public static final int PROGRESS_WIDTH = 100;
-	// public static final int PROGRESS_HEIGHT = 20;
-
 	public static final int BUTTON_WIDTH = 270;
 	public static final int BUTTON_HEIGHT = 125;
 
@@ -100,7 +97,7 @@ public class View
 	// Panels to add to frame.
 	protected static JPanel leftSide = new JPanel();
 	protected static JPanel rightSide = new JPanel();
-	protected static JPanel autoCorrectionPanel = new JPanel();
+	protected static JPanel statusPanel = new JPanel();
 
 	protected static JScrollPane previewPane;
 	protected static JScrollPane propertiesPane;
@@ -229,7 +226,7 @@ public class View
 
 	public static void showLoading()
 	{
-		cl.show(autoCorrectionPanel, "progressPanel");
+		cl.show(statusPanel, "progressPanel");
 	}
 
 	/**
@@ -462,7 +459,7 @@ public class View
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 0;
-		c.insets = new Insets(0, 5, 10, 0);
+		c.insets = new Insets(5, 5, 10, 0);
 		panel.add(subLabel, c);
 
 		subtitle = new JTextField(20);
@@ -473,7 +470,7 @@ public class View
 		panel.add(subtitle, c);
 
 		// Staff spacing.
-		JLabel spacingLabel = new JLabel("Staff Space: ");
+		JLabel spacingLabel = new JLabel("Spacing: ");
 		spacingLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 2;
@@ -664,11 +661,11 @@ public class View
 	 */
 	protected static JPanel autoCorrections()
 	{
-		autoCorrectionPanel = new JPanel(new CardLayout());
-		autoCorrectionPanel.setOpaque(false);
-		autoCorrectionPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
+		statusPanel = new JPanel(new CardLayout());
+		statusPanel.setOpaque(false);
+		statusPanel.setPreferredSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
-		autoCorrectionPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
+		statusPanel.setMinimumSize(new Dimension(AUTOCORR_WIDTH,
 				AUTOCORR_HEIGHT));
 		;
 
@@ -703,11 +700,11 @@ public class View
 		progressPanel.setOpaque(false);
 		progressPanel.add(progressBar);
 
-		autoCorrectionPanel.add(autoCorrect, "autoCorrect");
-		autoCorrectionPanel.add(progressPanel, "progressPanel");
+		statusPanel.add(autoCorrect, "autoCorrect");
+		statusPanel.add(progressPanel, "progressPanel");
 
-		cl = (CardLayout) (autoCorrectionPanel.getLayout());
-		return autoCorrectionPanel;
+		cl = (CardLayout) (statusPanel.getLayout());
+		return statusPanel;
 	}
 
 	/**
@@ -717,7 +714,7 @@ public class View
 	 */
 	protected static void updateCorrection(String filename)
 	{
-		cl.show(autoCorrectionPanel, "autoCorrect");
+		cl.show(statusPanel, "autoCorrect");
 		if (AutofixLog.isEmpty())
 		{
 			correctionLabel.setVisible(false);

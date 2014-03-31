@@ -367,7 +367,7 @@ class InputPathListener implements ActionListener
 					View.progressBar.setIndeterminate(false);
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-					View.cl.show(View.autoCorrectionPanel, "autoCorrect");
+					View.cl.show(View.statusPanel, "autoCorrect");
 					Controller.displayError(e1.getMessage());
 				}
 			}
@@ -488,7 +488,7 @@ class SelectButtonListener implements ActionListener
 					View.progressBar.setIndeterminate(false);
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-					View.cl.show(View.autoCorrectionPanel, "autoCorrect");
+					View.cl.show(View.statusPanel, "autoCorrect");
 					Controller.displayError(e1.getMessage());
 				}
 			}
