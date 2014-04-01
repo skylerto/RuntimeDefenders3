@@ -14,15 +14,12 @@ import javax.imageio.ImageIO;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
-public class IMGCreate
-{
+public class IMGCreate {
 	private static String lastConverted;
 	Model model;
 
-	public static void createPreview(Model model)
-	{
-		try
-		{
+	public static void createPreview(Model model) {
+		try {
 			String INPUT_PDFFILE = model.getOutputFilename();
 
 			String output = model.getOutputFilename().substring(0,
@@ -39,8 +36,8 @@ public class IMGCreate
 			PDFPage page = pdf.getPage(0);
 
 			// image dimensions
-			int width = (int) model.getPageSize().getWidth();
-			int height = (int) model.getPageSize().getHeight();
+			int width = (int) model.getPageSize().getWidth() * 2;
+			int height = (int) model.getPageSize().getHeight() * 2;
 
 			// create the image
 			Rectangle rect = new Rectangle(0, 0, (int) page.getBBox()
@@ -54,26 +51,23 @@ public class IMGCreate
 
 			File outputfile = new File(model.getOutputFilename().substring(0,
 					model.getOutputFilename().indexOf('.'))
-					+ ".png");
+					+ ".jpg");
 
-			ImageIO.write(bufferedImage, "png", outputfile);
+			ImageIO.write(bufferedImage, "jpg", outputfile);
 
 			model.setPreviewImage(outputfile.getAbsolutePath());
 			setLastConverted(outputfile.toString());
 
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void setLastConverted(String name)
-	{
+	public static void setLastConverted(String name) {
 		lastConverted = name;
 	}
 
-	public static String getLastConverted()
-	{
+	public static String getLastConverted() {
 		return lastConverted;
 	}
 }

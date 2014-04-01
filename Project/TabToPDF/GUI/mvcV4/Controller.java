@@ -428,9 +428,9 @@ class SelectButtonListener implements ActionListener
 				publish(1);
 				model.initializeConverter();
 				model.runConverter();
-				IMGCreator.createPreview(model);
+				IMGCreate.createPreview(model);
 				Controller.deleteFilesOnExit();
-				image = IMGCreator.getLastConverted();
+				image = IMGCreate.getLastConverted();
 				pagesize = model.getPageSize();
 				return null;
 			}
