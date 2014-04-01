@@ -373,7 +373,8 @@ public class View
 		// Create text area inside scroll pane
 		correctionLogText = new JTextArea();
 		correctionLogScroller = new JScrollPane(correctionLogText);
-		correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		correctionLogText.setFont(new Font("Courier", Font.PLAIN, 12));
+		//correctionLogText.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		correctionLogText.setEditable(false);
 		correctionLogDialog.add(correctionLogScroller);
 		correctionLogDialog.pack();

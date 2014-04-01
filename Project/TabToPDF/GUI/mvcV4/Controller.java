@@ -283,20 +283,17 @@ class InputPathListener implements ActionListener
 	{
 		Controller.setModel(model);
 
-		if (!model.getFilenameWithExtension().equals(View.input.getText()))
-		{
-			model.setFilenameWithExtention(View.input.getText());
-			model.setFilename(Utils.removeFileExtension(View.input.getText()));
+		model.setFilenameWithExtention(View.input.getText());
+		model.setFilename(Utils.removeFileExtension(View.input.getText()));
 
-			View.setComponentsEnabled(false);
-			View.resetView();
-			View.repaintPreview("");
+		View.setComponentsEnabled(false);
+		View.resetView();
+		View.repaintPreview("");
 
-			convert();
-			View.showLoading();
-			View.previewPane.setCursor(Cursor
-					.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		}
+		convert();
+		View.showLoading();
+		View.previewPane.setCursor(Cursor
+				.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	}
 
 	private void convert()
