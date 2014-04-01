@@ -26,9 +26,12 @@ public class DrawClass {
 	 * that begin with two bar on the same line
 	 */
 	static int onebar_before = 0; // 
-	/* list to use to store integers, pulls, hammer, and slides.*/
+	/* list to use to store integers, pulls, hammer, and slides.
+	 * its static because it have to collect all numbers from
+	 * music note before new page */
 	static List<SymbolPoint> symbolp_list =  new ArrayList<SymbolPoint>(); 
-	
+	/* list to paint (draw) numbers after it was music note is drawn*/
+	private List<SymbolPoint> num_list =  new ArrayList<SymbolPoint>(); 
 	/**
 	 * 
 	 * @param text
@@ -45,6 +48,7 @@ public class DrawClass {
         cb.saveState();
         cb.beginText();
         cb.setTextMatrix(x, y); // x,y location in document where to insert text
+        
         cb.setFontAndSize(bf, Fontsize); // set font type and size
         cb.showText(text); // display text
         cb.endText();
@@ -64,7 +68,7 @@ public class DrawClass {
   
     	cb.saveState();
      	cb.setLineWidth(thinkess); // Make Line  thicker , 1f thickest
-        cb.setGrayStroke(0.0f);// 0 = black color, 1 = white color
+        cb.setGrayStroke(color);// 0 = black color, 1 = white color
         cb.moveTo(x,y); // go to x,y coordinate in document
         cb.lineTo(toX,toY); // draw from x,y to tox,toy
         cb.stroke();
@@ -321,7 +325,7 @@ public class DrawClass {
     			   total+=(line_space*2f);
     			   break;
     		   case Space:
-    			   total+=(line_space*0.03f);
+    			   total+=(line_space*0.1f);
     			   break;
     		   case End_music_line : case End_music_note:
     			   break;
@@ -334,10 +338,52 @@ public class DrawClass {
     	   }
         	   return total;  	   
        }
-       
-      
+ /**
+  * the method will draw numbers and diamond after music note is drawn 
+  * to avoid horizontal lines passing through them when line spacing
+  * is small
+  * @param line_space
+  * @param FontSize
+  * @param cb
+  * @throws DocumentException
+  * @throws IOException
+  */
+   private void paintNumbers (float line_space, int FontSize, PdfContentByte cb ) throws DocumentException, IOException  {
+	  for (int i = 0 ; i < num_list.size() ; i++) {
+		  if (num_list.get(i).getSymbol()== "<>")	  
+			  DrawDiamond(num_list.get(i).getX()+(line_space*0.2f), num_list.get(i).getY(), (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
+		  else {
+			  if (Integer.parseInt(num_list.get(i).getSymbol())<10) { 
+				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+(FontSize/1.8f),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),0.5f,1f, cb);
+				  InsertText(num_list.get(i).getSymbol(), num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
+			  } else {
+				 
+				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+FontSize/2.1f+FontSize/1.8f,num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),0.5f,1f, cb);
+				  InsertText(num_list.get(i).getSymbol().charAt(0)+"", num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
+				  InsertText(num_list.get(i).getSymbol().charAt(1)+"", num_list.get(i).getX()+(FontSize/2.1f), num_list.get(i).getY(), FontSize, cb);
+				  
+			  }
+			  
+		  }
+		  
+			  
+	  }
+  }
+  /**
+   * this method will draw every music character except slides,pull , hammer.
+   * however there cases will be visited to draw lines and incrementing x coordinate
+   * @param list
+   * @param x
+   * @param y
+   * @param line_space
+   * @param FontSize
+   * @param same_line
+   * @param cb
+   * @throws DocumentException
+   * @throws IOException
+   */
   void DrawMusicNote (List<MusicSymbols> list , float x , float y , float line_space , int FontSize ,int same_line,PdfContentByte cb  ) throws DocumentException, IOException {
-    float tempx = x; 
+	float tempx = x; 
     int count_music_lines = 0; // give the current music line
     int is_second_beginstar = 0; // tell whether the beginning of the star is first one or second one
     int is_second_endnstar = 0; // tell whether the beginning of the star is first one or second one
@@ -369,8 +415,7 @@ public class DrawClass {
         				 drawLine(x-0.5f, y, x-0.5f, y-(FontSize*0.9f),2.8f, 0, cb); 
         				 /*draw line between last music symbol detected and vertical line at the end*/
         				 drawLine(x,y,x+(10),y,0.5f,0, cb);
-         				 x+=(10); // move and update my x-coordinate
-             			
+         				 x+=(10); // move and update my x-coordinate    			
          				 break;
         			case 1: // true 
         				switch (onebar_before) { // if the previous note had one bar
@@ -443,29 +488,28 @@ public class DrawClass {
      				x+=(line_space*list.get(i).getValue());// move and update  x-coordinate
      				break;
         		case One_digit:
-        			/* insert the digit*/
-        			InsertText(list.get(i).getValue()+"",x,y-(1.0f+(FontSize/4.0f)),FontSize,cb);
-    				drawLine(x+(FontSize/1.8f),y,x+line_space,y,0.5f,0, cb);// draw horizontal after digit
-    				/* add the digit the to array list*/
-    				symbolp_list.add(new SymbolPoint(list.get(i).getValue(),x,y,count_music_lines+1));
+        			/* draw horizontal line for two digits*/
+        			drawLine(x, y, x+line_space, y, 0.5f,0, cb);
+        			/* add integer and its x,y coordinate so that special symbol can use to draw arcs*/ 
+    				symbolp_list.add(new SymbolPoint(list.get(i).getValue()+"",x,y,count_music_lines+1));
+    				/* add integer and its coordinate to list to be drawn after music note is drawn 
+    				to avoid line passing through it*/
+    				num_list.add(new SymbolPoint(list.get(i).getValue()+"",x,y-(1.0f+(FontSize/4.0f)),0));
     				x+=line_space; // move and update  x-coordinate
     				break;
         		case Two_digit:
-        			/* draw small white line before the two digit*/
-        			drawLine(x-(line_space*0.3f), y, x-(line_space*0.2f), y, 0.5f,1, cb);
-        			/* insert the first digit*/
-    				InsertText(Integer.toString(list.get(i).getValue()).charAt(0)+"",x-(line_space*0.2f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
-    				/* insert the second digit*/
-    				InsertText( Integer.toString(list.get(i).getValue()).charAt(1)+"",x-(line_space*0.2f)+(FontSize/2.5f),y-(1.0f+(FontSize/4.0f)),FontSize,cb);
-    				/* draw line after the two digit has been inserted*/
-    				drawLine(x-(line_space*0.2f)+((FontSize/2.5f+(FontSize/1.8f))),y,x+(line_space*2.0f),y,0.5f,0, cb);
-    				/* store the two digits in array list*/
-    				symbolp_list.add(new SymbolPoint(list.get(i).getValue(),x,y,count_music_lines+1));
+        			/* draw horizontal line for two digits*/
+        			drawLine(x, y, x+(line_space*2.0f), y, 0.5f,0, cb);
+        			/* add integer and its x,y coordinate so that special symbol can use to draw arcs*/ 
+    				symbolp_list.add(new SymbolPoint(list.get(i).getValue()+"",x,y,count_music_lines+1));
+    				/* add integer and its coordinate to list to be drawn after music note is drawn 
+    				to avoid line passing through it*/
+    				num_list.add(new SymbolPoint(list.get(i).getValue()+"",x-(line_space*0.3f),y-(1.0f+(FontSize/4.0f)),0));
         			x+=(line_space*2.0f); // move and update  x-coordinate
         			break;
         		case Slide:
         			/* insert slide in the array*/
-        			symbolp_list.add(new SymbolPoint('s',x,y,count_music_lines+1));
+        			symbolp_list.add(new SymbolPoint("s",x,y,count_music_lines+1));
         			/*draw horizontal  line for slide*/
        				drawLine(x,y,x+line_space,y,0.5f,0, cb);
        				x+=line_space;// move and update  x-coordinate
@@ -474,17 +518,17 @@ public class DrawClass {
         			/*draw horizontal  line for hammer*/
     				drawLine(x,y,x+line_space,y,0.5f,0, cb);
     				/* insert slide in the array*/
-    				symbolp_list.add(new SymbolPoint('h',x,y,count_music_lines+1));
+    				symbolp_list.add(new SymbolPoint("h",x,y,count_music_lines+1));
     				x+=line_space; // move and update  x-coordinate
     				break;
         		case Space:
         			/*draw small horizontal  line for space*/
-        			drawLine(x,y,x+(line_space*0.03f),y,0.5f,0, cb);
-        			x+=(line_space*0.03f); // move and update  x-coordinate
+        			drawLine(x,y,x+(line_space*0.1f),y,0.5f,0, cb);
+        			x+=(line_space*0.1f); // move and update  x-coordinate
         			break;
         		case Pull:
         			/* insert slide in the pull*/
-        			symbolp_list.add(new SymbolPoint('p',x,y,count_music_lines+1));
+        			symbolp_list.add(new SymbolPoint("p",x,y,count_music_lines+1));
         			/*draw horizontal  line for pull*/
     				drawLine(x,y,x+line_space,y,0.5f,0, cb);
     				x+=line_space;// move and update  x-coordinate
@@ -515,7 +559,10 @@ public class DrawClass {
         		case Right_half_Diamond:
         			/* draw horizontal line for right half diamond*/
         			drawLine(x,y,x+line_space,y,0.5f,0, cb);
-        			DrawDiamond(x+(line_space*0.2f), y, (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
+        			/* add diamond and its coordinate to list to be drawn after music note is drawn 
+        			 * to avoid line passing through it*/
+    				num_list.add(new SymbolPoint("<>",x,y,0));
+        			//DrawDiamond(x+(line_space*0.2f), y, (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
     				x+=line_space;// move and update  x-coordinate
     				break;
         		case End_music_line:	
@@ -533,8 +580,11 @@ public class DrawClass {
     			default:break;    		
         		}
         	}
-        	
-        	    	
+     /* paint the numbers after music note is drawn to avoid lines
+     * passing through numbers such as 0 when line spacing is
+     * small.     		
+     */
+     paintNumbers(line_space,FontSize, cb);
   }
   /**
    * this method will draw hammer,slide , and pull by grabbing 
@@ -551,7 +601,7 @@ public class DrawClass {
       SymbolPoint prev_nu = null;
       SymbolPoint next_nu = null;
       for (int i =0 ; i < symbolp_list.size(); i++) {  
-          if (symbolp_list.get(i).getChar() == 'h') {
+          if (symbolp_list.get(i).getSymbol() == "h") {
         	  prev_nu = getNumberPrevious(symbolp_list.get(i),i);
         	  next_nu= getNumberNext(symbolp_list.get(i),i);
         	  if (prev_nu == null || next_nu == null) { 
@@ -560,7 +610,7 @@ public class DrawClass {
         	  }
         	  /* draw hammer by get getting x,y coordinate of previous number to the x,y of the second number*/
         	  hammer( prev_nu.getX(),prev_nu.getY(), next_nu.getX(),next_nu.getY(),FontSize,line_space,cb);		
-           } else if (symbolp_list.get(i).getChar() == 'p') {
+           } else if (symbolp_list.get(i).getSymbol()== "p") {
         	  prev_nu = getNumberPrevious(symbolp_list.get(i),i);
         	  next_nu= getNumberNext(symbolp_list.get(i),i);
         	  if (prev_nu == null || next_nu == null){
@@ -569,14 +619,14 @@ public class DrawClass {
         	   }
         	  /* draw pull by get getting x,y coordinate of previous number to the x,y of the second number*/		
         	  pull( prev_nu.getX(),prev_nu.getY(), next_nu.getX(),next_nu.getY(),FontSize,line_space,cb);	
-           } else if (symbolp_list.get(i).getChar() == 's') {
+           } else if (symbolp_list.get(i).getSymbol() == "s") {
         	   prev_nu = getNumberPrevious(symbolp_list.get(i),i);
         	   next_nu= getNumberNext(symbolp_list.get(i),i);
         	   if (prev_nu == null || next_nu == null) {
         		   symbolp_list.remove(i);
         		   continue;
         	   }			
-        	   if (prev_nu.getChar() > next_nu.getChar())
+        	   if (Integer.parseInt(prev_nu.getSymbol()) > Integer.parseInt(next_nu.getSymbol()))
         		   /* draw slide down*/
         		   slide(symbolp_list.get(i).getX()+line_space/2f,symbolp_list.get(i).getY(),-1,(FontSize-2),(line_space-1), cb);			
         	  else 
@@ -605,7 +655,7 @@ public class DrawClass {
   private SymbolPoint getNumberPrevious(SymbolPoint sp , int index) {  
       
 	  for (int i =index ; i >= 0; i--)   
-    	  if (sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h' &&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' )
+    	  if (sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getSymbol() != "h" &&  symbolp_list.get(i).getSymbol() != "p" &&symbolp_list.get(i).getSymbol() != "s" )
     		   return symbolp_list.get(i);	 		
       return null;
   }
@@ -619,7 +669,7 @@ public class DrawClass {
   private SymbolPoint getNumberNext(SymbolPoint sp , int index) {	
  	  
 	  for (int i =index ; i < symbolp_list.size(); i++) 
- 		   if(sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getChar() != 'h'&&  symbolp_list.get(i).getChar() != 'p' &&symbolp_list.get(i).getChar() != 's' )
+ 		   if(sp.getLineNumber() ==symbolp_list.get(i).getLineNumber() && symbolp_list.get(i).getSymbol() != "h" &&  symbolp_list.get(i).getSymbol() != "p" &&symbolp_list.get(i).getSymbol() != "s")
  				return symbolp_list.get(i);	
  	  return null;
   }

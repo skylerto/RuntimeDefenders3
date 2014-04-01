@@ -135,6 +135,7 @@ public class TextToPDF {
 				
 				boolean enable_repeat = false;
 				sp = new MusicNoteProcess(dynamic_array.get(i));
+				
 				if (staff.getMeasureRepeat(i) > 1) {
 					enable_repeat = true;
 				}
@@ -187,7 +188,9 @@ public class TextToPDF {
 							draw.InsertText("Repeat "+staff.getMeasureRepeat(i)+" times", currX-55f, currY+this.getStaffSize()*.8f, this.getStaffSize(), cb);
 					}
 				}
+				draw = new DrawClass();
 			}
+			
 			draw.DrawMarginMusicLines(new MusicNoteProcess(dynamic_array.get(dynamic_array.size() - 1))
 							.getSymbolsList(), currX, currY, writer.getPageSize().getWidth(), this.getStaffSize(), cb);
 			currX = currX+ draw.getMusicNotelength(sp.getSymbolsList(),this.getStaffSize());
@@ -526,7 +529,7 @@ public class TextToPDF {
 
 		
 		TextToPDF conversion = new TextToPDF
-				("outputfiles/musicPDF.pdf", "inputfiles/case2.txt");
+				("outputfiles/musicPDF.pdf", "inputfiles/try.txt");
 		//conversion.updateLeftMargin(100f);
 		conversion.WriteToPDF();
 		System.out.println(conversion.getProperties().toString());

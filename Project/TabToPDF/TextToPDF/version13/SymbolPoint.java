@@ -1,11 +1,13 @@
 package version13;
 
 /**
- * An object used for the HPStack class. It is a character with an (x,y) coordinate
- * that stores the position of symbols in the tab staff for writing to the PDF
- * output file. Valid symbols are typically only 1 letter unless it's a double digit.
+ * This class will be used to help draw arcs of special symbols like pulls,
+ * hammer, slides by storing the integers and it coordinate values , line number.
+ * It also will be used to paint integers and diamond after music note is drawn
+ * to avoid lines passing through them when line_spacing is small
  * 
  * @author Ron
+ * @author saad
  *
  */
 public class SymbolPoint {
@@ -16,44 +18,20 @@ public class SymbolPoint {
 	private float x;
 	private float y;
 	private int line_number;
-	private boolean doubledigit;
 	
 	/**
 	 * Creates a SymbolPoint object that takes a character and a coordinate in the
 	 * PDF file.
 	 * 
-	 * @param c	the character
+	 * @param str	the character or number
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 */
-	public SymbolPoint(char c, float x, float y , int line_number) {
-		this.setSymbol(c);
+	public SymbolPoint(String str, float x, float y , int line_number) {
+		this.setSymbol(str);
 		this.setX(x);
 		this.setY(y);
 		this.setLine_number(line_number);
-		this.doubledigit = false;
-	}
-	
-	/**
-	 * Creates a SymbolPoint object that can be a double digit integer.
-	 * 
-	 * @param i the integer
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 */
-	public SymbolPoint(int i, float x, float y,int line_number ) {
-		this.setSymbol(i);
-		this.setX(x);
-		this.setY(y);
-		this.setLine_number(line_number);
-	}
-	
-	/**
-	 * Checks whether the symbol is a double digit or not.
-	 * @return
-	 */
-	public boolean isDoubleDigit() {
-		return this.doubledigit;
 	}
 	
 	/**
@@ -65,14 +43,13 @@ public class SymbolPoint {
 	}
 	
 	/**
-	 * Sets the symbol to the integer.
-	 * If the symbol is a double digit then a flag is set.
-	 * @param i
+	 * Sets the symbol to the Symbol.
+	 * 
+	 * @param Symbol
 	 */
-	public void setSymbol(int i) {
-		this.symbol = String.valueOf(i);
-		if (i > 9) this.doubledigit = true;
-		else this.doubledigit = false;
+	public void setSymbol(String Symbol) {
+		this.symbol = Symbol;
+		
 	}
 	
 	/**
@@ -108,14 +85,6 @@ public class SymbolPoint {
 	}
 	
 	/**
-	 * Gets the first character of the symbol string.
-	 * @return
-	 */
-	public char getChar() {
-		return this.symbol.charAt(0);
-	}
-	
-	/**
 	 * Gets the x-coordinate.
 	 * @return
 	 */
@@ -139,6 +108,6 @@ public class SymbolPoint {
 	}
 	
 	public void Print() {
-		System.out.printf("(char is %c, x is %f,y is %f,current line is %d)\n",getChar(),getX(),getY(),getLineNumber());
+		System.out.printf("(char is %c, x is %f,y is %f,current line is %d)\n",getSymbol(),getX(),getY(),getLineNumber());
 	}
 }
