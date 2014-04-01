@@ -49,6 +49,32 @@ public class TextToPDFTest {
 
 		
 	}
+	
+	@Test (expected = NoMusicException.class)
+	public void  test_WriteToPDF_exceptio2() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/case01.txt";
+		tp1 = new TextToPDF(a,b);
+	}
+	
+	@Test(expected = LargeNumberException.class)
+	public void test_Constructor_case13() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+		String a = "";
+		String b = "inputfiles/case13.txt";
+		tp1 = new TextToPDF(a,b);	
+		PDFProperties properties = new PDFProperties();
+		properties.extractProperties(new File(b));
+		SplitStack stack = new SplitStack();
+		TabStaff ts = new TabStaff();
+		ts.scanFile(new File(b));
+		
+		assertEquals(b,tp1.getInputPath()); 
+		assertEquals(a,tp1.getOutputPath()); 
+        assertTrue(properties.equals(tp1.getProperties()));
+		assertEquals(properties.getElementSize(),tp1.getStaffSize());
+
+		
+	}
 
 	@Test
 	public void test_Constructor_case1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
@@ -107,7 +133,15 @@ public class TextToPDFTest {
 		
 	}
 	
-	@Test
+	@Test (expected = CannotReadFileException.class)
+	public void  test_WriteToPDF_exception() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/";
+		tp1 = new TextToPDF(a,b);
+		tp1.WriteToPDF();
+	}
+	
+    @Test
 	public void  test_WriteToPDF_case1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
