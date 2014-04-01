@@ -11,6 +11,7 @@ import version13.ConversionException;
 import version13.EmptyFileException;
 import version13.NoFileExistsException;
 import version13.NoMusicException;
+import version13.TextToPDF;
 
 import com.itextpdf.text.Rectangle;
 
@@ -96,7 +97,7 @@ public class ModelTest {
 		assertEquals((int)4, (int)alpha.getSpacing());
 			
 	}
-	
+
 
 	
 
