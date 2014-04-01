@@ -36,8 +36,8 @@ public class IMGCreate {
 			PDFPage page = pdf.getPage(0);
 
 			// image dimensions
-			int width = (int) model.getPageSize().getWidth() * 2;
-			int height = (int) model.getPageSize().getHeight() * 2;
+			int width = (int) model.getPageSize().getWidth() * 3;
+			int height = (int) model.getPageSize().getHeight() * 3;
 
 			// create the image
 			Rectangle rect = new Rectangle(0, 0, (int) page.getBBox()
