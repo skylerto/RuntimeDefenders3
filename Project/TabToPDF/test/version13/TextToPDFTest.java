@@ -51,7 +51,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test (expected = NoMusicException.class)
-	public void  test_WriteToPDF_exceptio2() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_Constructor_case01() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case01.txt";
 		tp1 = new TextToPDF(a,b);
@@ -458,6 +458,15 @@ public class TextToPDFTest {
 		tp1 = new TextToPDF(a,b);
 		tp1.setOutputPath("lol");
 		assertEquals("lol",tp1.getOutputPath());
+		
+	}
+	
+	@Test
+	 public void test_restore() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/case1.txt";
+		tp1 = new TextToPDF(a,b);
+		assertFalse(tp1.restoreStaff());
 		
 	}
 	
