@@ -14,60 +14,44 @@ public class SymbolPointTest {
 
 	@Before
 	public void setUp() throws Exception {
-		s1 = new SymbolPoint('*',3.8f,2.1f,4);
-		s2 = new SymbolPoint(4,3.8f,2.1f,4);
-		s3 = new SymbolPoint(42,3.8f,2.1f,4);
-		//s4 = new SymbolPoint(s1);
+		s1 = new SymbolPoint("*",3.8f,2.1f,4);
+		s2 = new SymbolPoint("4",3.8f,2.1f,4);
+		s3 = new SymbolPoint("42",3.8f,2.1f,4);
+		
 	}
 
 	@Test
-	public void test_CharConstructor() {
+	public void test_Case1_Constructor() {
 		assertEquals("*",s1.getSymbol());
 		assertEquals((int)3.8f,(int)s1.getX());
 		assertEquals((int)2.1f,(int)s1.getY());
 		assertEquals((int)4,(int)s1.getLineNumber());
-		assertFalse(s1.isDoubleDigit());
+		
 	}
 	
 	@Test
-	public void test_IntConstructor() {
+	public void test_case2_Constructor() {
 		assertEquals("4",s2.getSymbol());
 		assertEquals((int)3.8f,(int)s2.getX());
 		assertEquals((int)2.1f,(int)s2.getY());
 		assertEquals((int)4,(int)s2.getLineNumber());
-		assertFalse(s2.isDoubleDigit());
 		assertEquals("42",s3.getSymbol());
 		assertEquals((int)3.8f,(int)s3.getX());
 		assertEquals((int)2.1f,(int)s3.getY());
 		assertEquals((int)4,(int)s3.getLineNumber());
-		assertTrue(s3.isDoubleDigit());
-	}
-	
-/*	@Test
-	public void test_CopyConstructor() {
-		assertEquals(s1.getSymbol(),s4.getSymbol());
-		assertEquals((int)s1.getX(),(int)s4.getX());
-		assertEquals((int)s1.getY(),(int)s4.getY());
-		assertEquals(s1.isDoubleDigit(),s4.isDoubleDigit());
 		
-	}*/
-	
-	@Test
-	public void test_isDoubleDigit() {
-		assertTrue(s3.isDoubleDigit());
-		assertFalse(s1.isDoubleDigit());
 	}
 	
+
 	@Test
 	public void test_setSymbol() {
 		s1.setSymbol('^'); //set symbol char version
 		assertEquals("^",s1.getSymbol());
-		s1.setSymbol(50);//set int version double digit
+		s1.setSymbol("50");//set int version double digit
 		assertEquals("50",s1.getSymbol()); 
-		assertTrue(s1.isDoubleDigit()); //checking the flag
-		s1.setSymbol(9);//set int version single digit
+	    s1.setSymbol('9');//set int version single digit
 		assertEquals("9",s1.getSymbol()); 
-		assertFalse(s1.isDoubleDigit()); //checking the flag
+	
 		
 	}
 	
@@ -91,8 +75,8 @@ public class SymbolPointTest {
 	}
 	
 	@Test
-	public void test_getChar() {
-		assertEquals('4',s3.getChar());
+	public void test_getSymbol() {
+		assertEquals("42",s3.getSymbol());
 	}
 	
 	@Test
