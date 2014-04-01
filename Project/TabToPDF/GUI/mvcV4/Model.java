@@ -14,6 +14,8 @@ public class Model
 
 	/* ATTRIBUTES */
 
+	public static String globaloutpath = ".";
+	
 	protected TextToPDF converter;
 
 	protected String filename;

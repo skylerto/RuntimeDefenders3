@@ -256,7 +256,7 @@ public class EmailerInterface extends JFrame{
 				JFileChooser chooseFile = new JFileChooser();
 				// saad code
 				// set the directory to current directory.
-				chooseFile.setCurrentDirectory(inputfile);
+				chooseFile.setCurrentDirectory(new File(Model.globaloutpath));
 				// only see pdf document format
 				FileTypeFilter pdf_filter = new FileTypeFilter("Portable Document Format *.pdf", new String[]{ ".pdf" });
 				chooseFile.addChoosableFileFilter(pdf_filter);
@@ -268,8 +268,7 @@ public class EmailerInterface extends JFrame{
 				panelBrowse.add(chooseFile, c);
 				int checker = chooseFile.showOpenDialog(null);
 				if(checker == JFileChooser.APPROVE_OPTION){
-					// after choosing the document , the direcotry will be stored in input file
-					inputfile = chooseFile.getCurrentDirectory();
+					// after choosing the document , the direcotry will be stored in input file;
 					browsePath.setText(chooseFile.getSelectedFile().toString());
 					frameBrowse.setVisible(false);
 					frameBrowse.dispose();
