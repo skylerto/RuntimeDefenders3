@@ -307,7 +307,7 @@ public class DrawClass {
     			   total+=(line_space*list.get(i).getValue());
     			   break;
     		   case OneBar_begin: case OneBar_end: case OneBar_begin_lastline: case OneBar_end_lastline:
-    			   total+=(5*0.5f);
+    			   total+=(line_space*0.5f);
     			   break;
     		   case Two_Bar_begin :case Two_Bar_begin_lastline: 
     			   total+=(10);
@@ -354,11 +354,11 @@ public class DrawClass {
 			  DrawDiamond(num_list.get(i).getX()+(line_space*0.2f), num_list.get(i).getY(), (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
 		  else {
 			  if (Integer.parseInt(num_list.get(i).getSymbol())<10) { 
-				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+(FontSize/1.8f),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
+				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+(FontSize/1.7f),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
 				  InsertText(num_list.get(i).getSymbol(), num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
 			  } else {
 				 
-				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+FontSize/2.1f+FontSize/1.8f,num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
+				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+FontSize/2.1f+FontSize/1.7f,num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
 				  InsertText(num_list.get(i).getSymbol().charAt(0)+"", num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
 				  InsertText(num_list.get(i).getSymbol().charAt(1)+"", num_list.get(i).getX()+(FontSize/2.1f), num_list.get(i).getY(), FontSize, cb);
 				  
@@ -393,20 +393,20 @@ public class DrawClass {
         		
         		case OneBar_begin:
         			drawLine(x,y,x,y-(FontSize*0.9f),0.5f,0, cb); // draw vertical line that has length of  dependent on fontsize
-        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);// draw horizontal  line that has length line dependsnce on line space 
-        			x+=(5*0.5f); // move and update my x-coordinate
+        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);// draw horizontal  line that has length line dependsnce on line space 
+        			x+=(line_space*0.5f); // move and update my x-coordinate
         			break;
         		case OneBar_end:
         			/*draw line between last music symbol detected and vertical line at the end*/
-        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);
-        			x+=(5*0.5f);// move and update my x-coordinate
+        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);
+        			x+=(line_space*0.5f);// move and update my x-coordinate
         			drawLine(x,y,x,y-(FontSize*0.9f),0.5f,0, cb);// draw vertical line that has length of  dependent on fontsize
         			break;
         		case OneBar_begin_lastline: case OneBar_end_lastline :
         			/* don't draw vertical line for the last lines of the music note.
         			 * but draw line between last music symbol detected and vertical line at the end */
-        			drawLine(x,y,x+(5*0.5f),y,0.5f,0, cb);
-        			x+=(5*0.5f);// move and update my x-coordinate
+        			drawLine(x,y,x+(line_space*0.5f),y,0.5f,0, cb);
+        			x+=(line_space*0.5f);// move and update my x-coordinate
         			break;
         		case Two_Bar_begin :
         			switch (same_line) { // if there was music note before this music note on same line

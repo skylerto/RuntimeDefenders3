@@ -51,7 +51,7 @@ public class IMGCreator {
 			PDPage page = (PDPage) document.getDocumentCatalog().getAllPages()
 					.get(0);
 			BufferedImage image = page.convertToImage(
-					BufferedImage.TYPE_INT_RGB, 400);
+					BufferedImage.TYPE_INT_RGB, 180);
 			ImageIO.write(image, "png", outputfile);
 
 			// Make the call
