@@ -665,7 +665,7 @@ public class TabStaff {
 	public boolean splitLongMeasures(int maxlength) {
 		List<TabMeasure> newstaff = new ArrayList<TabMeasure>();	// The new staff with the split measures
 		
-		//maxlength = maxlength - 4;
+		maxlength = maxlength - 3;
 		boolean wassplit = false;
 		/* For each measure in the staff, split it if it's longer than maxlength */
 		for (int i = 0; i < this.size(); i++) {

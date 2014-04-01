@@ -273,7 +273,7 @@ public class TextToPDF {
 	 */
 	public void splitStaff() throws ConversionException {
 		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
-		int maxchars = (int) (innerwidth/this.getSpacing()) - 4;
+		int maxchars = (int) (innerwidth/this.getSpacing());
 		SplitMarker mark = new SplitMarker(this.staff, maxchars);	// Remember current staff
 		//System.out.println("marking " + maxchars);
 		if (this.staff.splitLongMeasures(maxchars)) {
@@ -291,7 +291,7 @@ public class TextToPDF {
 	 */
 	public boolean restoreStaff() throws ConversionException {
 		float innerwidth = this.getPageSize().getWidth() - this.getLeftMargin() - this.getRightMargin();
-		int maxchars = (int) (innerwidth/this.getSpacing()) - 4;
+		int maxchars = (int) (innerwidth/this.getSpacing());
 		boolean restored = false;
 		if (this.splitstack.size != 0) {
 			int size = this.splitstack.size;
