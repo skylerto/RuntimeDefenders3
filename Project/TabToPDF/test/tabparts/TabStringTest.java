@@ -51,7 +51,7 @@ public class TabStringTest {
 
 		violet = new LogAttributes(5, "hello world", true);
 		tab30 = new TabString(violet);
-		// System.out.println(tab30.toString());
+
 
 		s = "1 2 4 4 5 a";
 		tab20 = new TabString(s);
