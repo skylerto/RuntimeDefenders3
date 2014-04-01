@@ -302,6 +302,12 @@ public class EmailerInterface extends JFrame{
 			}
 		}
 		
+		public class cancelButton2 implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				contactsFrame.dispose();
+			}
+		}
+		
 		public class openContacts implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				if(emailsToSendTo.toString().substring(1, emailsToSendTo.toString().length() - 1).equals(emailToSendTo.getText())){
@@ -350,6 +356,7 @@ public class EmailerInterface extends JFrame{
 				JButton cancelButton = new JButton("Cancel");
 				c.gridx = 0;
 				c.gridy = usersAddressBook.size()+1;
+				cancelButton.addActionListener(new cancelButton2());
 				contactsPanel.add(cancelButton, c);
 				
 				JButton saveButton = new JButton("Save");
