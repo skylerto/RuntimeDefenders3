@@ -496,9 +496,13 @@ public class TextToPDFTest {
 	@Test
 	 public void test_restore() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
-		String b = "inputfiles/case1.txt";
+		String b = "inputfiles/case11.txt";
 		tp1 = new TextToPDF(a,b);
 		assertFalse(tp1.restoreStaff());
+		
+		
+		
+		
 		
 	}
 	

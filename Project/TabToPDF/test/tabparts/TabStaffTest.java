@@ -59,6 +59,15 @@ public class TabStaffTest {
 		}
 
 	}
+	
+	@Test(expected = ArrayIndexOutOfBoundsException.class)
+	public void testScanFile_case0() throws Exception {
+
+		File f = new File(
+				"inputfiles/case0.txt");
+		tabs1.scanFile(f);
+		
+ }
 
 	@Test
 	public void testScanFile_case1() throws Exception {
@@ -119,6 +128,15 @@ public class TabStaffTest {
 		String j = tabs1.getList().toString();
 		assertTrue(h.equals(j));
 
+	}
+	
+	@Test(expected = LargeNumberException.class)
+	public void testScanFile_case6() throws Exception {
+
+		File f = new File(
+				"inputfiles/case6.txt");
+		tabs1.scanFile(f);
+		
 	}
 	
 	@Test
