@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,32 @@ public class TextToPDFTest {
 	public void test_Constructor_case0() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
 		String a = "";
 		String b = "inputfiles/case0.txt";
+		tp1 = new TextToPDF(a,b);	
+		PDFProperties properties = new PDFProperties();
+		properties.extractProperties(new File(b));
+		SplitStack stack = new SplitStack();
+		TabStaff ts = new TabStaff();
+		ts.scanFile(new File(b));
+		
+		assertEquals(b,tp1.getInputPath()); 
+		assertEquals(a,tp1.getOutputPath()); 
+        assertTrue(properties.equals(tp1.getProperties()));
+		assertEquals(properties.getElementSize(),tp1.getStaffSize());
+
+		
+	}
+	
+	@Test (expected = NoMusicException.class)
+	public void  test_WriteToPDF_exceptio2() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/case01.txt";
+		tp1 = new TextToPDF(a,b);
+	}
+	
+	@Test(expected = LargeNumberException.class)
+	public void test_Constructor_case13() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+		String a = "";
+		String b = "inputfiles/case13.txt";
 		tp1 = new TextToPDF(a,b);	
 		PDFProperties properties = new PDFProperties();
 		properties.extractProperties(new File(b));
@@ -106,17 +133,36 @@ public class TextToPDFTest {
 		
 	}
 	
-	@Test
+	@Test (expected = CannotReadFileException.class)
+	public void  test_WriteToPDF_exception() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/";
+		tp1 = new TextToPDF(a,b);
+		tp1.WriteToPDF();
+	}
+	
+    @Test
 	public void  test_WriteToPDF_case1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case1.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
+		
 	}
 	
 	@Test
@@ -124,10 +170,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case2.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case2.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -137,10 +193,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case3.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case3.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -150,10 +216,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case4.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case4.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -163,10 +239,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case5.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case5.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -176,10 +262,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case10.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case10.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -189,10 +285,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case11.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+	
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case11.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -202,10 +308,20 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case12.txt";
 		tp1 = new TextToPDF(a,b);
-		tp1.WriteToPDF();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		tp1.WriteToPDF();;
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/case12.txt to PDF: outputfiles/musicPDF.pdf";
+		
 		File f = new File("outputfiles/autofixlog.txt");
 		
-		if (f != null){
+		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
 	}
@@ -215,16 +331,9 @@ public class TextToPDFTest {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case100.txt";
 		tp1 = new TextToPDF(a,b);
-		//tp1.checkInputErrors();
+		
 	}
 	
-	/*@Test (expected = NoMusicException.class)
-	public void checkerrorException2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
-		String a = TextToPDF.DEFAULT_OUTPUTPATH;
-		String b = "inputfildes/case0.txt";
-		tp1 = new TextToPDF(a,b);
-		//tp1.checkInputErrors();
-	}*/
 	
 	@Test
 	public void test_updateTitle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
