@@ -492,7 +492,7 @@ public class View
 		panel.add(staffSpacing, c);
 
 		// Measure Element size.
-		JLabel measureElementLabel = new JLabel("Staff Size: ");
+		JLabel measureElementLabel = new JLabel("Symbol Size: ");
 		measureElementLabel.setFont(labelFont);
 		c.gridx = 0;
 		c.gridy = 3;
