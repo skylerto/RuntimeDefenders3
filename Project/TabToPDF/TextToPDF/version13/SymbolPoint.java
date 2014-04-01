@@ -108,6 +108,6 @@ public class SymbolPoint {
 	}
 	
 	public void Print() {
-		System.out.printf("(char is %c, x is %f,y is %f,current line is %d)\n",getSymbol(),getX(),getY(),getLineNumber());
+		System.out.printf("(char is %s, x is %f,y is %f,current line is %d)\n",getSymbol(),getX(),getY(),getLineNumber());
 	}
 }

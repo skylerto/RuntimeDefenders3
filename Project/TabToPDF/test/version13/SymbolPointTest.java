@@ -2,6 +2,15 @@ package version13;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -94,4 +103,22 @@ public class SymbolPointTest {
 		assertEquals((int)4,(int)s2.getLineNumber());
 	}
 	
+	@Test
+	public void test_Print() throws IOException {
+		
+		PrintStream ps = new PrintStream("outputfiles/out1.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		s2.Print();
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out1.txt"));
+		String passed_in = in.nextLine();
+		String result = "(char is 4, x is 3.800000,y is 2.100000,current line is 4)";
+		assertTrue(result.equals(passed_in));
+		
+		
+		
+		
+	}
 }
