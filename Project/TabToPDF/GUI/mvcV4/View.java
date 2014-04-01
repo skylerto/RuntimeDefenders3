@@ -322,7 +322,7 @@ public class View
 				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
 				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
-				printWindow.Scroller2(test);
+				printWindow.createPrinterInterface(test);
 			}
 		});
 

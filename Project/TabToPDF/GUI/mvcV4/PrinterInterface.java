@@ -18,7 +18,7 @@ public class PrinterInterface extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public void Scroller2(final printPDF printerObject) throws HeadlessException {
+	public void createPrinterInterface(final printPDF printerObject) throws HeadlessException {
     	
     	int numOfPrinters = printerObject.getPrinters().size();
     	ArrayList<String> printerName = printerObject.getPrinters();
