@@ -198,7 +198,6 @@ public class userManualInterface extends JFrame{
 	    		scrollAmount = 970;
 	    	}
 	    	informationPanel.removeAll();
-	    	System.out.println(scrollAmount);
 	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
 	        ImageIcon Icon = new ImageIcon("res/userManualImages/gettingStarted1.jpg");
 			File imageFile = new File("res/userManualImages/gettingStarted1.jpg");
