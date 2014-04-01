@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="jars/weblaf-1.25.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="jars/javax.mail.jar"/>
+	<classpathentry kind="lib" path="/cse/home/cse23342/PDFRenderer-0.9.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
