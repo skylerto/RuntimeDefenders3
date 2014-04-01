@@ -110,16 +110,16 @@ public class View {
 	protected static JLabel loadingLabel;
 
 	// ImageIcons
-	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
-	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("/gui_images/SelectButtonPressed.png");
-	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("/gui_images/SelectButtonDisabled.png");
-	protected static ImageIcon SaveButtonIcon = CreateImageIcon("/gui_images/SaveButtonDefault.png");
-	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("/gui_images/SaveButtonPressed.png");
-	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("/gui_images/SaveButtonDisabled.png");
-	protected static ImageIcon CorrectionButtonIcon = CreateImageIcon("/gui_images/CorrectionButtonDefault.png");
-	protected static ImageIcon CorrectionButtonPressedIcon = CreateImageIcon("/gui_images/CorrectionButtonPressed.png");
-	protected static ImageIcon CorrectionButtonDisabledIcon = CreateImageIcon("/gui_images/CorrectionButtonDisabled.png");
-	protected static ImageIcon ErrorIcon = CreateImageIcon("/gui_images/ErrorImage.png");
+	protected static ImageIcon SelectButtonIcon = CreateImageIcon("SelectButtonDefault.png");
+	protected static ImageIcon SelectButtonPressedIcon = CreateImageIcon("SelectButtonPressed.png");
+	protected static ImageIcon SelectButtonDisabledIcon = CreateImageIcon("SelectButtonDisabled.png");
+	protected static ImageIcon SaveButtonIcon = CreateImageIcon("SaveButtonDefault.png");
+	protected static ImageIcon SaveButtonPressedIcon = CreateImageIcon("SaveButtonPressed.png");
+	protected static ImageIcon SaveButtonDisabledIcon = CreateImageIcon("SaveButtonDisabled.png");
+	protected static ImageIcon CorrectionButtonIcon = CreateImageIcon("CorrectionButtonDefault.png");
+	protected static ImageIcon CorrectionButtonPressedIcon = CreateImageIcon("CorrectionButtonPressed.png");
+	protected static ImageIcon CorrectionButtonDisabledIcon = CreateImageIcon("CorrectionButtonDisabled.png");
+	protected static ImageIcon ErrorIcon = CreateImageIcon("ErrorImage.png");
 
 	// Buttons
 	protected static JButton selectButton = CreateButton(SelectButtonIcon,
@@ -280,8 +280,8 @@ public class View {
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
 		iconLabel.setText("");
-		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth() * 2,
-				(int) pageSize.getHeight() * 2));
+		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth() * 3,
+				(int) pageSize.getHeight() * 3));
 		iconLabel.revalidate();
 
 		ImageIcon iconImage2 = new ImageIcon(image);
