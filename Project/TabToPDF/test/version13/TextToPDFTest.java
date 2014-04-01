@@ -163,6 +163,10 @@ public class TextToPDFTest {
 			assertTrue(true);
 		}
 		
+		else{
+			fail();
+		}
+		
 	}
 	
 	@Test
@@ -185,6 +189,10 @@ public class TextToPDFTest {
 		
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
+		}
+		
+		else{
+			fail();
 		}
 	}
 	
@@ -209,6 +217,10 @@ public class TextToPDFTest {
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
+		
+		else{
+			fail();
+		}
 	}
 	
 	@Test
@@ -232,6 +244,10 @@ public class TextToPDFTest {
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
+		
+		else{
+			fail();
+		}
 	}
 	
 	@Test
@@ -243,7 +259,7 @@ public class TextToPDFTest {
 		PrintStream ps = new PrintStream("outputfiles/out2.txt");
 		PrintStream orig = System.out;
 		System.setOut(ps);
-		tp1.WriteToPDF();;
+		tp1.WriteToPDF();
 		System.setOut(orig);
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
@@ -254,6 +270,10 @@ public class TextToPDFTest {
 		
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
+		}
+		
+		else{
+			fail();
 		}
 	}
 	
@@ -278,6 +298,10 @@ public class TextToPDFTest {
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
+		
+		else{
+			fail();
+		}
 	}
 	
 	@Test
@@ -301,6 +325,10 @@ public class TextToPDFTest {
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
 		}
+		
+		else{
+			fail();
+		}
 	}
 	
 	@Test
@@ -323,6 +351,10 @@ public class TextToPDFTest {
 		
 		if (f != null && result.equals(passed_in) == true){
 			assertTrue(true);
+		}
+		
+		else{
+			fail();
 		}
 	}
 	

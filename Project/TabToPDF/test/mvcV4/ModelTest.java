@@ -2,6 +2,12 @@ package mvcV4;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintStream;
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +19,7 @@ import version13.NoFileExistsException;
 import version13.NoMusicException;
 import version13.TextToPDF;
 
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 
 public class ModelTest {
@@ -23,7 +30,7 @@ public class ModelTest {
 	public void setUp() throws Exception {
 		
 		alpha = new Model();
-		bravo = new Model();
+		
 	}
 
 	@Test
@@ -71,6 +78,7 @@ public class ModelTest {
 		assertEquals((int)expect_spacing, (int)alpha.getSpacing());
 			
 	}
+	
 	@Test
 	public void test_SetMethods(){
 		
@@ -95,7 +103,112 @@ public class ModelTest {
 		assertEquals(2, alpha.getSubTitleFontSize());
 		assertEquals(3, alpha.getStaffSize());
 		assertEquals((int)4, (int)alpha.getSpacing());
-			
+		
+		alpha.setOutputFilename("hello.txt");
+		assertEquals("hello.txt",alpha.outputpath);	
+		Rectangle r1 = new Rectangle(PageSize.LETTER); // LEDGER, LEGAL
+		alpha.setPageSize(r1);
+		assertEquals(r1,alpha.getPageSize());
+		Rectangle r2 = new Rectangle(PageSize.LEDGER);
+		alpha.setPageSize(r2);
+		assertEquals(r2,alpha.getPageSize());
+		Rectangle r3 = new Rectangle(PageSize.LEGAL);
+		alpha.setPageSize(r3);
+		assertEquals(r3,alpha.getPageSize());
+		
+		alpha.setLeftMargin(1.5f);
+		assertEquals((int)1.5f,(int)alpha.getLeftMargin());
+		
+		alpha.setRightMargin(3.5f);
+		assertEquals((int)3.5f,(int)alpha.getRightMargin());
+		
+		alpha.setMeasureSpace(5.5f);
+		assertEquals((int)5.5f,(int)alpha.getMeasureSpace());
+	}
+	
+	@Test
+	public void test_initialize_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+		//this tests for getconverterproperties also
+		
+		bravo = new Model("Moonlight Sonata","Daylight Sonata","","fixed","inputfiles/fixed.txt",5,4,2,5.0f);
+		bravo.initializeConverter();
+		TextToPDF expt = new TextToPDF(bravo.getOutputFilename(),"inputfiles/fixed.txt");
+		assertEquals(expt.getOutputPath(),bravo.converter.getOutputPath());
+		assertEquals(expt.getInputPath(),bravo.converter.getInputPath());
+		
+	
+		assertEquals(expt.getProperties().getTitle(),bravo.getTitle());
+		assertEquals(expt.getProperties().getSubtitle(),bravo.getSubTitle());
+		assertEquals(expt.getProperties().getTitleFontSize(),bravo.getTitleFontSize());
+        assertEquals(expt.getProperties().getSubtitleFontSize(),bravo.getSubTitleFontSize());
+        assertEquals((int)expt.getProperties().getSpacing(),(int)bravo.getSpacing());
+        assertEquals(expt.getProperties().getPageSize(),bravo.getPageSize());
+        assertEquals((int)expt.getProperties().getRightMargin(),(int)bravo.getRightMargin());
+        assertEquals((int)expt.getProperties().getLeftMargin(),(int)bravo.getLeftMargin());
+        assertEquals((int)expt.getProperties().getMeasureSpace(),(int)bravo.getMeasureSpace());
+        
+        
+	}
+	
+	@Test
+	public void test_run_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException, FileNotFoundException{
+		bravo = new Model("Moonlight Sonata","Daylight Sonata","","fixed","inputfiles/fixed.txt",5,4,2,5.0f);
+		bravo.initializeConverter();
+		
+		PrintStream ps = new PrintStream("outputfiles/out2.txt");
+		PrintStream orig = System.out;
+		System.setOut(ps);
+		bravo.runConverter();
+		System.setOut(orig);
+		ps.close();
+		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
+		String passed_in = in.nextLine();
+		String result = "Successfully converted the file inputfiles/fixed.txt to PDF: outputfiles/musicPDF.pdf";
+		File f = new File("outputfiles/autofixlog.txt");
+		
+		if (f != null && result.equals(passed_in)){
+			assertTrue(true);
+		}
+		
+		else{
+			fail();
+		}
+		
+	}
+	
+	@Test
+	public void test_convertPagesizeToString() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+		
+		String expt = "";
+		String out = "";
+		out = alpha.convertPageSizeToString(new Rectangle(PageSize.LETTER));
+		expt = View.LETTER;
+		assertTrue(expt.equals(out));
+		out = alpha.convertPageSizeToString(new Rectangle(PageSize.LEDGER));
+		expt = View.LEDGER;
+		assertTrue(expt.equals(out));
+		out = alpha.convertPageSizeToString(new Rectangle(PageSize.LEGAL));
+		expt = View.LEGAL;
+		assertTrue(expt.equals(out));
+		out = alpha.convertPageSizeToString(new Rectangle(PageSize.A0));
+		expt = View.LETTER;
+		assertTrue(expt.equals(out));
+	}
+	
+	@Test
+	public void test_convertPagesizeToRectangle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+		
+		Rectangle out = new Rectangle(0,0);
+		Rectangle expt = new Rectangle(0,0);
+		out = alpha.convertPageSizeToRectangle(View.LETTER);
+		expt = PageSize.LETTER;
+		assertTrue(expt.equals(out));
+		out = alpha.convertPageSizeToRectangle(View.LEDGER);
+		expt = PageSize.LEDGER;
+		assertTrue(expt.equals(out));
+		out = alpha.convertPageSizeToRectangle(View.LEGAL);
+		expt = PageSize.LEGAL;
+		assertTrue(expt.equals(out));
 	}
 
 
