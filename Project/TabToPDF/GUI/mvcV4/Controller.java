@@ -72,7 +72,6 @@ public class Controller
 		this.view.pageSizeListener(new PageSizeListener());
 		this.view.inputPathListener(new InputPathListener());
 		this.view.inputPathFocusListener(new InputPathFocusListener());
-		this.view.MWListener(new MWListener());
 	}
 
 	/**
@@ -120,88 +119,6 @@ public class Controller
 	}
 }
 
-/*
- * class PreviewPaneMListener implements MouseMotionListener { int dX, dY;
- * 
- * @Override public void mouseDragged(MouseEvent e) {
- * View.iconLabel.scrollRectToVisible(View.previewPane.getVisibleRect());
- * View.iconLabel.setLocation(e.getLocationOnScreen().x - dX,
- * e.getLocationOnScreen().y - dY); dX = e.getLocationOnScreen().x -
- * View.iconLabel.getX(); dY = e.getLocationOnScreen().y -
- * View.iconLabel.getY(); }
- * 
- * @Override public void mouseMoved(MouseEvent e) { dX =
- * e.getLocationOnScreen().x - View.iconLabel.getX(); dY =
- * e.getLocationOnScreen().y - View.iconLabel.getY(); } }
- */
-class MWListener implements MouseWheelListener
-{
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e)
-	{
-		Model model = Controller.getModel();
-		int notches = e.getWheelRotation();
-		if (notches < 0 && View.in < 1)
-		{
-			try
-			{
-				BufferedImage before = ImageIO.read(new File(IMGCreator
-						.getLastConverted()));
-				int w = before.getWidth();
-				int h = before.getHeight();
-				BufferedImage after = new BufferedImage(w * 2, h * 2,
-						BufferedImage.TYPE_INT_RGB);
-				Graphics2D g = after.createGraphics();
-				g.setComposite(AlphaComposite.Src);
-				g.drawImage(before, 0, 0, w * 2, h * 2, null);
-				g.dispose();
-				BufferedImage scaled = after;
-
-				View.iconLabel.setPreferredSize(new Dimension((int) scaled
-						.getWidth(), (int) scaled.getHeight()));
-				View.iconLabel.revalidate();
-
-				ImageIcon iconImage2 = new ImageIcon(scaled);
-				iconImage2.getImage().flush();
-				View.iconLabel.setIcon(iconImage2);
-			} catch (IOException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		} else if (notches > 0 && View.out < 1)
-		{
-			try
-			{
-				BufferedImage before = ImageIO.read(new File(IMGCreator
-						.getLastConverted()));
-				int w = before.getWidth();
-				int h = before.getHeight();
-				BufferedImage after = new BufferedImage(w / 2, h / 2,
-						BufferedImage.TYPE_INT_RGB);
-				Graphics2D g = after.createGraphics();
-				g.setComposite(AlphaComposite.Src);
-				g.drawImage(before, 0, 0, w / 2, h / 2, null);
-				g.dispose();
-				BufferedImage scaled = after;
-
-				View.iconLabel.setPreferredSize(new Dimension((int) scaled
-						.getWidth(), (int) scaled.getHeight()));
-				View.iconLabel.revalidate();
-
-				ImageIcon iconImage2 = new ImageIcon(scaled);
-				iconImage2.getImage().flush();
-				View.iconLabel.setIcon(iconImage2);
-			} catch (IOException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-	}
-
-}
 
 /**
  * Updates the preview when the title is edited (when focus is lost).

@@ -14,48 +14,76 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.util.PDFImageWriter;
+import org.jpedal.PdfDecoder;
+import org.jpedal.fonts.FontMappings;
+
+;
 
 /**
- * Image Creator
+ * Sample image creator - converts the first page of a pdf into png NOTE: Code
+ * only for testing basic jpedal functions
+ * 
+ * CHANGE LOG:
+ * 
+ * v0.1: - Turned main method into a static method. - Now communicates with
+ * view, to update the image.
  */
-public class IMGCreator
-{
+public class IMGCreator {
+
+	static int counter = 0;
+
 	private static String lastConverted;
 	Model model;
 
-	public static void createPreview(Model model)
-	{
+	public static void createPreview(Model model) {
 		/* CONSTANTS */
 
 		String INPUT_PDFFILE = model.getOutputFilename();
+		// "outputfiles/"+ model.getFilename().substring(0,
+		// model.getFilename().indexOf('.') - 1)
 
 		File outputfile = new File(model.getOutputFilename().substring(0,
 				model.getOutputFilename().indexOf('.'))
-				+ "1.png");
+				+ ".png"); // Location of
+		// Image
+		// file
+		// System.out.println(INPUT_PDFFILE + " " + outputfile);
 
-		String password = "";
-		String output = model.getOutputFilename().substring(0,
-				model.getOutputFilename().indexOf('.'));
-		String imageType = "png";
-		int pageNumber = 1;
+		/** instance of PdfDecoder to convert PDF into image */
+		PdfDecoder decode_pdf = new PdfDecoder(true);
 
-		PDDocument document = null;
+		/** set mappings for non-embedded fonts to use */
+		FontMappings.setFontReplacements();
 
-		System.out.println(outputfile.getAbsolutePath());
-		try
-		{
-			document = PDDocument.load(new File(INPUT_PDFFILE));
-			// Make the call
-			PDFImageWriter W = new PDFImageWriter();
+		/** open the PDF file - can also be a URL or a byte array */
+		try {
+			decode_pdf.openPdfFile(INPUT_PDFFILE); // Location of PDF file
 
-			W.writeImage(document, imageType, password, pageNumber, pageNumber,
-					output, BufferedImage.TYPE_INT_RGB, 180);
-			document.close();
-		} catch (IOException e)
-		{
+			decode_pdf.setExtractionMode(0, 1f);
+			BufferedImage img = decode_pdf.getPageAsImage(1); // Page to convert
+
+			/* Rescale image */
+			int w = img.getWidth();
+			int h = img.getHeight();
+
+			BufferedImage after = new BufferedImage(w, h,
+					BufferedImage.TYPE_INT_ARGB);
+			AffineTransform at = new AffineTransform();
+			at.scale(1, 1);
+			AffineTransformOp scaleOp = new AffineTransformOp(at,
+					AffineTransformOp.TYPE_BILINEAR);
+			after = scaleOp.filter(img, after);
+
+			try {
+				ImageIO.write(after, "png", outputfile); // Saving the image to
+															// png
+			} catch (IOException exception) {
+			}
+
+			/** close the PDF file */
+			decode_pdf.closePdfFile();
+
+		} catch (org.jpedal.exception.PdfException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -64,13 +92,11 @@ public class IMGCreator
 		setLastConverted(outputfile.toString());
 	}
 
-	public static void setLastConverted(String name)
-	{
+	public static void setLastConverted(String name) {
 		lastConverted = name;
 	}
 
-	public static String getLastConverted()
-	{
+	public static String getLastConverted() {
 		return lastConverted;
 	}
 }

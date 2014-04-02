@@ -31,7 +31,7 @@
 	<classpathentry kind="lib" path="jars/ghost4j-0.5.1.jar"/>
 	<classpathentry kind="lib" path="jars/itext-2.1.7.jar"/>
 	<classpathentry kind="lib" path="jars/jna-3.3.0.jar"/>
-	<classpathentry kind="lib" path="jars/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="jars/xmlgraphics-commons-1.4.jar"/>
+	<classpathentry kind="lib" path="/cse/home/cse23170/jpedal_lgpl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
