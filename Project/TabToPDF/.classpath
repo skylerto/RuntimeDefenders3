@@ -16,13 +16,14 @@
 	<classpathentry kind="lib" path="jars/itextpdf-5.4.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="jars/itextpdf-5.4.5-sources.jar"/>
 	<classpathentry kind="lib" path="jars/itextpdf-5.4.5.jar"/>
-	<classpathentry kind="lib" path="jars/jpedal_lgpl.jar"/>
 	<classpathentry kind="lib" path="jars/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="jars/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jars/slick-util.jar"/>
 	<classpathentry kind="lib" path="jars/weblaf-1.25.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="jars/javax.mail.jar"/>
-	<classpathentry kind="lib" path="/cse/home/cse23342/PDFRenderer-0.9.1.jar"/>
+	<classpathentry kind="lib" path="jars/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="jars/fontbox-1.8.4.jar"/>
+	<classpathentry kind="lib" path="jars/pdfbox-1.8.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
