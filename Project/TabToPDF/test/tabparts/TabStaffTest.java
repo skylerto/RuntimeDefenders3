@@ -172,7 +172,7 @@ public class TabStaffTest {
 	}
 	
 	@Test
-	public void testScanFile_case5() throws Exception {
+	public void testScanFile_Case5() throws Exception {
 
 		File f = new File(
 				"inputfiles/case5.txt");

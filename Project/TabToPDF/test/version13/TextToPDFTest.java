@@ -75,6 +75,23 @@ public class TextToPDFTest {
 
 		
 	}
+	
+	
+	@Test (expected = CannotReadFileException.class)
+	public void  test_Constructor_exception1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/";
+		tp1 = new TextToPDF(a,b);
+		
+	}
+	
+	@Test (expected = NoFileExistsException.class)
+	public void test_constructor_Exception2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+		String a = TextToPDF.DEFAULT_OUTPUTPATH;
+		String b = "inputfiles/case100.txt";
+		tp1 = new TextToPDF(a,b);
+		
+	}
 
 	@Test
 	public void test_Constructor_case1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
@@ -140,6 +157,8 @@ public class TextToPDFTest {
 		tp1 = new TextToPDF(a,b);
 		tp1.WriteToPDF();
 	}
+	
+	
 	
     @Test
 	public void  test_WriteToPDF_case1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
