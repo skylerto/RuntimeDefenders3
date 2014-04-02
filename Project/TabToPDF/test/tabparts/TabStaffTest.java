@@ -96,7 +96,6 @@ public class TabStaffTest {
 				   "||--1-------------||, ||----------------||, ||-------2--------||]]"
 ;
 		String j = tabs1.getList().toString();
-		System.out.println(h);
 		assertTrue(h.equals(j));
  }
 
