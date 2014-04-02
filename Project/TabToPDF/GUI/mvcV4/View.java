@@ -8,14 +8,21 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,7 +59,8 @@ import print.printPDF;
 import tabparts.AutofixLog;
 import version13.TextToPDF;
 
-public class View {
+public class View
+{
 
 	/* CONSTANTS */
 
@@ -200,11 +208,17 @@ public class View {
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
+	static int dX;
+	static int dY;
+	protected static BufferedImage bimg;
+	static int in = 0;
+	static int out = 0;
 
 	/**
 	 * Constructs a new view.
 	 */
-	public View() {
+	public View()
+	{
 		CreateAndShowGUI();
 	}
 
@@ -213,7 +227,8 @@ public class View {
 	 * 
 	 * @param message
 	 */
-	protected static void showError(String message) {
+	protected static void showError(String message)
+	{
 		iconLabel.setText("<html>" + message + "<html>");
 		iconLabel.setFont(labelFont);
 		iconLabel.setForeground(Color.RED);
@@ -221,7 +236,8 @@ public class View {
 		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH, ERROR_HEIGHT));
 	}
 
-	public static void showLoading() {
+	public static void showLoading()
+	{
 		cl.show(statusPanel, "progressPanel");
 	}
 
@@ -231,7 +247,8 @@ public class View {
 	 * 
 	 * @param value
 	 */
-	protected static void setComponentsEnabled(boolean value) {
+	protected static void setComponentsEnabled(boolean value)
+	{
 		printMenuItem.setEnabled(value);
 		saveButton.setEnabled(value);
 		title.setEnabled(value);
@@ -249,7 +266,8 @@ public class View {
 	/**
 	 * Resets the page properties and auto correction panel.
 	 */
-	protected static void resetView() {
+	protected static void resetView()
+	{
 		title.setText("");
 		subtitle.setText("");
 		pageList.setSelectedIndex(0);
@@ -263,7 +281,8 @@ public class View {
 	 * 
 	 * @param image
 	 */
-	protected static void repaintPreview(String image) {
+	protected static void repaintPreview(String image)
+	{
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
 		iconLabel.setIcon(iconImage);
@@ -276,14 +295,23 @@ public class View {
 	 * @param image
 	 * @param pageSize
 	 */
-	protected static void repaintPreview(String image, Rectangle pageSize) {
+	protected static void repaintPreview(String image, String imagePath)
+	{
 		ImageIcon iconImage = new ImageIcon(image);
 		iconImage.getImage().flush();
 		iconLabel.setText("");
-		iconLabel.setPreferredSize(new Dimension((int) pageSize.getWidth() * 3,
-				(int) pageSize.getHeight() * 3));
-		iconLabel.revalidate();
 
+		try
+		{
+			bimg = ImageIO.read(new File(imagePath));
+			iconLabel.setPreferredSize(new Dimension((int) bimg.getWidth(),
+					(int) bimg.getHeight()));
+			iconLabel.revalidate();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ImageIcon iconImage2 = new ImageIcon(image);
 		iconImage2.getImage().flush();
 		iconLabel.setIcon(iconImage2);
@@ -294,7 +322,8 @@ public class View {
 	 * 
 	 * @return the menu bar
 	 */
-	public static JMenuBar createMenuBar() {
+	public static JMenuBar createMenuBar()
+	{
 		JMenuBar menuBar = new JMenuBar();
 		FlowLayout layout = new FlowLayout();
 		layout.setAlignment(FlowLayout.LEFT);
@@ -304,9 +333,11 @@ public class View {
 		printMenuItem = new JMenuItem("Print");
 		JMenu printSize = new JMenu("Print");
 		printMenuItem.setPreferredSize(printSize.getPreferredSize());
-		printMenuItem.addActionListener(new ActionListener() {
+		printMenuItem.addActionListener(new ActionListener()
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				// logString += "Opening Printer Interface...\n";
 				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
@@ -319,9 +350,11 @@ public class View {
 		JMenuItem emailMenuItem = new JMenuItem("Email");
 		JMenu emailSize = new JMenu("Email");
 		emailMenuItem.setPreferredSize(emailSize.getPreferredSize());
-		emailMenuItem.addActionListener(new ActionListener() {
+		emailMenuItem.addActionListener(new ActionListener()
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				EmailerInterface emailerInterfaceView = new EmailerInterface();
 			}
 		});
@@ -330,9 +363,11 @@ public class View {
 		JMenuItem helpMenuItem = new JMenuItem("User Manual");
 		JMenu helpSize = new JMenu("User Manual");
 		helpMenuItem.setPreferredSize(helpSize.getPreferredSize());
-		helpMenuItem.addActionListener(new ActionListener() {
+		helpMenuItem.addActionListener(new ActionListener()
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				userManualInterface umUI = new userManualInterface();
 			}
 		});
@@ -347,7 +382,8 @@ public class View {
 	/**
 	 * Creates the auto correction JDialog.
 	 */
-	protected static void buildCorrectionLogDialog() {
+	protected static void buildCorrectionLogDialog()
+	{
 		// Sets parent frame and dimensions
 		correctionLogDialog = new JDialog(frame, "Auto Correction Log");
 		correctionLogDialog.setPreferredSize(new Dimension(CORRLOG_WIDTH,
@@ -370,7 +406,8 @@ public class View {
 	 * 
 	 * @return the button panel
 	 */
-	protected static JPanel buttonPanel() {
+	protected static JPanel buttonPanel()
+	{
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
@@ -399,7 +436,8 @@ public class View {
 	 * @param minorTickSpace
 	 */
 	private static void setSliderTicks(JSlider slider, int majorTickSpace,
-			int minorTickSpace) {
+			int minorTickSpace)
+	{
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
 		slider.setMajorTickSpacing(majorTickSpace);
@@ -411,7 +449,8 @@ public class View {
 	 * 
 	 * @return the page properties panel
 	 */
-	private static JPanel pageProperties() {
+	private static JPanel pageProperties()
+	{
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setPreferredSize(new Dimension(PAGEPROP_WIDTH, PAGEPROP_HEIGHT));
@@ -602,7 +641,8 @@ public class View {
 		c.insets = new Insets(0, 5, 10, 0);
 		panel.add(pageSizeLabel, c);
 
-		String[] pageSizes = { LETTER, LEGAL, LEDGER };
+		String[] pageSizes =
+		{ LETTER, LEGAL, LEDGER };
 		pageList = new JComboBox<String>(pageSizes);
 		pageList.setSelectedIndex(0);
 		c.gridx = 1;
@@ -618,7 +658,8 @@ public class View {
 	/**
 	 * Creates the scroll pane for the page properties panel.
 	 */
-	protected static void buildPropertiesScrollPane() {
+	protected static void buildPropertiesScrollPane()
+	{
 		// Initializing and setting size
 		propertiesPane = new JScrollPane(pageProperties());
 		propertiesPane.setPreferredSize(propertiesScroll);
@@ -640,7 +681,8 @@ public class View {
 	 * 
 	 * @return the auto correction panel
 	 */
-	protected static JPanel statusPanel() {
+	protected static JPanel statusPanel()
+	{
 		statusPanel = new JPanel(new CardLayout());
 		statusPanel.setOpaque(false);
 		statusPanel
@@ -691,12 +733,15 @@ public class View {
 	 * 
 	 * @param filename
 	 */
-	protected static void updateCorrection(String filename) {
+	protected static void updateCorrection(String filename)
+	{
 		cl.show(statusPanel, "correctPanel");
-		if (AutofixLog.isEmpty()) {
+		if (AutofixLog.isEmpty())
+		{
 			correctionLabel.setVisible(false);
 			correctionButton.setVisible(false);
-		} else {
+		} else
+		{
 			correctionLabel.setText("Errors were corrected in " + filename);
 			correctionLabel.setVisible(true);
 			correctionButton.setVisible(true);
@@ -710,7 +755,8 @@ public class View {
 	/**
 	 * Adds all the components to the left panel.
 	 */
-	protected static void populateLeftPanel() {
+	protected static void populateLeftPanel()
+	{
 		rightSide.setPreferredSize(new Dimension(LEFTPANEL_WIDTH,
 				LEFTPANEL_HEIGHT));
 
@@ -743,12 +789,14 @@ public class View {
 		c.weighty = 0;
 		c.insets = new Insets(0, 5, 0, 5);
 		leftSide.add(statusPanel(), c);
+
 	}
 
 	/**
 	 * Creates the scroll pane for the preview panel.
 	 */
-	protected static void buildPreviewScrollPane() {
+	protected static void buildPreviewScrollPane()
+	{
 		// Initializing and setting size
 		previewPane = new JScrollPane();
 		previewPane.setPreferredSize(previewScroll);
@@ -757,7 +805,6 @@ public class View {
 
 		// Increasing scrolling speed
 		previewPane.getVerticalScrollBar().setUnitIncrement(10);
-
 		// Removing borders
 		Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		previewPane.setViewportBorder(border);
@@ -765,13 +812,15 @@ public class View {
 
 		// Setting label as ViewportView
 		iconLabel = new JLabel();
+		iconLabel.setAutoscrolls(true);
 		previewPane.setViewportView(iconLabel);
 	}
 
 	/**
 	 * Adds all the components to the right panel.
 	 */
-	protected static void populateRightPanel() {
+	protected static void populateRightPanel()
+	{
 		rightSide.setPreferredSize(new Dimension(RIGHTPANEL_WIDTH,
 				RIGHTPANEL_HEIGHT));
 
@@ -826,7 +875,8 @@ public class View {
 	 * Returns a JButton with the given default, pressed, and disabled icons
 	 */
 	public static JButton CreateButton(ImageIcon defaultIcon,
-			ImageIcon pressedIcon, ImageIcon disabledIcon) {
+			ImageIcon pressedIcon, ImageIcon disabledIcon)
+	{
 		JButton button = new JButton(defaultIcon);
 		button.setPressedIcon(pressedIcon);
 		button.setDisabledIcon(disabledIcon);
@@ -838,11 +888,14 @@ public class View {
 	/**
 	 * Returns an ImageIcon if the path is valid, otherwise null.
 	 */
-	protected static ImageIcon CreateImageIcon(String path) {
+	protected static ImageIcon CreateImageIcon(String path)
+	{
 		java.net.URL imgURL = View.class.getResource(path);
-		if (imgURL != null) {
+		if (imgURL != null)
+		{
 			return new ImageIcon(imgURL);
-		} else {
+		} else
+		{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
@@ -851,16 +904,20 @@ public class View {
 	/**
 	 * Sets the look and feel of the Java application.
 	 */
-	private static void setLookAndFeel() {
-		try {
+	private static void setLookAndFeel()
+	{
+		try
+		{
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception exc) {
+		} catch (Exception exc)
+		{
 
 		}
 	}
 
-	public static void buildProgressBar() {
+	public static void buildProgressBar()
+	{
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(false);
@@ -871,7 +928,8 @@ public class View {
 	/**
 	 * Creates and shows the GUI
 	 */
-	public static void CreateAndShowGUI() {
+	public static void CreateAndShowGUI()
+	{
 		setLookAndFeel();
 		frame = new JFrame("Convert Tab to PDF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -901,80 +959,105 @@ public class View {
 		frame.setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args)
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
 				CreateAndShowGUI();
 			}
 		});
 	}
 
-	void addSaveButtonListener(ActionListener listenForSaveButton) {
+	void addSaveButtonListener(ActionListener listenForSaveButton)
+	{
 		saveButton.addActionListener(listenForSaveButton);
 	}
 
-	void addSelectButtonListener(ActionListener listenForSelectButton) {
+	void addSelectButtonListener(ActionListener listenForSelectButton)
+	{
 		selectButton.addActionListener(listenForSelectButton);
 	}
 
-	void addCorrectionButtonListener(ActionListener listenForSelectButton) {
+	void addCorrectionButtonListener(ActionListener listenForSelectButton)
+	{
 		correctionButton.addActionListener(listenForSelectButton);
 	}
 
-	void titleListener(ActionListener titleListener) {
+	void titleListener(ActionListener titleListener)
+	{
 		title.addActionListener(titleListener);
 	}
 
-	void titleFocusListener(FocusListener titleFocusListener) {
+	void titleFocusListener(FocusListener titleFocusListener)
+	{
 		title.addFocusListener(titleFocusListener);
 	}
 
-	void subtitleListener(ActionListener subtitleListener) {
+	void subtitleListener(ActionListener subtitleListener)
+	{
 		subtitle.addActionListener(subtitleListener);
 	}
 
-	void subtitleFocusListener(FocusListener subtitleFocusListener) {
+	void subtitleFocusListener(FocusListener subtitleFocusListener)
+	{
 		subtitle.addFocusListener(subtitleFocusListener);
 	}
 
-	void measureSpaceListener(ChangeListener measureSpaceListener) {
+	void measureSpaceListener(ChangeListener measureSpaceListener)
+	{
 		measureSpace.addChangeListener(measureSpaceListener);
 	}
 
-	void titleFontSizeListener(ChangeListener titleFontSizeListener) {
+	void titleFontSizeListener(ChangeListener titleFontSizeListener)
+	{
 		titleFontSize.addChangeListener(titleFontSizeListener);
 	}
 
-	void subtitleFontSizeListener(ChangeListener subtitleFontSizeListener) {
+	void subtitleFontSizeListener(ChangeListener subtitleFontSizeListener)
+	{
 		subtitleFontSize.addChangeListener(subtitleFontSizeListener);
 	}
 
-	void leftMarginListener(ChangeListener leftMarginListener) {
+	void leftMarginListener(ChangeListener leftMarginListener)
+	{
 		leftMarginSpace.addChangeListener(leftMarginListener);
 	}
 
-	void rightMarginListener(ChangeListener rightMarginListener) {
+	void rightMarginListener(ChangeListener rightMarginListener)
+	{
 		rightMarginSpace.addChangeListener(rightMarginListener);
 	}
 
-	void spacingListener(ChangeListener spacingListener) {
+	void spacingListener(ChangeListener spacingListener)
+	{
 
 		staffSpacing.addChangeListener(spacingListener);
 	}
 
-	void staffSizeListener(ChangeListener elementSizeListener) {
+	void staffSizeListener(ChangeListener elementSizeListener)
+	{
 		staffSize.addChangeListener(elementSizeListener);
 	}
 
-	void pageSizeListener(ActionListener pageSizeListener) {
+	void pageSizeListener(ActionListener pageSizeListener)
+	{
 		pageList.addActionListener(pageSizeListener);
 	}
 
-	void inputPathListener(ActionListener inputPathListener) {
+	void inputPathListener(ActionListener inputPathListener)
+	{
 		input.addActionListener(inputPathListener);
 	}
 
-	void inputPathFocusListener(FocusListener inputPathFocusListener) {
+	void inputPathFocusListener(FocusListener inputPathFocusListener)
+	{
 		input.addFocusListener(inputPathFocusListener);
+	}
+
+	void MWListener(MouseWheelListener MWListener)
+	{
+		iconLabel.addMouseWheelListener(MWListener);
 	}
 }
