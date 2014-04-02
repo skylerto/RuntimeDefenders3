@@ -42,12 +42,13 @@ public class IMGCreator
 			// load PDF document
 			PDFDocument document = new PDFDocument();
 			document.load(new File(INPUT_PDFFILE));
+
 			// create renderer
 			SimpleRenderer renderer = new SimpleRenderer();
 			// set resolution (in DPI)
-			renderer.setResolution(300);
+			renderer.setResolution(100);
 			// render
-			List<Image> images = renderer.render(document);
+			List<Image> images = renderer.render(document.extract(1, 1));
 			// write images to files to disk as PNG
 			try
 			{
