@@ -52,7 +52,7 @@ public class TabStaffTest {
 			tempm = new TabMeasure(tabs1.getMeasure(i));
 			for (int j = 0; j < 6; j++) {
 				temp = new TabString(tempm.getString(j));
-				for (int k = 0; k < 75; k++) {
+				for (int k = 0; k < 3000; k++) {
 					assertEquals('\0', temp.getChar(k));
 				}
 			}
