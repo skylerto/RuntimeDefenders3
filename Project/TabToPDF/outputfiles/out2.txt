@@ -1,1 +1,1 @@
-Successfully converted the file inputfiles/case1.txt to PDF: outputfiles/musicPDF.pdf
+Successfully converted the file inputfiles/case2.txt to PDF: outputfiles/musicPDF.pdf
