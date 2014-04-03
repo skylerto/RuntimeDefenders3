@@ -27,7 +27,11 @@ public class TextToPDF {
 	private static final float TOPTITLE_MARGIN = 135;
 	private static final float TOP_MARGIN = 42;
 	private static final float BOT_MARGIN = 80;
-	
+	private static final String NOFILE_MSG = "The file doesn't exist! Please choose another file.";
+	private static final String CANNOTREAD_MSG = "The file cannot be read! Please choose another file.";
+	private static final String CANNOTCONVERT_MSG = "The file cannot be converted! Please close the PDF if you are trying to reconvert it.";
+	private static final String EMPTY_MSG = "The file is empty! Please choose another file.";
+	private static final String NOMUSIC_MSG = "The file has no tabulature! Please choose another file.";
 	
 	/* ATTRIBUTES */
 	
@@ -64,15 +68,11 @@ public class TextToPDF {
 		this.properties.extractProperties(new File(this.inputpath));
 		
 		/* Store the tab in a staff and fix errors */
-		try {
-			this.staff.scanFile(new File(this.inputpath));
-		} catch (LargeNumberException e) {
-			throw new LargeNumberException ("Invalid tab in file: " + this.getInputPath() + "\n" + e.getMessage());
-		}
+		this.staff.scanFile(new File(this.inputpath));
 		
 		/* Checks if staff has music */
 		if (this.staff.size() == 0) {
-			throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
+			throw new NoMusicException(NOMUSIC_MSG);
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class TextToPDF {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (DocumentException e) {
-			throw new ConversionException("Error detected creating PDF for file: " + this.getInputPath());
+			throw new ConversionException(CANNOTCONVERT_MSG);
 		}
 		
 		doc.open();
@@ -203,9 +203,9 @@ public class TextToPDF {
 			//System.out.println(this.properties.toString());
 
 		} catch (IOException e) {
-			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
+			throw new ConversionException(CANNOTCONVERT_MSG);
 		} catch (DocumentException e) {
-			throw new ConversionException("Error encountered when creating the PDF file for: " + this.getInputPath());
+			throw new ConversionException(CANNOTCONVERT_MSG);
 		}
 
 	}
@@ -224,24 +224,24 @@ public class TextToPDF {
 		
 		/* Checks input file existence */
 		if (!test.exists())
-			throw new NoFileExistsException("The file: " + this.inputpath + " does not exist!");
+			throw new NoFileExistsException(NOFILE_MSG);
 		
 		/* Checks if input file is readable and is a file */
 		else if (!test.canRead() || !test.isFile())
-			throw new CannotReadFileException("The file: " + this.inputpath + " cannot be read!");
+			throw new CannotReadFileException(CANNOTREAD_MSG);
 		
 		/* Checks if the file is empty */
 		try {
 			stream = new BufferedReader(new FileReader(test));
 			if (stream.readLine() == null) {
 				stream.close();
-				throw new EmptyFileException("The file: " + this.inputpath + " is empty!");
+				throw new EmptyFileException(EMPTY_MSG);
 			}
 			stream.close();
 		} catch (FileNotFoundException e) {
-			throw new NoFileExistsException("The file: " + this.inputpath + " does not exist!");
+			throw new NoFileExistsException(NOFILE_MSG);
 		} catch (IOException e) {
-			throw new CannotReadFileException("The file: " + this.inputpath + " cannot be read!");
+			throw new CannotReadFileException(CANNOTREAD_MSG);
 		}
 		
 		/* Checks if the file has tabulature that can be converted */
@@ -257,12 +257,12 @@ public class TextToPDF {
 			}
 			stream.close();
 			if (!hasmusic) {
-				throw new NoMusicException("The file: " + this.inputpath + " has no detectable tabulature!");
+				throw new NoMusicException(NOMUSIC_MSG);
 			}
 		} catch (FileNotFoundException e) {
-			throw new NoFileExistsException("The file: " + this.inputpath + " does not exist!");
+			throw new NoFileExistsException(NOFILE_MSG);
 		} catch (IOException e) {
-			throw new CannotReadFileException("The file: " + this.inputpath + " cannot be read!");
+			throw new CannotReadFileException(CANNOTREAD_MSG);
 		}
 	}
 
