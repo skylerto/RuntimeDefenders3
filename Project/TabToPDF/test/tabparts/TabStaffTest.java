@@ -96,6 +96,7 @@ public class TabStaffTest {
 				   "||--1-------------||, ||----------------||, ||-------2--------||]]"
 ;
 		String j = tabs1.getList().toString();
+		
 		assertTrue(h.equals(j));
  }
 
@@ -150,6 +151,7 @@ public class TabStaffTest {
 				"|-2-----------------|, |-------------------|]]";
 		String j = tabs1.getList().toString();
 		assertTrue(h.equals(j));
+		
 
 	}
 	
@@ -219,18 +221,11 @@ public class TabStaffTest {
 ;
 		
 		String j = tabs1.getList().toString();
+		
 		assertTrue(h.equals(j));
 
 	}
-	
-	@Test(expected = LargeNumberException.class)
-	public void testScanFile_case6() throws Exception {
 
-		File f = new File(
-				"inputfiles/case6.txt");
-		tabs1.scanFile(f);
-		
-	}
 	
 	@Test
 	public void testAddMeasureAndGetMeasure() throws Exception {

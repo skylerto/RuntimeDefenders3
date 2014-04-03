@@ -3,6 +3,7 @@ package version13;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +71,6 @@ public class PDFPropertiesTest {
 		assertEquals(expt_sub,alpha.getSubtitle());
 		assertEquals((int)5.0,(int)alpha.getSpacing());
 	}
-	
 	@Test
 	public void test_setTitle() {
 		String title = "WOW";

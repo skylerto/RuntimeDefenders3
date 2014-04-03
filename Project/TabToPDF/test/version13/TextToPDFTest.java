@@ -56,27 +56,7 @@ public class TextToPDFTest {
 		String b = "inputfiles/case01.txt";
 		tp1 = new TextToPDF(a,b);
 	}
-	
-	@Test(expected = LargeNumberException.class)
-	public void test_Constructor_case13() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
-		String a = "";
-		String b = "inputfiles/case13.txt";
-		tp1 = new TextToPDF(a,b);	
-		PDFProperties properties = new PDFProperties();
-		properties.extractProperties(new File(b));
-		SplitStack stack = new SplitStack();
-		TabStaff ts = new TabStaff();
-		ts.scanFile(new File(b));
-		
-		assertEquals(b,tp1.getInputPath()); 
-		assertEquals(a,tp1.getOutputPath()); 
-        assertTrue(properties.equals(tp1.getProperties()));
-		assertEquals(properties.getElementSize(),tp1.getStaffSize());
 
-		
-	}
-	
-	
 	@Test (expected = CannotReadFileException.class)
 	public void  test_Constructor_exception1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
@@ -174,7 +154,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case1.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case1.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -202,7 +182,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case2.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case2.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -229,7 +209,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case3.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case3.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -256,7 +236,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case4.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case4.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -283,7 +263,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case5.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case5.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -310,7 +290,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case10.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case10.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -337,7 +317,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case11.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case11.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		
@@ -364,7 +344,7 @@ public class TextToPDFTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/case12.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/case12.txt to PDF: ./musicPDF.pdf";
 		
 		File f = new File("outputfiles/autofixlog.txt");
 		

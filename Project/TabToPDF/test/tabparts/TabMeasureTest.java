@@ -546,42 +546,5 @@ public class TabMeasureTest {
         assertEquals(expect_1, tabm14.toString());
         
     }
-    
-    @Test(expected = LargeNumberException.class)
-    public void testFixMeasureException() throws LargeNumberException{
-    	/*
-    	 * tam15 contains
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 
-    	 * it should throw large number exception because there are 3 consecutive 1's
-    	 */
-    	tabm15.fixMeasure();
-    	System.out.println(tabm15.toString());
-    }
-    
-    /*
-    @Test(expected = LargeNumberException.class)
-    public void testFixStringsException() throws LargeNumberException{
-    	/*
-    	 * tam15 contains
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 111
-    	 * 
-    	 * it should throw large number exception because there are 3 consecutive 1's
-    	 */
-    /*
-    	tabm15.fixStrings();
-    	System.out.println(tabm15.toString());
-    }
-    
-*/
+
 }
