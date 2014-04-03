@@ -27,6 +27,7 @@ public class TextToPDF {
 	private static final float TOPTITLE_MARGIN = 135;
 	private static final float TOP_MARGIN = 42;
 	private static final float BOT_MARGIN = 80;
+	
 	private static final String NOFILE_MSG = "The file doesn't exist! Please choose another file.";
 	private static final String CANNOTREAD_MSG = "The file cannot be read! Please choose another file.";
 	private static final String CANNOTCONVERT_MSG = "The file cannot be converted! Please close the PDF if you are trying to reconvert it.";
