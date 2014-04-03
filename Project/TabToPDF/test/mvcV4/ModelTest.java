@@ -151,7 +151,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void test_run_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException, FileNotFoundException{
+	public void test_run_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, ConversionException, FileNotFoundException, LargeNumberException{
 		bravo = new Model("Moonlight Sonata","Daylight Sonata","","fixed","inputfiles/fixed.txt",5,4,2,5.0f);
 		bravo.initializeConverter();
 		
@@ -163,7 +163,7 @@ public class ModelTest {
 		ps.close();
 		Scanner in = new Scanner(new FileReader("outputfiles/out2.txt"));
 		String passed_in = in.nextLine();
-		String result = "Successfully converted the file inputfiles/fixed.txt to PDF: outputfiles/musicPDF.pdf";
+		String result = "Successfully converted the file inputfiles/fixed.txt to PDF: ./musicPDF.pdf";
 		File f = new File("outputfiles/autofixlog.txt");
 		
 		if (f != null && result.equals(passed_in)){
