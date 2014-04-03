@@ -322,6 +322,7 @@ public class View
 	 * 
 	 * @return the menu bar
 	 */
+	
 	public static JMenuBar createMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -341,7 +342,7 @@ public class View
 				// logString += "Opening Printer Interface...\n";
 				// updateLog();
 				PrinterInterface printWindow = new PrinterInterface();
-				printPDF test = new printPDF("outputfiles/musicPDF.pdf");
+				printPDF test = new printPDF(TextToPDF.DEFAULT_OUTPUTPATH);
 				printWindow.createPrinterInterface(test);
 			}
 		});
@@ -363,15 +364,17 @@ public class View
 		JMenuItem helpMenuItem = new JMenuItem("User Manual");
 		JMenu helpSize = new JMenu("User Manual");
 		helpMenuItem.setPreferredSize(helpSize.getPreferredSize());
-		helpMenuItem.addActionListener(new ActionListener()
-		{
+			helpMenuItem.addActionListener(new ActionListener()
+			{
+				
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				userManualInterface umUI = new userManualInterface();
+							
 			}
-		});
-
+			});
+			
 		menuBar.add(printMenuItem);
 		menuBar.add(emailMenuItem);
 		menuBar.add(helpMenuItem);
