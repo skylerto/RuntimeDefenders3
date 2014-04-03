@@ -127,7 +127,7 @@ public class TabMeasure {
 	 * in the measure then changes the number into a bar or deletes it.
 	 */
 	public void fixMeasure() throws LargeNumberException {
-		this.checkNumberException();
+		//this.checkNumberException();
 		this.fixStrings();
 		this.fixStartBar();
 		this.fixEndBar();

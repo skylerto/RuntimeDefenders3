@@ -5,6 +5,7 @@ package tabparts;
  * @author Ron
  *
  */
+@Deprecated
 public class LargeNumberException extends Exception{
 	
 	public LargeNumberException(){}
