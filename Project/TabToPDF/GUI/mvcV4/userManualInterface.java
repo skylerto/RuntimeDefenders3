@@ -33,7 +33,7 @@ public class userManualInterface extends JFrame{
 	String outputString = "";
 	
 	// A Tree contains nodes that can contain other nodes
-	
+	static boolean is_open = false;
 	JTree theTree;
 	
 	// If a node holds other nodes it is called a parent node
@@ -65,7 +65,7 @@ public class userManualInterface extends JFrame{
 		frame.setSize(700,500);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		
+		this.Close();
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 		
@@ -186,6 +186,7 @@ public class userManualInterface extends JFrame{
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
 	private void gettingStartedClicked(TreeSelectionEvent evt) {
 		String node = evt.getNewLeadSelectionPath().getLastPathComponent().toString();
 	    if( node.equals("Getting Started") || node.equals("Step 1 - Selecting a File") || node.equals("Step 2 - Editing File") || node.equals("Step 3 - Saving File")) {
@@ -492,5 +493,18 @@ public class userManualInterface extends JFrame{
 		return newFile;
 		
 	}
+	
+	public void Close() {
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	is_open = false;
+		    }
+		});
+	}
+	
+	
+	
+	
 }
 

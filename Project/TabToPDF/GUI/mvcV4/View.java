@@ -364,14 +364,19 @@ public class View
 		JMenuItem helpMenuItem = new JMenuItem("User Manual");
 		JMenu helpSize = new JMenu("User Manual");
 		helpMenuItem.setPreferredSize(helpSize.getPreferredSize());
+		
 			helpMenuItem.addActionListener(new ActionListener()
 			{
 				
 			@Override
 			public void actionPerformed(ActionEvent e)
-			{
-				userManualInterface umUI = new userManualInterface();
-							
+			{	
+				if(!userManualInterface.is_open) {
+					userManualInterface umUI = new userManualInterface();
+					userManualInterface.is_open = true;
+					
+				}
+									
 			}
 			});
 			
