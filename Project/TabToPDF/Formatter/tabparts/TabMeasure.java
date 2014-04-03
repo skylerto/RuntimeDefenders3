@@ -236,7 +236,7 @@ public class TabMeasure {
 	public void fixStrings() {
 		if (this.isComment()) return;
 		for (int i = 0; i < this.size(); i++) {
-			this.strings[i].fixErrors();
+			this.strings[i].fixString();
 		}
 	}
 	

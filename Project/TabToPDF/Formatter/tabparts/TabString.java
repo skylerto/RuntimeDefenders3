@@ -379,7 +379,7 @@ public class TabString {
 	 * @return	a message saying what was fixed.
 	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
-	public String fixErrors() {
+	public String fixString() {
 		/* Find what type of error needs to be fixed */
 		int error = this.checkError();
 		boolean b = false;
@@ -420,7 +420,7 @@ public class TabString {
 		/* If the string is empty then make it blank string */
 		} else if (error == ERROR_EMPTY) {
 			this.addChar('-');
-			return this.fixErrors();
+			return this.fixString();
 			
 		/* If the string has no '|' then add both */
 		} else if (error == ERROR_COMMENT) {
