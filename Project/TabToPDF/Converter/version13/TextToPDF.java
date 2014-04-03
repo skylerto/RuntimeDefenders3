@@ -23,7 +23,7 @@ public class TextToPDF {
 	/* CONSTANTS */
 	
 	public static final String DEFAULT_INPUTPATH = "inputfiles/try.txt";
-	public static final String DEFAULT_OUTPUTPATH = "outputfiles/musicPDF.pdf";
+	public static final String DEFAULT_OUTPUTPATH = "./musicPDF.pdf";
 	private static final float TOPTITLE_MARGIN = 135;
 	private static final float TOP_MARGIN = 42;
 	private static final float BOT_MARGIN = 80;

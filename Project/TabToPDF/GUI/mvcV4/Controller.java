@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -502,7 +504,7 @@ class SelectButtonListener implements ActionListener
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					View.cl.show(View.statusPanel, "correctPanel");
-					Controller.displayError(e1.getMessage());
+				    Controller.displayError(e1.getMessage().substring(e1.getMessage().indexOf(":")+1));
 				}
 			}
 		};
@@ -538,7 +540,7 @@ class SaveButtonListener implements ActionListener
 			String outputFilename = chooser.getSelectedFile().toString();
 			if (!outputFilename.matches("(.*)(\\.pdf){1}"))
 				outputFilename += ".pdf";
-			FileUtils.copyFile("./outputfiles/musicPDF.pdf", outputFilename);
+			FileUtils.copyFile(TextToPDF.DEFAULT_OUTPUTPATH, outputFilename);
 			/*
 			 * TextToPDF test; try { test = new TextToPDF(outputFilename,
 			 * input); test.WriteToPDF();
