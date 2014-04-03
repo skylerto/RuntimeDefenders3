@@ -353,11 +353,12 @@ public class DrawClass {
 		  if (num_list.get(i).getSymbol()== "<>")	  
 			  DrawDiamond(num_list.get(i).getX()+(line_space*0.2f), num_list.get(i).getY(), (FontSize/1.3f)-(FontSize*0.5f), FontSize*0.5f, cb);
 		  else {
-			  if (Integer.parseInt(num_list.get(i).getSymbol())<10) { 
+			  if (Integer.parseInt(num_list.get(i).getSymbol())<10) {
+				  /* draw white line */
 				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+(FontSize/1.7f),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
 				  InsertText(num_list.get(i).getSymbol(), num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
 			  } else {
-				 
+				  /* draw white line */
 				  drawLine(num_list.get(i).getX(),num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),num_list.get(i).getX()+FontSize/2.1f+FontSize/1.7f,num_list.get(i).getY()+(1.0f+(FontSize/4.0f)),1.0f,1f, cb);
 				  InsertText(num_list.get(i).getSymbol().charAt(0)+"", num_list.get(i).getX(), num_list.get(i).getY(), FontSize, cb);
 				  InsertText(num_list.get(i).getSymbol().charAt(1)+"", num_list.get(i).getX()+(FontSize/2.1f), num_list.get(i).getY(), FontSize, cb);
