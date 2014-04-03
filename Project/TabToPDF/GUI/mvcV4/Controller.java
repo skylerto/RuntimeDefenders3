@@ -383,7 +383,7 @@ class InputPathListener implements ActionListener
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					View.cl.show(View.statusPanel, "correctPanel");
-					Controller.displayError(e1.getMessage());
+					Controller.displayError(e1.getMessage().substring(e1.getMessage().indexOf(":")+1));
 				}
 			}
 		};
