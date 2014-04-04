@@ -1,12 +1,7 @@
 package mvcV4;
 
-import java.awt.AlphaComposite;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -16,18 +11,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.SwingWorker;
@@ -121,14 +110,11 @@ public class Controller
 	}
 }
 
-
 /**
  * Updates the preview when the title is edited (when focus is lost).
  */
 class TitleFocusListener implements FocusListener
 {
-	Model model = Controller.getModel();
-
 	@Override
 	public void focusGained(FocusEvent e)
 	{
@@ -138,24 +124,55 @@ class TitleFocusListener implements FocusListener
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		try
+		/* If the value didn't change from the current value then do nothing */
+		if (!model.getTitle().equals(View.title.getText()))
 		{
-			/* If the value didn't change from the current value then do nothing */
-			if (!model.getTitle().equals(View.title.getText()))
+			convert();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
+				publish(1);
 				model.setTitle(View.title.getText());
 				model.converter.updateTitle((View.title.getText()));
 				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image);
+				return null;
 			}
 
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -169,25 +186,55 @@ class TitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		try
+		/* If the value didn't change from the current value then do nothing */
+		if (!model.getTitle().equals(View.title.getText()))
 		{
-			/* If the value didn't change from the current value then do nothing */
-			if (!model.getTitle().equals(View.title.getText()))
+			convert();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
+				publish(1);
 				model.setTitle(View.title.getText());
 				model.converter.updateTitle((View.title.getText()));
 				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image);
+				return null;
 			}
 
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -207,25 +254,55 @@ class SubtitleFocusListener implements FocusListener
 	public void focusLost(FocusEvent e)
 	{
 		Model model = Controller.getModel();
-		try
+
+		/* If the value didn't change from the current value then do nothing */
+		if (!model.getSubTitle().equals(View.subtitle.getText()))
 		{
-			/* If the value didn't change from the current value then do nothing */
-			if (!model.getSubTitle().equals(View.subtitle.getText()))
+			convert();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
 				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image);
+				return null;
 			}
 
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -239,25 +316,53 @@ class SubtitleListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Model model = Controller.getModel();
-		try
+		if (!model.getSubTitle().equals(View.subtitle.getText()))
 		{
-			/* If the value didn't change from the current value then do nothing */
-			if (!model.getSubTitle().equals(View.subtitle.getText()))
+			convert();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
 				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image);
+				return null;
 			}
 
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -372,7 +477,6 @@ class InputPathListener implements ActionListener
 					View.leftMarginSpace.setValue((int) model.getLeftMargin());
 					View.rightMarginSpace.setValue((int) model.getLeftMargin());
 					View.pageList.setSelectedIndex(0);
-					View.propertiesPane.getVerticalScrollBar().setValue(0);
 
 					View.updateCorrection(model.getFilename());
 
@@ -383,7 +487,8 @@ class InputPathListener implements ActionListener
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					View.cl.show(View.statusPanel, "correctPanel");
-					Controller.displayError(e1.getMessage().substring(e1.getMessage().indexOf(":")+1));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
 				}
 			}
 		};
@@ -493,7 +598,6 @@ class SelectButtonListener implements ActionListener
 					View.leftMarginSpace.setValue((int) model.getLeftMargin());
 					View.rightMarginSpace.setValue((int) model.getLeftMargin());
 					View.pageList.setSelectedIndex(0);
-					View.propertiesPane.getVerticalScrollBar().setValue(0);
 
 					View.updateCorrection(model.getFilename());
 
@@ -504,7 +608,8 @@ class SelectButtonListener implements ActionListener
 					View.previewPane.setCursor(Cursor
 							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					View.cl.show(View.statusPanel, "correctPanel");
-				    Controller.displayError(e1.getMessage().substring(e1.getMessage().indexOf(":")+1));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
 				}
 			}
 		};
@@ -584,33 +689,63 @@ class SpacingListener implements ChangeListener
 		{
 
 			Model model = Controller.getModel();
-			try
-			{
-				if (model.getSpacing() < View.staffSpacing.getMinimum())
-					model.setSpacing(View.staffSpacing.getMinimum());
-				else if (model.getSpacing() > View.staffSpacing.getMaximum())
-					model.setSpacing(View.staffSpacing.getMaximum());
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getSpacing() != View.staffSpacing.getValue())
-				{
-					model.setSpacing(View.staffSpacing.getValue());
-					model.converter
-							.updateSpacing((View.staffSpacing.getValue()));
-					IMGCreator.createPreview(model);
 
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
+			if (model.getSpacing() < View.staffSpacing.getMinimum())
+				model.setSpacing(View.staffSpacing.getMinimum());
+			else if (model.getSpacing() > View.staffSpacing.getMaximum())
+				model.setSpacing(View.staffSpacing.getMaximum());
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getSpacing() != View.staffSpacing.getValue())
 			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setSpacing(View.staffSpacing.getValue());
+				model.converter.updateSpacing((View.staffSpacing.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -627,32 +762,61 @@ class StaffSizeListener implements ChangeListener
 
 		if (!source.getValueIsAdjusting())
 		{
-
 			Model model = Controller.getModel();
-			try
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getStaffSize() != View.staffSize.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getStaffSize() != View.staffSize.getValue())
 				{
-					model.setStaffSize(View.staffSize.getValue());
-					model.converter.updateElementSize((View.staffSize
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
+					convert();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setStaffSize(View.staffSize.getValue());
+				model.converter.updateElementSize((View.staffSize.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -671,30 +835,60 @@ class MeasureSpaceListener implements ChangeListener
 		{
 
 			Model model = Controller.getModel();
-			try
+
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getMeasureSpace() != View.measureSpace.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getMeasureSpace() != View.measureSpace.getValue())
-				{
-					model.setMeasureSpace(View.measureSpace.getValue());
-					model.converter.updateMeasureSpace((View.measureSpace
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setMeasureSpace(View.measureSpace.getValue());
+				model.converter.updateMeasureSpace((View.measureSpace
+						.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -713,30 +907,60 @@ class TitleFontSizeListener implements ChangeListener
 		{
 
 			Model model = Controller.getModel();
-			try
+
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getTitleFontSize() != View.titleFontSize.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getTitleFontSize() != View.titleFontSize.getValue())
-				{
-					model.setTitleFontSize(View.titleFontSize.getValue());
-					model.converter.updateTitleSize((View.titleFontSize
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setTitleFontSize(View.titleFontSize.getValue());
+				model.converter
+						.updateTitleSize((View.titleFontSize.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -745,41 +969,66 @@ class TitleFontSizeListener implements ChangeListener
  */
 class SubtitleFontSizeListener implements ChangeListener
 {
-
 	public void stateChanged(ChangeEvent e)
 	{
-
 		JSlider source = (JSlider) e.getSource();
 
 		if (!source.getValueIsAdjusting())
 		{
-
 			Model model = Controller.getModel();
-			try
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getSubTitleFontSize() != View.subtitleFontSize.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getSubTitleFontSize() != View.subtitleFontSize
-						.getValue())
-				{
-					model.setSubTitleFontSize(View.subtitleFontSize.getValue());
-					model.converter.updateSubtitleSize((View.subtitleFontSize
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setSubTitleFontSize(View.subtitleFontSize.getValue());
+				model.converter.updateSubtitleSize((View.subtitleFontSize
+						.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -798,30 +1047,60 @@ class LeftMarginListener implements ChangeListener
 		{
 
 			Model model = Controller.getModel();
-			try
+
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getLeftMargin() != View.leftMarginSpace.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getLeftMargin() != View.leftMarginSpace.getValue())
-				{
-					model.setLeftMargin(View.leftMarginSpace.getValue());
-					model.converter.updateLeftMargin((View.leftMarginSpace
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setLeftMargin(View.leftMarginSpace.getValue());
+				model.converter.updateLeftMargin((View.leftMarginSpace
+						.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -830,40 +1109,66 @@ class LeftMarginListener implements ChangeListener
  */
 class RightMarginListener implements ChangeListener
 {
-
 	public void stateChanged(ChangeEvent e)
 	{
-
 		JSlider source = (JSlider) e.getSource();
 
 		if (!source.getValueIsAdjusting())
 		{
-
 			Model model = Controller.getModel();
-			try
+			/*
+			 * If the slider value didn't change from the current value then do
+			 * nothing
+			 */
+			if (model.getRightMargin() != View.rightMarginSpace.getValue())
 			{
-				/*
-				 * If the slider value didn't change from the current value then
-				 * do nothing
-				 */
-				if (model.getRightMargin() != View.rightMarginSpace.getValue())
-				{
-					model.setRightMargin(View.rightMarginSpace.getValue());
-					model.converter.updateRightMargin((View.rightMarginSpace
-							.getValue()));
-					IMGCreator.createPreview(model);
-
-					// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-					String image = IMGCreator.getLastConverted();
-					View.repaintPreview(image);
-				}
-
-			} catch (ConversionException e1)
-			{
-				Controller.displayError(e1.getMessage());
+				convert();
+				View.previewPane.setCursor(Cursor
+						.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+			Model model = Controller.getModel();
+
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
+			{
+				model.setRightMargin(View.rightMarginSpace.getValue());
+				model.converter.updateRightMargin((View.rightMarginSpace
+						.getValue()));
+				IMGCreator.createPreview(model);
+				return null;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image);
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
 
@@ -872,34 +1177,70 @@ class RightMarginListener implements ChangeListener
  */
 class PageSizeListener implements ActionListener
 {
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+
 		Model model = Controller.getModel();
-		try
+		/* Get the corresponding rectangle from the GUI page size */
+		Rectangle pagesize = model
+				.convertPageSizeToRectangle((String) View.pageList
+						.getSelectedItem());
+		String ps = model.convertPageSizeToString(model.getPageSize());
+
+		/* If the value didn't change from the current value then do nothing */
+		if (!ps.equals((String) View.pageList.getSelectedItem()))
 		{
-			/* Get the corresponding rectangle from the GUI page size */
+			convert();
+			View.previewPane.setCursor(Cursor
+					.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+	}
+
+	private void convert()
+	{
+		SwingWorker<Void, Integer> ConvertTask = new SwingWorker<Void, Integer>()
+		{
+
+			Model model = Controller.getModel();
 			Rectangle pagesize = model
 					.convertPageSizeToRectangle((String) View.pageList
 							.getSelectedItem());
 			String ps = model.convertPageSizeToString(model.getPageSize());
 
-			/* If the value didn't change from the current value then do nothing */
-			if (!ps.equals((String) View.pageList.getSelectedItem()))
+			@Override
+			protected Void doInBackground() throws NoFileExistsException,
+					CannotReadFileException, EmptyFileException,
+					NoMusicException, LargeNumberException, ConversionException
 			{
 				model.setPageSize(pagesize);
 				model.converter.updatePageSize(pagesize);
 				IMGCreator.createPreview(model);
-
-				// CHECK IF CONVERSION WAS DONE PROPERLY.
-
-				String image = IMGCreator.getLastConverted();
-				View.repaintPreview(image, model.getPreviewImage());
+				return null;
 			}
 
-		} catch (ConversionException e1)
-		{
-			Controller.displayError(e1.getMessage());
-		}
+			@Override
+			protected void done()
+			{
+				try
+				{
+					get();
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					String image = IMGCreator.getLastConverted();
+					View.repaintPreview(image, model.getPreviewImage());
+				} catch (InterruptedException | ExecutionException e1)
+				{
+					// ELSE display the error message and don't enable buttons.
+					View.progressBar.setIndeterminate(false);
+					View.previewPane.setCursor(Cursor
+							.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					Controller.displayError(e1.getMessage().substring(
+							e1.getMessage().indexOf(":") + 1));
+				}
+			}
+		};
+		ConvertTask.execute();
 	}
 }
