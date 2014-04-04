@@ -115,6 +115,7 @@ public class View
 			PROPERTIES_SCROLL_HEIGHT);
 	protected static JLabel iconLabel;
 	protected static JLabel loadingLabel;
+	protected static BufferedImage bimg;
 
 	// ImageIcons
 	protected static ImageIcon SelectButtonIcon = CreateImageIcon("/gui_images/SelectButtonDefault.png");
@@ -207,11 +208,6 @@ public class View
 
 	// Font
 	private static Font labelFont = new Font("SANS_SERIF", Font.BOLD, 12);
-	static int dX;
-	static int dY;
-	protected static BufferedImage bimg;
-	static int in = 0;
-	static int out = 0;
 
 	/**
 	 * Constructs a new view.
@@ -235,6 +231,9 @@ public class View
 		iconLabel.setPreferredSize(new Dimension(ERROR_WIDTH, ERROR_HEIGHT));
 	}
 
+	/**
+	 * Shows the loading bar.
+	 */
 	public static void showLoading()
 	{
 		cl.show(statusPanel, "progressPanel");
@@ -321,7 +320,7 @@ public class View
 	 * 
 	 * @return the menu bar
 	 */
-	
+
 	public static JMenuBar createMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -363,22 +362,23 @@ public class View
 		JMenuItem helpMenuItem = new JMenuItem("User Manual");
 		JMenu helpSize = new JMenu("User Manual");
 		helpMenuItem.setPreferredSize(helpSize.getPreferredSize());
-		
-			helpMenuItem.addActionListener(new ActionListener()
-			{
-				
+
+		helpMenuItem.addActionListener(new ActionListener()
+		{
+
 			@Override
 			public void actionPerformed(ActionEvent e)
-			{	
-				if(!userManualInterface.is_open) {
+			{
+				if (!userManualInterface.is_open)
+				{
 					userManualInterface umUI = new userManualInterface();
 					userManualInterface.is_open = true;
-					
+
 				}
-									
+
 			}
-			});
-			
+		});
+
 		menuBar.add(printMenuItem);
 		menuBar.add(emailMenuItem);
 		menuBar.add(helpMenuItem);
@@ -923,6 +923,9 @@ public class View
 		}
 	}
 
+	/**
+	 * Creates the loading bar.
+	 */
 	public static void buildProgressBar()
 	{
 		progressBar = new JProgressBar(0, 100);
@@ -1061,10 +1064,5 @@ public class View
 	void inputPathFocusListener(FocusListener inputPathFocusListener)
 	{
 		input.addFocusListener(inputPathFocusListener);
-	}
-
-	void MWListener(MouseWheelListener MWListener)
-	{
-		iconLabel.addMouseWheelListener(MWListener);
 	}
 }

@@ -1,9 +1,3 @@
-/* 
- * (UPDATE) Change the import name for SwingGUI
- * 
- * -Ron
- */
-
 package mvcV4;
 
 import java.awt.geom.AffineTransform;
@@ -17,46 +11,33 @@ import javax.imageio.ImageIO;
 import org.jpedal.PdfDecoder;
 import org.jpedal.fonts.FontMappings;
 
-;
-
 /**
- * Sample image creator - converts the first page of a pdf into png NOTE: Code
- * only for testing basic jpedal functions
- * 
- * CHANGE LOG:
- * 
- * v0.1: - Turned main method into a static method. - Now communicates with
- * view, to update the image.
+ * Creates a png image from the first page of the passed pdf document from
+ * model.
  */
-public class IMGCreator {
-
+public class IMGCreator
+{
 	static int counter = 0;
-
 	private static String lastConverted;
 	Model model;
 
-	public static void createPreview(Model model) {
+	public static void createPreview(Model model)
+	{
 		/* CONSTANTS */
-
 		String INPUT_PDFFILE = model.getOutputFilename();
-		// "outputfiles/"+ model.getFilename().substring(0,
-		// model.getFilename().indexOf('.') - 1)
-
+		// Location of image output
 		File outputfile = new File(model.getOutputFilename().substring(0,
 				model.getOutputFilename().indexOf('.'))
-				+ ".png"); // Location of
-		// Image
-		// file
-		// System.out.println(INPUT_PDFFILE + " " + outputfile);
+				+ ".png");
 
-		/** instance of PdfDecoder to convert PDF into image */
+		// instance of PdfDecoder to convert PDF into image
 		PdfDecoder decode_pdf = new PdfDecoder(true);
 
-		/** set mappings for non-embedded fonts to use */
+		// set mappings for non-embedded fonts to use
 		FontMappings.setFontReplacements();
 
-		/** open the PDF file - can also be a URL or a byte array */
-		try {
+		try
+		{
 			decode_pdf.openPdfFile(INPUT_PDFFILE); // Location of PDF file
 
 			decode_pdf.setExtractionMode(0, 1f);
@@ -65,7 +46,6 @@ public class IMGCreator {
 			/* Rescale image */
 			int w = img.getWidth();
 			int h = img.getHeight();
-
 			BufferedImage after = new BufferedImage(w, h,
 					BufferedImage.TYPE_INT_ARGB);
 			AffineTransform at = new AffineTransform();
@@ -74,17 +54,14 @@ public class IMGCreator {
 					AffineTransformOp.TYPE_BILINEAR);
 			after = scaleOp.filter(img, after);
 
-			try {
-				ImageIO.write(after, "png", outputfile); // Saving the image to
-															// png
-			} catch (IOException exception) {
-			}
+			// save to png
+			ImageIO.write(after, "png", outputfile);
 
-			/** close the PDF file */
+			// close the file
 			decode_pdf.closePdfFile();
 
-		} catch (org.jpedal.exception.PdfException e) {
-			// TODO Auto-generated catch block
+		} catch (org.jpedal.exception.PdfException | IOException e)
+		{
 			e.printStackTrace();
 		}
 
@@ -92,11 +69,13 @@ public class IMGCreator {
 		setLastConverted(outputfile.toString());
 	}
 
-	public static void setLastConverted(String name) {
+	public static void setLastConverted(String name)
+	{
 		lastConverted = name;
 	}
 
-	public static String getLastConverted() {
+	public static String getLastConverted()
+	{
 		return lastConverted;
 	}
 }
