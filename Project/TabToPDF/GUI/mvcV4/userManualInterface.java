@@ -147,8 +147,8 @@ public class userManualInterface extends JFrame{
 		c.gridy = 0;
 		thePanel.add(scrollBox, c);
 		
-		ImageIcon Icon = new ImageIcon("./res/userManualImages/UM.jpg");
-		File imageFile = new File("./res/userManualImages/UM.jpg");
+		ImageIcon Icon = CreateImageIcon("/userManualImages/UM.jpg");
+		/*File imageFile = new File("res/userManualImages/UM.jpg");
 		
 		BufferedImage image;
 		BufferedImage resizedImage = null;
@@ -158,7 +158,7 @@ public class userManualInterface extends JFrame{
 			Icon = new ImageIcon(resizedImage);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		browsePicture = new JLabel();
 		browsePicture.setIcon(Icon);
@@ -200,8 +200,9 @@ public class userManualInterface extends JFrame{
 	    	}
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
-	        ImageIcon Icon = new ImageIcon("./res/userManualImages/gettingStarted1.jpg");
-			File imageFile = new File("./res/userManualImages/gettingStarted1.jpg");
+	    	ImageIcon Icon = CreateImageIcon("/userManualImages/gettingStarted1.jpg");
+	       /* ImageIcon Icon = new ImageIcon("res/userManualImages/gettingStarted1.jpg");
+			File imageFile = new File("res/userManualImages/gettingStarted1.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -210,7 +211,7 @@ public class userManualInterface extends JFrame{
 				Icon = new ImageIcon(resizedImage);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			browsePicture.setIcon(Icon);
 			c.gridx = 1;
 			c.gridy = 1;
@@ -230,8 +231,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(gettingStartedStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("./res/userManualImages/gettingStarted2.jpg");
-			File imageFile2 = new File("./res/userManualImages/gettingStarted2.jpg");
+			ImageIcon Icon2 = CreateImageIcon("/userManualImages/gettingStarted2.jpg");
+			/*ImageIcon Icon2 = new ImageIcon("res/userManualImages/gettingStarted2.jpg");
+			File imageFile2 = new File("res/userManualImages/gettingStarted2.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -240,7 +242,7 @@ public class userManualInterface extends JFrame{
 				Icon2 = new ImageIcon(resizedImage2);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			convertPicture = new JLabel();
 			convertPicture.setIcon(Icon2);
 			c.gridx = 1;
@@ -262,8 +264,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(gettingStartedStep3_0, c);
 			
 			//Adding in the edit picture.
-			ImageIcon Icon3 = new ImageIcon("./res/userManualImages/gettingStarted3.jpg");
-			File imageFile3 = new File("./res/userManualImages/gettingStarted3.jpg");
+			ImageIcon Icon3 = CreateImageIcon("/userManualImages/gettingStarted3.jpg");
+			/*ImageIcon Icon3 = new ImageIcon("res/userManualImages/gettingStarted3.jpg");
+			File imageFile3 = new File("res/userManualImages/gettingStarted3.jpg");
 			BufferedImage image3;
 			BufferedImage resizedImage3 = null;
 			try {
@@ -272,7 +275,7 @@ public class userManualInterface extends JFrame{
 				Icon3 = new ImageIcon(resizedImage3);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			editPicture = new JLabel();
 			editPicture.setIcon(Icon3);
 			c.gridx = 1;
@@ -296,8 +299,9 @@ public class userManualInterface extends JFrame{
 	    	}
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
-	        ImageIcon Icon = new ImageIcon("./res/userManualImages/print1UM.jpg");
-			File imageFile = new File("./res/userManualImages/print1UM.jpg");
+	    	ImageIcon Icon = CreateImageIcon("/userManualImages/print1UM.jpg");
+	       /* ImageIcon Icon = new ImageIcon("res/userManualImages/print1UM.jpg");
+			File imageFile = new File("res/userManualImages/print1UM.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -306,7 +310,7 @@ public class userManualInterface extends JFrame{
 				Icon = new ImageIcon(resizedImage);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			browsePicture.setIcon(Icon);
 			c.gridx = 1;
 			c.gridy = 1;
@@ -326,8 +330,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(printStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("./res/userManualImages/print2UM.jpg");
-			File imageFile2 = new File("./res/userManualImages/print2UM.jpg");
+			ImageIcon Icon2 = CreateImageIcon("/userManualImages/print2UM.jpg");
+			/*ImageIcon Icon2 = new ImageIcon("res/userManualImages/print2UM.jpg");
+			File imageFile2 = new File("res/userManualImages/print2UM.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -336,7 +341,7 @@ public class userManualInterface extends JFrame{
 				Icon2 = new ImageIcon(resizedImage2);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			JLabel convertPicture = new JLabel();
 			convertPicture.setIcon(Icon2);
 			c.gridx = 1;
@@ -366,8 +371,9 @@ public class userManualInterface extends JFrame{
 	    	}
 	    	informationPanel.removeAll();
 	    	scrollBox2.getViewport().setViewPosition(new Point(0, scrollAmount));
-	        ImageIcon Icon = new ImageIcon("./res/userManualImages/email0UM.jpg");
-			File imageFile = new File("./res/userManualImages/email0UM.jpg");
+	    	ImageIcon Icon = CreateImageIcon("/userManualImages/email0UM.jpg");
+	       /* ImageIcon Icon = new ImageIcon("res/userManualImages/email0UM.jpg");
+			File imageFile = new File("res/userManualImages/email0UM.jpg");
 			BufferedImage image;
 			BufferedImage resizedImage = null;
 			try {
@@ -376,7 +382,7 @@ public class userManualInterface extends JFrame{
 				Icon = new ImageIcon(resizedImage);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			browsePicture.setIcon(Icon);
 			c.gridx = 1;
 			c.gridy = 1;
@@ -396,8 +402,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep2_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon2 = new ImageIcon("./res/userManualImages/email1UM.jpg");
-			File imageFile2 = new File("./res/userManualImages/email1UM.jpg");
+			ImageIcon Icon2 = CreateImageIcon("/userManualImages/email1UM.jpg");
+			/*ImageIcon Icon2 = new ImageIcon("res/userManualImages/email1UM.jpg");
+			File imageFile2 = new File("res/userManualImages/email1UM.jpg");
 			BufferedImage image2;
 			BufferedImage resizedImage2 = null;
 			try {
@@ -406,7 +413,7 @@ public class userManualInterface extends JFrame{
 				Icon2 = new ImageIcon(resizedImage2);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			JLabel convertPicture = new JLabel();
 			convertPicture.setIcon(Icon2);
 			c.gridx = 1;
@@ -421,8 +428,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep3_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon3 = new ImageIcon("./res/userManualImages/email2UM.jpg");
-			File imageFile3 = new File("./res/userManualImages/email2UM.jpg");
+			ImageIcon Icon3 = CreateImageIcon("/userManualImages/email2UM.jpg");
+			/*ImageIcon Icon3 = new ImageIcon("res/userManualImages/email2UM.jpg");
+			File imageFile3 = new File("res/userManualImages/email2UM.jpg");
 			BufferedImage image3;
 			BufferedImage resizedImage3 = null;
 			try {
@@ -431,7 +439,7 @@ public class userManualInterface extends JFrame{
 				Icon3 = new ImageIcon(resizedImage3);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			JLabel convertPicture2 = new JLabel();
 			convertPicture2.setIcon(Icon3);
 			c.gridx = 1;
@@ -446,8 +454,9 @@ public class userManualInterface extends JFrame{
 			informationPanel.add(emailStep4_0, c);
 			
 			//Adding in the convert picture.
-			ImageIcon Icon4 = new ImageIcon("./res/userManualImages/email3UM.jpg");
-			File imageFile4 = new File("./res/userManualImages/email3UM.jpg");
+			ImageIcon Icon4 = CreateImageIcon("/userManualImages/email3UM.jpg");
+			/*ImageIcon Icon4 = new ImageIcon("res/userManualImages/email3UM.jpg");
+			File imageFile4 = new File("res/userManualImages/email3UM.jpg");
 			BufferedImage image4;
 			BufferedImage resizedImage4 = null;
 			try {
@@ -456,7 +465,7 @@ public class userManualInterface extends JFrame{
 				Icon4 = new ImageIcon(resizedImage4);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			JLabel convertPicture3 = new JLabel();
 			convertPicture3.setIcon(Icon4);
 			c.gridx = 1;
@@ -503,7 +512,18 @@ public class userManualInterface extends JFrame{
 		});
 	}
 	
-	
+	static ImageIcon CreateImageIcon(String path)
+	{
+		java.net.URL imgURL = View.class.getResource(path);
+		if (imgURL != null)
+		{
+			return new ImageIcon(imgURL);
+		} else
+		{
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
 	
 	
 }
