@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import javax.print.PrintException;
 import javax.swing.*;
 
-import print.printPDF;
-
 public class PrinterInterface extends JFrame {
 
     /**
