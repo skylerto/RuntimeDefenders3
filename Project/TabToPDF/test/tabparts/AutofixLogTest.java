@@ -22,11 +22,19 @@ public class AutofixLogTest {
 
 	@Test
 	public void Test_defaultConstructor() {
-	    String expected_path = "outputfiles/autofixlog.txt";
+	    String expected_path_linux = "outputfiles/autofixlog.txt";
+	    String expected_path_windows = "outputfiles\\autofixlog.txt";
 	    String expected_name = "autofixlog.txt";
-		assertEquals(expected_path,a1.log.getPath().toString());
+	    String output = a1.log.getPath().toString();
 		assertEquals(expected_name,a1.log.getName());
 		
+		if (expected_path_linux.equals(output) || expected_path_windows.equals(output)){
+			assertTrue(true);
+		}
+		
+		else{
+			fail();
+		}
 		
 	}
 	
