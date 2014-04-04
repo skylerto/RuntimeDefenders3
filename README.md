@@ -1,3 +1,11 @@
+Google Documents
+
+Designv2: https://docs.google.com/document/d/1MkQeMpfUbR3wP2pcnpFlcWyr1tOlUoqkPiEG9i4jOiA/edit
+
+Test: https://docs.google.com/document/d/1R1TrOdt8ezD-O8JbTkzk1Hnc3btGiuNwl_cbWm5DYD4/edit
+
+Requirements: https://docs.google.com/document/d/13zwUp9VmLJQSZYIFpmykFvOkRyvygnJKTn4yh50Dyos/edit
+
 THINGS THAT NEED TO BE DONE FOR PRESENTATION
 ===========================
 
