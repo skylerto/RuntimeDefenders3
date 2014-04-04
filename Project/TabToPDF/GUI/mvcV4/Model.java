@@ -1,6 +1,5 @@
 package mvcV4;
 
-import tabparts.LargeNumberException;
 import version13.*;
 
 import com.itextpdf.text.*;
@@ -93,8 +92,7 @@ public class Model
 	}
 
 	public void initializeConverter() throws NoFileExistsException,
-			CannotReadFileException, EmptyFileException, NoMusicException,
-			LargeNumberException
+			CannotReadFileException, EmptyFileException, NoMusicException
 	{
 		this.converter = new TextToPDF(this.getOutputFilename(),
 				this.getFilenameWithExtension());

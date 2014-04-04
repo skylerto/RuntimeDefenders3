@@ -15,7 +15,6 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 
-import tabparts.LargeNumberException;
 import tabparts.TabStaff;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -32,7 +31,7 @@ public class TextToPDFTest {
 	
      
 	@Test(expected = EmptyFileException.class)
-	public void test_Constructor_case0() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public void test_Constructor_case0() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException  {
 		String a = "";
 		String b = "inputfiles/case0.txt";
 		tp1 = new TextToPDF(a,b);	
@@ -51,14 +50,14 @@ public class TextToPDFTest {
 	}
 	
 	@Test (expected = NoMusicException.class)
-	public void  test_Constructor_case01() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_Constructor_case01() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case01.txt";
 		tp1 = new TextToPDF(a,b);
 	}
 
 	@Test (expected = CannotReadFileException.class)
-	public void  test_Constructor_exception1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_Constructor_exception1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/";
 		tp1 = new TextToPDF(a,b);
@@ -66,7 +65,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test (expected = NoFileExistsException.class)
-	public void test_constructor_Exception2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+	public void test_constructor_Exception2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case100.txt";
 		tp1 = new TextToPDF(a,b);
@@ -74,7 +73,7 @@ public class TextToPDFTest {
 	}
 
 	@Test
-	public void test_Constructor_case1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public void test_Constructor_case1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException  {
 		String a = "";
 		String b = "inputfiles/fixed.txt";
 		tp1 = new TextToPDF(a,b);	
@@ -93,7 +92,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_Constructor_case2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public void test_Constructor_case2() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException  {
 		String a = "";
 		String b = "inputfiles/case5.txt";
 		tp1 = new TextToPDF(a,b);	
@@ -112,7 +111,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_Constructor_case3() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public void test_Constructor_case3() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException  {
 		String a = "";
 		String b = "inputfiles/case1.txt";
 		tp1 = new TextToPDF(a,b);	
@@ -131,7 +130,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test (expected = CannotReadFileException.class)
-	public void  test_WriteToPDF_exception() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_exception() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/";
 		tp1 = new TextToPDF(a,b);
@@ -141,7 +140,7 @@ public class TextToPDFTest {
 	
 	
     @Test
-	public void  test_WriteToPDF_case1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case1() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		tp1 = new TextToPDF(a,b);
@@ -169,7 +168,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case2() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case2() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case2.txt";
 		tp1 = new TextToPDF(a,b);
@@ -196,7 +195,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case3() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case3() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case3.txt";
 		tp1 = new TextToPDF(a,b);
@@ -223,7 +222,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case4() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case4() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case4.txt";
 		tp1 = new TextToPDF(a,b);
@@ -250,7 +249,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case5() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case5() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case5.txt";
 		tp1 = new TextToPDF(a,b);
@@ -277,7 +276,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case10() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case10() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case10.txt";
 		tp1 = new TextToPDF(a,b);
@@ -304,7 +303,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case11() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case11() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case11.txt";
 		tp1 = new TextToPDF(a,b);
@@ -331,7 +330,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void  test_WriteToPDF_case12() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, DocumentException, IOException{
+	public void  test_WriteToPDF_case12() throws ConversionException, NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  DocumentException, IOException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case12.txt";
 		tp1 = new TextToPDF(a,b);
@@ -358,7 +357,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test (expected = NoFileExistsException.class)
-	public void checkerrorException1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+	public void checkerrorException1() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException {
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case100.txt";
 		tp1 = new TextToPDF(a,b);
@@ -367,7 +366,7 @@ public class TextToPDFTest {
 	
 	
 	@Test
-	public void test_updateTitle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateTitle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		String c = "NEW TITLE";
@@ -378,7 +377,7 @@ public class TextToPDFTest {
 	}
 
 	@Test
-	public void test_updateSubtitle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateSubtitle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		String c = "NEW SUBTITLE";
@@ -389,7 +388,7 @@ public class TextToPDFTest {
 	}
 
 	@Test
-	public void test_updateSpacing() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateSpacing() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		float f = 8.1f;
@@ -400,7 +399,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateElementSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateElementSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		int i = 5;
@@ -411,7 +410,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updatePageSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updatePageSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		Rectangle r1 = new Rectangle(PageSize.LETTER); // LEDGER, LEGAL
@@ -429,7 +428,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateTitleSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateTitleSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		int i = 4;
@@ -439,7 +438,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateSubtitleSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateSubtitleSize() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		int i = 4;
@@ -449,7 +448,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateSLeftMargin() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateSLeftMargin() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		float f = 3.1f;
@@ -460,7 +459,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateRightMargin() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateRightMargin() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		float f = 3.5f;
@@ -471,7 +470,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateMeasure() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateMeasure() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		float f = 4.5f;
@@ -482,7 +481,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	public void test_updateOutputPath() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	public void test_updateOutputPath() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case1.txt";
 		float f = 4.5f;
@@ -493,7 +492,7 @@ public class TextToPDFTest {
 	}
 	
 	@Test
-	 public void test_restore() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException{
+	 public void test_restore() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException,  ConversionException{
 		String a = TextToPDF.DEFAULT_OUTPUTPATH;
 		String b = "inputfiles/case11.txt";
 		tp1 = new TextToPDF(a,b);

@@ -377,7 +377,6 @@ public class TabString {
 	 * @param fixboth	If true, the method with add a '|' to both ends of
 	 * 					a comment, assuming it's a string.
 	 * @return	a message saying what was fixed.
-	 * @throws	LargeNumberException when 3 or more consecutive digits are found.
 	 */
 	public String fixString() {
 		/* Find what type of error needs to be fixed */
@@ -651,18 +650,6 @@ public class TabString {
 		if (VALID_START.matcher(this.toString()).find()) return ERROR_END;
 		if (VALID_END.matcher(this.toString()).find()) return ERROR_START;
 		return ERROR_COMMENT;
-	}
-	
-	/**
-	 * Assuming that the string is part of a measure that isn't a comment,
-	 * it will throw an exception if there are 3 or more consecutive numbers
-	 * in the string.
-	 * 
-	 * @throws LargeNumberException 3 or more consecutive numbers found in the string
-	 */
-	
-	public void checkNumberException() throws LargeNumberException {
-		if (INVALID_NUMBER.matcher(this.toString()).find()) throw new LargeNumberException("Cannot have more than 2 consecutive digits in the string: " + this.toString());
 	}
 	
 	/**

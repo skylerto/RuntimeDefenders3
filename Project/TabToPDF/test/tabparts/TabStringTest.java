@@ -378,12 +378,6 @@ public class TabStringTest {
 		assertEquals(TabString.ERROR_START, tab28.checkError());
 	}
 
-	@Test(expected = LargeNumberException.class)
-	public void testcheckError() throws LargeNumberException {
-		tab29 = new TabString("|----123--||");
-		tab29.checkNumberException();
-	}
-
 	@Test
 	public void TestGetLogAttribute() { // this is temporary i will get back
 										// when toString is implemeneted

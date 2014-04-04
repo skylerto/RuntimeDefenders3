@@ -7,7 +7,6 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-import tabparts.LargeNumberException;
 import tabparts.TabStaff;
 
 public class SplitStackTest {
@@ -25,7 +24,7 @@ public class SplitStackTest {
 	}
 	
 	@Test
-	public void test_push() throws ConversionException, LargeNumberException {
+	public void test_push() throws ConversionException {
 		TabStaff ts = new TabStaff(); // tabstaff ts
 		ts.scanFile(new File("inputfiles/case1.txt"));
 		
@@ -42,7 +41,7 @@ public class SplitStackTest {
 	}
 	
 	@Test
-	public void test_pop() throws ConversionException, LargeNumberException {
+	public void test_pop() throws ConversionException {
 		TabStaff ts = new TabStaff(); // tabstaff ts
 		ts.scanFile(new File("inputfiles/case1.txt"));
 		SplitMarker sm2 = new SplitMarker(ts,10); //marker sm2
@@ -55,7 +54,7 @@ public class SplitStackTest {
 	}
 	
 	@Test
-	public void test_peak() throws LargeNumberException, ConversionException{
+	public void test_peak() throws ConversionException{
 		
 		TabStaff ts = new TabStaff(); // tabstaff ts
 		ts.scanFile(new File("inputfiles/case1.txt"));

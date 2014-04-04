@@ -24,7 +24,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import tabparts.AutofixLog;
-import tabparts.LargeNumberException;
 import version13.CannotReadFileException;
 import version13.ConversionException;
 import version13.EmptyFileException;
@@ -142,7 +141,7 @@ class TitleFocusListener implements FocusListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				publish(1);
 				model.setTitle(View.title.getText());
@@ -204,7 +203,7 @@ class TitleListener implements ActionListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				publish(1);
 				model.setTitle(View.title.getText());
@@ -273,7 +272,7 @@ class SubtitleFocusListener implements FocusListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
@@ -333,7 +332,7 @@ class SubtitleListener implements ActionListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setSubTitle(View.subtitle.getText());
 				model.converter.updateSubtitle((View.subtitle.getText()));
@@ -427,7 +426,7 @@ class InputPathListener implements ActionListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				publish(1);
 				model.initializeConverter();
@@ -548,7 +547,7 @@ class SelectButtonListener implements ActionListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				publish(1);
 				model.initializeConverter();
@@ -716,7 +715,7 @@ class SpacingListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setSpacing(View.staffSpacing.getValue());
 				model.converter.updateSpacing((View.staffSpacing.getValue()));
@@ -787,7 +786,7 @@ class StaffSizeListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setStaffSize(View.staffSize.getValue());
 				model.converter.updateElementSize((View.staffSize.getValue()));
@@ -858,7 +857,7 @@ class MeasureSpaceListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setMeasureSpace(View.measureSpace.getValue());
 				model.converter.updateMeasureSpace((View.measureSpace
@@ -930,7 +929,7 @@ class TitleFontSizeListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setTitleFontSize(View.titleFontSize.getValue());
 				model.converter
@@ -998,7 +997,7 @@ class SubtitleFontSizeListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setSubTitleFontSize(View.subtitleFontSize.getValue());
 				model.converter.updateSubtitleSize((View.subtitleFontSize
@@ -1070,7 +1069,7 @@ class LeftMarginListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setLeftMargin(View.leftMarginSpace.getValue());
 				model.converter.updateLeftMargin((View.leftMarginSpace
@@ -1138,7 +1137,7 @@ class RightMarginListener implements ChangeListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setRightMargin(View.rightMarginSpace.getValue());
 				model.converter.updateRightMargin((View.rightMarginSpace
@@ -1212,7 +1211,7 @@ class PageSizeListener implements ActionListener
 			@Override
 			protected Void doInBackground() throws NoFileExistsException,
 					CannotReadFileException, EmptyFileException,
-					NoMusicException, LargeNumberException, ConversionException
+					NoMusicException, ConversionException
 			{
 				model.setPageSize(pagesize);
 				model.converter.updatePageSize(pagesize);

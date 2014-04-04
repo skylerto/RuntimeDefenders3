@@ -72,9 +72,8 @@ public class TabStaff {
 	 * blah blah
 	 *
 	 * @param file	The file to read the input data from.
-	 * @throws LargeNumberException 
 	 */
-	public void scanFile(File file) throws LargeNumberException {
+	public void scanFile(File file) {
 		File input = file;
 		BufferedReader stream;
 		String line;			// A line read from the input file
@@ -347,11 +346,10 @@ public class TabStaff {
 	/**
 	 * Fixes errors for each TabMeasure. In addition, removes empty measures
 	 * and stores and fixes repeating numbers.
-	 * @throws LargeNumberException 
 	 * 
 	 * @throws Exception
 	 */
-	public void fixStaff() throws LargeNumberException {
+	public void fixStaff(){
 		this.removeEmpty();
 		this.findRepeats();
 		this.fixEnd();

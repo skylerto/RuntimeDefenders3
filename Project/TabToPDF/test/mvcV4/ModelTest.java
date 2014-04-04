@@ -11,7 +11,6 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 
-import tabparts.LargeNumberException;
 import version13.CannotReadFileException;
 import version13.ConversionException;
 import version13.EmptyFileException;
@@ -127,7 +126,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void test_initialize_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+	public void test_initialize_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException{
 		//this tests for getconverterproperties also
 		
 		bravo = new Model("Moonlight Sonata","Daylight Sonata","","fixed","inputfiles/fixed.txt",5,4,2,5.0f);
@@ -151,7 +150,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void test_run_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, ConversionException, FileNotFoundException, LargeNumberException{
+	public void test_run_converter() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, ConversionException, FileNotFoundException{
 		bravo = new Model("Moonlight Sonata","Daylight Sonata","","fixed","inputfiles/fixed.txt",5,4,2,5.0f);
 		bravo.initializeConverter();
 		
@@ -177,7 +176,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void test_convertPagesizeToString() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+	public void test_convertPagesizeToString() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException{
 		
 		String expt = "";
 		String out = "";
@@ -196,7 +195,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void test_convertPagesizeToRectangle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException{
+	public void test_convertPagesizeToRectangle() throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException{
 		
 		Rectangle out = new Rectangle(0,0);
 		Rectangle expt = new Rectangle(0,0);

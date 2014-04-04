@@ -126,7 +126,7 @@ public class TabMeasure {
 	 * by adding dashes to the ends. Finds a repeat number and stores it
 	 * in the measure then changes the number into a bar or deletes it.
 	 */
-	public void fixMeasure() throws LargeNumberException {
+	public void fixMeasure()  {
 		//this.checkNumberException();
 		this.fixStrings();
 		this.fixStartBar();
@@ -206,13 +206,8 @@ public class TabMeasure {
 			} else {
 				this.copyMeasure(mshort); // Make the original measure the shortened measure
 				/* Fix the split measures */
-				try {
 					this.fixMeasure();
 					mleftover.fixMeasure();
-				} catch (LargeNumberException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
 		return mleftover;
@@ -221,13 +216,10 @@ public class TabMeasure {
 	/**
 	 * Checks each string for 3 or more consecutive numbers.
 	 * 
-	 * @throws LargeNumberException if 3 or more consecutive numbers are found in a string
+	 * @ if 3 or more consecutive numbers are found in a string
 	 */
-	public void checkNumberException() throws LargeNumberException {
+	public void checkNumberException()  {
 		if (this.isComment()) return;
-		for (int i = 0; i < this.size(); i++) {
-			this.strings[i].checkNumberException();
-		}
 	}
 	
 	/**
@@ -386,7 +378,6 @@ public class TabMeasure {
 	/** 
 	 * Fixes the symbols for each string of the measure.
 	 * 
-	 * @throws	LargeNumberException when 3 or more consecutive digits are found in a string.
 	 */
 	public void fixSymbols() {
 		if (this.isComment()) return;

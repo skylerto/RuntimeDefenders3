@@ -2,7 +2,6 @@ package version13;
 
 import java.io.*;
 import java.util.List;
-import tabparts.LargeNumberException;
 import tabparts.TabStaff;
 import tabparts.TabString;
 import version13.MusicNoteProcess;
@@ -53,9 +52,8 @@ public class TextToPDF {
 	 * @throws CannotReadFileException
 	 * @throws EmptyFileException
 	 * @throws NoMusicException
-	 * @throws LargeNumberException
 	 */
-	public TextToPDF (String outputpath, String inputpath) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException {
+	public TextToPDF (String outputpath, String inputpath) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException {
 		this.inputpath = inputpath;
 		this.outputpath = outputpath;
 		this.properties = new PDFProperties();
@@ -526,7 +524,7 @@ public class TextToPDF {
 	 * 
 	 * 
 	 * */
-	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, LargeNumberException, ConversionException {
+	public static void main(String[] args) throws NoFileExistsException, CannotReadFileException, EmptyFileException, NoMusicException, ConversionException {
 
 		
 		TextToPDF conversion = new TextToPDF
